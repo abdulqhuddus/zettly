@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Zettly — Coming Soon</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* === LOGO OPTION B — stacked === */
+  .logo-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: floatLogo 4s ease-in-out infinite;
+  }
+
+  @keyframes floatLogo {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  /* Squares pulse in sequence */
+  .sq1 { animation: sqPulse 3s ease-in-out infinite 0s; }
+  .sq2 { animation: sqPulse 3s ease-in-out infinite 0.35s; }
+  .sq3 { animation: sqPulse 3s ease-in-out infinite 0.7s; }
+  .sq4 { animation: sqPulse 3s ease-in-out infinite 1.05s; }
+
+  @keyframes sqPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.5; }
+  }
+
+  .brand-name {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 2.6rem;
+    font-weight: 200;
+    letter-spacing: 0.01em;
+    color: #0a0a0a;
+    line-height: 1;
+    /* inverted for dark bg */
+    color: #ffffff;
+  }
+
+  .brand-name span { color: #7C3AED; }
+
+  .brand-sub {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: #666;
+    text-transform: uppercase;
+    margin-top: -0.5rem;
+  }
+
+  /* Divider */
+  .divider {
+    width: 40px;
+    height: 1.5px;
+    background: #7C3AED;
+    border-radius: 2px;
+    opacity: 0.5;
+  }
+
+  /* Tagline */
+  .tagline {
+    font-size: 1rem;
+    color: #999;
+    line-height: 1.7;
+    max-width: 380px;
+  }
+
+  /* Service pills */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: center;
+  }
+
+  .pill {
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(124,58,237,0.28);
+    font-size: 0.78rem;
+    color: #888;
+    background: rgba(124,58,237,0.06);
+  }
+
+  /* Launch label */
+  .launch-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .launch-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7C3AED;
+    font-weight: 500;
+  }
+
+  .launch-text {
+    font-size: 0.92rem;
+    color: #bbb;
+  }
+
+  /* Notify form */
+  .notify-form {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 380px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .notify-form input {
+    flex: 1;
+    min-width: 190px;
+    padding: 0.72rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(124,58,237,0.3);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .notify-form input::placeholder { color: #444; }
+  .notify-form input:focus { border-color: #7C3AED; }
+
+  .notify-form button {
+    padding: 0.72rem 1.3rem;
+    border-radius: 8px;
+    border: none;
+    background: #7C3AED;
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .notify-form button:hover  { background: #9F67F5; transform: translateY(-1px); }
+  .notify-form button:active { transform: translateY(0); }
+
+  .thanks {
+    display: none;
+    color: #9F67F5;
+    font-size: 0.92rem;
+  }
+
+  .footer {
+    font-size: 0.75rem;
+    color: #333;
+    margin-top: 0.5rem;
+  }
+
+  /* Fade-in stagger */
+  .container > * {
+    opacity: 0;
+    animation: fadeUp 0.55s ease forwards;
+  }
+  .container > *:nth-child(1) { animation-delay: 0.1s; }
+  .container > *:nth-child(2) { animation-delay: 0.22s; }
+  .container > *:nth-child(3) { animation-delay: 0.34s; }
+  .container > *:nth-child(4) { animation-delay: 0.46s; }
+  .container > *:nth-child(5) { animation-delay: 0.58s; }
+  .container > *:nth-child(6) { animation-delay: 0.70s; }
+  .container > *:nth-child(7) { animation-delay: 0.82s; }
+  .container > *:nth-child(8) { animation-delay: 0.94s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Option B: stacked logo -->
+  <div class="logo-block">
+    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect class="sq1" x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
+      <rect class="sq2" x="36" y="0"  width="64" height="64" rx="14" fill="#ffffff"/>
+      <rect class="sq3" x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+      <rect class="sq4" x="72" y="72" width="28" height="28" rx="6"  fill="#ffffff"/>
+    </svg>
+    <div class="brand-name">zett<span>ly</span></div>
+    <div class="brand-sub">Smart IT Services</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Tagline -->
+  <p class="tagline">Professional IT support for homes and small businesses. Fast, reliable and personal.</p>
+
+  <!-- Services -->
+  <div class="pills">
+    <span class="pill">PC &amp; Laptop Repair</span>
+    <span class="pill">Virus Removal</span>
+    <span class="pill">Network &amp; WiFi Setup</span>
+    <span class="pill">Smart Home Setup</span>
+    <span class="pill">Remote Support</span>
+    <span class="pill">Software Troubleshooting</span>
+  </div>
+
+  <!-- Launch info -->
+  <div class="launch-info">
+    <span class="launch-label">Launching soon</span>
+    <span class="launch-text">We are putting the finishing touches on something great.</span>
+  </div>
+
+  <!-- Notify -->
+  <div class="notify-form">
+    <input type="email" id="email-input" placeholder="Your email address" />
+    <button onclick="handleNotify()">Notify me</button>
+  </div>
+  <p class="thanks" id="thanks-msg">✓ Thank you! We will let you know when we launch.</p>
+
+  <p class="footer">© 2026 Zettly · Germany</p>
+
+</div>
+<script>
+function handleNotify() {
+  const input = document.getElementById('email-input');
+  const thanks = document.getElementById('thanks-msg');
+  const form = document.querySelector('.notify-form');
+  if (!input.value || !input.value.includes('@')) {
+    input.style.borderColor = '#e74c3c';
+    input.focus();
+    return;
+  }
+  form.style.display = 'none';
+  thanks.style.display = 'block';
+}
+</script>
+</body>
+</html>
