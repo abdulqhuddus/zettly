@@ -35,9 +35,17 @@
     gap: 1rem;
   }
 
-  .brand { display: flex; align-items: center; gap: 0.55rem; font-size: 1.1rem; font-weight: 600; letter-spacing: -0.01em; }
-  .brand span { color: var(--accent); }
-  .brand-mark { width: 26px; height: 26px; flex: 0 0 auto; }
+  .brand { display: flex; align-items: center; gap: 0.7rem; }
+  .brand-text {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.7rem;
+    font-weight: 200;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .brand-text span { color: var(--accent); }
+  .brand-mark { width: 38px; height: 38px; flex: 0 0 auto; }
   .brand-mark .m1 { animation: markPulse 3s ease-in-out infinite 0s; }
   .brand-mark .m2 { animation: markPulse 3s ease-in-out infinite 0.35s; }
   .brand-mark .m3 { animation: markPulse 3s ease-in-out infinite 0.7s; }
@@ -235,7 +243,7 @@
         <rect class="m3" x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
         <rect class="m4" x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
       </svg>
-      zett<span>ly</span>
+      <span class="brand-text">zett<span>ly</span></span>
     </div>
     <div class="topbar-right">
       <div class="lang-switch" id="lang-switch">
