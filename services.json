@@ -2,53 +2,71 @@
   "it": [
     {
       "id": "it-quickfix",
-      "name": "Quick Fix",
-      "tagline": "One issue, solved fast",
       "price": 39,
       "duration": 30,
-      "features": ["Remote or on-site diagnosis", "Single device", "Same-week slot"]
+      "name": { "de": "Schnelle Hilfe", "en": "Quick Fix" },
+      "tagline": { "de": "Ein Problem, schnell gelöst", "en": "One issue, solved fast" },
+      "features": {
+        "de": ["Fernwartung oder vor Ort", "Ein Gerät", "Termin noch diese Woche"],
+        "en": ["Remote or on-site diagnosis", "Single device", "Same-week slot"]
+      }
     },
     {
       "id": "it-homesetup",
-      "name": "Home Network Setup",
-      "tagline": "WiFi & smart home, done right",
       "price": 89,
       "duration": 60,
-      "features": ["Router & WiFi optimization", "Up to 5 devices", "Smart home basics"]
+      "name": { "de": "Heimnetzwerk-Einrichtung", "en": "Home Network Setup" },
+      "tagline": { "de": "WLAN & Smart Home, richtig gemacht", "en": "WiFi & smart home, done right" },
+      "features": {
+        "de": ["WLAN-Optimierung", "Bis zu 5 Geräte", "Smart-Home-Grundlagen"],
+        "en": ["Router & WiFi optimization", "Up to 5 devices", "Smart home basics"]
+      }
     },
     {
       "id": "it-fullcare",
-      "name": "Full Care",
-      "tagline": "Ongoing IT peace of mind",
       "price": 149,
       "duration": 90,
-      "features": ["Full system health check", "Virus & malware sweep", "30-day follow-up support"]
+      "name": { "de": "Rundum-Betreuung", "en": "Full Care" },
+      "tagline": { "de": "Dauerhafte IT-Sicherheit", "en": "Ongoing IT peace of mind" },
+      "features": {
+        "de": ["Vollständiger Systemcheck", "Viren- & Malware-Scan", "30 Tage Nachbetreuung"],
+        "en": ["Full system health check", "Virus & malware sweep", "30-day follow-up support"]
+      }
     }
   ],
   "dynamics": [
     {
       "id": "d365-consult",
-      "name": "D365 Consultation",
-      "tagline": "Scope it out before you build",
       "price": 79,
       "duration": 45,
-      "features": ["Requirements review", "Architecture recommendation", "Written summary"]
+      "name": { "de": "D365-Beratung", "en": "D365 Consultation" },
+      "tagline": { "de": "Klarheit vor dem Start", "en": "Scope it out before you build" },
+      "features": {
+        "de": ["Anforderungsanalyse", "Architekturempfehlung", "Schriftliche Zusammenfassung"],
+        "en": ["Requirements review", "Architecture recommendation", "Written summary"]
+      }
     },
     {
       "id": "d365-workflow",
-      "name": "Workflow Build",
-      "tagline": "One automated process, delivered",
       "price": 249,
       "duration": 90,
-      "features": ["Power Automate flow", "Testing & handover", "1 revision round"]
+      "name": { "de": "Workflow-Erstellung", "en": "Workflow Build" },
+      "tagline": { "de": "Ein automatisierter Prozess, fertig", "en": "One automated process, delivered" },
+      "features": {
+        "de": ["Power-Automate-Flow", "Test & Übergabe", "1 Korrekturrunde"],
+        "en": ["Power Automate flow", "Testing & handover", "1 revision round"]
+      }
     },
     {
       "id": "d365-integration",
-      "name": "Custom Integration",
-      "tagline": "Connect D365 to your other tools",
       "price": 499,
       "duration": 120,
-      "features": ["Custom connector/API work", "Data mapping", "Documentation included"]
+      "name": { "de": "Individuelle Integration", "en": "Custom Integration" },
+      "tagline": { "de": "D365 mit Ihren Tools verbinden", "en": "Connect D365 to your other tools" },
+      "features": {
+        "de": ["Individuelle Connector-/API-Arbeit", "Datenmapping", "Dokumentation inklusive"],
+        "en": ["Custom connector/API work", "Data mapping", "Documentation included"]
+      }
     }
   ]
 }

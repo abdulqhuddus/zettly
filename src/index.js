@@ -32,6 +32,41 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function localizedName(service, lang) {
+  return service.name[lang] || service.name.de;
+}
+
+const EMAIL_STRINGS = {
+  de: {
+    heading: "Ihr Termin ist bestätigt",
+    hi: (name) => `Hallo ${name},`,
+    detailsIntro: "Hier sind Ihre Buchungsdetails:",
+    service: "Leistung",
+    date: "Datum",
+    time: "Uhrzeit",
+    duration: "Dauer",
+    price: "Preis",
+    minutes: "Min.",
+    reschedule: "Falls Sie umbuchen oder stornieren möchten, antworten Sie einfach auf diese E-Mail.",
+    signature: "- Zettly",
+    subject: (serviceName, date, time) => `Bestätigt: ${serviceName} am ${date} um ${time}`,
+  },
+  en: {
+    heading: "Your appointment is confirmed",
+    hi: (name) => `Hi ${name},`,
+    detailsIntro: "Here are your booking details:",
+    service: "Service",
+    date: "Date",
+    time: "Time",
+    duration: "Duration",
+    price: "Price",
+    minutes: "min",
+    reschedule: "If you need to reschedule or cancel, just reply to this email.",
+    signature: "- Zettly",
+    subject: (serviceName, date, time) => `Confirmed: ${serviceName} on ${date} at ${time}`,
+  },
+};
+
 async function handleServices() {
   return json(services);
 }
@@ -77,27 +112,29 @@ async function handleAvailability(url, env) {
   return json({ date, slots });
 }
 
-async function sendConfirmationEmail(env, booking, service) {
+async function sendConfirmationEmail(env, booking, service, lang) {
   if (!env.RESEND_API_KEY) {
     return { sent: false, reason: "no_api_key" };
   }
 
+  const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
+  const serviceName = localizedName(service, lang);
   const from = env.RESEND_FROM || "Zettly <onboarding@resend.dev>";
 
   const html = `
     <div style="font-family: Arial, sans-serif; color: #111;">
-      <h2>Your appointment is confirmed</h2>
-      <p>Hi ${booking.customer_name},</p>
-      <p>Here are your booking details:</p>
+      <h2>${t.heading}</h2>
+      <p>${t.hi(booking.customer_name)}</p>
+      <p>${t.detailsIntro}</p>
       <table style="border-collapse: collapse;">
-        <tr><td style="padding:4px 12px 4px 0;"><b>Service</b></td><td>${service.name}</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;"><b>Date</b></td><td>${booking.date}</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;"><b>Time</b></td><td>${booking.time}</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;"><b>Duration</b></td><td>${service.duration} min</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;"><b>Price</b></td><td>&euro;${service.price}</td></tr>
+        <tr><td style="padding:4px 12px 4px 0;"><b>${t.service}</b></td><td>${serviceName}</td></tr>
+        <tr><td style="padding:4px 12px 4px 0;"><b>${t.date}</b></td><td>${booking.date}</td></tr>
+        <tr><td style="padding:4px 12px 4px 0;"><b>${t.time}</b></td><td>${booking.time}</td></tr>
+        <tr><td style="padding:4px 12px 4px 0;"><b>${t.duration}</b></td><td>${service.duration} ${t.minutes}</td></tr>
+        <tr><td style="padding:4px 12px 4px 0;"><b>${t.price}</b></td><td>&euro;${service.price}</td></tr>
       </table>
-      <p>If you need to reschedule or cancel, just reply to this email.</p>
-      <p>- Zettly</p>
+      <p>${t.reschedule}</p>
+      <p>${t.signature}</p>
     </div>
   `;
 
@@ -110,7 +147,7 @@ async function sendConfirmationEmail(env, booking, service) {
     body: JSON.stringify({
       from,
       to: booking.customer_email,
-      subject: `Confirmed: ${service.name} on ${booking.date} at ${booking.time}`,
+      subject: t.subject(serviceName, booking.date, booking.time),
       html,
     }),
   });
@@ -126,7 +163,8 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { serviceId, date, time, name, email, phone, notes } = body;
+  const { serviceId, date, time, name, email, phone, notes, lang: rawLang } = body;
+  const lang = rawLang === "en" ? "en" : "de";
 
   if (!serviceId || !date || !time || !name || !email) {
     return json({ error: "Missing required fields" }, 400);
@@ -164,6 +202,7 @@ async function handleBook(request, env) {
   }
 
   const id = crypto.randomUUID();
+  const serviceName = localizedName(service, lang);
 
   await env.DB.prepare(
     `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, notes)
@@ -172,7 +211,7 @@ async function handleBook(request, env) {
     .bind(
       id,
       service.id,
-      service.name,
+      serviceName,
       service.price,
       service.duration,
       date,
@@ -185,11 +224,11 @@ async function handleBook(request, env) {
     .run();
 
   const booking = { id, date, time, customer_name: name, customer_email: email };
-  const emailResult = await sendConfirmationEmail(env, booking, service);
+  const emailResult = await sendConfirmationEmail(env, booking, service, lang);
 
   return json({
     id,
-    service: service.name,
+    service: serviceName,
     date,
     time,
     price: service.price,
