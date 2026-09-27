@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Book an Appointment — Zettly</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #7C3AED;
+    --accent-light: #F3EEFF;
+    --ink: #111114;
+    --muted: #6b6b74;
+    --border: #e9e7ef;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1.25rem;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  .brand {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .brand span { color: var(--accent); }
+
+  .back-link {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--ink); }
+
+  /* Progress dots */
+  .progress {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+  .progress .dot {
+    width: 34px;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--border);
+    transition: background 0.35s ease, transform 0.35s ease;
+  }
+  .progress .dot.active { background: var(--accent); }
+  .progress .dot.done { background: #c9b6f8; }
+
+  /* Step container with slide/fade transition */
+  .step {
+    display: none;
+    animation: stepIn 0.45s cubic-bezier(.2,.9,.3,1);
+  }
+  .step.visible { display: block; }
+
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin-bottom: 1.8rem;
+    line-height: 1.5;
+  }
+
+  /* Path choice cards (role picker) */
+  .path-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 520px) { .path-grid { grid-template-columns: 1fr; } }
+
+  .path-card {
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.6rem 1.3rem;
+    cursor: pointer;
+    transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    text-align: left;
+  }
+  .path-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(124,58,237,0.12);
+  }
+  .path-card .icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 0.9rem;
+    transition: transform 0.3s;
+  }
+  .path-card:hover .icon { transform: scale(1.1) rotate(-4deg); }
+  .path-card h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
+  .path-card p { font-size: 0.85rem; color: var(--muted); }
+
+  /* Service cards */
+  .service-list { display: flex; flex-direction: column; gap: 0.9rem; }
+  .service-card {
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .service-card:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+    box-shadow: 0 8px 22px rgba(124,58,237,0.10);
+  }
+  .service-card.selected { border-color: var(--accent); background: var(--accent-light); }
+  .service-main h3 { font-size: 1rem; margin-bottom: 0.15rem; }
+  .service-main .tagline { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.5rem; }
+  .service-main ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .service-main li {
+    font-size: 0.72rem; color: var(--accent);
+    background: var(--accent-light);
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+  }
+  .service-price { text-align: right; white-space: nowrap; }
+  .service-price .amount { font-size: 1.25rem; font-weight: 700; }
+  .service-price .duration { font-size: 0.75rem; color: var(--muted); }
+
+  /* Date strip */
+  .date-strip {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.6rem;
+  }
+  .date-chip {
+    flex: 0 0 auto;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 0.7rem 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 64px;
+  }
+  .date-chip .dow { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
+  .date-chip .dnum { font-size: 1.1rem; font-weight: 700; margin-top: 0.15rem; }
+  .date-chip:hover { border-color: var(--accent); }
+  .date-chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .date-chip.selected .dow { color: #e6d9ff; }
+
+  /* Time slots */
+  .slot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 0.6rem;
+  }
+  .slot {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0.55rem 0;
+    text-align: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .slot:hover:not(.disabled) { border-color: var(--accent); transform: translateY(-2px); }
+  .slot.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .slot.disabled { color: #ccc; border-color: #f0f0f0; cursor: not-allowed; text-decoration: line-through; }
+  .slot-empty { color: var(--muted); font-size: 0.9rem; padding: 1rem 0; }
+
+  /* Form */
+  .field { margin-bottom: 1.1rem; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  /* Summary box */
+  .summary {
+    background: var(--accent-light);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1.6rem;
+    font-size: 0.9rem;
+  }
+  .summary .row { display: flex; justify-content: space-between; padding: 0.25rem 0; }
+  .summary .row b { font-weight: 600; }
+
+  /* Buttons */
+  .actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
+  button.btn {
+    border: none;
+    border-radius: 10px;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s, opacity 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; flex: 1; }
+  .btn-primary:hover { background: #6d2fe0; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+  .error-msg {
+    color: #d64545;
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    display: none;
+  }
+
+  /* Success step */
+  .success-wrap { text-align: center; padding: 1rem 0; }
+  .success-ring {
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.4rem;
+    animation: pop 0.5s cubic-bezier(.2,1.4,.4,1);
+  }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  .success-ring svg { width: 40px; height: 40px; }
+  .success-ring path {
+    stroke: var(--accent);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: draw 0.5s 0.35s ease forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+    vertical-align: -3px;
+    margin-right: 0.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="topbar">
+    <div class="brand">zett<span>ly</span></div>
+    <a class="back-link" href="/">&larr; Back home</a>
+  </div>
+
+  <div class="progress" id="progress">
+    <div class="dot active" data-step="0"></div>
+    <div class="dot" data-step="1"></div>
+    <div class="dot" data-step="2"></div>
+    <div class="dot" data-step="3"></div>
+    <div class="dot" data-step="4"></div>
+  </div>
+
+  <!-- Step 0: choose path -->
+  <div class="step visible" data-step="0">
+    <h1>What brings you here today?</h1>
+    <p class="subtitle">Pick a path and we'll show you the right packages.</p>
+    <div class="path-grid">
+      <div class="path-card" data-path="it">
+        <div class="icon">🖥️</div>
+        <h3>IT Services</h3>
+        <p>Repairs, networks, virus removal, ongoing support.</p>
+      </div>
+      <div class="path-card" data-path="dynamics">
+        <div class="icon">⚙️</div>
+        <h3>Dynamics 365</h3>
+        <p>Consulting, workflows, and custom integrations.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1: choose service -->
+  <div class="step" data-step="1">
+    <h1>Choose your package</h1>
+    <p class="subtitle">Pick the one that fits — you can always talk through details after booking.</p>
+    <div class="service-list" id="service-list"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back">Back</button>
+    </div>
+  </div>
+
+  <!-- Step 2: date & time -->
+  <div class="step" data-step="2">
+    <h1>Pick a date & time</h1>
+    <p class="subtitle">Business hours, Monday to Friday, 9:00–17:00.</p>
+    <div class="date-strip" id="date-strip"></div>
+    <div class="slot-grid" id="slot-grid"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back">Back</button>
+      <button class="btn btn-primary" id="to-details" disabled>Continue</button>
+    </div>
+  </div>
+
+  <!-- Step 3: details -->
+  <div class="step" data-step="3">
+    <h1>Your details</h1>
+    <p class="subtitle">We'll send your confirmation here.</p>
+    <div class="summary" id="summary"></div>
+    <div class="field">
+      <label>Full name</label>
+      <input type="text" id="f-name" placeholder="Jane Doe" />
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="f-email" placeholder="jane@example.com" />
+    </div>
+    <div class="field">
+      <label>Phone (optional)</label>
+      <input type="tel" id="f-phone" placeholder="+49 ..." />
+    </div>
+    <div class="field">
+      <label>Anything we should know? (optional)</label>
+      <textarea id="f-notes" placeholder="Briefly describe the issue or what you need"></textarea>
+    </div>
+    <p class="error-msg" id="form-error"></p>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back">Back</button>
+      <button class="btn btn-primary" id="submit-booking">Confirm booking</button>
+    </div>
+  </div>
+
+  <!-- Step 4: success -->
+  <div class="step" data-step="4">
+    <div class="success-wrap">
+      <div class="success-ring">
+        <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>
+      </div>
+      <h1 id="success-title">You're booked!</h1>
+      <p class="subtitle" id="success-sub"></p>
+      <div class="summary" id="success-summary"></div>
+      <a class="back-link" href="/">&larr; Back to home</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const state = {
+  path: null,
+  service: null,
+  date: null,
+  time: null,
+};
+
+let SERVICES = { it: [], dynamics: [] };
+
+function fmtEuro(n) { return "€" + n; }
+
+function showStep(n) {
+  document.querySelectorAll(".step").forEach(el => {
+    el.classList.toggle("visible", el.dataset.step == n);
+  });
+  document.querySelectorAll(".progress .dot").forEach(el => {
+    const s = Number(el.dataset.step);
+    el.classList.toggle("active", s === n);
+    el.classList.toggle("done", s < n);
+  });
+}
+
+async function loadServices() {
+  const res = await fetch("/api/services");
+  SERVICES = await res.json();
+}
+
+function renderServiceList() {
+  const list = SERVICES[state.path] || [];
+  const container = document.getElementById("service-list");
+  container.innerHTML = "";
+  list.forEach(svc => {
+    const div = document.createElement("div");
+    div.className = "service-card";
+    div.dataset.id = svc.id;
+    div.innerHTML = `
+      <div class="service-main">
+        <h3>${svc.name}</h3>
+        <div class="tagline">${svc.tagline}</div>
+        <ul>${svc.features.map(f => `<li>${f}</li>`).join("")}</ul>
+      </div>
+      <div class="service-price">
+        <div class="amount">${fmtEuro(svc.price)}</div>
+        <div class="duration">${svc.duration} min</div>
+      </div>
+    `;
+    div.addEventListener("click", () => {
+      state.service = svc;
+      renderDateStrip();
+      showStep(2);
+    });
+    container.appendChild(div);
+  });
+}
+
+function nextBusinessDays(count) {
+  const days = [];
+  let d = new Date();
+  while (days.length < count) {
+    d = new Date(d.getTime() + 86400000);
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6) days.push(new Date(d));
+  }
+  return days;
+}
+
+function isoDate(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+function renderDateStrip() {
+  const strip = document.getElementById("date-strip");
+  strip.innerHTML = "";
+  const days = nextBusinessDays(10);
+  days.forEach((d, i) => {
+    const chip = document.createElement("div");
+    chip.className = "date-chip";
+    chip.dataset.date = isoDate(d);
+    chip.innerHTML = `
+      <div class="dow">${d.toLocaleDateString(undefined, { weekday: "short" })}</div>
+      <div class="dnum">${d.getDate()}</div>
+    `;
+    chip.addEventListener("click", () => selectDate(chip));
+    strip.appendChild(chip);
+    if (i === 0) selectDate(chip);
+  });
+}
+
+async function selectDate(chip) {
+  document.querySelectorAll(".date-chip").forEach(c => c.classList.remove("selected"));
+  chip.classList.add("selected");
+  state.date = chip.dataset.date;
+  state.time = null;
+  document.getElementById("to-details").disabled = true;
+  await renderSlots();
+}
+
+async function renderSlots() {
+  const grid = document.getElementById("slot-grid");
+  grid.innerHTML = `<div class="slot-empty">Loading times…</div>`;
+  try {
+    const res = await fetch(`/api/availability?date=${state.date}&duration=${state.service.duration}`);
+    const data = await res.json();
+    grid.innerHTML = "";
+    if (!data.slots || data.slots.length === 0) {
+      grid.innerHTML = `<div class="slot-empty">No slots this day — try another date.</div>`;
+      return;
+    }
+    data.slots.forEach(s => {
+      const el = document.createElement("div");
+      el.className = "slot" + (s.available ? "" : " disabled");
+      el.textContent = s.time;
+      if (s.available) {
+        el.addEventListener("click", () => {
+          document.querySelectorAll(".slot").forEach(x => x.classList.remove("selected"));
+          el.classList.add("selected");
+          state.time = s.time;
+          document.getElementById("to-details").disabled = false;
+        });
+      }
+      grid.appendChild(el);
+    });
+  } catch (e) {
+    grid.innerHTML = `<div class="slot-empty">Couldn't load availability. Try again.</div>`;
+  }
+}
+
+function renderSummary(targetId) {
+  const el = document.getElementById(targetId);
+  el.innerHTML = `
+    <div class="row"><span>Service</span><b>${state.service.name}</b></div>
+    <div class="row"><span>Date</span><b>${state.date}</b></div>
+    <div class="row"><span>Time</span><b>${state.time}</b></div>
+    <div class="row"><span>Price</span><b>${fmtEuro(state.service.price)}</b></div>
+  `;
+}
+
+document.querySelectorAll(".path-card").forEach(card => {
+  card.addEventListener("click", async () => {
+    state.path = card.dataset.path;
+    if (!SERVICES.it.length && !SERVICES.dynamics.length) await loadServices();
+    renderServiceList();
+    showStep(1);
+  });
+});
+
+document.querySelectorAll('[data-action="back"]').forEach(btn => {
+  btn.addEventListener("click", () => {
+    const current = Number(document.querySelector(".step.visible").dataset.step);
+    showStep(Math.max(0, current - 1));
+  });
+});
+
+document.getElementById("to-details").addEventListener("click", () => {
+  renderSummary("summary");
+  showStep(3);
+});
+
+document.getElementById("submit-booking").addEventListener("click", async () => {
+  const name = document.getElementById("f-name").value.trim();
+  const email = document.getElementById("f-email").value.trim();
+  const phone = document.getElementById("f-phone").value.trim();
+  const notes = document.getElementById("f-notes").value.trim();
+  const errorEl = document.getElementById("form-error");
+  errorEl.style.display = "none";
+
+  if (!name || !email) {
+    errorEl.textContent = "Please enter your name and email.";
+    errorEl.style.display = "block";
+    return;
+  }
+
+  const btn = document.getElementById("submit-booking");
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Booking…';
+
+  try {
+    const res = await fetch("/api/book", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        serviceId: state.service.id,
+        date: state.date,
+        time: state.time,
+        name, email, phone, notes,
+      }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      errorEl.textContent = data.error || "Something went wrong. Please try another slot.";
+      errorEl.style.display = "block";
+      btn.disabled = false;
+      btn.textContent = originalText;
+      if (res.status === 409) await renderSlots();
+      return;
+    }
+
+    document.getElementById("success-sub").textContent = data.emailSent
+      ? `A confirmation has been sent to ${email}.`
+      : `Saved! (Confirmation email will follow shortly.)`;
+    renderSummary("success-summary");
+    showStep(4);
+  } catch (e) {
+    errorEl.textContent = "Network error. Please try again.";
+    errorEl.style.display = "block";
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
+</script>
+</body>
+</html>

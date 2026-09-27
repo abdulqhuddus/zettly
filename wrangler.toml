@@ -1,0 +1,11 @@
+name = "zettly"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "."
+
+# Create the DB with: wrangler d1 create zettly-db
+# Then paste its database_id below, and run:
+#   wrangler d1 execute zettly-db --remote --file=./schema.sql
+[[d1_databases]]
+binding = "DB"
+database_name = "zettly-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"

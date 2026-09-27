@@ -1,0 +1,54 @@
+{
+  "it": [
+    {
+      "id": "it-quickfix",
+      "name": "Quick Fix",
+      "tagline": "One issue, solved fast",
+      "price": 39,
+      "duration": 30,
+      "features": ["Remote or on-site diagnosis", "Single device", "Same-week slot"]
+    },
+    {
+      "id": "it-homesetup",
+      "name": "Home Network Setup",
+      "tagline": "WiFi & smart home, done right",
+      "price": 89,
+      "duration": 60,
+      "features": ["Router & WiFi optimization", "Up to 5 devices", "Smart home basics"]
+    },
+    {
+      "id": "it-fullcare",
+      "name": "Full Care",
+      "tagline": "Ongoing IT peace of mind",
+      "price": 149,
+      "duration": 90,
+      "features": ["Full system health check", "Virus & malware sweep", "30-day follow-up support"]
+    }
+  ],
+  "dynamics": [
+    {
+      "id": "d365-consult",
+      "name": "D365 Consultation",
+      "tagline": "Scope it out before you build",
+      "price": 79,
+      "duration": 45,
+      "features": ["Requirements review", "Architecture recommendation", "Written summary"]
+    },
+    {
+      "id": "d365-workflow",
+      "name": "Workflow Build",
+      "tagline": "One automated process, delivered",
+      "price": 249,
+      "duration": 90,
+      "features": ["Power Automate flow", "Testing & handover", "1 revision round"]
+    },
+    {
+      "id": "d365-integration",
+      "name": "Custom Integration",
+      "tagline": "Connect D365 to your other tools",
+      "price": 499,
+      "duration": 120,
+      "features": ["Custom connector/API work", "Data mapping", "Documentation included"]
+    }
+  ]
+}
