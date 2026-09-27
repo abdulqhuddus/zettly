@@ -198,6 +198,7 @@ export function generateBookingPdf(data) {
         time: "Time",
         duration: "Duration",
         price: "Price",
+        email: "Email",
         minutes: "min",
         footer1: "Need to reschedule or cancel? Just reply to the confirmation email.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
@@ -220,6 +221,7 @@ export function generateBookingPdf(data) {
         time: "Uhrzeit",
         duration: "Dauer",
         price: "Preis",
+        email: "E-Mail",
         minutes: "Min.",
         footer1: "Termin umbuchen oder stornieren? Antworten Sie einfach auf die Bestätigungs-E-Mail.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
@@ -238,18 +240,27 @@ export function generateBookingPdf(data) {
   const content = [];
 
   // ---- Letterhead: logo mark + wordmark top-left, sender contact top-right ----
-  // The logo mark is drawn from its top-left corner at yTopMM=10, spans 8.5mm,
-  // so its vertical center sits at ~14.25mm — align the wordmark baseline and
-  // the first sender-contact line to that same center for a tidy row.
-  drawLogoMark(content, LEFT_X / MM, 10, 8.5);
-  content.push(text(LEFT_X + 11 * MM, fromTop(16.5), 17, "zett", { bold: true, color: INK }));
-  content.push(text(LEFT_X + 11 * MM + estWidth("zett", 17, true) * 0.82, fromTop(16.5), 17, "ly", { bold: true, color: PURPLE }));
+  // Site wordmark is a LIGHT weight (CSS font-weight:200), not bold — the
+  // hand-rolled PDF only ships standard Helvetica/Helvetica-Bold, so the
+  // closest honest match is plain (non-bold) Helvetica with a touch of
+  // letter-spacing, rather than a heavy bold face.
+  const logoSizeMM = 9;
+  const logoTopMM = 9;
+  drawLogoMark(content, LEFT_X / MM, logoTopMM, logoSizeMM);
+  const logoCenterMM = logoTopMM + logoSizeMM / 2;
+  const wordmarkSize = 17;
+  const wordmarkBaselineMM = logoCenterMM + 2.6; // optical baseline offset for a centered look
+  content.push(text(LEFT_X + 11.5 * MM, fromTop(wordmarkBaselineMM), wordmarkSize, "zett", { color: INK, charSpace: 0.3 }));
+  content.push(text(LEFT_X + 11.5 * MM + estWidth("zett", wordmarkSize, false) * 0.86, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: PURPLE, charSpace: 0.3 }));
 
   const headerLines = data.lang === "en"
     ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
     : ["Zettly GmbH", "Musterstraße 12, 80331 München", "kontakt@zettly.de | www.zettly.de"];
+  // Vertically center the 3-line contact block on the same row as the logo:
+  // total block height ~= 2 * 4.4mm line-gap; start half that above center.
+  const headerBlockStartMM = logoCenterMM - 4.4 + 1.5;
   headerLines.forEach((l, i) => {
-    content.push(textRight(RIGHT_X, fromTop(11 + i * 4.4), 8.5, l, { color: MUTED }));
+    content.push(textRight(RIGHT_X, fromTop(headerBlockStartMM + i * 4.4), 8.5, l, { color: MUTED }));
   });
 
   content.push(line(LEFT_X, fromTop(28), RIGHT_X, fromTop(28), BORDER, 1));
@@ -269,33 +280,34 @@ export function generateBookingPdf(data) {
     content.push(text(LEFT_X, fromTop(addrY), 10, al, { color: INK }));
     addrY += 5;
   }
-  if (data.customerEmail) {
-    content.push(text(LEFT_X, fromTop(addrY), 8.5, data.customerEmail, { color: MUTED }));
-    addrY += 4.5;
-  }
 
   // ---- Bordered booking-details box (right column), like a company quote/order box ----
-  const boxX = 125 * MM;
+  // Widened and moved slightly left so the customer's email address (a long
+  // value) has room to sit on its own row without crowding the border.
+  const boxX = 112 * MM;
   const boxW = RIGHT_X - boxX;
   const boxTop = 45;
   const rowH = 8;
   const boxRows = [
-    [L.ref, data.bookingRef],
-    [L.date, data.dateDisplay],
-    [L.time, data.time],
-    [L.duration, `${data.duration} ${L.minutes}`],
-    [L.price, data.priceText],
+    [L.ref, data.bookingRef, 9.5],
+    [L.date, data.dateDisplay, 9.5],
+    [L.time, data.time, 9.5],
+    [L.duration, `${data.duration} ${L.minutes}`, 9.5],
+    [L.price, data.priceText, 9.5],
   ];
+  if (data.customerEmail) {
+    boxRows.push([L.email, data.customerEmail, 8]);
+  }
   const headerH = 8;
   const boxH = headerH + boxRows.length * rowH;
   content.push(strokeRect(boxX, fromTop(boxTop + boxH), boxW, boxH * MM, BORDER, 1));
   content.push(rect(boxX, fromTop(boxTop + headerH), boxW, headerH * MM, PURPLE));
   content.push(textCenter(boxX + boxW / 2, fromTop(boxTop + headerH - 5.5), 8.5, L.boxTitle, { bold: true, color: [1, 1, 1] }));
-  boxRows.forEach(([label, value], i) => {
+  boxRows.forEach(([label, value, valueSize], i) => {
     const rowTop = boxTop + headerH + i * rowH;
     if (i > 0) content.push(line(boxX, fromTop(rowTop), boxX + boxW, fromTop(rowTop), BORDER, 0.6));
-    content.push(text(boxX + 4, fromTop(rowTop + 5.3), 7.5, label.toUpperCase(), { color: MUTED }));
-    content.push(textRight(boxX + boxW - 7, fromTop(rowTop + 5.3), 9.5, value, { bold: true, color: INK }));
+    content.push(text(boxX + 6, fromTop(rowTop + 5.3), 7.5, label.toUpperCase(), { color: MUTED }));
+    content.push(textRight(boxX + boxW - 6, fromTop(rowTop + 5.3), valueSize, value, { bold: true, color: INK }));
   });
 
   // ---- Place/date, right-aligned above the subject line ----

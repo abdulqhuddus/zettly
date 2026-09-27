@@ -107,7 +107,9 @@ const EMAIL_STRINGS = {
   de: {
     heading: "Ihr Termin ist bestätigt",
     hi: (name) => `Hallo ${name},`,
-    detailsIntro: "Vielen Dank für Ihre Buchung bei Zettly. Hier Ihre Details:",
+    detailsIntro: "Vielen Dank für Ihre Buchung bei Zettly.",
+    appointmentLine: (date, time) => `Ihr Termin ist für ${date} um ${time} Uhr bestätigt.`,
+    attachmentTitle: "Buchungsbestätigung.pdf",
     ref: "Buchungsnummer",
     service: "Leistung",
     date: "Datum",
@@ -119,14 +121,16 @@ const EMAIL_STRINGS = {
     minutes: "Min.",
     reschedule: "Falls Sie umbuchen oder stornieren möchten, antworten Sie einfach auf diese E-Mail.",
     cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
-    pdfNote: "Ihre Buchungsbestätigung als PDF finden Sie im Anhang.",
+    pdfNote: "Bitte entnehmen Sie die vollständige Buchungsbestätigung dem beigefügten PDF.",
     signature: "Ihr Zettly-Team",
-    subject: (serviceName, date, time) => `Bestätigt: ${serviceName} am ${date} um ${time}`,
+    subject: (bookingRef) => `Buchungsbestätigung ${bookingRef}`,
   },
   en: {
     heading: "Your appointment is confirmed",
     hi: (name) => `Hi ${name},`,
-    detailsIntro: "Thanks for booking with Zettly. Here are your details:",
+    detailsIntro: "Thanks for booking with Zettly.",
+    appointmentLine: (date, time) => `Your appointment is confirmed for ${date} at ${time}.`,
+    attachmentTitle: "Booking-Confirmation.pdf",
     ref: "Booking reference",
     service: "Service",
     date: "Date",
@@ -138,9 +142,9 @@ const EMAIL_STRINGS = {
     minutes: "min",
     reschedule: "If you need to reschedule or cancel, just reply to this email.",
     cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
-    pdfNote: "Your booking confirmation is attached as a PDF.",
+    pdfNote: "Please find your full booking confirmation attached.",
     signature: "The Zettly Team",
-    subject: (serviceName, date, time) => `Confirmed: ${serviceName} on ${date} at ${time}`,
+    subject: (bookingRef) => `Booking Confirmation ${bookingRef}`,
   },
 };
 
@@ -198,14 +202,9 @@ async function sendConfirmationEmail(env, booking, service, lang) {
   }
 
   const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
-  const serviceName = booking.serviceName;
   const from = env.RESEND_FROM || "Zettly <onboarding@resend.dev>";
   const priceText = service.quote ? t.priceOnRequest : `€${service.price}`;
-  const priceCellHtml = service.quote ? t.priceOnRequest : `&euro;${service.price}`;
   const dateDisplay = localizedDate(booking.date, lang);
-  const breadcrumbHtml = booking.breadcrumb.join(
-    ' <span style="color:#c4b5fd;">&rsaquo;</span> '
-  );
 
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
@@ -214,10 +213,10 @@ async function sendConfirmationEmail(env, booking, service, lang) {
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
           <tr>
             <td style="padding-right:10px; vertical-align:middle;">
-              <img src="data:image/png;base64,${LOGO_PNG_BASE64}" width="34" height="34" alt="zettly" style="display:block; width:34px; height:34px;">
+              <img src="cid:zettly-logo" width="34" height="34" alt="zettly" style="display:block; width:34px; height:34px;">
             </td>
             <td style="vertical-align:middle;">
-              <div style="font-size:23px; font-weight:800; letter-spacing:-0.02em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
+              <div style="font-family:'Helvetica Neue', Arial, sans-serif; font-size:24px; font-weight:300; letter-spacing:0.01em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
             </td>
           </tr>
         </table>
@@ -227,18 +226,21 @@ async function sendConfirmationEmail(env, booking, service, lang) {
       <div style="height:4px; background:linear-gradient(90deg,#7C3AED,#a855f7 60%,#EC4899);"></div>
       <div style="padding:28px;">
         <p style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
-        <p style="margin:0 0 18px; font-size:13.5px; color:#6b6b74;">${t.detailsIntro}</p>
-        <div style="font-size:11px; font-weight:700; color:#6b6b74; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px;">${t.service}</div>
-        <div style="font-size:14px; font-weight:700; color:#7C3AED; margin-bottom:18px; line-height:1.6;">${breadcrumbHtml}</div>
-        <table style="width:100%; border-collapse:collapse; border-top:1px solid #e9e7ef; padding-top:6px;">
-          <tr><td style="padding:9px 0; font-size:11.5px; color:#6b6b74; text-transform:uppercase;">${t.date}</td><td style="padding:9px 0; font-size:14px; font-weight:700; color:#111114; text-align:right;">${dateDisplay}</td></tr>
-          <tr><td style="padding:9px 0; font-size:11.5px; color:#6b6b74; text-transform:uppercase; border-top:1px solid #f1f0f5;">${t.time}</td><td style="padding:9px 0; font-size:14px; font-weight:700; color:#111114; text-align:right; border-top:1px solid #f1f0f5;">${booking.time}</td></tr>
-          <tr><td style="padding:9px 0; font-size:11.5px; color:#6b6b74; text-transform:uppercase; border-top:1px solid #f1f0f5;">${t.duration}</td><td style="padding:9px 0; font-size:14px; font-weight:700; color:#111114; text-align:right; border-top:1px solid #f1f0f5;">${service.duration} ${t.minutes}</td></tr>
-          <tr><td style="padding:9px 0; font-size:11.5px; color:#6b6b74; text-transform:uppercase; border-top:1px solid #f1f0f5;">${t.price}</td><td style="padding:9px 0; font-size:15px; font-weight:800; color:#7C3AED; text-align:right; border-top:1px solid #f1f0f5;">${priceCellHtml}</td></tr>
-          <tr><td style="padding:9px 0; font-size:11.5px; color:#6b6b74; text-transform:uppercase; border-top:1px solid #f1f0f5; vertical-align:top;">${t.address}</td><td style="padding:9px 0; font-size:13px; font-weight:700; color:#111114; text-align:right; border-top:1px solid #f1f0f5;">${booking.customer_address || ""}</td></tr>
+        <p style="margin:0 0 22px; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro} ${t.appointmentLine(dateDisplay, booking.time)}</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse; background:#f8f7fb; border:1px solid #e9e7ef; border-radius:12px;">
+          <tr>
+            <td style="padding:16px 18px; vertical-align:middle; width:44px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="36" height="36" style="width:36px; height:36px; background:#efe8ff; border-radius:9px;">
+                <tr><td align="center" valign="middle" style="width:36px; height:36px; font-size:16px; font-weight:800; color:#7C3AED; font-family:'Helvetica Neue', Arial, sans-serif;">PDF</td></tr>
+              </table>
+            </td>
+            <td style="padding:16px 18px 16px 0; vertical-align:middle;">
+              <div style="font-size:13.5px; font-weight:700; color:#111114; margin-bottom:2px;">${t.attachmentTitle}</div>
+              <div style="font-size:12.5px; color:#6b6b74;">${t.pdfNote}</div>
+            </td>
+          </tr>
         </table>
-        <p style="margin:20px 0 0; font-size:12.5px; color:#6b6b74;">${t.pdfNote}</p>
-        <p style="margin:14px 0 0; font-size:12.5px; color:#6b6b74;">${t.reschedule}</p>
+        <p style="margin:22px 0 0; font-size:12.5px; color:#6b6b74;">${t.reschedule}</p>
         <p style="margin:14px 0 0; font-size:11.5px; color:#8a8a92; line-height:1.5;">${t.cancelNote}</p>
         <p style="margin:18px 0 0; font-size:13px; font-weight:700; color:#111114;">${t.signature}</p>
       </div>
@@ -266,6 +268,16 @@ async function sendConfirmationEmail(env, booking, service, lang) {
         filename: `zettly-${booking.bookingRef}.pdf`,
         content: toBase64(pdfBytes),
       },
+      // Inline logo referenced from the HTML body as `cid:zettly-logo`. A
+      // data-URI <img> (tried previously) doesn't reliably render once the
+      // mail passes through Resend/the recipient's client, so the logo is
+      // sent as a proper inline attachment instead, which every major
+      // client (Gmail, Outlook, Apple Mail) resolves via its Content-ID.
+      {
+        filename: "zettly-logo.png",
+        content: LOGO_PNG_BASE64,
+        content_id: "zettly-logo",
+      },
     ];
   } catch (e) {
     attachments = undefined;
@@ -280,7 +292,7 @@ async function sendConfirmationEmail(env, booking, service, lang) {
     body: JSON.stringify({
       from,
       to: booking.customer_email,
-      subject: t.subject(serviceName, booking.date, booking.time),
+      subject: t.subject(booking.bookingRef),
       html,
       ...(attachments ? { attachments } : {}),
     }),
