@@ -1,6 +1,15 @@
 import catalog from "../catalog.json";
 import { generateBookingPdf, toBase64 } from "./pdf.js";
 
+// The site's actual 4-square brand mark, rasterized once (see
+// scripts/make-logo-png.js) so the confirmation email can carry the real
+// logo as an inline image rather than an approximation. Data-URI images
+// render in Gmail, Apple Mail, Outlook.com and mobile clients; only legacy
+// Outlook desktop (Word engine) won't show it, so the alt text still names
+// the brand for that fallback case.
+const LOGO_PNG_BASE64 =
+  "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";
+
 const AUDIENCE_LABELS = {
   home: { de: "Zuhause", en: "Home" },
   business: { de: "Unternehmen", en: "Business" },
@@ -109,7 +118,7 @@ const EMAIL_STRINGS = {
     priceOnRequest: "Wird nach Diagnose vor Ort mitgeteilt",
     minutes: "Min.",
     reschedule: "Falls Sie umbuchen oder stornieren möchten, antworten Sie einfach auf diese E-Mail.",
-    cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen (z. B. bei Krankheit oder Verhinderung) zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
+    cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
     pdfNote: "Ihre Buchungsbestätigung als PDF finden Sie im Anhang.",
     signature: "Ihr Zettly-Team",
     subject: (serviceName, date, time) => `Bestätigt: ${serviceName} am ${date} um ${time}`,
@@ -128,7 +137,7 @@ const EMAIL_STRINGS = {
     priceOnRequest: "Quoted after on-site diagnosis",
     minutes: "min",
     reschedule: "If you need to reschedule or cancel, just reply to this email.",
-    cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases (e.g. illness or unavailability). We will inform you immediately if this happens.",
+    cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
     pdfNote: "Your booking confirmation is attached as a PDF.",
     signature: "The Zettly Team",
     subject: (serviceName, date, time) => `Confirmed: ${serviceName} on ${date} at ${time}`,
@@ -201,24 +210,21 @@ async function sendConfirmationEmail(env, booking, service, lang) {
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
     <div style="max-width:520px; margin:0 auto; background:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #e9e7ef;">
-      <div style="background:linear-gradient(120deg,#7C3AED,#a855f7 60%,#EC4899); padding:28px 28px 24px;">
+      <div style="background:#ffffff; padding:26px 28px 20px; border-bottom:1px solid #e9e7ef;">
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
           <tr>
-            <td style="padding-right:11px; vertical-align:middle;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="36" height="36" style="width:36px; height:36px; background:#ffffff; border-radius:10px;">
-                <tr>
-                  <td align="center" valign="middle" style="width:36px; height:36px; font-family:'Segoe UI', Arial, sans-serif; font-size:19px; font-weight:800; color:#7C3AED;">z</td>
-                </tr>
-              </table>
+            <td style="padding-right:10px; vertical-align:middle;">
+              <img src="data:image/png;base64,${LOGO_PNG_BASE64}" width="34" height="34" alt="zettly" style="display:block; width:34px; height:34px;">
             </td>
             <td style="vertical-align:middle;">
-              <div style="color:#ffffff; font-size:24px; font-weight:800; letter-spacing:-0.02em;">zettly</div>
+              <div style="font-size:23px; font-weight:800; letter-spacing:-0.02em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
             </td>
           </tr>
         </table>
-        <div style="color:#f1e9ff; font-size:14px; margin-top:10px;">${t.heading}</div>
-        <div style="display:inline-block; margin-top:14px; background:rgba(255,255,255,0.18); color:#ffffff; font-size:12px; font-weight:700; padding:6px 12px; border-radius:999px;">${t.ref}: ${booking.bookingRef}</div>
+        <div style="color:#6b6b74; font-size:14px; margin-top:10px;">${t.heading}</div>
+        <div style="display:inline-block; margin-top:14px; background:#f3eeff; color:#7C3AED; font-size:12px; font-weight:700; padding:6px 12px; border-radius:999px;">${t.ref}: ${booking.bookingRef}</div>
       </div>
+      <div style="height:4px; background:linear-gradient(90deg,#7C3AED,#a855f7 60%,#EC4899);"></div>
       <div style="padding:28px;">
         <p style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
         <p style="margin:0 0 18px; font-size:13.5px; color:#6b6b74;">${t.detailsIntro}</p>

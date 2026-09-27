@@ -119,6 +119,27 @@ function line(x1, y1, x2, y2, color, width) {
   return te(`${color[0]} ${color[1]} ${color[2]} RG\n${width} w\n${x1} ${y1} m ${x2} ${y2} l S\n`);
 }
 
+// A filled rectangle with rounded corners, drawn as a vector path (4 straight
+// edges + 4 cubic-bezier corners), used for the letterhead logo mark so it
+// matches the site's actual rounded-square brand mark instead of plain rects.
+function roundedRect(x, y, w, h, r, color) {
+  r = Math.min(r, w / 2, h / 2);
+  const k = 0.5522847498 * r; // bezier magic number for a quarter circle
+  const parts = [];
+  parts.push(te(`${color[0]} ${color[1]} ${color[2]} rg\n`));
+  parts.push(te(`${x + r} ${y} m\n`));
+  parts.push(te(`${x + w - r} ${y} l\n`));
+  parts.push(te(`${x + w - r + k} ${y} ${x + w} ${y + r - k} ${x + w} ${y + r} c\n`));
+  parts.push(te(`${x + w} ${y + h - r} l\n`));
+  parts.push(te(`${x + w} ${y + h - r + k} ${x + w - r + k} ${y + h} ${x + w - r} ${y + h} c\n`));
+  parts.push(te(`${x + r} ${y + h} l\n`));
+  parts.push(te(`${x + r - k} ${y + h} ${x} ${y + h - r + k} ${x} ${y + h - r} c\n`));
+  parts.push(te(`${x} ${y + r} l\n`));
+  parts.push(te(`${x} ${y + r - k} ${x + r - k} ${y} ${x + r} ${y} c\n`));
+  parts.push(te("f\n"));
+  return concat(parts);
+}
+
 const PURPLE = [0.486, 0.227, 0.929]; // #7C3AED
 const PINK = [0.925, 0.286, 0.6]; // #EC4899-ish
 const INK = [0.067, 0.067, 0.078]; // #111114
@@ -138,15 +159,15 @@ function drawLogoMark(content, xMM, yTopMM, sizeMM) {
   const s = (sizeMM * MM) / 100; // scale factor: 100 SVG units -> sizeMM
   const x0 = xMM * MM;
   const yTop = fromTop(yTopMM);
-  const sq = (svgX, svgY, svgW, svgH, color) => {
+  const sq = (svgX, svgY, svgW, svgH, r, color) => {
     const px = x0 + svgX * s;
     const py = yTop - svgY * s - svgH * s;
-    content.push(rect(px, py, svgW * s, svgH * s, color));
+    content.push(roundedRect(px, py, svgW * s, svgH * s, r * s, color));
   };
-  sq(0, 0, 28, 28, PURPLE);
-  sq(36, 0, 64, 64, INK);
-  sq(0, 36, 64, 64, PURPLE);
-  sq(72, 72, 28, 28, INK);
+  sq(0, 0, 28, 28, 6, PURPLE);
+  sq(36, 0, 64, 64, 14, INK);
+  sq(0, 36, 64, 64, 14, PURPLE);
+  sq(72, 72, 28, 28, 6, INK);
 }
 
 /**
@@ -179,7 +200,7 @@ export function generateBookingPdf(data) {
         price: "Price",
         minutes: "min",
         footer1: "Need to reschedule or cancel? Just reply to the confirmation email.",
-        footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases (e.g. illness or unavailability); we will inform you immediately if this happens.",
+        footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
         addrTo: (n) => n,
@@ -201,7 +222,7 @@ export function generateBookingPdf(data) {
         price: "Preis",
         minutes: "Min.",
         footer1: "Termin umbuchen oder stornieren? Antworten Sie einfach auf die Bestätigungs-E-Mail.",
-        footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen (z. B. bei Krankheit oder Verhinderung) zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
+        footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
         addrTo: (n) => n,
@@ -217,14 +238,18 @@ export function generateBookingPdf(data) {
   const content = [];
 
   // ---- Letterhead: logo mark + wordmark top-left, sender contact top-right ----
-  drawLogoMark(content, LEFT_X / MM, 12, 8.5);
-  content.push(text(LEFT_X + 11 * MM, fromTop(18), 18, "zettly", { bold: true, color: PURPLE }));
+  // The logo mark is drawn from its top-left corner at yTopMM=10, spans 8.5mm,
+  // so its vertical center sits at ~14.25mm — align the wordmark baseline and
+  // the first sender-contact line to that same center for a tidy row.
+  drawLogoMark(content, LEFT_X / MM, 10, 8.5);
+  content.push(text(LEFT_X + 11 * MM, fromTop(16.5), 17, "zett", { bold: true, color: INK }));
+  content.push(text(LEFT_X + 11 * MM + estWidth("zett", 17, true) * 0.82, fromTop(16.5), 17, "ly", { bold: true, color: PURPLE }));
 
   const headerLines = data.lang === "en"
     ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
     : ["Zettly GmbH", "Musterstraße 12, 80331 München", "kontakt@zettly.de | www.zettly.de"];
   headerLines.forEach((l, i) => {
-    content.push(textRight(RIGHT_X, fromTop(11.5 + i * 4.4), 8.5, l, { color: MUTED }));
+    content.push(textRight(RIGHT_X, fromTop(11 + i * 4.4), 8.5, l, { color: MUTED }));
   });
 
   content.push(line(LEFT_X, fromTop(28), RIGHT_X, fromTop(28), BORDER, 1));
@@ -270,7 +295,7 @@ export function generateBookingPdf(data) {
     const rowTop = boxTop + headerH + i * rowH;
     if (i > 0) content.push(line(boxX, fromTop(rowTop), boxX + boxW, fromTop(rowTop), BORDER, 0.6));
     content.push(text(boxX + 4, fromTop(rowTop + 5.3), 7.5, label.toUpperCase(), { color: MUTED }));
-    content.push(textRight(boxX + boxW - 4, fromTop(rowTop + 5.3), 9.5, value, { bold: true, color: INK }));
+    content.push(textRight(boxX + boxW - 7, fromTop(rowTop + 5.3), 9.5, value, { bold: true, color: INK }));
   });
 
   // ---- Place/date, right-aligned above the subject line ----
@@ -296,10 +321,10 @@ export function generateBookingPdf(data) {
   content.push(text(LEFT_X, y, 8.5, L.service.toUpperCase(), { color: MUTED }));
   y -= 14;
   const crumbStr = data.breadcrumb.join("  ›  ");
-  const crumbLines = wrapText(crumbStr, 82);
+  const crumbLines = wrapText(crumbStr, 100);
   for (const cl of crumbLines) {
-    content.push(text(LEFT_X, y, 11, cl, { bold: true, color: PURPLE }));
-    y -= 15;
+    content.push(text(LEFT_X, y, 9, cl, { bold: true, color: PURPLE }));
+    y -= 13;
   }
   y -= 14;
 
