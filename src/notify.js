@@ -76,25 +76,33 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
 
   let attachments;
   try {
-    const breadcrumb = breadcrumbFromServiceId(catalog, booking.service_id, lang) || [booking.service_name];
-    const pdfBytes = generateBookingPdf({
+    // Always attach both a German and an English copy of the cancellation
+    // PDF, regardless of which language this notice's own body is in.
+    const breadcrumbDe = breadcrumbFromServiceId(catalog, booking.service_id, "de") || [booking.service_name];
+    const breadcrumbEn = breadcrumbFromServiceId(catalog, booking.service_id, "en") || [booking.service_name];
+    const dateDisplayDe = localizedDate(booking.date, "de");
+    const dateDisplayEn = localizedDate(booking.date, "en");
+    const basePdfData = {
       bookingRef,
       customerName: booking.customer_name,
       customerEmail: booking.customer_email,
       customerAddress: booking.customer_address,
-      breadcrumb,
-      date: booking.date,
-      dateDisplay,
       time: booking.time,
       duration: booking.duration_minutes,
       priceText,
-      lang,
       cancelled: true,
       cancelledBy,
       cancellationReason: booking.cancellation_reason,
+    };
+    const pdfBytesDe = generateBookingPdf({
+      ...basePdfData, breadcrumb: breadcrumbDe, date: booking.date, dateDisplay: dateDisplayDe, lang: "de",
+    });
+    const pdfBytesEn = generateBookingPdf({
+      ...basePdfData, breadcrumb: breadcrumbEn, date: booking.date, dateDisplay: dateDisplayEn, lang: "en",
     });
     attachments = [
-      { filename: `zettly-${bookingRef}-cancelled.pdf`, content: toBase64(pdfBytes) },
+      { filename: `zettly-${bookingRef}-cancelled-de.pdf`, content: toBase64(pdfBytesDe) },
+      { filename: `zettly-${bookingRef}-cancelled-en.pdf`, content: toBase64(pdfBytesEn) },
       { filename: "zettly-logo.png", content: LOGO_PNG_BASE64, content_id: "zettly-logo" },
     ];
   } catch {

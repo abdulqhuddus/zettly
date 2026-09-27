@@ -135,7 +135,6 @@ async function sendConfirmationEmail(env, booking, service, lang) {
   const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const priceText = service.quote ? t.priceOnRequest : `€${service.price}`;
-  const dateDisplay = localizedDate(booking.date, lang);
 
   let cancelUrl = null;
   if (env.SESSION_SECRET) {
@@ -198,23 +197,45 @@ async function sendConfirmationEmail(env, booking, service, lang) {
 
   let attachments;
   try {
-    const pdfBytes = generateBookingPdf({
+    // Always attach both a German and an English copy of the confirmation
+    // PDF, regardless of which language the customer booked in or the
+    // email body itself is written in.
+    const dateDisplayDe = localizedDate(booking.date, "de");
+    const dateDisplayEn = localizedDate(booking.date, "en");
+    const pdfBytesDe = generateBookingPdf({
       bookingRef: booking.bookingRef,
       customerName: booking.customer_name,
       customerEmail: booking.customer_email,
       customerAddress: booking.customer_address,
-      breadcrumb: booking.breadcrumb,
+      breadcrumb: booking.breadcrumbDe,
       date: booking.date,
-      dateDisplay,
+      dateDisplay: dateDisplayDe,
       time: booking.time,
       duration: service.duration,
       priceText,
-      lang,
+      lang: "de",
+    });
+    const pdfBytesEn = generateBookingPdf({
+      bookingRef: booking.bookingRef,
+      customerName: booking.customer_name,
+      customerEmail: booking.customer_email,
+      customerAddress: booking.customer_address,
+      breadcrumb: booking.breadcrumbEn,
+      date: booking.date,
+      dateDisplay: dateDisplayEn,
+      time: booking.time,
+      duration: service.duration,
+      priceText,
+      lang: "en",
     });
     attachments = [
       {
-        filename: `zettly-${booking.bookingRef}.pdf`,
-        content: toBase64(pdfBytes),
+        filename: `zettly-${booking.bookingRef}-de.pdf`,
+        content: toBase64(pdfBytesDe),
+      },
+      {
+        filename: `zettly-${booking.bookingRef}-en.pdf`,
+        content: toBase64(pdfBytesEn),
       },
       // Inline logo referenced from the HTML body as `cid:zettly-logo`. A
       // data-URI <img> (tried previously) doesn't reliably render once the
@@ -312,6 +333,11 @@ async function handleBook(request, env) {
   const id = crypto.randomUUID();
   const bookingRef = `ZTL-${id.split("-")[0].toUpperCase()}`;
   const breadcrumb = fullBreadcrumb(resolved, audience, lang);
+  // The confirmation PDF always ships in both languages (two attachments),
+  // regardless of which language the customer booked in, so both
+  // breadcrumbs are resolved here rather than just the request's own lang.
+  const breadcrumbDe = fullBreadcrumb(resolved, audience, "de");
+  const breadcrumbEn = fullBreadcrumb(resolved, audience, "en");
   const serviceIdStr = `${audience}:${categoryId}:${(path || []).join(":")}`;
 
   await env.DB.prepare(
@@ -334,7 +360,7 @@ async function handleBook(request, env) {
     )
     .run();
 
-  const booking = { id, bookingRef, breadcrumb, date, time, customer_name: name, customer_email: email, customer_address: address, serviceName };
+  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_address: address, serviceName };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
 
   return json({
