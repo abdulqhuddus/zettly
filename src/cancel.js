@@ -74,6 +74,9 @@ export async function handleCancelSubmit(request, env) {
   if (!reason) {
     return json({ error: "A cancellation reason is required" }, 400);
   }
+  if (reason.length > 100) {
+    return json({ error: "Cancellation reason must be 100 characters or fewer" }, 400);
+  }
 
   await env.DB.prepare(
     `UPDATE bookings SET status = 'cancelled', cancelled_at = ?, cancellation_reason = ? WHERE id = ?`
@@ -82,7 +85,7 @@ export async function handleCancelSubmit(request, env) {
     .run();
 
   const lang = body.lang === "de" ? "de" : "en";
-  const emailResult = await sendCancellationEmail(env, { ...row, cancellation_reason: reason }, lang);
+  const emailResult = await sendCancellationEmail(env, { ...row, cancellation_reason: reason }, lang, { cancelledBy: "customer" });
 
   return json({ ok: true, emailSent: emailResult.sent });
 }

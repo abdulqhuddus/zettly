@@ -39,7 +39,8 @@ const STRINGS = {
  * `booking` is a raw `bookings` table row (id, date, time, customer_name,
  * customer_email, customer_address, service_name, price, duration_minutes, …).
  */
-export async function sendCancellationEmail(env, booking, lang = "de") {
+export async function sendCancellationEmail(env, booking, lang = "de", opts = {}) {
+  const cancelledBy = opts.cancelledBy === "admin" ? "admin" : "customer";
   if (!env.RESEND_API_KEY) return { sent: false, reason: "no_api_key" };
   const t = STRINGS[lang] || STRINGS.de;
   const bookingRef = `ZTL-${booking.id.split("-")[0].toUpperCase()}`;
@@ -89,6 +90,7 @@ export async function sendCancellationEmail(env, booking, lang = "de") {
       priceText,
       lang,
       cancelled: true,
+      cancelledBy,
       cancellationReason: booking.cancellation_reason,
     });
     attachments = [

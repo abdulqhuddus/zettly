@@ -233,7 +233,8 @@
     outline: none;
   }
   .confirm-dialog textarea:focus { border-color: var(--accent); }
-  .confirm-dialog .field-error { color: var(--danger); font-size: 0.76rem; margin: 0.35rem 0 0; min-height: 1.05em; }
+  .confirm-dialog .char-count { text-align: right; font-size: 0.7rem; color: var(--muted); margin: 0.25rem 0 0; }
+  .confirm-dialog .field-error { color: var(--danger); font-size: 0.76rem; margin: 0.2rem 0 0; min-height: 1.05em; }
   .confirm-actions { display: flex; gap: 0.6rem; margin-top: 1.1rem; }
   .confirm-actions .btn { flex: 1; }
   .btn-cancel-action { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
@@ -344,7 +345,8 @@
     <p class="confirm-msg" id="confirm-message"></p>
     <div class="field" id="confirm-reason-field">
       <label for="confirm-reason" id="t-confirm-reason-label">Reason for cancellation (required)</label>
-      <textarea id="confirm-reason" placeholder="Please enter a reason…"></textarea>
+      <textarea id="confirm-reason" maxlength="100" placeholder="Please enter a reason…"></textarea>
+      <p class="char-count" id="confirm-reason-count">0/100</p>
       <p class="field-error" id="confirm-reason-error"></p>
     </div>
     <div class="confirm-actions">
@@ -408,6 +410,7 @@
       confirmReasonLabel: "Reason for cancellation (required)",
       confirmReasonPlaceholder: "Please enter a reason…",
       confirmReasonError: "Please enter a reason.",
+      confirmReasonTooLong: "Please keep the reason to 100 characters or fewer.",
       confirmCancelBtn: "Cancel",
       confirmOkBtn: "Confirm",
       statusUpdated: "Status updated",
@@ -462,6 +465,7 @@
       confirmReasonLabel: "Grund der Stornierung (erforderlich)",
       confirmReasonPlaceholder: "Bitte Grund angeben…",
       confirmReasonError: "Bitte geben Sie einen Grund an.",
+      confirmReasonTooLong: "Bitte begrenzen Sie den Grund auf maximal 100 Zeichen.",
       confirmCancelBtn: "Abbrechen",
       confirmOkBtn: "Bestätigen",
       statusUpdated: "Status aktualisiert",
@@ -643,7 +647,7 @@
       tr.innerHTML = `
         <td class="ref">${b.bookingRef}</td>
         <td>${escapeHtml(b.customer_name)}<div class="muted">${escapeHtml(b.customer_email)}</div></td>
-        <td>${escapeHtml(b.service_name)}</td>
+        <td>${escapeHtml((lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › "))}</td>
         <td>${b.date}<div class="muted">${s.atTime(b.time)}</div></td>
         <td>${b.price ? "€" + b.price : s.onSite}</td>
         <td><span class="badge badge-${b.status}">${statusLabel(b.status)}</span></td>
@@ -698,7 +702,8 @@
     document.getElementById("m-name").textContent = b.customer_name;
     document.getElementById("m-ref").textContent = b.bookingRef;
     document.getElementById("m-status").innerHTML = `<span class="badge badge-${b.status}">${statusLabel(b.status)}</span>`;
-    document.getElementById("m-service").textContent = b.service_name;
+    document.getElementById("m-service").textContent =
+      (lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › ");
     document.getElementById("m-when").textContent = `${b.date}, ${s.atTime(b.time)}`;
     document.getElementById("m-duration").textContent = `${b.duration_minutes} ${s.minutes}`;
     document.getElementById("m-price").textContent = b.price ? "€" + b.price : s.onSiteQuote;
@@ -743,10 +748,12 @@
       const reasonField = document.getElementById("confirm-reason-field");
       const reasonInput = document.getElementById("confirm-reason");
       const reasonError = document.getElementById("confirm-reason-error");
+      const reasonCount = document.getElementById("confirm-reason-count");
       document.getElementById("confirm-title").textContent = title;
       document.getElementById("confirm-message").textContent = message;
       reasonInput.value = "";
       reasonError.textContent = "";
+      reasonCount.textContent = "0/100";
       reasonField.style.display = requireReason ? "block" : "none";
 
       const okBtn = document.getElementById("confirm-ok-btn");
@@ -758,13 +765,20 @@
         cancelBtn.removeEventListener("click", onCancel);
         backdrop.removeEventListener("click", onBackdropClick);
         document.removeEventListener("keydown", onKeydown);
+        reasonInput.removeEventListener("input", onReasonInput);
         resolve(result);
       }
+      function onReasonInput() { reasonCount.textContent = `${reasonInput.value.length}/100`; }
       function onOk() {
         if (requireReason) {
           const reason = reasonInput.value.trim();
           if (!reason) {
             reasonError.textContent = s.confirmReasonError;
+            reasonInput.focus();
+            return;
+          }
+          if (reason.length > 100) {
+            reasonError.textContent = s.confirmReasonTooLong;
             reasonInput.focus();
             return;
           }
@@ -781,6 +795,7 @@
       cancelBtn.addEventListener("click", onCancel);
       backdrop.addEventListener("click", onBackdropClick);
       document.addEventListener("keydown", onKeydown);
+      reasonInput.addEventListener("input", onReasonInput);
 
       backdrop.classList.add("open");
       if (requireReason) setTimeout(() => reasonInput.focus(), 30);

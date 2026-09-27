@@ -1,8 +1,30 @@
 // Minimal, dependency-free PDF generator for booking confirmations.
 // Cloudflare Workers can't easily bundle native/Node-only PDF libraries, so
 // this hand-builds a valid single-page PDF using only the standard
-// (non-embedded) Helvetica / Helvetica-Bold fonts, which every PDF viewer
-// ships with. No fonts, images, or external files are embedded.
+// (non-embedded) Helvetica / Helvetica-Bold fonts for body text, which every
+// PDF viewer ships with. The one exception is the "zettly" wordmark: the
+// site's brand font is Helvetica Neue at weight 200, a commercial Linotype
+// face that can't legally be embedded without a purchased license, so the
+// wordmark is instead set in DejaVu Sans ExtraLight -- a real weight-200
+// sans-serif under a license that explicitly permits embedding -- rather
+// than faking the light weight with plain (400) Helvetica.
+
+import { DEJAVU_EXTRALIGHT_BASE64 } from "./fonts/dejavu-extralight-base64.js";
+import { parseTTF } from "./ttf.js";
+
+function base64ToBytes(b64) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+
+// Parsed once per isolate and reused across every PDF generated in it.
+let _wordmarkFont = null;
+function wordmarkFont() {
+  if (!_wordmarkFont) _wordmarkFont = parseTTF(base64ToBytes(DEJAVU_EXTRALIGHT_BASE64));
+  return _wordmarkFont;
+}
 
 const PAGE_W = 595; // A4 in points
 const PAGE_H = 842;
@@ -77,7 +99,7 @@ function wrapText(str, maxCharsPerLine) {
 }
 
 function text(x, y, size, str, opts = {}) {
-  const font = opts.bold ? "F2" : "F1";
+  const font = opts.wordmarkFont ? "F3" : opts.bold ? "F2" : "F1";
   const color = opts.color || [0, 0, 0];
   const parts = [];
   parts.push(te(`${color[0]} ${color[1]} ${color[2]} rg\n`));
@@ -131,6 +153,19 @@ function charWidthUnits(ch, bold) {
 function estWidth(str, size, bold) {
   let units = 0;
   for (const ch of str) units += charWidthUnits(ch, bold);
+  return (units / 1000) * size;
+}
+
+// Width of a string set in the embedded wordmark font (DejaVu Sans
+// ExtraLight), reading real advance widths out of its own hmtx table
+// instead of the Helvetica AFM tables above.
+function estWordmarkWidth(str, size) {
+  const font = wordmarkFont();
+  let units = 0;
+  for (const ch of str) {
+    const w = font.widthForChar(ch.codePointAt(0));
+    units += w == null ? 556 : w; // fallback: roughly average glyph width
+  }
   return (units / 1000) * size;
 }
 function textRight(xRight, y, size, str, opts = {}) {
@@ -250,9 +285,11 @@ export function generateBookingPdf(data) {
         boxTitleCancelled: "CANCELLED BOOKING",
         subjectCancelled: (ref) => `Subject: Cancellation confirmation ${ref}`,
         introCancelled: "your booking below has been cancelled as requested. This letter is your confirmation of the cancellation.",
+        introCancelledByAdmin: "your booking below has been cancelled by our team. This letter is your confirmation of the cancellation.",
         reasonLabel: "Reason for cancellation",
         rebookMsg: "If you'd like to book a new appointment, feel free to visit our website again.",
         cancelledStatusNote: "No further action is needed. If you did not request this cancellation, please contact us immediately at kontakt@zettly.de.",
+        cancelledStatusNoteByAdmin: "No further action is needed. If you have any questions about this cancellation, please contact us at kontakt@zettly.de.",
       }
     : {
         title: "Buchungsbestätigung",
@@ -281,9 +318,11 @@ export function generateBookingPdf(data) {
         boxTitleCancelled: "STORNIERTE BUCHUNG",
         subjectCancelled: (ref) => `Betreff: Stornierungsbestätigung ${ref}`,
         introCancelled: "Ihre unten stehende Buchung wurde wie gewünscht storniert. Dieses Schreiben ist Ihre Stornierungsbestätigung.",
+        introCancelledByAdmin: "Ihre unten stehende Buchung wurde von unserem Team storniert. Dieses Schreiben ist Ihre Stornierungsbestätigung.",
         reasonLabel: "Grund der Stornierung",
         rebookMsg: "Falls Sie einen neuen Termin buchen möchten, besuchen Sie gerne erneut unsere Website.",
         cancelledStatusNote: "Es ist keine weitere Aktion erforderlich. Falls Sie diese Stornierung nicht veranlasst haben, kontaktieren Sie uns bitte umgehend unter kontakt@zettly.de.",
+        cancelledStatusNoteByAdmin: "Es ist keine weitere Aktion erforderlich. Bei Fragen zu dieser Stornierung kontaktieren Sie uns gerne unter kontakt@zettly.de.",
       };
 
   const today = new Date().toLocaleDateString(data.lang === "en" ? "en-GB" : "de-DE", {
@@ -308,10 +347,12 @@ export function generateBookingPdf(data) {
   // "ly" must start exactly where "zett" ends: its glyph width PLUS the
   // character-spacing (Tc) added after each of its 4 letters, including the
   // trailing one — leaving that out (or fudging it with an arbitrary
-  // multiplier) is what let "ly" creep back and overlap the "t".
-  const zettWidth = estWidth("zett", wordmarkSize, false) + 4 * wordmarkCharSpace;
-  content.push(text(LEFT_X + 11.5 * MM, fromTop(wordmarkBaselineMM), wordmarkSize, "zett", { color: INK, charSpace: wordmarkCharSpace }));
-  content.push(text(LEFT_X + 11.5 * MM + zettWidth, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: PURPLE, charSpace: wordmarkCharSpace }));
+  // multiplier) is what let "ly" creep back and overlap the "t". Set in the
+  // embedded DejaVu Sans ExtraLight (weight 200), matching the site's actual
+  // Helvetica Neue 200 wordmark far more closely than plain Helvetica.
+  const zettWidth = estWordmarkWidth("zett", wordmarkSize) + 4 * wordmarkCharSpace;
+  content.push(text(LEFT_X + 11.5 * MM, fromTop(wordmarkBaselineMM), wordmarkSize, "zett", { color: INK, charSpace: wordmarkCharSpace, wordmarkFont: true }));
+  content.push(text(LEFT_X + 11.5 * MM + zettWidth, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: PURPLE, charSpace: wordmarkCharSpace, wordmarkFont: true }));
 
   const headerLines = data.lang === "en"
     ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
@@ -451,7 +492,9 @@ export function generateBookingPdf(data) {
 
   // ---- Subject line ----
   const subjectText = data.cancelled ? L.subjectCancelled(data.bookingRef) : L.subject(data.bookingRef);
-  const introText = data.cancelled ? L.introCancelled : L.intro;
+  const introText = data.cancelled
+    ? (data.cancelledBy === "admin" ? L.introCancelledByAdmin : L.introCancelled)
+    : L.intro;
   content.push(rect(LEFT_X, fromTop(belowBlockY + 11.8), 3, 11, data.cancelled ? DANGER : PINK));
   content.push(text(LEFT_X + 8, fromTop(belowBlockY + 11), 11.5, subjectText, { bold: true, color: INK }));
 
@@ -493,7 +536,9 @@ export function generateBookingPdf(data) {
   const calloutBodyLineGap = 12.5;
   const calloutColor = DANGER;
   const calloutBgColor = DANGER_BG;
-  const calloutBodyText = data.cancelled ? L.cancelledStatusNote : L.footer1;
+  const calloutBodyText = data.cancelled
+    ? (data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote)
+    : L.footer1;
   const calloutBodyLines = wrapText(calloutBodyText, 86);
   const calloutInnerH = calloutHeadingGap + calloutBodyLines.length * calloutBodyLineGap;
   const calloutH = calloutPadTop + calloutInnerH + calloutPadBottom;
@@ -538,12 +583,23 @@ export function generateBookingPdf(data) {
   const contentStream = concat(content);
 
   // ---- Assemble the PDF object graph ----
+  // Object numbers 1-6 are fixed (Catalog, Pages, Page, F1, F2, content
+  // stream); 7-9 embed the wordmark's TrueType font (raw file, descriptor,
+  // font dict), in that fixed order, so the Page's /Resources can reference
+  // /F3 9 0 R directly.
+  const wf = wordmarkFont();
+  const wfWidths = [];
+  for (let c = 32; c <= 126; c++) {
+    const w = wf.widthForChar(c);
+    wfWidths.push(w == null ? 556 : w);
+  }
+
   const objects = [];
   objects.push(te("<< /Type /Catalog /Pages 2 0 R >>"));
   objects.push(te("<< /Type /Pages /Kids [3 0 R] /Count 1 >>"));
   objects.push(te(
     `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] ` +
-    `/Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>`
+    `/Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 9 0 R >> >> /Contents 6 0 R >>`
   ));
   objects.push(te("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"));
   objects.push(te("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>"));
@@ -552,6 +608,20 @@ export function generateBookingPdf(data) {
     contentStream,
     te("\nendstream"),
   ]));
+  objects.push(concat([
+    te(`<< /Length ${wf.raw.length} /Length1 ${wf.raw.length} >>\nstream\n`),
+    wf.raw,
+    te("\nendstream"),
+  ]));
+  objects.push(te(
+    `<< /Type /FontDescriptor /FontName /DejaVuSansExtraLight /Flags 32 ` +
+    `/FontBBox [${wf.bbox.join(" ")}] /ItalicAngle ${wf.italicAngle} /Ascent ${wf.ascent} ` +
+    `/Descent ${wf.descent} /CapHeight ${wf.capHeight} /StemV 50 /FontFile2 7 0 R >>`
+  ));
+  objects.push(te(
+    `<< /Type /Font /Subtype /TrueType /BaseFont /DejaVuSansExtraLight /FirstChar 32 /LastChar 126 ` +
+    `/Widths [${wfWidths.join(" ")}] /Encoding /WinAnsiEncoding /FontDescriptor 8 0 R >>`
+  ));
 
   const chunks = [te("%PDF-1.4\n")];
   const offsets = [];

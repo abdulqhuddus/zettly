@@ -104,7 +104,8 @@
     outline: none;
   }
   .field textarea:focus { border-color: var(--accent); }
-  .field-error { color: var(--danger); font-size: 0.78rem; margin: 0.4rem 0 0; min-height: 1.1em; }
+  .char-count { text-align: right; font-size: 0.72rem; color: var(--muted); margin: 0.3rem 0 0; }
+  .field-error { color: var(--danger); font-size: 0.78rem; margin: 0.2rem 0 0; min-height: 1.1em; }
 </style>
 </head>
 <body>
@@ -132,6 +133,7 @@
       reasonLabel: "Reason for cancellation (required)",
       reasonPlaceholder: "Please let us know why you're cancelling…",
       reasonRequired: "Please enter a reason for the cancellation.",
+      reasonTooLong: "Please keep the reason to 100 characters or fewer.",
       cancelBtn: "Cancel this booking",
       cancelling: "Cancelling…",
       cancelledOk: "Your booking has been cancelled. A confirmation email is on its way.",
@@ -158,6 +160,7 @@
       reasonLabel: "Grund der Stornierung (erforderlich)",
       reasonPlaceholder: "Bitte teilen Sie uns mit, warum Sie stornieren möchten…",
       reasonRequired: "Bitte geben Sie einen Grund für die Stornierung an.",
+      reasonTooLong: "Bitte begrenzen Sie den Grund auf maximal 100 Zeichen.",
       cancelBtn: "Buchung stornieren",
       cancelling: "Wird storniert…",
       cancelledOk: "Ihre Buchung wurde storniert. Eine Bestätigungs-E-Mail ist unterwegs.",
@@ -275,7 +278,8 @@
           ? `<p class="msg">${t.canCancelMsg}</p>
              <div class="field">
                <label for="cancel-reason">${t.reasonLabel}</label>
-               <textarea id="cancel-reason" placeholder="${t.reasonPlaceholder}"></textarea>
+               <textarea id="cancel-reason" maxlength="100" placeholder="${t.reasonPlaceholder}"></textarea>
+               <p class="char-count" id="reason-count">0/100</p>
                <p class="field-error" id="reason-error"></p>
              </div>
              <button class="btn btn-danger" id="cancel-btn">${t.cancelBtn}</button>`
@@ -286,11 +290,21 @@
 
     const btn = document.getElementById("cancel-btn");
     if (btn) {
+      const reasonEl0 = document.getElementById("cancel-reason");
+      const countEl = document.getElementById("reason-count");
+      reasonEl0.addEventListener("input", () => {
+        countEl.textContent = `${reasonEl0.value.length}/100`;
+      });
       btn.addEventListener("click", async () => {
         const reasonEl = document.getElementById("cancel-reason");
         const reason = (reasonEl.value || "").trim();
         if (!reason) {
           document.getElementById("reason-error").textContent = t.reasonRequired;
+          reasonEl.focus();
+          return;
+        }
+        if (reason.length > 100) {
+          document.getElementById("reason-error").textContent = t.reasonTooLong;
           reasonEl.focus();
           return;
         }

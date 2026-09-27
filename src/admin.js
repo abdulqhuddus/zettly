@@ -16,6 +16,23 @@ import {
 } from "./auth.js";
 import { json } from "./utils.js";
 import { sendCancellationEmail } from "./notify.js";
+import catalog from "../catalog.json";
+import { breadcrumbFromServiceId } from "./catalog-utils.js";
+
+// The bookings table only stores the leaf service_name ("New setup"); the
+// admin dashboard wants the full selection path the customer walked through
+// ("Home › Computers & Laptops › New setup › Up to 10 GB"), reconstructed
+// from the stored service_id against the current catalog. Resolved in both
+// languages so the admin UI's language toggle doesn't need another request.
+function withServiceBreadcrumb(row) {
+  const breadcrumbEn = breadcrumbFromServiceId(catalog, row.service_id, "en");
+  const breadcrumbDe = breadcrumbFromServiceId(catalog, row.service_id, "de");
+  return {
+    ...row,
+    serviceBreadcrumbEn: breadcrumbEn || [row.service_name],
+    serviceBreadcrumbDe: breadcrumbDe || [row.service_name],
+  };
+}
 
 // A cross-site <form> or <img>/fetch("no-cors") cannot set a custom header,
 // so requiring this one on every state-changing admin call is a second,
@@ -98,7 +115,7 @@ export async function handleAdminListBookings(url, env) {
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
   const { results } = await env.DB.prepare(
-    `SELECT id, service_name, price, duration_minutes, date, time, customer_name, customer_email,
+    `SELECT id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email,
             customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -111,7 +128,7 @@ export async function handleAdminListBookings(url, env) {
     .bind(...params)
     .first();
 
-  const bookings = results.map((r) => ({ ...r, bookingRef: `ZTL-${r.id.split("-")[0].toUpperCase()}` }));
+  const bookings = results.map((r) => withServiceBreadcrumb({ ...r, bookingRef: `ZTL-${r.id.split("-")[0].toUpperCase()}` }));
   return json({ bookings, total: totalRow?.n || 0, limit, offset });
 }
 
@@ -124,7 +141,7 @@ export async function handleAdminBookingDetail(env, id) {
     .bind(id)
     .first();
   if (!row) return json({ error: "Not found" }, 404);
-  return json({ ...row, bookingRef: `ZTL-${row.id.split("-")[0].toUpperCase()}` });
+  return json(withServiceBreadcrumb({ ...row, bookingRef: `ZTL-${row.id.split("-")[0].toUpperCase()}` }));
 }
 
 const VALID_STATUSES = ["confirmed", "cancelled", "completed"];
@@ -153,6 +170,9 @@ export async function handleAdminUpdateStatus(request, env, id) {
   if (cancelling && !reason) {
     return json({ error: "A cancellation reason is required" }, 400);
   }
+  if (cancelling && reason.length > 100) {
+    return json({ error: "Cancellation reason must be 100 characters or fewer" }, 400);
+  }
 
   await env.DB.prepare(
     `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ? WHERE id = ?`
@@ -167,7 +187,9 @@ export async function handleAdminUpdateStatus(request, env, id) {
 
   let emailSent = false;
   if (cancelling && body.notifyCustomer !== false) {
-    emailSent = (await sendCancellationEmail(env, { ...existing, cancellation_reason: reason }, body.lang === "en" ? "en" : "de")).sent;
+    emailSent = (
+      await sendCancellationEmail(env, { ...existing, cancellation_reason: reason }, body.lang === "en" ? "en" : "de", { cancelledBy: "admin" })
+    ).sent;
   }
 
   return json({ ok: true, id, status: body.status, emailSent });
