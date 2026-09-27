@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,6 +30,20 @@
   }
   a { color: inherit; }
 
+  .lang-toggle { display: flex; gap: 0.3rem; }
+  .lang-toggle button {
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.28rem 0.6rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .lang-toggle button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
   /* ---- Login screen ---- */
   #login-screen {
     min-height: 100vh;
@@ -37,7 +51,9 @@
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
+    position: relative;
   }
+  #login-screen .lang-toggle { position: absolute; top: 1.25rem; right: 1.25rem; }
   .login-card {
     width: 100%;
     max-width: 360px;
@@ -90,7 +106,9 @@
     padding: 1rem 1.5rem;
     background: #fff;
     border-bottom: 1px solid var(--border);
+    gap: 1rem;
   }
+  .topbar-right { display: flex; align-items: center; gap: 0.7rem; }
   .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 0.5rem 0.9rem; border-radius: 8px; font-size: 0.82rem; }
   main { padding: 1.5rem; max-width: 1180px; margin: 0 auto; }
 
@@ -113,7 +131,7 @@
   }
   .filters input[type="search"] { flex: 1 1 200px; min-width: 160px; }
 
-  .table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
   thead th {
     text-align: left;
@@ -224,6 +242,10 @@
 <body>
 
 <div id="login-screen">
+  <div class="lang-toggle" id="login-lang-toggle">
+    <button data-lang="en">EN</button>
+    <button data-lang="de">DE</button>
+  </div>
   <form class="login-card" id="login-form" autocomplete="off">
     <div class="brand-row">
       <svg class="brand-mark-sm" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -234,54 +256,60 @@
       </svg>
       <span class="brand-text-sm">zett<span>ly</span></span>
     </div>
-    <h1>Admin-Login</h1>
+    <h1 id="t-login-title">Admin login</h1>
     <div class="field">
-      <label for="password">Passwort</label>
+      <label for="password" id="t-password-label">Password</label>
       <input type="password" id="password" name="password" autocomplete="current-password" required>
     </div>
-    <button type="submit" class="btn btn-primary" id="login-btn">Anmelden</button>
+    <button type="submit" class="btn btn-primary" id="login-btn">Log in</button>
     <p class="error-msg" id="login-error"></p>
   </form>
 </div>
 
 <div id="dashboard">
   <header class="topbar">
-    <span class="brand-text-sm">zett<span>ly</span> <span class="muted" style="font-size:0.8rem; font-weight:400;">Admin</span></span>
-    <button class="btn btn-ghost" id="logout-btn">Abmelden</button>
+    <span class="brand-text-sm">zett<span>ly</span> <span class="muted" style="font-size:0.8rem; font-weight:400;" id="t-admin-label">Admin</span></span>
+    <div class="topbar-right">
+      <div class="lang-toggle" id="dash-lang-toggle">
+        <button data-lang="en">EN</button>
+        <button data-lang="de">DE</button>
+      </div>
+      <button class="btn btn-ghost" id="logout-btn">Log out</button>
+    </div>
   </header>
   <main>
     <div class="filters">
-      <input type="search" id="f-q" placeholder="Suche: Name, E-Mail, Buchungs-ID …">
+      <input type="search" id="f-q" placeholder="Search: name, email, booking ID …">
       <select id="f-status">
-        <option value="">Alle Status</option>
-        <option value="confirmed">Bestätigt</option>
-        <option value="cancelled">Storniert</option>
-        <option value="completed">Abgeschlossen</option>
+        <option value="" id="opt-status-all">All statuses</option>
+        <option value="confirmed" id="opt-status-confirmed">Confirmed</option>
+        <option value="cancelled" id="opt-status-cancelled">Cancelled</option>
+        <option value="completed" id="opt-status-completed">Completed</option>
       </select>
-      <input type="date" id="f-from" title="Von Datum">
-      <input type="date" id="f-to" title="Bis Datum">
-      <button class="btn btn-ghost" id="f-clear">Zurücksetzen</button>
+      <input type="date" id="f-from" title="From date">
+      <input type="date" id="f-to" title="To date">
+      <button class="btn btn-ghost" id="f-clear">Reset</button>
     </div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Referenz</th>
-            <th>Kunde</th>
-            <th>Leistung</th>
-            <th>Termin</th>
-            <th>Preis</th>
-            <th>Status</th>
+            <th id="th-ref">Reference</th>
+            <th id="th-customer">Customer</th>
+            <th id="th-service">Service</th>
+            <th id="th-appointment">Appointment</th>
+            <th id="th-price">Price</th>
+            <th id="th-status">Status</th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
       </table>
-      <div class="empty-state" id="empty" style="display:none;">Keine Buchungen gefunden.</div>
+      <div class="empty-state" id="empty" style="display:none;">No bookings found.</div>
       <div class="pager">
         <span id="pager-info"></span>
         <div>
-          <button class="btn btn-ghost" id="prev-btn">← Zurück</button>
-          <button class="btn btn-ghost" id="next-btn">Weiter →</button>
+          <button class="btn btn-ghost" id="prev-btn">← Prev</button>
+          <button class="btn btn-ghost" id="next-btn">Next →</button>
         </div>
       </div>
     </div>
@@ -294,17 +322,17 @@
     <h2 id="m-name"></h2>
     <div class="modal-ref" id="m-ref"></div>
     <dl>
-      <div class="detail-row"><dt>Status</dt><dd id="m-status"></dd></div>
-      <div class="detail-row"><dt>Leistung</dt><dd id="m-service"></dd></div>
-      <div class="detail-row"><dt>Termin</dt><dd id="m-when"></dd></div>
-      <div class="detail-row"><dt>Dauer</dt><dd id="m-duration"></dd></div>
-      <div class="detail-row"><dt>Preis</dt><dd id="m-price"></dd></div>
-      <div class="detail-row"><dt>E-Mail</dt><dd id="m-email"></dd></div>
-      <div class="detail-row"><dt>Telefon</dt><dd id="m-phone"></dd></div>
-      <div class="detail-row"><dt>Adresse</dt><dd id="m-address"></dd></div>
-      <div class="detail-row" id="m-notes-row"><dt>Notizen</dt><dd id="m-notes"></dd></div>
-      <div class="detail-row" id="m-cancel-reason-row"><dt>Stornierungsgrund</dt><dd id="m-cancel-reason"></dd></div>
-      <div class="detail-row"><dt>Erstellt</dt><dd id="m-created"></dd></div>
+      <div class="detail-row"><dt id="t-m-status">Status</dt><dd id="m-status"></dd></div>
+      <div class="detail-row"><dt id="t-m-service">Service</dt><dd id="m-service"></dd></div>
+      <div class="detail-row"><dt id="t-m-when">Appointment</dt><dd id="m-when"></dd></div>
+      <div class="detail-row"><dt id="t-m-duration">Duration</dt><dd id="m-duration"></dd></div>
+      <div class="detail-row"><dt id="t-m-price">Price</dt><dd id="m-price"></dd></div>
+      <div class="detail-row"><dt id="t-m-email">Email</dt><dd id="m-email"></dd></div>
+      <div class="detail-row"><dt id="t-m-phone">Phone</dt><dd id="m-phone"></dd></div>
+      <div class="detail-row"><dt id="t-m-address">Address</dt><dd id="m-address"></dd></div>
+      <div class="detail-row" id="m-notes-row"><dt id="t-m-notes">Notes</dt><dd id="m-notes"></dd></div>
+      <div class="detail-row" id="m-cancel-reason-row"><dt id="t-m-cancel-reason">Cancellation reason</dt><dd id="m-cancel-reason"></dd></div>
+      <div class="detail-row"><dt id="t-m-created">Created</dt><dd id="m-created"></dd></div>
     </dl>
     <div class="modal-actions" id="m-actions"></div>
   </div>
@@ -315,13 +343,13 @@
     <h3 id="confirm-title"></h3>
     <p class="confirm-msg" id="confirm-message"></p>
     <div class="field" id="confirm-reason-field">
-      <label for="confirm-reason">Grund der Stornierung (erforderlich)</label>
-      <textarea id="confirm-reason" placeholder="Bitte Grund angeben…"></textarea>
+      <label for="confirm-reason" id="t-confirm-reason-label">Reason for cancellation (required)</label>
+      <textarea id="confirm-reason" placeholder="Please enter a reason…"></textarea>
       <p class="field-error" id="confirm-reason-error"></p>
     </div>
     <div class="confirm-actions">
-      <button class="btn btn-cancel-action" id="confirm-cancel-btn">Abbrechen</button>
-      <button class="btn btn-danger" id="confirm-ok-btn">Bestätigen</button>
+      <button class="btn btn-cancel-action" id="confirm-cancel-btn">Cancel</button>
+      <button class="btn btn-danger" id="confirm-ok-btn">Confirm</button>
     </div>
   </div>
 </div>
@@ -330,6 +358,187 @@
 
 <script>
 (function () {
+  // ---- i18n: English is the primary/default language, German secondary ----
+  const STR = {
+    en: {
+      loginTitle: "Admin login",
+      passwordLabel: "Password",
+      loginBtn: "Log in",
+      loginFailed: "Login failed",
+      adminLabel: "Admin",
+      logoutBtn: "Log out",
+      searchPlaceholder: "Search: name, email, booking ID …",
+      statusAll: "All statuses",
+      statusConfirmed: "Confirmed",
+      statusCancelled: "Cancelled",
+      statusCompleted: "Completed",
+      fromDate: "From date",
+      toDate: "To date",
+      reset: "Reset",
+      thRef: "Reference",
+      thCustomer: "Customer",
+      thService: "Service",
+      thAppointment: "Appointment",
+      thPrice: "Price",
+      thStatus: "Status",
+      empty: "No bookings found.",
+      pagerInfo: (from, to, total) => `${from}–${to} of ${total}`,
+      prev: "← Prev",
+      next: "Next →",
+      onSite: "On-site",
+      onSiteQuote: "Quoted on-site",
+      atTime: (time) => `${time}`,
+      mStatus: "Status",
+      mService: "Service",
+      mWhen: "Appointment",
+      mDuration: "Duration",
+      mPrice: "Price",
+      mEmail: "Email",
+      mPhone: "Phone",
+      mAddress: "Address",
+      mNotes: "Notes",
+      mCancelReason: "Cancellation reason",
+      mCreated: "Created",
+      minutes: "min",
+      actionCancel: "Cancel booking",
+      actionComplete: "Mark as completed",
+      actionReconfirm: "Re-confirm",
+      confirmCancelTitle: "Cancel booking",
+      confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email.",
+      confirmReasonLabel: "Reason for cancellation (required)",
+      confirmReasonPlaceholder: "Please enter a reason…",
+      confirmReasonError: "Please enter a reason.",
+      confirmCancelBtn: "Cancel",
+      confirmOkBtn: "Confirm",
+      statusUpdated: "Status updated",
+      updateFailed: "Failed to update",
+      genericError: "Error",
+    },
+    de: {
+      loginTitle: "Admin-Login",
+      passwordLabel: "Passwort",
+      loginBtn: "Anmelden",
+      loginFailed: "Anmeldung fehlgeschlagen",
+      adminLabel: "Admin",
+      logoutBtn: "Abmelden",
+      searchPlaceholder: "Suche: Name, E-Mail, Buchungs-ID …",
+      statusAll: "Alle Status",
+      statusConfirmed: "Bestätigt",
+      statusCancelled: "Storniert",
+      statusCompleted: "Abgeschlossen",
+      fromDate: "Von Datum",
+      toDate: "Bis Datum",
+      reset: "Zurücksetzen",
+      thRef: "Referenz",
+      thCustomer: "Kunde",
+      thService: "Leistung",
+      thAppointment: "Termin",
+      thPrice: "Preis",
+      thStatus: "Status",
+      empty: "Keine Buchungen gefunden.",
+      pagerInfo: (from, to, total) => `${from}–${to} von ${total}`,
+      prev: "← Zurück",
+      next: "Weiter →",
+      onSite: "Vor Ort",
+      onSiteQuote: "Vor Ort mitgeteilt",
+      atTime: (time) => `${time} Uhr`,
+      mStatus: "Status",
+      mService: "Leistung",
+      mWhen: "Termin",
+      mDuration: "Dauer",
+      mPrice: "Preis",
+      mEmail: "E-Mail",
+      mPhone: "Telefon",
+      mAddress: "Adresse",
+      mNotes: "Notizen",
+      mCancelReason: "Stornierungsgrund",
+      mCreated: "Erstellt",
+      minutes: "Min.",
+      actionCancel: "Stornieren",
+      actionComplete: "Als abgeschlossen markieren",
+      actionReconfirm: "Wieder bestätigen",
+      confirmCancelTitle: "Buchung stornieren",
+      confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt.",
+      confirmReasonLabel: "Grund der Stornierung (erforderlich)",
+      confirmReasonPlaceholder: "Bitte Grund angeben…",
+      confirmReasonError: "Bitte geben Sie einen Grund an.",
+      confirmCancelBtn: "Abbrechen",
+      confirmOkBtn: "Bestätigen",
+      statusUpdated: "Status aktualisiert",
+      updateFailed: "Fehler beim Aktualisieren",
+      genericError: "Fehler",
+    },
+  };
+
+  let lang = "en";
+  try {
+    const saved = localStorage.getItem("zettly-admin-lang");
+    if (saved === "en" || saved === "de") lang = saved;
+  } catch {}
+
+  function t() { return STR[lang]; }
+
+  function setLang(next) {
+    lang = next === "de" ? "de" : "en";
+    document.documentElement.lang = lang;
+    try { localStorage.setItem("zettly-admin-lang", lang); } catch {}
+    applyStaticStrings();
+    document.querySelectorAll(".lang-toggle button").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.lang === lang);
+    });
+    // Re-render whatever's currently on screen in the new language.
+    if (dashboard.style.display !== "none") loadBookings();
+    if (currentDetail) openDetail(currentDetail.id);
+  }
+
+  function applyStaticStrings() {
+    const s = t();
+    document.getElementById("t-login-title").textContent = s.loginTitle;
+    document.getElementById("t-password-label").textContent = s.passwordLabel;
+    document.getElementById("login-btn").textContent = s.loginBtn;
+    document.getElementById("t-admin-label").textContent = s.adminLabel;
+    document.getElementById("logout-btn").textContent = s.logoutBtn;
+    document.getElementById("f-q").placeholder = s.searchPlaceholder;
+    document.getElementById("opt-status-all").textContent = s.statusAll;
+    document.getElementById("opt-status-confirmed").textContent = s.statusConfirmed;
+    document.getElementById("opt-status-cancelled").textContent = s.statusCancelled;
+    document.getElementById("opt-status-completed").textContent = s.statusCompleted;
+    document.getElementById("f-from").title = s.fromDate;
+    document.getElementById("f-to").title = s.toDate;
+    document.getElementById("f-clear").textContent = s.reset;
+    document.getElementById("th-ref").textContent = s.thRef;
+    document.getElementById("th-customer").textContent = s.thCustomer;
+    document.getElementById("th-service").textContent = s.thService;
+    document.getElementById("th-appointment").textContent = s.thAppointment;
+    document.getElementById("th-price").textContent = s.thPrice;
+    document.getElementById("th-status").textContent = s.thStatus;
+    document.getElementById("empty").textContent = s.empty;
+    document.getElementById("prev-btn").textContent = s.prev;
+    document.getElementById("next-btn").textContent = s.next;
+    document.getElementById("t-m-status").textContent = s.mStatus;
+    document.getElementById("t-m-service").textContent = s.mService;
+    document.getElementById("t-m-when").textContent = s.mWhen;
+    document.getElementById("t-m-duration").textContent = s.mDuration;
+    document.getElementById("t-m-price").textContent = s.mPrice;
+    document.getElementById("t-m-email").textContent = s.mEmail;
+    document.getElementById("t-m-phone").textContent = s.mPhone;
+    document.getElementById("t-m-address").textContent = s.mAddress;
+    document.getElementById("t-m-notes").textContent = s.mNotes;
+    document.getElementById("t-m-cancel-reason").textContent = s.mCancelReason;
+    document.getElementById("t-m-created").textContent = s.mCreated;
+    document.getElementById("t-confirm-reason-label").textContent = s.confirmReasonLabel;
+    document.getElementById("confirm-reason").placeholder = s.confirmReasonPlaceholder;
+    document.getElementById("confirm-cancel-btn").textContent = s.confirmCancelBtn;
+    document.getElementById("confirm-ok-btn").textContent = s.confirmOkBtn;
+    renderPager();
+  }
+
+  document.querySelectorAll(".lang-toggle").forEach((group) => {
+    group.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => setLang(btn.dataset.lang));
+    });
+  });
+
   const loginScreen = document.getElementById("login-screen");
   const dashboard = document.getElementById("dashboard");
   const loginForm = document.getElementById("login-form");
@@ -356,7 +565,7 @@
       throw new Error("unauthenticated");
     }
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || "Fehler");
+    if (!res.ok) throw new Error(data.error || t().genericError);
     return data;
   }
 
@@ -380,7 +589,7 @@
       document.getElementById("password").value = "";
       showDashboard();
     } catch (err) {
-      loginError.textContent = err.message === "unauthenticated" ? "" : (err.message || "Anmeldung fehlgeschlagen");
+      loginError.textContent = err.message === "unauthenticated" ? "" : (err.message || t().loginFailed);
     } finally {
       loginBtn.disabled = false;
     }
@@ -391,7 +600,10 @@
     showLogin();
   });
 
-  const statusLabel = { confirmed: "Bestätigt", cancelled: "Storniert", completed: "Abgeschlossen" };
+  function statusLabel(status) {
+    const s = t();
+    return { confirmed: s.statusConfirmed, cancelled: s.statusCancelled, completed: s.statusCompleted }[status] || status;
+  }
 
   function buildQuery() {
     const params = new URLSearchParams();
@@ -411,11 +623,13 @@
   async function loadBookings() {
     const data = await api("/api/admin/bookings?" + buildQuery());
     state.total = data.total;
+    state.lastBookings = data.bookings;
     renderRows(data.bookings);
     renderPager();
   }
 
   function renderRows(bookings) {
+    const s = t();
     const tbody = document.getElementById("rows");
     const empty = document.getElementById("empty");
     tbody.innerHTML = "";
@@ -430,9 +644,9 @@
         <td class="ref">${b.bookingRef}</td>
         <td>${escapeHtml(b.customer_name)}<div class="muted">${escapeHtml(b.customer_email)}</div></td>
         <td>${escapeHtml(b.service_name)}</td>
-        <td>${b.date}<div class="muted">${b.time} Uhr</div></td>
-        <td>${b.price ? "€" + b.price : "Vor Ort"}</td>
-        <td><span class="badge badge-${b.status}">${statusLabel[b.status] || b.status}</span></td>
+        <td>${b.date}<div class="muted">${s.atTime(b.time)}</div></td>
+        <td>${b.price ? "€" + b.price : s.onSite}</td>
+        <td><span class="badge badge-${b.status}">${statusLabel(b.status)}</span></td>
       `;
       tr.addEventListener("click", () => openDetail(b.id));
       tbody.appendChild(tr);
@@ -440,9 +654,10 @@
   }
 
   function renderPager() {
+    const s = t();
     const from = state.total === 0 ? 0 : state.offset + 1;
     const to = Math.min(state.offset + state.limit, state.total);
-    document.getElementById("pager-info").textContent = `${from}–${to} von ${state.total}`;
+    document.getElementById("pager-info").textContent = s.pagerInfo(from, to, state.total);
     document.getElementById("prev-btn").disabled = state.offset === 0;
     document.getElementById("next-btn").disabled = to >= state.total;
   }
@@ -477,15 +692,16 @@
   let currentDetail = null;
 
   async function openDetail(id) {
+    const s = t();
     const b = await api("/api/admin/bookings/" + encodeURIComponent(id));
     currentDetail = b;
     document.getElementById("m-name").textContent = b.customer_name;
     document.getElementById("m-ref").textContent = b.bookingRef;
-    document.getElementById("m-status").innerHTML = `<span class="badge badge-${b.status}">${statusLabel[b.status] || b.status}</span>`;
+    document.getElementById("m-status").innerHTML = `<span class="badge badge-${b.status}">${statusLabel(b.status)}</span>`;
     document.getElementById("m-service").textContent = b.service_name;
-    document.getElementById("m-when").textContent = `${b.date}, ${b.time} Uhr`;
-    document.getElementById("m-duration").textContent = `${b.duration_minutes} Min.`;
-    document.getElementById("m-price").textContent = b.price ? "€" + b.price : "Vor Ort mitgeteilt";
+    document.getElementById("m-when").textContent = `${b.date}, ${s.atTime(b.time)}`;
+    document.getElementById("m-duration").textContent = `${b.duration_minutes} ${s.minutes}`;
+    document.getElementById("m-price").textContent = b.price ? "€" + b.price : s.onSiteQuote;
     document.getElementById("m-email").textContent = b.customer_email;
     document.getElementById("m-phone").textContent = b.customer_phone || "—";
     document.getElementById("m-address").textContent = b.customer_address || "—";
@@ -500,13 +716,13 @@
     const actions = document.getElementById("m-actions");
     actions.innerHTML = "";
     if (b.status !== "cancelled") {
-      actions.appendChild(makeActionBtn("Stornieren", "btn-danger", () => updateStatus(b.id, "cancelled")));
+      actions.appendChild(makeActionBtn(s.actionCancel, "btn-danger", () => updateStatus(b.id, "cancelled")));
     }
     if (b.status !== "completed" && b.status !== "cancelled") {
-      actions.appendChild(makeActionBtn("Als abgeschlossen markieren", "btn-ok", () => updateStatus(b.id, "completed")));
+      actions.appendChild(makeActionBtn(s.actionComplete, "btn-ok", () => updateStatus(b.id, "completed")));
     }
     if (b.status !== "confirmed") {
-      actions.appendChild(makeActionBtn("Wieder bestätigen", "btn-neutral", () => updateStatus(b.id, "confirmed")));
+      actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", () => updateStatus(b.id, "confirmed")));
     }
     document.getElementById("modal").classList.add("open");
   }
@@ -522,6 +738,7 @@
   // ---- Custom confirm dialog (replaces window.confirm/alert) ------------
   function showConfirm({ title, message, requireReason }) {
     return new Promise((resolve) => {
+      const s = t();
       const backdrop = document.getElementById("confirm-modal");
       const reasonField = document.getElementById("confirm-reason-field");
       const reasonInput = document.getElementById("confirm-reason");
@@ -547,7 +764,7 @@
         if (requireReason) {
           const reason = reasonInput.value.trim();
           if (!reason) {
-            reasonError.textContent = "Bitte geben Sie einen Grund an.";
+            reasonError.textContent = s.confirmReasonError;
             reasonInput.focus();
             return;
           }
@@ -571,11 +788,12 @@
   }
 
   async function updateStatus(id, status) {
+    const s = t();
     let reason;
     if (status === "cancelled") {
       const result = await showConfirm({
-        title: "Buchung stornieren",
-        message: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt.",
+        title: s.confirmCancelTitle,
+        message: s.confirmCancelMessage,
         requireReason: true,
       });
       if (!result.confirmed) return;
@@ -584,13 +802,13 @@
     try {
       await api(`/api/admin/bookings/${encodeURIComponent(id)}/status`, {
         method: "POST",
-        body: JSON.stringify({ status, ...(reason ? { reason } : {}) }),
+        body: JSON.stringify({ status, lang, ...(reason ? { reason } : {}) }),
       });
-      toast("Status aktualisiert");
+      toast(s.statusUpdated);
       closeModal();
       loadBookings();
     } catch (err) {
-      toast(err.message || "Fehler beim Aktualisieren");
+      toast(err.message || s.updateFailed);
     }
   }
 
@@ -603,7 +821,13 @@
     if (e.target.id === "modal") closeModal();
   });
 
-  // ---- Boot: check for an existing session ----
+  // ---- Boot: apply language, then check for an existing session ----
+  document.querySelectorAll(".lang-toggle button").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+  document.documentElement.lang = lang;
+  applyStaticStrings();
+
   (async function boot() {
     try {
       const res = await fetch("/api/admin/me", { credentials: "same-origin" });

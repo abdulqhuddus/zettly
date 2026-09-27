@@ -384,6 +384,8 @@
 
   h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
   .subtitle { color: var(--muted); font-size: 0.98rem; margin-bottom: 1.8rem; line-height: 1.5; }
+  .step[data-step="0"] h1,
+  .step[data-step="0"] .subtitle { text-align: center; }
 
   .stage { transition: max-width 0.3s ease; }
   .stage.wide { max-width: 1180px; }
@@ -724,7 +726,7 @@
 <body>
 <div class="announce-bar">
   <span class="dot"></span>
-  <span data-i18n="announceBar">Wir befinden uns im Aufbau &middot; bald verfügbar</span>
+  <span data-i18n="announceBar">Wir befinden uns im Aufbau &middot; bald verfügbar &middot; Buchungen sind derzeit nicht möglich</span>
 </div>
 <div class="topbar">
   <a class="brand" href="/">
@@ -1068,7 +1070,7 @@ const I18N = {
     successTitle: "Sie sind gebucht!",
     bookingRefLabel: "Buchungsnummer",
     cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
-    announceBar: "Wir befinden uns im Aufbau · bald verfügbar",
+    announceBar: "Wir befinden uns im Aufbau · bald verfügbar · Buchungen sind derzeit nicht möglich",
     loadingTimes: "Lade Termine…",
     noSlots: "Keine Termine an diesem Tag: bitte anderes Datum wählen.",
     slotLoadError: "Termine konnten nicht geladen werden. Bitte erneut versuchen.",
@@ -1153,7 +1155,7 @@ const I18N = {
     successTitle: "You're booked!",
     bookingRefLabel: "Booking reference",
     cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
-    announceBar: "We're under construction · coming soon",
+    announceBar: "We're under construction · coming soon · bookings are currently not accepted",
     loadingTimes: "Loading times…",
     noSlots: "No slots this day: try another date.",
     slotLoadError: "Couldn't load availability. Try again.",
