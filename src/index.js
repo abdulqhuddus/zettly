@@ -115,8 +115,7 @@ async function sendConfirmationEmail(env, booking, service) {
     }),
   });
 
-  const bodyText = await res.text();
-  return { sent: res.ok, status: res.status, body: bodyText, hadKey: !!env.RESEND_API_KEY };
+  return { sent: res.ok, status: res.status };
 }
 
 async function handleBook(request, env) {
@@ -195,7 +194,6 @@ async function handleBook(request, env) {
     time,
     price: service.price,
     emailSent: emailResult.sent,
-    _debugEmail: emailResult, // TEMP: remove after debugging
   });
 }
 
