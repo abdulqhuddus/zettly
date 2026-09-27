@@ -111,6 +111,10 @@ function rect(x, y, w, h, color) {
   return te(`${color[0]} ${color[1]} ${color[2]} rg\n${x} ${y} ${w} ${h} re f\n`);
 }
 
+function strokeRect(x, y, w, h, color, width) {
+  return te(`${color[0]} ${color[1]} ${color[2]} RG\n${width} w\n${x} ${y} ${w} ${h} re S\n`);
+}
+
 function line(x1, y1, x2, y2, color, width) {
   return te(`${color[0]} ${color[1]} ${color[2]} RG\n${width} w\n${x1} ${y1} m ${x2} ${y2} l S\n`);
 }
@@ -126,6 +130,24 @@ const MM = 2.834645669;
 function fromTop(mm) { return PAGE_H - mm * MM; }
 const LEFT_X = 20 * MM; // DIN 5008 left margin
 const RIGHT_X = 190 * MM; // DIN 5008 right content edge (20mm from right on A4)
+
+// The 4-square brand mark used in the site header (m1..m4), drawn to scale
+// at (xMM, yTopMM) with a given size in mm, so the letterhead carries an
+// actual logo mark rather than just the wordmark.
+function drawLogoMark(content, xMM, yTopMM, sizeMM) {
+  const s = (sizeMM * MM) / 100; // scale factor: 100 SVG units -> sizeMM
+  const x0 = xMM * MM;
+  const yTop = fromTop(yTopMM);
+  const sq = (svgX, svgY, svgW, svgH, color) => {
+    const px = x0 + svgX * s;
+    const py = yTop - svgY * s - svgH * s;
+    content.push(rect(px, py, svgW * s, svgH * s, color));
+  };
+  sq(0, 0, 28, 28, PURPLE);
+  sq(36, 0, 64, 64, INK);
+  sq(0, 36, 64, 64, PURPLE);
+  sq(72, 72, 28, 28, INK);
+}
 
 /**
  * Build a one-page booking-confirmation PDF.
@@ -145,7 +167,8 @@ export function generateBookingPdf(data) {
   const L = data.lang === "en"
     ? {
         title: "Booking Confirmation",
-        ref: "Booking reference",
+        ref: "Booking ref.",
+        boxTitle: "BOOKING DETAILS",
         subject: (ref) => `Subject: Booking confirmation ${ref}`,
         hi: (n) => `Dear ${n},`,
         intro: "thank you for booking with Zettly. Please find your appointment details below:",
@@ -165,7 +188,8 @@ export function generateBookingPdf(data) {
       }
     : {
         title: "Buchungsbestätigung",
-        ref: "Buchungsnummer",
+        ref: "Buchungsnr.",
+        boxTitle: "BUCHUNGSDETAILS",
         subject: (ref) => `Betreff: Buchungsbestätigung ${ref}`,
         hi: (n) => `Sehr geehrte(r) ${n},`,
         intro: "vielen Dank für Ihre Buchung bei Zettly. Nachfolgend finden Sie Ihre Termindetails:",
@@ -190,43 +214,64 @@ export function generateBookingPdf(data) {
 
   const content = [];
 
-  // ---- Letterhead (top-left wordmark, top-right sender contact block) ----
-  content.push(text(LEFT_X, fromTop(18), 19, "zettly", { bold: true, color: PURPLE }));
-  content.push(rect(LEFT_X, fromTop(21.2), 26, 2, PINK));
+  // ---- Letterhead: logo mark + wordmark top-left, sender contact top-right ----
+  drawLogoMark(content, LEFT_X / MM, 12, 8.5);
+  content.push(text(LEFT_X + 11 * MM, fromTop(18), 18, "zettly", { bold: true, color: PURPLE }));
 
   const headerLines = data.lang === "en"
-    ? ["Zettly", "Munich, Germany", "kontakt@zettly.de | www.zettly.de"]
-    : ["Zettly", "München, Deutschland", "kontakt@zettly.de | www.zettly.de"];
+    ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
+    : ["Zettly GmbH", "Musterstraße 12, 80331 München", "kontakt@zettly.de | www.zettly.de"];
   headerLines.forEach((l, i) => {
-    content.push(textRight(RIGHT_X, fromTop(13 + i * 4.6), 8.5, l, { color: MUTED }));
+    content.push(textRight(RIGHT_X, fromTop(11.5 + i * 4.4), 8.5, l, { color: MUTED }));
   });
 
-  content.push(line(LEFT_X, fromTop(30), RIGHT_X, fromTop(30), BORDER, 1));
+  content.push(line(LEFT_X, fromTop(28), RIGHT_X, fromTop(28), BORDER, 1));
 
-  // ---- DIN 5008 window-envelope address field ----
+  // ---- DIN 5008 window-envelope address field (left column) ----
   // Small sender return line, then the recipient block beneath it, both
   // positioned to sit inside a standard C6/5 (DL) window envelope.
-  content.push(text(LEFT_X, fromTop(50), 7.5, data.lang === "en"
-    ? "Zettly, Munich, Germany"
-    : "Zettly, München, Deutschland", { color: MUTED, charSpace: 0.2 }));
-  content.push(line(LEFT_X, fromTop(51.6), LEFT_X + 78 * MM, fromTop(51.6), BORDER, 0.6));
+  content.push(text(LEFT_X, fromTop(48), 7.5, data.lang === "en"
+    ? "Zettly GmbH · Musterstrasse 12 · 80331 Munich"
+    : "Zettly GmbH · Musterstraße 12 · 80331 München", { color: MUTED, charSpace: 0.2 }));
+  content.push(line(LEFT_X, fromTop(49.6), LEFT_X + 78 * MM, fromTop(49.6), BORDER, 0.6));
 
-  content.push(text(LEFT_X, fromTop(61), 11, L.addrTo(data.customerName), { bold: true, color: INK }));
-  content.push(text(LEFT_X, fromTop(66.5), 9.5, data.customerEmail || "", { color: MUTED }));
+  content.push(text(LEFT_X, fromTop(59), 11.5, L.addrTo(data.customerName), { bold: true, color: INK }));
+  content.push(text(LEFT_X, fromTop(64.5), 9.5, data.customerEmail || "", { color: MUTED }));
+
+  // ---- Bordered booking-details box (right column), like a company quote/order box ----
+  const boxX = 125 * MM;
+  const boxW = RIGHT_X - boxX;
+  const boxTop = 45;
+  const rowH = 8;
+  const boxRows = [
+    [L.ref, data.bookingRef],
+    [L.date, data.dateDisplay],
+    [L.time, data.time],
+    [L.duration, `${data.duration} ${L.minutes}`],
+    [L.price, data.priceText],
+  ];
+  const headerH = 8;
+  const boxH = headerH + boxRows.length * rowH;
+  content.push(strokeRect(boxX, fromTop(boxTop + boxH), boxW, boxH * MM, BORDER, 1));
+  content.push(rect(boxX, fromTop(boxTop + headerH), boxW, headerH * MM, PURPLE));
+  content.push(textCenter(boxX + boxW / 2, fromTop(boxTop + headerH - 5.5), 8.5, L.boxTitle, { bold: true, color: [1, 1, 1] }));
+  boxRows.forEach(([label, value], i) => {
+    const rowTop = boxTop + headerH + i * rowH;
+    if (i > 0) content.push(line(boxX, fromTop(rowTop), boxX + boxW, fromTop(rowTop), BORDER, 0.6));
+    content.push(text(boxX + 4, fromTop(rowTop + 5.3), 7.5, label.toUpperCase(), { color: MUTED }));
+    content.push(textRight(boxX + boxW - 4, fromTop(rowTop + 5.3), 9.5, value, { bold: true, color: INK }));
+  });
 
   // ---- Place/date, right-aligned above the subject line ----
-  content.push(textRight(RIGHT_X, fromTop(92), 9.5, L.place(today), { color: MUTED }));
+  const belowBlockY = Math.max(70, boxTop + boxH + 8);
+  content.push(textRight(RIGHT_X, fromTop(belowBlockY), 9.5, L.place(today), { color: MUTED }));
 
   // ---- Subject line ----
-  content.push(rect(LEFT_X, fromTop(102.8), 3, 11, PINK));
-  content.push(text(LEFT_X + 8, fromTop(102), 11.5, L.subject(data.bookingRef), { bold: true, color: INK }));
-
-  // ---- Booking reference badge, right-aligned under the subject ----
-  const refLabel = `${L.ref}: ${data.bookingRef}`;
-  content.push(textRight(RIGHT_X, fromTop(102), 10, refLabel, { bold: true, color: PURPLE }));
+  content.push(rect(LEFT_X, fromTop(belowBlockY + 11.8), 3, 11, PINK));
+  content.push(text(LEFT_X + 8, fromTop(belowBlockY + 11), 11.5, L.subject(data.bookingRef), { bold: true, color: INK }));
 
   // ---- Body ----
-  let y = fromTop(116);
+  let y = fromTop(belowBlockY + 25);
   content.push(text(LEFT_X, y, 10.5, L.hi(data.customerName), { color: INK }));
   y -= 16;
   const introLines = wrapText(L.intro, 92);
@@ -245,25 +290,8 @@ export function generateBookingPdf(data) {
     content.push(text(LEFT_X, y, 11, cl, { bold: true, color: PURPLE }));
     y -= 15;
   }
-  y -= 8;
+  y -= 14;
 
-  content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
-  y -= 24;
-
-  // Detail rows: Date / Time / Duration / Price
-  const rows = [
-    [L.date, data.dateDisplay],
-    [L.time, data.time],
-    [L.duration, `${data.duration} ${L.minutes}`],
-    [L.price, data.priceText],
-  ];
-  for (const [label, value] of rows) {
-    content.push(text(LEFT_X, y, 9, label.toUpperCase(), { color: MUTED }));
-    content.push(text(LEFT_X + 170, y, 11.5, value, { bold: true, color: INK }));
-    y -= 20;
-  }
-
-  y -= 10;
   content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
   y -= 22;
 

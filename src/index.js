@@ -198,8 +198,21 @@ async function sendConfirmationEmail(env, booking, service, lang) {
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
     <div style="max-width:520px; margin:0 auto; background:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #e9e7ef;">
       <div style="background:linear-gradient(120deg,#7C3AED,#a855f7 60%,#EC4899); padding:28px 28px 24px;">
-        <div style="color:#ffffff; font-size:24px; font-weight:800; letter-spacing:-0.02em;">zettly</div>
-        <div style="color:#f1e9ff; font-size:14px; margin-top:2px;">${t.heading}</div>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+          <tr>
+            <td style="padding-right:11px; vertical-align:middle;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="36" height="36" style="width:36px; height:36px; background:#ffffff; border-radius:10px;">
+                <tr>
+                  <td align="center" valign="middle" style="width:36px; height:36px; font-family:'Segoe UI', Arial, sans-serif; font-size:19px; font-weight:800; color:#7C3AED;">z</td>
+                </tr>
+              </table>
+            </td>
+            <td style="vertical-align:middle;">
+              <div style="color:#ffffff; font-size:24px; font-weight:800; letter-spacing:-0.02em;">zettly</div>
+            </td>
+          </tr>
+        </table>
+        <div style="color:#f1e9ff; font-size:14px; margin-top:10px;">${t.heading}</div>
         <div style="display:inline-block; margin-top:14px; background:rgba(255,255,255,0.18); color:#ffffff; font-size:12px; font-weight:700; padding:6px 12px; border-radius:999px;">${t.ref}: ${booking.bookingRef}</div>
       </div>
       <div style="padding:28px;">
