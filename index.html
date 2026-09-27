@@ -117,29 +117,108 @@
   @keyframes pillIn { to { opacity: 1; transform: translateY(0); } }
   @keyframes pillPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
 
+  /* "How it works" interactive marketing banner, shown above the booking flow */
+  .how-it-works {
+    width: 100%;
+    max-width: 1180px;
+    padding: 1rem 1.25rem 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: max-width 0.3s ease, opacity 0.25s ease, max-height 0.3s ease;
+    overflow: hidden;
+  }
+  .how-it-works.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; pointer-events: none; }
+  .how-it-works h2 { text-align: center; font-size: 1.25rem; font-weight: 800; margin-bottom: 0.3rem; }
+  .how-it-works .hiw-sub { text-align: center; color: var(--muted); font-size: 0.85rem; margin-bottom: 1.6rem; }
+  .hiw-track {
+    display: flex;
+    gap: 0.9rem;
+    overflow-x: auto;
+    padding: 0.4rem 0.4rem 1.1rem;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hiw-track::-webkit-scrollbar { height: 6px; }
+  .hiw-track::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+  .hiw-step {
+    scroll-snap-align: start;
+    flex: 0 0 150px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem 0.6rem;
+    border-radius: 16px;
+    cursor: default;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: hiwIn 0.55s cubic-bezier(.2,.9,.3,1) forwards;
+    transition: background 0.25s, transform 0.25s;
+  }
+  .hiw-step:nth-child(1) { animation-delay: 0.02s; }
+  .hiw-step:nth-child(2) { animation-delay: 0.09s; }
+  .hiw-step:nth-child(3) { animation-delay: 0.16s; }
+  .hiw-step:nth-child(4) { animation-delay: 0.23s; }
+  .hiw-step:nth-child(5) { animation-delay: 0.30s; }
+  .hiw-step:nth-child(6) { animation-delay: 0.37s; }
+  .hiw-step:nth-child(7) { animation-delay: 0.44s; }
+  @keyframes hiwIn { to { opacity: 1; transform: translateY(0); } }
+  .hiw-step:hover { background: var(--accent-light); transform: translateY(-3px); }
+  .hiw-num {
+    position: absolute; top: 4px; right: 14px;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    font-size: 0.65rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hiw-icon-wrap {
+    width: 60px; height: 60px; border-radius: 18px;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--accent-light));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 18px rgba(124,58,237,0.18), inset 0 0 0 1px rgba(124,58,237,0.12);
+    margin-bottom: 0.65rem;
+    transition: transform 0.3s cubic-bezier(.2,1.4,.4,1), box-shadow 0.3s;
+  }
+  .hiw-step:hover .hiw-icon-wrap { transform: scale(1.1) rotate(-3deg); box-shadow: 0 12px 24px rgba(124,58,237,0.3), inset 0 0 0 1px rgba(124,58,237,0.2); }
+  .hiw-icon-wrap svg { width: 26px; height: 26px; }
+  .hiw-step h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .hiw-step p { font-size: 0.72rem; color: var(--muted); line-height: 1.35; }
+  .hiw-arrow { flex: 0 0 auto; display: flex; align-items: center; color: var(--border); opacity: 0; animation: hiwIn 0.55s cubic-bezier(.2,.9,.3,1) forwards; animation-delay: 0.3s; }
+  .hiw-arrow svg { width: 16px; height: 16px; }
+  @media (max-width: 640px) { .hiw-arrow { display: none; } }
+
   .site-footer {
     width: 100%;
-    max-width: 640px;
-    padding: 2.5rem 1.25rem 6rem;
-    margin-top: 2rem;
+    background: var(--accent-light);
     border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.82rem;
-    line-height: 1.7;
+    margin-top: 2.5rem;
   }
-  .site-footer .footer-top {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
+  .site-footer .footer-inner {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
   }
-  .site-footer .footer-brand {
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    font-weight: 200; font-size: 1.2rem; color: var(--ink);
-  }
+  .site-footer .footer-col { min-width: 150px; }
+  .site-footer .footer-brand { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 200; font-size: 1.4rem; color: var(--ink); margin-bottom: 0.5rem; }
   .site-footer .footer-brand span { color: var(--accent); }
-  .site-footer .footer-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
-  .site-footer .footer-links a { color: var(--muted); text-decoration: none; }
-  .site-footer .footer-links a:hover { color: var(--accent); }
-  .site-footer .footer-bottom { color: #b3b1ba; }
+  .site-footer .footer-tagline { color: var(--muted); font-size: 0.82rem; line-height: 1.6; max-width: 220px; }
+  .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.7rem; font-weight: 700; }
+  .site-footer .footer-col a, .site-footer .footer-col span.addr { display: block; color: var(--ink); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.55rem; }
+  .site-footer .footer-col a:hover { color: var(--accent); }
+  .site-footer .footer-bottom-bar {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    color: #918f9c;
+    font-size: 0.78rem;
+    text-align: center;
+  }
 
   body { padding-bottom: 5rem; }
 
@@ -400,6 +479,61 @@
   <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M8 12.5l2.5 2.5L16 9"/></svg></span><span data-i18n="trustOnline">Direkt online buchen</span></span>
 </div>
 
+<div class="how-it-works" id="how-it-works">
+  <h2 data-i18n="hiwTitle">So läuft Ihr Termin ab</h2>
+  <p class="hiw-sub" data-i18n="hiwSub">Transparent von der Buchung bis zur Bezahlung.</p>
+  <div class="hiw-track">
+    <div class="hiw-step">
+      <span class="hiw-num">1</span>
+      <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="#7C3AED" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h4 data-i18n="hiwStep1Title">Leistung wählen</h4>
+      <p data-i18n="hiwStep1Desc">Sie wählen den passenden Service für Ihr Anliegen aus.</p>
+    </div>
+    <span class="hiw-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="hiw-step">
+      <span class="hiw-num">2</span>
+      <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h4 data-i18n="hiwStep2Title">Termin buchen</h4>
+      <p data-i18n="hiwStep2Desc">Sie buchen online einen Termin, der Ihnen passt.</p>
+    </div>
+    <span class="hiw-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="hiw-step">
+      <span class="hiw-num">3</span>
+      <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="#7C3AED" stroke-width="1.6"/></svg></div>
+      <h4 data-i18n="hiwStep3Title">Wir kommen vorbei</h4>
+      <p data-i18n="hiwStep3Desc">Wir kommen pünktlich zu Ihnen nach Hause oder ins Büro.</p>
+    </div>
+    <span class="hiw-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="hiw-step">
+      <span class="hiw-num">4</span>
+      <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke="#7C3AED" stroke-width="1.6"/></svg></div>
+      <h4 data-i18n="hiwStep4Title">Fotos vorher</h4>
+      <p data-i18n="hiwStep4Desc">Vor Beginn dokumentieren wir den Ausgangszustand mit Fotos.</p>
+    </div>
+    <span class="hiw-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="hiw-step">
+      <span class="hiw-num">5</span>
+      <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a3 3 0 0 0-4.1 3.9l-6.1 6.1a1.5 1.5 0 0 0 2.1 2.1l6.1-6.1a3 3 0 0 0 3.9-4.1l-2 2-2-1 1-2z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+      <h4 data-i18n="hiwStep5Title">Service durchführen</h4>
+      <p data-i18n="hiwStep5Desc">Wir erledigen die vereinbarte Leistung fachgerecht.</p>
+    </div>
+    <span class="hiw-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="hiw-step">
+      <span class="hiw-num">6</span>
+      <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.8 12.8l1.6 1.6 3-3.2" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h4 data-i18n="hiwStep6Title">Fotos nachher</h4>
+      <p data-i18n="hiwStep6Desc">Nach Abschluss zeigen wir Ihnen das Ergebnis in Fotos.</p>
+    </div>
+    <span class="hiw-arrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <div class="hiw-step">
+      <span class="hiw-num">7</span>
+      <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M3 10.5h18" stroke="#7C3AED" stroke-width="1.6"/><path d="M6.5 15h4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h4 data-i18n="hiwStep7Title">Bezahlen</h4>
+      <p data-i18n="hiwStep7Desc">Sie zahlen bequem online oder bar vor Ort.</p>
+    </div>
+  </div>
+</div>
+
 <div class="stage">
 
   <!-- Step 0: home or business -->
@@ -514,15 +648,23 @@
 </div>
 
 <footer class="site-footer">
-  <div class="footer-top">
-    <div class="footer-brand">zett<span>ly</span></div>
-    <div class="footer-links">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <div class="footer-brand">zett<span>ly</span></div>
+      <p class="footer-tagline" data-i18n="footerTagline">IT-Support für Zuhause und Ihr Unternehmen — München.</p>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerLinksHeading">Links</h5>
+      <a href="/" data-i18n="footerHome">Startseite</a>
       <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerContactHeading">Kontakt</h5>
       <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+      <span class="addr">München, Deutschland</span>
     </div>
   </div>
-  <p data-i18n="footerTagline">IT-Support für Zuhause und Ihr Unternehmen — München.</p>
-  <p class="footer-bottom">&copy; <span id="footer-year"></span> Zettly</p>
+  <div class="footer-bottom-bar">&copy; <span id="footer-year"></span> Zettly</div>
 </footer>
 
 <div class="progress-bar" id="progress">
@@ -549,7 +691,26 @@ const I18N = {
     trustNoHidden: "Keine versteckten Kosten",
     trustOnline: "Direkt online buchen",
     footerPrivacy: "Datenschutz",
+    footerHome: "Startseite",
     footerTagline: "IT-Support für Zuhause und Ihr Unternehmen — München.",
+    footerLinksHeading: "Links",
+    footerContactHeading: "Kontakt",
+    hiwTitle: "So läuft Ihr Termin ab",
+    hiwSub: "Transparent von der Buchung bis zur Bezahlung.",
+    hiwStep1Title: "Leistung wählen",
+    hiwStep1Desc: "Sie wählen den passenden Service für Ihr Anliegen aus.",
+    hiwStep2Title: "Termin buchen",
+    hiwStep2Desc: "Sie buchen online einen Termin, der Ihnen passt.",
+    hiwStep3Title: "Wir kommen vorbei",
+    hiwStep3Desc: "Wir kommen pünktlich zu Ihnen nach Hause oder ins Büro.",
+    hiwStep4Title: "Fotos vorher",
+    hiwStep4Desc: "Vor Beginn dokumentieren wir den Ausgangszustand mit Fotos.",
+    hiwStep5Title: "Service durchführen",
+    hiwStep5Desc: "Wir erledigen die vereinbarte Leistung fachgerecht.",
+    hiwStep6Title: "Fotos nachher",
+    hiwStep6Desc: "Nach Abschluss zeigen wir Ihnen das Ergebnis in Fotos.",
+    hiwStep7Title: "Bezahlen",
+    hiwStep7Desc: "Sie zahlen bequem online oder bar vor Ort.",
     step2Title: "Datum & Uhrzeit wählen",
     step2Sub: "Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.",
     continue: "Weiter",
@@ -594,7 +755,26 @@ const I18N = {
     trustNoHidden: "No hidden charges",
     trustOnline: "Book directly online",
     footerPrivacy: "Privacy Policy",
+    footerHome: "Home",
     footerTagline: "IT support for your home and business — Munich.",
+    footerLinksHeading: "Links",
+    footerContactHeading: "Contact",
+    hiwTitle: "How your appointment works",
+    hiwSub: "Fully transparent, from booking to payment.",
+    hiwStep1Title: "Pick a service",
+    hiwStep1Desc: "You choose the right service for what you need.",
+    hiwStep2Title: "Book an appointment",
+    hiwStep2Desc: "You book an online slot that suits your schedule.",
+    hiwStep3Title: "We come to you",
+    hiwStep3Desc: "We arrive on time at your home or office.",
+    hiwStep4Title: "Before photos",
+    hiwStep4Desc: "Before we start, we document the starting condition with photos.",
+    hiwStep5Title: "Service performed",
+    hiwStep5Desc: "We carry out the agreed work professionally.",
+    hiwStep6Title: "After photos",
+    hiwStep6Desc: "Once done, we show you the result in photos.",
+    hiwStep7Title: "Payment",
+    hiwStep7Desc: "You pay conveniently online or in cash on site.",
     step2Title: "Pick a date & time",
     step2Sub: "Business hours, Monday to Friday, 9:00–17:00.",
     continue: "Continue",
@@ -675,6 +855,7 @@ function showStep(n) {
   });
   document.querySelector(".stage").classList.toggle("wide", n === 1);
   document.querySelector(".trust-strip").classList.toggle("wide", n === 1);
+  document.getElementById("how-it-works").classList.toggle("collapsed", n !== 0);
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
