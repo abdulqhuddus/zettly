@@ -285,23 +285,29 @@
   }
   .site-footer .footer-inner {
     width: 100%;
-    max-width: 720px;
+    max-width: 940px;
     margin: 0 auto;
-    padding: 2.5rem 1.25rem 1.5rem;
+    padding: 2.8rem 1.25rem 1.5rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 2.2rem;
     justify-content: space-between;
   }
   .site-footer .footer-col { min-width: 150px; }
-  .site-footer .footer-brand { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 200; font-size: 1.4rem; color: var(--ink); margin-bottom: 0.5rem; }
+  .site-footer .footer-col.footer-about { flex: 1 1 260px; max-width: 320px; }
+  .site-footer .footer-brand { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 200; font-size: 1.4rem; color: var(--ink); margin-bottom: 0.6rem; }
   .site-footer .footer-brand span { color: var(--accent); }
-  .site-footer .footer-tagline { color: var(--muted); font-size: 0.82rem; line-height: 1.6; max-width: 220px; }
-  .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.7rem; font-weight: 700; }
-  .site-footer .footer-col a, .site-footer .footer-col span.addr { display: block; color: var(--ink); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.55rem; }
+  .site-footer .footer-tagline { color: var(--muted); font-size: 0.85rem; line-height: 1.65; max-width: 300px; }
+  .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.8rem; font-weight: 700; }
+  .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { display: block; color: var(--ink); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.6rem; }
   .site-footer .footer-col a:hover { color: var(--accent); }
+  .site-footer .service-item.highlight { color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 0.4rem; }
+  .site-footer .service-item .badge {
+    font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    background: var(--accent); color: #fff; padding: 0.15rem 0.45rem; border-radius: 999px;
+  }
   .site-footer .footer-bottom-bar {
-    max-width: 720px;
+    max-width: 940px;
     margin: 0 auto;
     padding: 1.1rem 1.25rem;
     border-top: 1px solid var(--border);
@@ -524,8 +530,6 @@
   .date-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
   .date-chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .date-chip.selected .dow { color: #e6d9ff; }
-  .date-chip.disabled { cursor: not-allowed; opacity: 0.35; background: #fafafa; }
-  .date-chip.disabled:hover { border-color: var(--border); transform: none; }
   @media (max-width: 480px) { .date-chip { flex: 1 1 52px; max-width: 64px; } }
 
   .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 0.6rem; }
@@ -544,9 +548,59 @@
   .field input:focus, .field textarea:focus { border-color: var(--accent); }
   .field textarea { resize: vertical; min-height: 80px; }
 
-  .summary { background: var(--accent-light); border-radius: 14px; padding: 1.1rem 1.3rem; margin-bottom: 1.6rem; font-size: 0.9rem; }
-  .summary .row { display: flex; justify-content: space-between; padding: 0.25rem 0; }
-  .summary .row b { font-weight: 600; }
+  .summary {
+    background: linear-gradient(160deg, #fff, var(--accent-light) 140%);
+    border: 1px solid #ece5fb;
+    border-radius: 20px;
+    padding: 1.3rem 1.4rem 1.4rem;
+    margin-bottom: 1.6rem;
+    box-shadow: 0 10px 28px rgba(124,58,237,0.08);
+  }
+  .summary-path {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1.15rem;
+    padding-bottom: 1.05rem;
+    border-bottom: 1px dashed #ded7f2;
+  }
+  .summary-path .crumb {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .summary-path .crumb.final {
+    color: var(--accent);
+    border-color: #e2d6fb;
+    background: var(--accent-light);
+  }
+  .summary-path .sep { color: #cac6d6; font-size: 0.75rem; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 520px) { .summary-grid { grid-template-columns: 1fr 1fr; } }
+  .summary-item { display: flex; align-items: flex-start; gap: 0.55rem; min-width: 0; }
+  .summary-item .ico {
+    width: 34px; height: 34px; border-radius: 10px; flex: 0 0 auto;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 10px rgba(124,58,237,0.15);
+  }
+  .summary-item .ico svg { width: 16px; height: 16px; stroke: var(--accent); }
+  .summary-item.price .ico { box-shadow: 0 4px 10px rgba(236,72,153,0.18); }
+  .summary-item.price .ico svg { stroke: var(--pink); }
+  .summary-item .meta { min-width: 0; }
+  .summary-item .label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.1rem; }
+  .summary-item .value { font-size: 0.92rem; font-weight: 700; color: var(--ink); overflow-wrap: break-word; }
+  .summary-item.price .value { color: var(--accent); font-size: 1.05rem; }
 
   .actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
   button.btn { border: none; border-radius: 10px; padding: 0.85rem 1.5rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: transform 0.15s, background 0.2s, opacity 0.2s; }
@@ -722,7 +776,7 @@
   <!-- Step 3: date & time -->
   <div class="step" data-step="3">
     <h1 data-i18n="step2Title">Datum & Uhrzeit wählen</h1>
-    <p class="subtitle" data-i18n="step2Sub">Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.</p>
+    <p class="subtitle" data-i18n="step2Sub">Geöffnet täglich, auch am Wochenende, 9:00–17:00 Uhr.</p>
     <div class="date-strip" id="date-strip"></div>
     <div class="slot-grid" id="slot-grid"></div>
     <div class="actions">
@@ -776,9 +830,16 @@
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-col">
+    <div class="footer-col footer-about">
       <div class="footer-brand">zett<span>ly</span></div>
-      <p class="footer-tagline" data-i18n="footerTagline">IT-Support für Zuhause und Ihr Unternehmen — München.</p>
+      <p class="footer-tagline" data-i18n="footerTagline">Zettly ist Ihr IT-Partner in München — von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerServicesHeading">Leistungen</h5>
+      <span class="service-item highlight"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></span>
+      <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
+      <span class="service-item" data-i18n="footerServiceSmartHome">Smart Home &amp; Sicherheit</span>
+      <span class="service-item" data-i18n="footerServiceBusiness">IT-Support für Unternehmen</span>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerLinksHeading">Links</h5>
@@ -819,7 +880,13 @@ const I18N = {
     trustOnline: "Direkt online buchen",
     footerPrivacy: "Datenschutz",
     footerHome: "Startseite",
-    footerTagline: "IT-Support für Zuhause und Ihr Unternehmen — München.",
+    footerTagline: "Zettly ist Ihr IT-Partner in München — von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+    footerServicesHeading: "Leistungen",
+    footerSpecialtyBadge: "Schwerpunkt",
+    footerServiceDynamics: "Dynamics 365",
+    footerServiceComputers: "Computer & Netzwerke",
+    footerServiceSmartHome: "Smart Home & Sicherheit",
+    footerServiceBusiness: "IT-Support für Unternehmen",
     footerLinksHeading: "Links",
     footerContactHeading: "Kontakt",
     ctaBannerTitle: "Jetzt Termin buchen",
@@ -841,7 +908,7 @@ const I18N = {
     hiwStep7Title: "Bezahlen",
     hiwStep7Desc: "Sie zahlen bequem online oder bar vor Ort.",
     step2Title: "Datum & Uhrzeit wählen",
-    step2Sub: "Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.",
+    step2Sub: "Geöffnet täglich, auch am Wochenende, 9:00–17:00 Uhr.",
     continue: "Weiter",
     step3Title: "Ihre Angaben",
     step3Sub: "Die Bestätigung senden wir an diese Adresse.",
@@ -885,7 +952,13 @@ const I18N = {
     trustOnline: "Book directly online",
     footerPrivacy: "Privacy Policy",
     footerHome: "Home",
-    footerTagline: "IT support for your home and business — Munich.",
+    footerTagline: "Zettly is your IT partner in Munich — from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+    footerServicesHeading: "Services",
+    footerSpecialtyBadge: "Specialty",
+    footerServiceDynamics: "Dynamics 365",
+    footerServiceComputers: "Computers & Networks",
+    footerServiceSmartHome: "Smart Home & Security",
+    footerServiceBusiness: "Business IT Support",
     footerLinksHeading: "Links",
     footerContactHeading: "Contact",
     ctaBannerTitle: "Book an appointment now",
@@ -907,7 +980,7 @@ const I18N = {
     hiwStep7Title: "Payment",
     hiwStep7Desc: "You pay conveniently online or in cash on site.",
     step2Title: "Pick a date & time",
-    step2Sub: "Business hours, Monday to Friday, 9:00–17:00.",
+    step2Sub: "Open every day, including weekends, 9:00–17:00.",
     continue: "Continue",
     step3Title: "Your details",
     step3Sub: "We'll send your confirmation here.",
@@ -1370,24 +1443,20 @@ function renderDateStrip() {
   const strip = document.getElementById("date-strip");
   strip.innerHTML = "";
   const days = nextCalendarDays(14);
-  let firstOpenChip = null;
+  let firstChip = null;
   days.forEach((d) => {
-    const dow = d.getDay();
-    const isWeekendDay = dow === 0 || dow === 6;
     const chip = document.createElement("div");
-    chip.className = "date-chip" + (isWeekendDay ? " disabled" : "");
+    chip.className = "date-chip";
     chip.dataset.date = isoDate(d);
     chip.innerHTML = `
       <div class="dow">${d.toLocaleDateString(DOW_LOCALE[lang], { weekday: "short" })}</div>
       <div class="dnum">${d.getDate()}</div>
     `;
-    if (!isWeekendDay) {
-      chip.addEventListener("click", () => selectDate(chip));
-      if (!firstOpenChip) firstOpenChip = chip;
-    }
+    chip.addEventListener("click", () => selectDate(chip));
+    if (!firstChip) firstChip = chip;
     strip.appendChild(chip);
   });
-  if (firstOpenChip) selectDate(firstOpenChip);
+  if (firstChip) selectDate(firstChip);
 }
 
 async function selectDate(chip) {
@@ -1429,13 +1498,44 @@ async function renderSlots() {
   }
 }
 
+const SUMMARY_ICONS = {
+  calendar: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" ${ICON_STROKE}/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" ${ICON_STROKE}/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M12 7.5V12l3 2" ${ICON_STROKE}/></svg>`,
+  price: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M9.5 15s.8 1 2.5 1 2.5-.8 2.5-1.8-1-1.5-2.5-1.7-2.5-.7-2.5-1.7S10.5 9 12 9s2 .5 2.3 1" ${ICON_STROKE}/><path d="M12 7.3v1M12 15.7v1" ${ICON_STROKE}/></svg>`,
+  duration: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M12 8v4l2.5 1.5" ${ICON_STROKE}/></svg>`,
+};
+
 function renderSummary(targetId) {
   const el = document.getElementById(targetId);
+  const audienceLabel = state.audience === "business" ? t("audienceBizTitle") : t("audienceHomeTitle");
+  const crumbs = [audienceLabel];
+  if (state.category) crumbs.push(state.category.name[lang]);
+  state.treePath.forEach(e => crumbs.push(e.choiceLabel[lang]));
+
+  const pathHtml = crumbs.map((c, i) => {
+    const isLast = i === crumbs.length - 1;
+    return `${i > 0 ? '<span class="sep">&rsaquo;</span>' : ''}<span class="crumb${isLast ? ' final' : ''}">${c}</span>`;
+  }).join("");
+
+  const dateObj = new Date(state.date + "T00:00:00");
+  const niceDate = dateObj.toLocaleDateString(DOW_LOCALE[lang], { weekday: "short", day: "numeric", month: "short" });
+
   el.innerHTML = `
-    <div class="row"><span>${t("summaryService")}</span><b>${state.service.name[lang]}</b></div>
-    <div class="row"><span>${t("summaryDate")}</span><b>${state.date}</b></div>
-    <div class="row"><span>${t("summaryTime")}</span><b>${state.time}</b></div>
-    <div class="row"><span>${t("summaryPrice")}</span><b>${fmtPrice(state.service)}</b></div>
+    <div class="summary-path">${pathHtml}</div>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="ico">${SUMMARY_ICONS.calendar}</span>
+        <span class="meta"><span class="label">${t("summaryDate")}</span><span class="value">${niceDate}</span></span>
+      </div>
+      <div class="summary-item">
+        <span class="ico">${SUMMARY_ICONS.clock}</span>
+        <span class="meta"><span class="label">${t("summaryTime")}</span><span class="value">${state.time}</span></span>
+      </div>
+      <div class="summary-item price">
+        <span class="ico">${SUMMARY_ICONS.price}</span>
+        <span class="meta"><span class="label">${t("summaryPrice")}</span><span class="value">${fmtPrice(state.service)}</span></span>
+      </div>
+    </div>
   `;
 }
 

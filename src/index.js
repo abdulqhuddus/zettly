@@ -43,12 +43,6 @@ function toMinutes(hhmm) {
   return h * 60 + m;
 }
 
-function isWeekend(dateStr) {
-  const d = new Date(dateStr + "T00:00:00Z");
-  const day = d.getUTCDay();
-  return day === 0 || day === 6;
-}
-
 const BOOKING_LEAD_MINUTES = 120;
 
 // Current wall-clock date/time in Europe/Berlin, independent of the runtime's own timezone.
@@ -119,10 +113,6 @@ async function handleAvailability(url, env) {
 
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return json({ error: "Invalid or missing date" }, 400);
-  }
-
-  if (isWeekend(date)) {
-    return json({ date, slots: [] });
   }
 
   const now = berlinNow();
