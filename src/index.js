@@ -24,6 +24,29 @@ function isWeekend(dateStr) {
   return day === 0 || day === 6;
 }
 
+const BOOKING_LEAD_MINUTES = 120;
+
+// Current wall-clock date/time in Europe/Berlin, independent of the runtime's own timezone.
+function berlinNow() {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Berlin",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date());
+  const map = {};
+  for (const p of parts) map[p.type] = p.value;
+  // hour12:false can yield "24" for midnight; normalize to 0.
+  const hour = map.hour === "24" ? 0 : parseInt(map.hour, 10);
+  return {
+    date: `${map.year}-${map.month}-${map.day}`,
+    minutes: hour * 60 + parseInt(map.minute, 10),
+  };
+}
+
 function findService(id) {
   return ALL_SERVICES.find((s) => s.id === id);
 }
@@ -83,6 +106,12 @@ async function handleAvailability(url, env) {
     return json({ date, slots: [] });
   }
 
+  const now = berlinNow();
+  if (date < now.date) {
+    return json({ date, slots: [] });
+  }
+  const cutoffMinutes = date === now.date ? now.minutes + BOOKING_LEAD_MINUTES : -Infinity;
+
   let existing = [];
   if (env.DB) {
     const { results } = await env.DB.prepare(
@@ -95,6 +124,7 @@ async function handleAvailability(url, env) {
 
   const slots = [];
   for (let t = OPEN_HOUR * 60; t + duration <= CLOSE_HOUR * 60; t += SLOT_STEP_MIN) {
+    if (t < cutoffMinutes) continue;
     const hh = String(Math.floor(t / 60)).padStart(2, "0");
     const mm = String(t % 60).padStart(2, "0");
     const time = `${hh}:${mm}`;
@@ -179,6 +209,14 @@ async function handleBook(request, env) {
 
   if (!isValidEmail(email)) {
     return json({ error: "Invalid email" }, 400);
+  }
+
+  const now = berlinNow();
+  const requestedMinutes = toMinutes(time);
+  const isPastDate = date < now.date;
+  const isTooSoon = date === now.date && requestedMinutes < now.minutes + BOOKING_LEAD_MINUTES;
+  if (isPastDate || isTooSoon) {
+    return json({ error: "This time is no longer available, please pick a later slot" }, 409);
   }
 
   if (!env.DB) {

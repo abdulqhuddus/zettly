@@ -650,14 +650,19 @@ function nextBusinessDays(count) {
   const days = [];
   let d = new Date();
   while (days.length < count) {
-    d = new Date(d.getTime() + 86400000);
     const dow = d.getDay();
     if (dow !== 0 && dow !== 6) days.push(new Date(d));
+    d = new Date(d.getTime() + 86400000);
   }
   return days;
 }
 
-function isoDate(d) { return d.toISOString().slice(0, 10); }
+function isoDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
 
 const DOW_LOCALE = { de: "de-DE", en: "en-US" };
 
