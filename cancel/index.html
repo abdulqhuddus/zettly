@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Zettly — Cancel booking</title>
+<style>
+  :root {
+    --accent: #7C3AED;
+    --accent-light: #F3EEFF;
+    --pink: #EC4899;
+    --ink: #111114;
+    --muted: #6b6b74;
+    --border: #e9e7ef;
+    --bg: #f7f6fb;
+    --ok: #16a34a;
+    --ok-bg: #eafcef;
+    --danger: #c2185b;
+    --danger-bg: #fdeef2;
+    --warn: #b45309;
+    --warn-bg: #fef3e0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .card {
+    width: 100%;
+    max-width: 440px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 1.85rem;
+    box-shadow: 0 10px 30px rgba(17,17,20,0.06);
+  }
+  .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .brand-text { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 300; font-size: 1.4rem; letter-spacing: 0.01em; }
+  .brand-text span { color: var(--accent); }
+  .lang-toggle { display: flex; gap: 0.3rem; }
+  .lang-toggle button {
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.28rem 0.6rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .lang-toggle button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  h1 { font-size: 1.05rem; font-weight: 800; margin: 0 0 1rem; }
+  .row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+  .row:last-of-type { border-bottom: none; }
+  .row .label { color: var(--muted); }
+  .row .value { font-weight: 700; text-align: right; }
+  .badge { display: inline-block; margin-top: 1rem; font-size: 0.78rem; font-weight: 700; padding: 0.4rem 0.75rem; border-radius: 999px; }
+  .badge.ok { background: var(--ok-bg); color: var(--ok); }
+  .badge.warn { background: var(--warn-bg); color: var(--warn); }
+  .badge.danger { background: var(--danger-bg); color: var(--danger); }
+  .msg { font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-top: 0.9rem; }
+  .btn {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1.1rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 1.4rem;
+  }
+  .btn-danger { background: var(--danger-bg); color: var(--danger); }
+  .btn-danger:hover { background: #fbdde7; }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .btn-ghost { background: none; color: var(--muted); text-decoration: underline; margin-top: 0.6rem; font-weight: 600; padding: 0.4rem; }
+  .spinner { text-align: center; padding: 2rem 0; color: var(--muted); font-size: 0.9rem; }
+  .field { margin-top: 1.1rem; }
+  .field label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 0.4rem; }
+  .field textarea {
+    width: 100%;
+    min-height: 74px;
+    padding: 0.65rem 0.8rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+  }
+  .field textarea:focus { border-color: var(--accent); }
+  .field-error { color: var(--danger); font-size: 0.78rem; margin: 0.4rem 0 0; min-height: 1.1em; }
+</style>
+</head>
+<body>
+  <div class="card" id="app">
+    <div class="spinner" id="loading">Loading…</div>
+  </div>
+
+<script>
+(function () {
+  const STR = {
+    en: {
+      title: "Cancel booking",
+      ref: "Booking reference",
+      service: "Service",
+      date: "Date",
+      time: "Time",
+      duration: "Duration",
+      price: "Price",
+      address: "Address",
+      cancelledBadge: "This booking is already cancelled",
+      completedBadge: "This booking is already completed",
+      tooLate: (h) => `This appointment is in ${h < 1 ? "less than an hour" : h + " hour" + (h === 1 ? "" : "s")} — cancellation is only possible up to 24 hours in advance. Please contact us directly if you still need to cancel.`,
+      canCancelMsg: "You can cancel this booking free of charge. This cannot be undone.",
+      reasonLabel: "Reason for cancellation (required)",
+      reasonPlaceholder: "Please let us know why you're cancelling…",
+      reasonRequired: "Please enter a reason for the cancellation.",
+      cancelBtn: "Cancel this booking",
+      cancelling: "Cancelling…",
+      cancelledOk: "Your booking has been cancelled. A confirmation email is on its way.",
+      invalid: "This link is invalid or has expired.",
+      genericError: "Something went wrong. Please try again or contact us directly.",
+      priceOnRequest: "Quoted after on-site diagnosis",
+      minutes: "min",
+      backHome: "Back to zettly.de",
+    },
+    de: {
+      title: "Buchung stornieren",
+      ref: "Buchungsnummer",
+      service: "Leistung",
+      date: "Datum",
+      time: "Uhrzeit",
+      duration: "Dauer",
+      price: "Preis",
+      address: "Adresse",
+      cancelledBadge: "Diese Buchung ist bereits storniert",
+      completedBadge: "Diese Buchung ist bereits abgeschlossen",
+      tooLate: (h) => `Dieser Termin liegt in ${h < 1 ? "weniger als einer Stunde" : h + " Stunde" + (h === 1 ? "" : "n")} — eine Stornierung ist nur bis 24 Stunden vorher möglich. Bitte kontaktieren Sie uns direkt, falls Sie dennoch stornieren müssen.`,
+      canCancelMsg: "Sie können diese Buchung kostenlos stornieren. Dies kann nicht rückgängig gemacht werden.",
+      reasonLabel: "Grund der Stornierung (erforderlich)",
+      reasonPlaceholder: "Bitte teilen Sie uns mit, warum Sie stornieren möchten…",
+      reasonRequired: "Bitte geben Sie einen Grund für die Stornierung an.",
+      cancelBtn: "Buchung stornieren",
+      cancelling: "Wird storniert…",
+      cancelledOk: "Ihre Buchung wurde storniert. Eine Bestätigungs-E-Mail ist unterwegs.",
+      invalid: "Dieser Link ist ungültig oder abgelaufen.",
+      genericError: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.",
+      priceOnRequest: "Wird nach Diagnose vor Ort mitgeteilt",
+      minutes: "Min.",
+      backHome: "Zurück zu zettly.de",
+    },
+  };
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get("token") || "";
+  let lang = params.get("lang") === "de" ? "de" : "en";
+  document.documentElement.lang = lang;
+
+  const app = document.getElementById("app");
+
+  function brandRow(t) {
+    return `<div class="brand-row">
+      <div class="brand-text"><span style="color:var(--ink)">zett</span><span>ly</span></div>
+      <div class="lang-toggle">
+        <button data-lang="en" class="${lang === "en" ? "active" : ""}">EN</button>
+        <button data-lang="de" class="${lang === "de" ? "active" : ""}">DE</button>
+      </div>
+    </div>`;
+  }
+
+  function attachLangToggle(onSwitch) {
+    app.querySelectorAll(".lang-toggle button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (btn.dataset.lang === lang) return;
+        lang = btn.dataset.lang;
+        document.documentElement.lang = lang;
+        onSwitch();
+      });
+    });
+  }
+
+  function renderError(message) {
+    const t = STR[lang];
+    app.innerHTML = `
+      ${brandRow(t)}
+      <h1>${t.title}</h1>
+      <p class="msg">${message}</p>
+      <a class="btn btn-ghost" href="https://zettly.de" style="text-align:center;">${t.backHome}</a>
+    `;
+    attachLangToggle(load);
+  }
+
+  async function load() {
+    if (!token) {
+      renderError(STR[lang].invalid);
+      return;
+    }
+    app.innerHTML = `${brandRow(STR[lang])}<div class="spinner">…</div>`;
+    attachLangToggle(load);
+    try {
+      const res = await fetch(`/api/cancel-info?token=${encodeURIComponent(token)}&lang=${lang}`);
+      const data = await res.json();
+      if (!res.ok) {
+        renderError(data.error === "Booking not found" ? STR[lang].invalid : STR[lang].invalid);
+        return;
+      }
+      render(data);
+    } catch {
+      renderError(STR[lang].genericError);
+    }
+  }
+
+  function priceDisplay(t, data) {
+    if (data.price == null) return t.priceOnRequest;
+    return `€${data.price}`;
+  }
+
+  function render(data) {
+    const t = STR[lang];
+    let statusBlock = "";
+    if (data.status === "cancelled") {
+      statusBlock = `<div class="badge danger">${t.cancelledBadge}</div>`;
+    } else if (data.status === "completed") {
+      statusBlock = `<div class="badge warn">${t.completedBadge}</div>`;
+    } else if (!data.canCancel) {
+      statusBlock = `<p class="msg">${t.tooLate(data.hoursUntil)}</p>`;
+    }
+
+    app.innerHTML = `
+      ${brandRow(t)}
+      <h1>${t.title}</h1>
+      <div class="row"><div class="label">${t.ref}</div><div class="value">${data.bookingRef}</div></div>
+      <div class="row"><div class="label">${t.service}</div><div class="value">${data.serviceName}</div></div>
+      <div class="row"><div class="label">${t.date}</div><div class="value">${data.dateDisplay}</div></div>
+      <div class="row"><div class="label">${t.time}</div><div class="value">${data.time}</div></div>
+      <div class="row"><div class="label">${t.duration}</div><div class="value">${data.durationMinutes} ${t.minutes}</div></div>
+      <div class="row"><div class="label">${t.price}</div><div class="value">${priceDisplay(t, data)}</div></div>
+      <div class="row"><div class="label">${t.address}</div><div class="value">${data.address}</div></div>
+      ${statusBlock}
+      ${
+        data.canCancel
+          ? `<p class="msg">${t.canCancelMsg}</p>
+             <div class="field">
+               <label for="cancel-reason">${t.reasonLabel}</label>
+               <textarea id="cancel-reason" placeholder="${t.reasonPlaceholder}"></textarea>
+               <p class="field-error" id="reason-error"></p>
+             </div>
+             <button class="btn btn-danger" id="cancel-btn">${t.cancelBtn}</button>`
+          : `<a class="btn btn-ghost" href="https://zettly.de" style="text-align:center;">${t.backHome}</a>`
+      }
+    `;
+    attachLangToggle(load);
+
+    const btn = document.getElementById("cancel-btn");
+    if (btn) {
+      btn.addEventListener("click", async () => {
+        const reasonEl = document.getElementById("cancel-reason");
+        const reason = (reasonEl.value || "").trim();
+        if (!reason) {
+          document.getElementById("reason-error").textContent = t.reasonRequired;
+          reasonEl.focus();
+          return;
+        }
+        document.getElementById("reason-error").textContent = "";
+        btn.disabled = true;
+        btn.textContent = t.cancelling;
+        try {
+          const res = await fetch("/api/cancel", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ token, lang, reason }),
+          });
+          const result = await res.json();
+          if (!res.ok) {
+            renderError(result.error || t.genericError);
+            return;
+          }
+          app.innerHTML = `
+            ${brandRow(t)}
+            <h1>${t.title}</h1>
+            <div class="badge ok">${t.cancelledOk}</div>
+            <a class="btn btn-ghost" href="https://zettly.de" style="text-align:center;">${t.backHome}</a>
+          `;
+          attachLangToggle(load);
+        } catch {
+          renderError(t.genericError);
+        }
+      });
+    }
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

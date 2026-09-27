@@ -14,13 +14,8 @@ import {
   recordFailedLogin,
   clearFailedLogins,
 } from "./auth.js";
-
-function json(data, status = 200, extraHeaders = {}) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "content-type": "application/json; charset=utf-8", ...extraHeaders },
-  });
-}
+import { json } from "./utils.js";
+import { sendCancellationEmail } from "./notify.js";
 
 // A cross-site <form> or <img>/fetch("no-cors") cannot set a custom header,
 // so requiring this one on every state-changing admin call is a second,
@@ -104,7 +99,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_name, price, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at
+            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
      LIMIT ? OFFSET ?`
@@ -123,7 +118,7 @@ export async function handleAdminListBookings(url, env) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at
+            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason
      FROM bookings WHERE id = ?`
   )
     .bind(id)
@@ -148,51 +143,32 @@ export async function handleAdminUpdateStatus(request, env, id) {
   const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
   if (!existing) return json({ error: "Not found" }, 404);
 
-  await env.DB.prepare(`UPDATE bookings SET status = ? WHERE id = ?`).bind(body.status, id).run();
+  const cancelling = body.status === "cancelled" && existing.status !== "cancelled";
+  // Reactivating a previously-cancelled booking clears the cancellation
+  // record; anything else leaves cancelled_at/cancellation_reason as the
+  // historical record of when and why it was cancelled.
+  const reactivating = existing.status === "cancelled" && body.status !== "cancelled";
+
+  const reason = typeof body.reason === "string" ? body.reason.trim() : "";
+  if (cancelling && !reason) {
+    return json({ error: "A cancellation reason is required" }, 400);
+  }
+
+  await env.DB.prepare(
+    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ? WHERE id = ?`
+  )
+    .bind(
+      body.status,
+      cancelling ? new Date().toISOString().replace("Z", "") : reactivating ? null : existing.cancelled_at,
+      cancelling ? reason : reactivating ? null : existing.cancellation_reason,
+      id
+    )
+    .run();
 
   let emailSent = false;
-  if (body.status === "cancelled" && existing.status !== "cancelled" && body.notifyCustomer !== false) {
-    emailSent = (await sendCancellationEmail(env, existing)).sent;
+  if (cancelling && body.notifyCustomer !== false) {
+    emailSent = (await sendCancellationEmail(env, { ...existing, cancellation_reason: reason }, body.lang === "en" ? "en" : "de")).sent;
   }
 
   return json({ ok: true, id, status: body.status, emailSent });
-}
-
-// A short, plain cancellation notice — deliberately simpler than the
-// booking-confirmation email (no logo/attachment needed for a cancellation).
-async function sendCancellationEmail(env, booking) {
-  if (!env.RESEND_API_KEY) return { sent: false, reason: "no_api_key" };
-  const bookingRef = `ZTL-${booking.id.split("-")[0].toUpperCase()}`;
-  const from = env.RESEND_FROM || "Zettly <onboarding@resend.dev>";
-  const dateDisplay = new Date(booking.date + "T00:00:00").toLocaleDateString("de-DE", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-  });
-  const html = `
-  <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
-    <div style="max-width:480px; margin:0 auto; background:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #e9e7ef;">
-      <div style="padding:24px 28px; border-bottom:1px solid #e9e7ef;">
-        <div style="font-family:'Helvetica Neue', Arial, sans-serif; font-size:22px; font-weight:300; letter-spacing:0.01em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
-      </div>
-      <div style="padding:28px;">
-        <p style="margin:0 0 14px; font-size:15px; font-weight:700; color:#111114;">Hallo ${booking.customer_name},</p>
-        <p style="margin:0 0 14px; font-size:13.5px; color:#6b6b74; line-height:1.5;">Ihre Buchung <strong>${bookingRef}</strong> für ${dateDisplay} um ${booking.time} Uhr wurde storniert.</p>
-        <p style="margin:0; font-size:13.5px; color:#6b6b74; line-height:1.5;">Falls Sie einen neuen Termin buchen möchten, besuchen Sie gerne erneut unsere Website.</p>
-        <p style="margin:22px 0 0; font-size:13px; font-weight:700; color:#111114;">Ihr Zettly-Team</p>
-      </div>
-    </div>
-  </div>`;
-
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
-    body: JSON.stringify({
-      from,
-      to: booking.customer_email,
-      subject: `Stornierung Buchung ${bookingRef}`,
-      html,
-    }),
-  });
-  return { sent: res.ok };
 }

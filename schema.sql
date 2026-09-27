@@ -20,7 +20,9 @@ CREATE TABLE IF NOT EXISTS bookings (
   customer_address TEXT NOT NULL DEFAULT '', -- on-site visit address
   notes TEXT,
   status TEXT NOT NULL DEFAULT 'confirmed', -- confirmed | cancelled | completed
-  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  cancelled_at TEXT,            -- set when status becomes 'cancelled'
+  cancellation_reason TEXT      -- required whenever status becomes 'cancelled'
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);

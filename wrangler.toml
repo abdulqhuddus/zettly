@@ -14,6 +14,11 @@ binding = "DB"
 database_name = "zettly-db"
 database_id = "196c9e0f-2ae9-4bfb-858d-0870dfc8e663"
 
+[vars]
+# Verified sending domain on Resend. Update here (not a secret — it's not
+# sensitive) if the "from" address ever changes.
+RESEND_FROM = "Zettly <no-reply@zettly.de>"
+
 # ---- Admin area (src/admin.js, admin/index.html) ----
 # Both are secrets, never plain [vars] — set them once with:
 #   node scripts/hash-admin-password.mjs "your-new-admin-password"

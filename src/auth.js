@@ -74,16 +74,15 @@ async function hmac(secret, message) {
   return toBase64Url(new Uint8Array(sig));
 }
 
-/** Create a signed, expiring session token: "<payloadB64>.<hmacB64>". */
-export async function createSessionToken(secret, extra = {}) {
-  const payload = { ...extra, exp: Date.now() + SESSION_TTL_MS };
+/** Create a signed token "<payloadB64>.<hmacB64>" with an explicit expiry (ms epoch). */
+async function signToken(secret, payload) {
   const payloadB64 = toBase64Url(new TextEncoder().encode(JSON.stringify(payload)));
   const sig = await hmac(secret, payloadB64);
   return `${payloadB64}.${sig}`;
 }
 
-/** Verify a session token's signature and expiry; returns the payload or null. */
-export async function verifySessionToken(secret, token) {
+/** Verify any token produced by signToken; returns the payload or null. */
+async function verifyToken(secret, token) {
   if (!token || typeof token !== "string" || !token.includes(".")) return null;
   const [payloadB64, sig] = token.split(".");
   const expectedSig = await hmac(secret, payloadB64);
@@ -96,6 +95,39 @@ export async function verifySessionToken(secret, token) {
   }
   if (!payload || typeof payload.exp !== "number" || payload.exp < Date.now()) return null;
   return payload;
+}
+
+/** Create a signed, expiring (12h) admin session token. */
+export function createSessionToken(secret, extra = {}) {
+  return signToken(secret, { ...extra, exp: Date.now() + SESSION_TTL_MS });
+}
+
+/** Verify a session token's signature and expiry; returns the payload or null. */
+export async function verifySessionToken(secret, token) {
+  const payload = await verifyToken(secret, token);
+  return payload;
+}
+
+// ---- Self-service cancellation links (src/cancel.js) --------------------
+// A separate token "purpose" from the admin session, so a leaked/expired
+// cancel link can never be mistaken for (or reused as) an admin session,
+// even though both happen to be signed with the same SESSION_SECRET.
+
+/**
+ * A signed link a customer can use to view/cancel one specific booking,
+ * without logging in. `expiresAt` should be well past the appointment
+ * (e.g. +30 days) — the 24h cancellation cutoff itself is enforced
+ * server-side from the booking's actual date/time, not from this expiry.
+ */
+export function createCancelToken(secret, bookingId, expiresAt) {
+  return signToken(secret, { purpose: "cancel", bookingId, exp: expiresAt });
+}
+
+/** Verify a cancel link token; returns { bookingId } or null. */
+export async function verifyCancelToken(secret, token) {
+  const payload = await verifyToken(secret, token);
+  if (!payload || payload.purpose !== "cancel" || !payload.bookingId) return null;
+  return { bookingId: payload.bookingId };
 }
 
 export function parseCookies(request) {
