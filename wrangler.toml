@@ -13,3 +13,10 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "zettly-db"
 database_id = "196c9e0f-2ae9-4bfb-858d-0870dfc8e663"
+
+# ---- Admin area (src/admin.js, admin/index.html) ----
+# Both are secrets, never plain [vars] — set them once with:
+#   node scripts/hash-admin-password.mjs "your-new-admin-password"
+#   wrangler secret put ADMIN_PASSWORD_HASH     (paste the printed value)
+#   wrangler secret put SESSION_SECRET          (paste output of: openssl rand -hex 32)
+# Without these two secrets, /admin returns "Admin login is not configured yet".

@@ -1,5 +1,14 @@
 import catalog from "../catalog.json";
 import { generateBookingPdf, toBase64 } from "./pdf.js";
+import { getSession } from "./auth.js";
+import {
+  handleAdminLogin,
+  handleAdminLogout,
+  handleAdminMe,
+  handleAdminListBookings,
+  handleAdminBookingDetail,
+  handleAdminUpdateStatus,
+} from "./admin.js";
 
 // The site's actual 4-square brand mark, rasterized once (see
 // scripts/make-logo-png.js) so the confirmation email can carry the real
@@ -425,6 +434,53 @@ export default {
     }
     if (url.pathname === "/api/book" && request.method === "POST") {
       return handleBook(request, env);
+    }
+
+    // ---- Admin API ----
+    // /api/admin/login and /me are reachable without a session (that's how
+    // you get one / check whether you have one); every other /api/admin/*
+    // route requires a verified session cookie.
+    if (url.pathname === "/api/admin/login" && request.method === "POST") {
+      return handleAdminLogin(request, env);
+    }
+    if (url.pathname === "/api/admin/logout" && request.method === "POST") {
+      return handleAdminLogout();
+    }
+    if (url.pathname === "/api/admin/me" && request.method === "GET") {
+      return handleAdminMe(request, env);
+    }
+    if (url.pathname.startsWith("/api/admin/")) {
+      const session = await getSession(request, env);
+      if (!session) {
+        return new Response(JSON.stringify({ error: "Not authenticated" }), {
+          status: 401,
+          headers: { "content-type": "application/json; charset=utf-8" },
+        });
+      }
+      if (url.pathname === "/api/admin/bookings" && request.method === "GET") {
+        return handleAdminListBookings(url, env);
+      }
+      const bookingMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)(?:\/status)?$/);
+      if (bookingMatch && request.method === "GET") {
+        return handleAdminBookingDetail(env, bookingMatch[1]);
+      }
+      if (bookingMatch && url.pathname.endsWith("/status") && request.method === "POST") {
+        return handleAdminUpdateStatus(request, env, bookingMatch[1]);
+      }
+      return new Response(JSON.stringify({ error: "Not found" }), {
+        status: 404,
+        headers: { "content-type": "application/json; charset=utf-8" },
+      });
+    }
+
+    // The admin page itself carries no sensitive data server-side (it's a
+    // static shell that fetches everything through the authenticated API
+    // above), but keep it out of search results either way.
+    if (url.pathname === "/admin" || url.pathname === "/admin/") {
+      const res = await env.ASSETS.fetch(new Request(new URL("/admin/index.html", request.url), request));
+      const headers = new Headers(res.headers);
+      headers.set("X-Robots-Tag", "noindex, nofollow");
+      return new Response(res.body, { status: res.status, headers });
     }
 
     // Everything else: serve the static site

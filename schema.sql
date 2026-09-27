@@ -19,8 +19,17 @@ CREATE TABLE IF NOT EXISTS bookings (
   customer_phone TEXT,
   customer_address TEXT NOT NULL DEFAULT '', -- on-site visit address
   notes TEXT,
-  status TEXT NOT NULL DEFAULT 'confirmed', -- confirmed | cancelled
+  status TEXT NOT NULL DEFAULT 'confirmed', -- confirmed | cancelled | completed
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);
+
+-- Tracks failed admin login attempts per IP so the login endpoint can lock
+-- out an IP after repeated failures instead of allowing unlimited guesses.
+CREATE TABLE IF NOT EXISTS admin_login_attempts (
+  ip TEXT PRIMARY KEY,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  locked_until TEXT,          -- ISO datetime; NULL/past = not locked
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
