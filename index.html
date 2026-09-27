@@ -78,10 +78,41 @@
   }
   .lang-switch button.active { background: var(--accent); color: #fff; }
 
-  .progress { display: flex; gap: 0.4rem; justify-content: center; margin-bottom: 2.5rem; }
-  .progress .dot { width: 34px; height: 4px; border-radius: 4px; background: var(--border); transition: background 0.35s ease; }
-  .progress .dot.active { background: var(--accent); }
-  .progress .dot.done { background: #c9b6f8; }
+  body { padding-bottom: 5rem; }
+
+  .progress-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border);
+    padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 20;
+  }
+  .progress-bar .track {
+    flex: 1;
+    height: 5px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    width: 20%;
+    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    border-radius: 999px;
+    transition: width 0.45s cubic-bezier(.3,.8,.4,1);
+  }
+  .progress-bar .step-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .progress-bar .step-label b { color: var(--ink); }
 
   .step { display: none; animation: stepIn 0.45s cubic-bezier(.2,.9,.3,1); }
   .step.visible { display: block; }
@@ -99,82 +130,95 @@
 
   .path-card {
     position: relative;
-    border: 1.5px solid var(--border);
-    border-radius: 20px;
-    padding: 1.8rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 2rem 1.5rem 3.6rem;
     cursor: pointer;
     text-align: left;
     background: #fff;
     overflow: hidden;
+    box-shadow: 0 2px 10px rgba(17,17,20,0.04);
     transition: border-color 0.3s, transform 0.25s cubic-bezier(.2,.9,.3,1), box-shadow 0.3s;
   }
   .path-card::before {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(124,58,237,0.07), transparent 60%);
+    background: linear-gradient(135deg, rgba(124,58,237,0.08), transparent 60%);
     opacity: 0;
     transition: opacity 0.3s;
   }
   .path-card:hover {
     border-color: var(--accent);
     transform: translateY(-6px);
-    box-shadow: 0 18px 36px rgba(124,58,237,0.16);
+    box-shadow: 0 20px 40px rgba(124,58,237,0.18);
   }
   .path-card:hover::before { opacity: 1; }
   .path-card:active { transform: translateY(-2px) scale(0.99); }
   .path-card .icon {
     position: relative;
     z-index: 1;
-    width: 48px; height: 48px; border-radius: 14px;
-    background: var(--accent-light);
-    display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-    margin-bottom: 1.1rem;
-    box-shadow: 0 4px 14px rgba(124,58,237,0.15);
+    width: 58px; height: 58px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--accent-light));
+    display: flex; align-items: center; justify-content: center; font-size: 1.7rem;
+    margin-bottom: 1.3rem;
+    box-shadow: 0 6px 16px rgba(124,58,237,0.18), inset 0 0 0 1px rgba(124,58,237,0.12);
     transition: transform 0.35s cubic-bezier(.2,1.4,.4,1), box-shadow 0.3s;
   }
-  .path-card:hover .icon { transform: scale(1.12) rotate(-6deg); box-shadow: 0 8px 20px rgba(124,58,237,0.28); }
-  .path-card h3 { position: relative; z-index: 1; font-size: 1.1rem; margin-bottom: 0.35rem; }
-  .path-card p { position: relative; z-index: 1; font-size: 0.85rem; color: var(--muted); line-height: 1.45; }
-  .path-card .arrow {
-    position: absolute; top: 1.7rem; right: 1.4rem; z-index: 1;
-    color: var(--accent); opacity: 0; transform: translateX(-6px);
-    transition: opacity 0.25s, transform 0.25s; font-size: 1.1rem;
+  .path-card .icon svg { width: 30px; height: 30px; }
+  .path-card:hover .icon { transform: scale(1.1) rotate(-4deg); box-shadow: 0 10px 24px rgba(124,58,237,0.3), inset 0 0 0 1px rgba(124,58,237,0.2); }
+  .path-card h3 { position: relative; z-index: 1; font-size: 1.15rem; margin-bottom: 0.4rem; }
+  .path-card p { position: relative; z-index: 1; font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; }
+  .path-card .go-btn {
+    position: absolute; bottom: 1.5rem; right: 1.5rem; z-index: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent);
+    transition: background 0.25s, color 0.25s, transform 0.25s;
   }
-  .path-card:hover .arrow { opacity: 1; transform: translateX(0); }
+  .path-card:hover .go-btn { background: var(--accent); color: #fff; transform: translateX(3px); }
 
   .service-list { display: flex; flex-direction: column; gap: 1rem; }
   .service-card {
     position: relative;
-    border: 1.5px solid var(--border);
-    border-radius: 16px;
-    padding: 1.25rem 1.4rem 1.25rem 1.6rem;
-    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.3rem 1.5rem;
+    display: flex; align-items: flex-start; gap: 1rem;
     cursor: pointer;
     background: #fff;
     overflow: hidden;
+    box-shadow: 0 2px 10px rgba(17,17,20,0.04);
     transition: border-color 0.25s, transform 0.2s cubic-bezier(.2,.9,.3,1), box-shadow 0.25s;
   }
   .service-card::before {
     content: '';
     position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: var(--accent);
+    background: linear-gradient(180deg, var(--accent), #a78bfa);
     transform: scaleY(0);
     transition: transform 0.25s ease;
   }
   .service-card:hover {
     border-color: var(--accent);
-    transform: translateX(4px);
-    box-shadow: 0 10px 26px rgba(124,58,237,0.13);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(124,58,237,0.14);
   }
   .service-card:hover::before { transform: scaleY(1); }
-  .service-card:active { transform: translateX(2px) scale(0.995); }
-  .service-main h3 { font-size: 1.02rem; margin-bottom: 0.2rem; font-weight: 700; }
-  .service-main .tagline { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.55rem; }
+  .service-card:active { transform: translateY(-1px) scale(0.995); }
+  .service-icon {
+    flex: 0 0 auto;
+    width: 44px; height: 44px; border-radius: 13px;
+    background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+  }
+  .service-main { flex: 1; min-width: 0; }
+  .service-top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.15rem; }
+  .service-main h3 { font-size: 1.03rem; font-weight: 700; }
+  .service-main .tagline { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.6rem; }
   .service-main ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .service-main li { font-size: 0.72rem; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600; }
-  .service-price { text-align: right; white-space: nowrap; }
-  .service-price .amount { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; }
-  .service-price .duration { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+  .service-price { text-align: right; white-space: nowrap; flex: 0 0 auto; }
+  .service-price .amount { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
+  .service-price .duration { font-size: 0.73rem; color: var(--muted); margin-top: 0.1rem; }
 
   .date-strip { display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1.6rem; }
   .date-chip { flex: 0 0 auto; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; text-align: center; cursor: pointer; transition: all 0.2s; min-width: 64px; }
@@ -256,30 +300,44 @@
 
 <div class="stage">
 
-  <div class="progress" id="progress">
-    <div class="dot active" data-step="0"></div>
-    <div class="dot" data-step="1"></div>
-    <div class="dot" data-step="2"></div>
-    <div class="dot" data-step="3"></div>
-    <div class="dot" data-step="4"></div>
-  </div>
-
   <!-- Step 0: choose path -->
   <div class="step visible" data-step="0">
     <h1 data-i18n="step0Title">Wobei können wir helfen?</h1>
     <p class="subtitle" data-i18n="step0Sub">Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.</p>
     <div class="path-grid">
       <div class="path-card" data-path="it">
-        <span class="arrow">&rarr;</span>
-        <div class="icon">🖥️</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2.5" y="4" width="19" height="12" rx="2" stroke="#7C3AED" stroke-width="1.6"/>
+            <path d="M8.5 20h7M12 16v4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M7 9.5l2 2-2 2M12.5 13.5h2.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <h3 data-i18n="pathItTitle">IT-Services</h3>
         <p data-i18n="pathItDesc">Reparaturen, Netzwerke, Virenentfernung, laufender Support.</p>
+        <span class="go-btn">&rarr;</span>
       </div>
       <div class="path-card" data-path="dynamics">
-        <span class="arrow">&rarr;</span>
-        <div class="icon">⚙️</div>
+        <div class="icon">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="d365a" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#0F6CBD"/><stop offset="1" stop-color="#2AA4EF"/>
+              </linearGradient>
+              <linearGradient id="d365b" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#50E6FF"/><stop offset="1" stop-color="#2AA4EF"/>
+              </linearGradient>
+            </defs>
+            <circle cx="24" cy="15" r="9" fill="url(#d365a)"/>
+            <circle cx="33" cy="24" r="9" fill="url(#d365b)"/>
+            <circle cx="24" cy="33" r="9" fill="url(#d365a)" opacity="0.85"/>
+            <circle cx="15" cy="24" r="9" fill="url(#d365b)" opacity="0.85"/>
+            <circle cx="24" cy="24" r="6" fill="#ffffff"/>
+          </svg>
+        </div>
         <h3 data-i18n="pathDynTitle">Dynamics 365</h3>
         <p data-i18n="pathDynDesc">Beratung, Workflows und individuelle Integrationen.</p>
+        <span class="go-btn">&rarr;</span>
       </div>
     </div>
   </div>
@@ -347,6 +405,11 @@
     </div>
   </div>
 
+</div>
+
+<div class="progress-bar" id="progress">
+  <div class="track"><div class="fill" id="progress-fill"></div></div>
+  <div class="step-label" id="progress-label"><b>1</b> / 5</div>
 </div>
 
 <script>
@@ -470,21 +533,30 @@ document.getElementById("lang-switch").addEventListener("click", (e) => {
   if (btn) setLang(btn.dataset.lang);
 });
 
+const TOTAL_STEPS = 5;
+
 function showStep(n) {
   document.querySelectorAll(".step").forEach(el => {
     el.classList.toggle("visible", el.dataset.step == n);
   });
-  document.querySelectorAll(".progress .dot").forEach(el => {
-    const s = Number(el.dataset.step);
-    el.classList.toggle("active", s === n);
-    el.classList.toggle("done", s < n);
-  });
+  const pct = ((n + 1) / TOTAL_STEPS) * 100;
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
 }
 
 async function loadServices() {
   const res = await fetch("/api/services");
   SERVICES = await res.json();
 }
+
+const SERVICE_ICONS = {
+  "it-quickfix": "🔧",
+  "it-homesetup": "📶",
+  "it-fullcare": "🛡️",
+  "d365-consult": "🔍",
+  "d365-workflow": "🔁",
+  "d365-integration": "🔌",
+};
 
 function renderServiceList() {
   const list = SERVICES[state.path] || [];
@@ -495,14 +567,17 @@ function renderServiceList() {
     div.className = "service-card";
     div.dataset.id = svc.id;
     div.innerHTML = `
+      <div class="service-icon">${SERVICE_ICONS[svc.id] || "✦"}</div>
       <div class="service-main">
-        <h3>${svc.name[lang]}</h3>
+        <div class="service-top-row">
+          <h3>${svc.name[lang]}</h3>
+          <div class="service-price">
+            <div class="amount">${fmtEuro(svc.price)}</div>
+            <div class="duration">${svc.duration} ${t("minLabel")}</div>
+          </div>
+        </div>
         <div class="tagline">${svc.tagline[lang]}</div>
         <ul>${svc.features[lang].map(f => `<li>${f}</li>`).join("")}</ul>
-      </div>
-      <div class="service-price">
-        <div class="amount">${fmtEuro(svc.price)}</div>
-        <div class="duration">${svc.duration} ${t("minLabel")}</div>
       </div>
     `;
     div.addEventListener("click", () => {
@@ -672,6 +747,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
 });
 
 applyStaticTranslations();
+showStep(0);
 </script>
 </body>
 </html>
