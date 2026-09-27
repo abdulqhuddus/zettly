@@ -108,7 +108,6 @@ const EMAIL_STRINGS = {
     heading: "Ihr Termin ist bestätigt",
     hi: (name) => `Hallo ${name},`,
     detailsIntro: "Vielen Dank für Ihre Buchung bei Zettly.",
-    appointmentLine: (date, time) => `Ihr Termin ist für ${date} um ${time} Uhr bestätigt.`,
     attachmentTitle: "Buchungsbestätigung.pdf",
     ref: "Buchungsnummer",
     service: "Leistung",
@@ -119,7 +118,10 @@ const EMAIL_STRINGS = {
     address: "Adresse",
     priceOnRequest: "Wird nach Diagnose vor Ort mitgeteilt",
     minutes: "Min.",
-    reschedule: "Falls Sie umbuchen oder stornieren möchten, antworten Sie einfach auf diese E-Mail.",
+    reschedule: "Sie können Ihren Termin kostenlos stornieren – bis zu einem Tag vorher.",
+    cancelButton: "Termin stornieren",
+    cancelSubject: (ref) => `Stornierung Buchung ${ref}`,
+    cancelBody: (ref, date, time) => `Hallo Zettly-Team,\n\nbitte stornieren Sie meine Buchung ${ref} am ${date} um ${time} Uhr.\n\nVielen Dank!`,
     cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
     pdfNote: "Bitte entnehmen Sie die vollständige Buchungsbestätigung dem beigefügten PDF.",
     signature: "Ihr Zettly-Team",
@@ -129,7 +131,6 @@ const EMAIL_STRINGS = {
     heading: "Your appointment is confirmed",
     hi: (name) => `Hi ${name},`,
     detailsIntro: "Thanks for booking with Zettly.",
-    appointmentLine: (date, time) => `Your appointment is confirmed for ${date} at ${time}.`,
     attachmentTitle: "Booking-Confirmation.pdf",
     ref: "Booking reference",
     service: "Service",
@@ -140,7 +141,10 @@ const EMAIL_STRINGS = {
     address: "Address",
     priceOnRequest: "Quoted after on-site diagnosis",
     minutes: "min",
-    reschedule: "If you need to reschedule or cancel, just reply to this email.",
+    reschedule: "You can cancel free of charge – up to one day before your appointment.",
+    cancelButton: "Cancel appointment",
+    cancelSubject: (ref) => `Cancellation for booking ${ref}`,
+    cancelBody: (ref, date, time) => `Hi Zettly team,\n\nPlease cancel my booking ${ref} on ${date} at ${time}.\n\nThank you!`,
     cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
     pdfNote: "Please find your full booking confirmation attached.",
     signature: "The Zettly Team",
@@ -205,6 +209,7 @@ async function sendConfirmationEmail(env, booking, service, lang) {
   const from = env.RESEND_FROM || "Zettly <onboarding@resend.dev>";
   const priceText = service.quote ? t.priceOnRequest : `€${service.price}`;
   const dateDisplay = localizedDate(booking.date, lang);
+  const cancelMailto = `mailto:kontakt@zettly.de?subject=${encodeURIComponent(t.cancelSubject(booking.bookingRef))}&body=${encodeURIComponent(t.cancelBody(booking.bookingRef, dateDisplay, booking.time))}`;
 
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
@@ -226,7 +231,7 @@ async function sendConfirmationEmail(env, booking, service, lang) {
       <div style="height:4px; background:linear-gradient(90deg,#7C3AED,#a855f7 60%,#EC4899);"></div>
       <div style="padding:28px;">
         <p style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
-        <p style="margin:0 0 22px; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro} ${t.appointmentLine(dateDisplay, booking.time)}</p>
+        <p style="margin:0 0 22px; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro}</p>
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse; background:#f8f7fb; border:1px solid #e9e7ef; border-radius:12px;">
           <tr>
             <td style="padding:16px 18px; vertical-align:middle; width:44px;">
@@ -241,6 +246,13 @@ async function sendConfirmationEmail(env, booking, service, lang) {
           </tr>
         </table>
         <p style="margin:22px 0 0; font-size:12.5px; color:#6b6b74;">${t.reschedule}</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;">
+          <tr>
+            <td style="border-radius:8px; background:#fdeef2;">
+              <a href="${cancelMailto}" style="display:inline-block; padding:11px 20px; font-family:'Helvetica Neue', Arial, sans-serif; font-size:13px; font-weight:700; color:#c2185b; text-decoration:none; border-radius:8px;">${t.cancelButton}</a>
+            </td>
+          </tr>
+        </table>
         <p style="margin:14px 0 0; font-size:11.5px; color:#8a8a92; line-height:1.5;">${t.cancelNote}</p>
         <p style="margin:18px 0 0; font-size:13px; font-weight:700; color:#111114;">${t.signature}</p>
       </div>

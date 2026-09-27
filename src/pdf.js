@@ -200,7 +200,7 @@ export function generateBookingPdf(data) {
         price: "Price",
         email: "Email",
         minutes: "min",
-        footer1: "Need to reschedule or cancel? Just reply to the confirmation email.",
+        footer1: "Need to reschedule or cancel? You can cancel free of charge up to one day before your appointment — just reply to this email.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
@@ -223,7 +223,7 @@ export function generateBookingPdf(data) {
         price: "Preis",
         email: "E-Mail",
         minutes: "Min.",
-        footer1: "Termin umbuchen oder stornieren? Antworten Sie einfach auf die Bestätigungs-E-Mail.",
+        footer1: "Termin umbuchen oder stornieren? Eine kostenlose Stornierung ist bis zu einem Tag vor dem Termin möglich – antworten Sie einfach auf diese E-Mail.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
@@ -282,32 +282,61 @@ export function generateBookingPdf(data) {
   }
 
   // ---- Bordered booking-details box (right column), like a company quote/order box ----
-  // Widened and moved slightly left so the customer's email address (a long
-  // value) has room to sit on its own row without crowding the border.
   const boxX = 112 * MM;
-  const boxW = RIGHT_X - boxX;
-  const boxTop = 45;
-  const rowH = 8;
+  const boxW = RIGHT_X - boxX; // already in pt, like boxX/RIGHT_X
+  const boxTop = 45; // mm from top
+  const boxPad = 6; // left/right inset in pt, kept clear of the border on every row
+  const boxInnerPt = boxW - boxPad * 2;
+  const rowH = 8; // mm, for a normal single-line label/value row
+  const stackedRowH = 12; // mm, for a row whose value sits on its own line below the label
+
+  // A short value sits right-aligned next to its label on one line; a long
+  // one (the email address) is stacked below its label, left-aligned, at a
+  // font size guaranteed to fit boxInnerPt so it never crosses the border.
+  function fitFontSize(value, startSize, maxWidthPt) {
+    let size = startSize;
+    while (size > 6 && estWidth(value, size, true) > maxWidthPt) size -= 0.5;
+    return size;
+  }
+
   const boxRows = [
-    [L.ref, data.bookingRef, 9.5],
-    [L.date, data.dateDisplay, 9.5],
-    [L.time, data.time, 9.5],
-    [L.duration, `${data.duration} ${L.minutes}`, 9.5],
-    [L.price, data.priceText, 9.5],
+    { label: L.ref, value: data.bookingRef, size: 9.5 },
+    { label: L.date, value: data.dateDisplay, size: 9.5 },
+    { label: L.time, value: data.time, size: 9.5 },
+    { label: L.duration, value: `${data.duration} ${L.minutes}`, size: 9.5 },
+    { label: L.price, value: data.priceText, size: 9.5 },
   ];
   if (data.customerEmail) {
-    boxRows.push([L.email, data.customerEmail, 8]);
+    boxRows.push({
+      label: L.email,
+      value: data.customerEmail,
+      size: fitFontSize(data.customerEmail, 9, boxInnerPt),
+      stacked: true,
+    });
   }
+  // Shrink any inline value that would otherwise overrun the box (e.g. a
+  // long booking reference) rather than letting it spill past the border.
+  boxRows.forEach((row) => {
+    if (!row.stacked) row.size = fitFontSize(row.value, row.size, boxInnerPt * 0.62);
+  });
+
   const headerH = 8;
-  const boxH = headerH + boxRows.length * rowH;
+  const boxH = headerH + boxRows.reduce((sum, r) => sum + (r.stacked ? stackedRowH : rowH), 0);
   content.push(strokeRect(boxX, fromTop(boxTop + boxH), boxW, boxH * MM, BORDER, 1));
   content.push(rect(boxX, fromTop(boxTop + headerH), boxW, headerH * MM, PURPLE));
   content.push(textCenter(boxX + boxW / 2, fromTop(boxTop + headerH - 5.5), 8.5, L.boxTitle, { bold: true, color: [1, 1, 1] }));
-  boxRows.forEach(([label, value, valueSize], i) => {
-    const rowTop = boxTop + headerH + i * rowH;
-    if (i > 0) content.push(line(boxX, fromTop(rowTop), boxX + boxW, fromTop(rowTop), BORDER, 0.6));
-    content.push(text(boxX + 6, fromTop(rowTop + 5.3), 7.5, label.toUpperCase(), { color: MUTED }));
-    content.push(textRight(boxX + boxW - 6, fromTop(rowTop + 5.3), valueSize, value, { bold: true, color: INK }));
+  let rowCursor = boxTop + headerH;
+  boxRows.forEach((row, i) => {
+    const h = row.stacked ? stackedRowH : rowH;
+    if (i > 0) content.push(line(boxX, fromTop(rowCursor), boxX + boxW, fromTop(rowCursor), BORDER, 0.6));
+    if (row.stacked) {
+      content.push(text(boxX + boxPad, fromTop(rowCursor + 4.6), 7.5, row.label.toUpperCase(), { color: MUTED }));
+      content.push(text(boxX + boxPad, fromTop(rowCursor + 9.6), row.size, row.value, { bold: true, color: INK }));
+    } else {
+      content.push(text(boxX + boxPad, fromTop(rowCursor + 5.3), 7.5, row.label.toUpperCase(), { color: MUTED }));
+      content.push(textRight(boxX + boxW - boxPad, fromTop(rowCursor + 5.3), row.size, row.value, { bold: true, color: INK }));
+    }
+    rowCursor += h;
   });
 
   // ---- Place/date, right-aligned above the subject line ----
@@ -343,8 +372,12 @@ export function generateBookingPdf(data) {
   content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
   y -= 22;
 
-  content.push(text(LEFT_X, y, 9.5, L.footer1, { color: MUTED }));
-  y -= 16;
+  const footer1Lines = wrapText(L.footer1, 92);
+  for (const fl of footer1Lines) {
+    content.push(text(LEFT_X, y, 9.5, fl, { color: MUTED }));
+    y -= 13;
+  }
+  y -= 3;
   const noteLines = wrapText(L.footer2note, 92);
   for (const nl of noteLines) {
     content.push(text(LEFT_X, y, 8, nl, { color: MUTED }));
