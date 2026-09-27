@@ -3,8 +3,10 @@
 // confirmation email (see src/index.js -> createCancelToken), which proves
 // they have the email without needing a login of their own.
 
+import catalog from "../catalog.json";
 import { verifyCancelToken } from "./auth.js";
 import { json, minutesUntil, localizedDate } from "./utils.js";
+import { breadcrumbFromServiceId } from "./catalog-utils.js";
 import { sendCancellationEmail } from "./notify.js";
 
 const CANCEL_CUTOFF_MINUTES = 24 * 60;
@@ -27,9 +29,17 @@ export async function handleCancelInfo(url, env) {
   const mins = minutesUntil(row.date, row.time);
   const canCancel = row.status === "confirmed" && mins >= CANCEL_CUTOFF_MINUTES;
 
+  // The bookings table only stores the leaf service_name ("New setup"); the
+  // full selection path ("Zuhause › Computer & Netzwerke › New setup") is
+  // reconstructed from the stored service_id against the current catalog,
+  // falling back to just the leaf name if that ever fails to resolve.
+  const breadcrumb = breadcrumbFromServiceId(catalog, row.service_id, lang);
+  const serviceName = breadcrumb ? breadcrumb.join(" › ") : row.service_name;
+
   return json({
     bookingRef: `ZTL-${row.id.split("-")[0].toUpperCase()}`,
-    serviceName: row.service_name,
+    customerName: row.customer_name,
+    serviceName,
     date: row.date,
     dateDisplay: localizedDate(row.date, lang),
     time: row.time,

@@ -45,7 +45,7 @@
   .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
   .brand-left { display: flex; align-items: center; gap: 0.55rem; }
   .brand-mark { width: 26px; height: 26px; flex: 0 0 auto; }
-  .brand-text { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 300; font-size: 1.4rem; letter-spacing: 0.01em; }
+  .brand-text { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 200; font-size: 1.4rem; letter-spacing: 0.01em; }
   .brand-text span { color: var(--accent); }
   .lang-toggle { display: flex; gap: 0.3rem; }
   .lang-toggle button {
@@ -65,7 +65,8 @@
   .row:last-of-type { border-bottom: none; }
   .row .label { color: var(--muted); }
   .row .value { font-weight: 700; text-align: right; }
-  .badge { display: inline-block; margin-top: 1rem; font-size: 0.78rem; font-weight: 700; padding: 0.4rem 0.75rem; border-radius: 999px; }
+  .status-block { text-align: center; margin-top: 1rem; }
+  .badge { display: inline-block; font-size: 0.78rem; font-weight: 700; padding: 0.4rem 0.75rem; border-radius: 999px; }
   .badge.ok { background: var(--ok-bg); color: var(--ok); }
   .badge.warn { background: var(--warn-bg); color: var(--warn); }
   .badge.danger { background: var(--danger-bg); color: var(--danger); }
@@ -117,6 +118,7 @@
     en: {
       title: "Cancel booking",
       ref: "Booking reference",
+      customer: "Name",
       service: "Service",
       date: "Date",
       time: "Time",
@@ -142,6 +144,7 @@
     de: {
       title: "Buchung stornieren",
       ref: "Buchungsnummer",
+      customer: "Name",
       service: "Leistung",
       date: "Datum",
       time: "Uhrzeit",
@@ -241,6 +244,7 @@
   function detailRows(t, data) {
     return `
       <div class="row"><div class="label">${t.ref}</div><div class="value">${data.bookingRef}</div></div>
+      <div class="row"><div class="label">${t.customer}</div><div class="value">${data.customerName}</div></div>
       <div class="row"><div class="label">${t.service}</div><div class="value">${data.serviceName}</div></div>
       <div class="row"><div class="label">${t.date}</div><div class="value">${data.dateDisplay}</div></div>
       <div class="row"><div class="label">${t.time}</div><div class="value">${data.time}</div></div>
@@ -254,9 +258,9 @@
     const t = STR[lang];
     let statusBlock = "";
     if (data.status === "cancelled") {
-      statusBlock = `<div class="badge danger">${t.cancelledBadge}</div>`;
+      statusBlock = `<div class="status-block"><div class="badge danger">${t.cancelledBadge}</div></div>`;
     } else if (data.status === "completed") {
-      statusBlock = `<div class="badge warn">${t.completedBadge}</div>`;
+      statusBlock = `<div class="status-block"><div class="badge warn">${t.completedBadge}</div></div>`;
     } else if (!data.canCancel) {
       statusBlock = `<p class="msg">${t.tooLate(data.hoursUntil)}</p>`;
     }
@@ -308,7 +312,7 @@
             ${brandRow(t)}
             <h1>${t.title}</h1>
             ${detailRows(t, { ...data, status: "cancelled" })}
-            <div class="badge ok">${t.cancelledOk}</div>
+            <div class="status-block"><div class="badge ok">${t.cancelledOk}</div></div>
             <a class="btn btn-ghost" href="https://zettly.de" style="text-align:center;">${t.backHome}</a>
           `;
           attachLangToggle(load);

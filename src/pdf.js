@@ -246,6 +246,13 @@ export function generateBookingPdf(data) {
         senderLine: "Zettly | kontakt@zettly.de | Munich, Germany",
         footerBar: "Zettly | IT support for home & business | Munich, Germany | kontakt@zettly.de | www.zettly.de",
         place: (d) => `Munich, ${d}`,
+        // ---- Cancellation-mode strings (data.cancelled: true) ----
+        boxTitleCancelled: "CANCELLED BOOKING",
+        subjectCancelled: (ref) => `Subject: Cancellation confirmation ${ref}`,
+        introCancelled: "your booking below has been cancelled as requested. This letter is your confirmation of the cancellation.",
+        reasonLabel: "Reason for cancellation",
+        rebookMsg: "If you'd like to book a new appointment, feel free to visit our website again.",
+        cancelledStatusNote: "No further action is needed. If you did not request this cancellation, please contact us immediately at kontakt@zettly.de.",
       }
     : {
         title: "Buchungsbestätigung",
@@ -270,6 +277,13 @@ export function generateBookingPdf(data) {
         senderLine: "Zettly | kontakt@zettly.de | München, Deutschland",
         footerBar: "Zettly | IT-Support für Zuhause & Unternehmen | München, Deutschland | kontakt@zettly.de | www.zettly.de",
         place: (d) => `München, ${d}`,
+        // ---- Stornierungs-Modus (data.cancelled: true) ----
+        boxTitleCancelled: "STORNIERTE BUCHUNG",
+        subjectCancelled: (ref) => `Betreff: Stornierungsbestätigung ${ref}`,
+        introCancelled: "Ihre unten stehende Buchung wurde wie gewünscht storniert. Dieses Schreiben ist Ihre Stornierungsbestätigung.",
+        reasonLabel: "Grund der Stornierung",
+        rebookMsg: "Falls Sie einen neuen Termin buchen möchten, besuchen Sie gerne erneut unsere Website.",
+        cancelledStatusNote: "Es ist keine weitere Aktion erforderlich. Falls Sie diese Stornierung nicht veranlasst haben, kontaktieren Sie uns bitte umgehend unter kontakt@zettly.de.",
       };
 
   const today = new Date().toLocaleDateString(data.lang === "en" ? "en-GB" : "de-DE", {
@@ -303,10 +317,14 @@ export function generateBookingPdf(data) {
     ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
     : ["Zettly GmbH", "Musterstraße 12, 80331 München", "kontakt@zettly.de | www.zettly.de"];
   // Vertically center the 3-line contact block on the same row as the logo:
-  // total block height ~= 2 * 4.4mm line-gap; start half that above center.
-  const headerBlockStartMM = logoCenterMM - 4.4 + 1.5;
+  // total block height ~= 2 * headerLineGap; start half that above center.
+  // (Kept as a tight, even gap between all three lines — there was no real
+  // difference in the numbers before, but a slightly smaller, uniform gap
+  // reads as more evenly set than 4.4mm did.)
+  const headerLineGap = 4;
+  const headerBlockStartMM = logoCenterMM - headerLineGap + 1.5;
   headerLines.forEach((l, i) => {
-    content.push(textRight(RIGHT_X, fromTop(headerBlockStartMM + i * 4.4), 8.5, l, { color: MUTED }));
+    content.push(textRight(RIGHT_X, fromTop(headerBlockStartMM + i * headerLineGap), 8.5, l, { color: MUTED }));
   });
 
   content.push(line(LEFT_X, fromTop(28), RIGHT_X, fromTop(28), BORDER, 1));
@@ -330,11 +348,14 @@ export function generateBookingPdf(data) {
   // ---- Bordered booking-details box (right column), like a company quote/order box ----
   const boxX = 112 * MM;
   const boxW = RIGHT_X - boxX; // already in pt, like boxX/RIGHT_X
-  const boxTop = 45; // mm from top
+  // Sits just below the letterhead divider (28mm), in line with the sender
+  // block above it, rather than leaving a large dead gap before the table
+  // starts.
+  const boxTop = 34; // mm from top
   const boxPad = 6; // left/right inset in pt, kept clear of the border on every row
   const boxInnerPt = boxW - boxPad * 2;
   const rowH = 8; // mm, for a normal single-line label/value row
-  const stackedRowH = 12; // mm, for a row whose value sits on its own line below the label
+  const stackedLineH = 4.3; // mm, per wrapped value line in a stacked row
 
   // A short value sits right-aligned next to its label on one line; a long
   // one (the email address) is stacked below its label, left-aligned, at a
@@ -345,6 +366,30 @@ export function generateBookingPdf(data) {
     return size;
   }
 
+  // Word-wraps a stacked row's value to the box's actual inner width at its
+  // point size (rather than shrinking font size indefinitely), so a longer
+  // free-text value — the cancellation reason — wraps onto a few lines
+  // instead of being squeezed unreadably small onto one.
+  function wrapToWidthPt(str, size, maxWidthPt, bold) {
+    const words = String(str).split(/\s+/).filter(Boolean);
+    const lines = [];
+    let cur = "";
+    for (const w of words) {
+      const candidate = cur ? `${cur} ${w}` : w;
+      if (cur && estWidth(candidate, size, bold) > maxWidthPt) {
+        lines.push(cur);
+        cur = w;
+      } else {
+        cur = candidate;
+      }
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  }
+  function stackedRowHeight(lineCount) {
+    return 4.6 + lineCount * stackedLineH + 2.2;
+  }
+
   const boxRows = [
     { label: L.ref, value: data.bookingRef, size: 9.5 },
     { label: L.date, value: data.dateDisplay, size: 9.5 },
@@ -352,10 +397,15 @@ export function generateBookingPdf(data) {
     { label: L.duration, value: `${data.duration} ${L.minutes}`, size: 9.5 },
     { label: L.price, value: data.priceText, size: 9.5 },
   ];
+  if (data.cancelled && data.cancellationReason) {
+    const reasonSize = 9;
+    const reasonLines = wrapToWidthPt(data.cancellationReason, reasonSize, boxInnerPt, true).slice(0, 4);
+    boxRows.push({ label: L.reasonLabel, lines: reasonLines, size: reasonSize, stacked: true });
+  }
   if (data.customerEmail) {
     boxRows.push({
       label: L.email,
-      value: data.customerEmail,
+      lines: [data.customerEmail],
       size: fitFontSize(data.customerEmail, 9, boxInnerPt),
       stacked: true,
     });
@@ -367,23 +417,27 @@ export function generateBookingPdf(data) {
   });
 
   const headerH = 8;
-  const boxH = headerH + boxRows.reduce((sum, r) => sum + (r.stacked ? stackedRowH : rowH), 0);
+  const boxHeaderColor = data.cancelled ? DANGER : PURPLE;
+  const boxTitleText = data.cancelled ? L.boxTitleCancelled : L.boxTitle;
+  const boxH = headerH + boxRows.reduce((sum, r) => sum + (r.stacked ? stackedRowHeight(r.lines.length) : rowH), 0);
   content.push(strokeRect(boxX, fromTop(boxTop + boxH), boxW, boxH * MM, BORDER, 1));
-  content.push(rect(boxX, fromTop(boxTop + headerH), boxW, headerH * MM, PURPLE));
-  // Vertically center the header title inside the purple bar: place the
+  content.push(rect(boxX, fromTop(boxTop + headerH), boxW, headerH * MM, boxHeaderColor));
+  // Vertically center the header title inside the colored bar: place the
   // baseline half a cap-height below the bar's vertical midpoint, rather
   // than a fixed offset from the top (which left it sitting too high).
   const headerTitleSize = 8.5;
   const headerCapHeightMM = (headerTitleSize * 0.7) / MM;
   const headerBaselineMM = boxTop + headerH / 2 + headerCapHeightMM / 2;
-  content.push(textCenter(boxX + boxW / 2, fromTop(headerBaselineMM), headerTitleSize, L.boxTitle, { bold: true, color: [1, 1, 1] }));
+  content.push(textCenter(boxX + boxW / 2, fromTop(headerBaselineMM), headerTitleSize, boxTitleText, { bold: true, color: [1, 1, 1] }));
   let rowCursor = boxTop + headerH;
   boxRows.forEach((row, i) => {
-    const h = row.stacked ? stackedRowH : rowH;
+    const h = row.stacked ? stackedRowHeight(row.lines.length) : rowH;
     if (i > 0) content.push(line(boxX, fromTop(rowCursor), boxX + boxW, fromTop(rowCursor), BORDER, 0.6));
     if (row.stacked) {
       content.push(text(boxX + boxPad, fromTop(rowCursor + 4.6), 7.5, row.label.toUpperCase(), { color: MUTED }));
-      content.push(text(boxX + boxPad, fromTop(rowCursor + 9.6), row.size, row.value, { bold: true, color: INK }));
+      row.lines.forEach((ln, li) => {
+        content.push(text(boxX + boxPad, fromTop(rowCursor + 9.6 + li * stackedLineH), row.size, ln, { bold: true, color: INK }));
+      });
     } else {
       content.push(text(boxX + boxPad, fromTop(rowCursor + 5.3), 7.5, row.label.toUpperCase(), { color: MUTED }));
       content.push(textRight(boxX + boxW - boxPad, fromTop(rowCursor + 5.3), row.size, row.value, { bold: true, color: INK }));
@@ -396,14 +450,16 @@ export function generateBookingPdf(data) {
   content.push(textRight(RIGHT_X, fromTop(belowBlockY), 9.5, L.place(today), { color: MUTED }));
 
   // ---- Subject line ----
-  content.push(rect(LEFT_X, fromTop(belowBlockY + 11.8), 3, 11, PINK));
-  content.push(text(LEFT_X + 8, fromTop(belowBlockY + 11), 11.5, L.subject(data.bookingRef), { bold: true, color: INK }));
+  const subjectText = data.cancelled ? L.subjectCancelled(data.bookingRef) : L.subject(data.bookingRef);
+  const introText = data.cancelled ? L.introCancelled : L.intro;
+  content.push(rect(LEFT_X, fromTop(belowBlockY + 11.8), 3, 11, data.cancelled ? DANGER : PINK));
+  content.push(text(LEFT_X + 8, fromTop(belowBlockY + 11), 11.5, subjectText, { bold: true, color: INK }));
 
   // ---- Body ----
   let y = fromTop(belowBlockY + 25);
   content.push(text(LEFT_X, y, 10.5, L.hi(data.customerName), { color: INK }));
   y -= 16;
-  const introLines = wrapText(L.intro, 92);
+  const introLines = wrapText(introText, 92);
   for (const il of introLines) {
     content.push(text(LEFT_X, y, 10.5, il, { color: INK }));
     y -= 14;
@@ -424,8 +480,10 @@ export function generateBookingPdf(data) {
   content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
   y -= 22;
 
-  // ---- Cancellation policy callout: a clearly set-off, colored box so the
-  // cancellation terms aren't just another paragraph of grey small print. ----
+  // ---- Callout: a clearly set-off, colored box so this isn't just another
+  // paragraph of grey small print — the cancellation policy on a booking
+  // confirmation, or the cancellation itself being confirmed on a
+  // cancellation letter. ----
   const calloutPadX = 10;
   const calloutPadTop = 10;
   const calloutPadBottom = 10;
@@ -433,16 +491,19 @@ export function generateBookingPdf(data) {
   const calloutBodySize = 9.5;
   const calloutHeadingGap = 14;
   const calloutBodyLineGap = 12.5;
-  const calloutBodyLines = wrapText(L.footer1, 86);
+  const calloutColor = DANGER;
+  const calloutBgColor = DANGER_BG;
+  const calloutBodyText = data.cancelled ? L.cancelledStatusNote : L.footer1;
+  const calloutBodyLines = wrapText(calloutBodyText, 86);
   const calloutInnerH = calloutHeadingGap + calloutBodyLines.length * calloutBodyLineGap;
   const calloutH = calloutPadTop + calloutInnerH + calloutPadBottom;
   const calloutTopY = y;
   const calloutBottomY = calloutTopY - calloutH;
-  content.push(rect(LEFT_X, calloutBottomY, RIGHT_X - LEFT_X, calloutH, DANGER_BG));
-  content.push(rect(LEFT_X, calloutBottomY, 3, calloutH, DANGER));
+  content.push(rect(LEFT_X, calloutBottomY, RIGHT_X - LEFT_X, calloutH, calloutBgColor));
+  content.push(rect(LEFT_X, calloutBottomY, 3, calloutH, calloutColor));
 
   let cy = calloutTopY - calloutPadTop - calloutHeadingSize * 0.8;
-  content.push(text(LEFT_X + calloutPadX, cy, calloutHeadingSize, L.cancelHeading, { bold: true, color: DANGER }));
+  content.push(text(LEFT_X + calloutPadX, cy, calloutHeadingSize, data.cancelled ? L.boxTitleCancelled : L.cancelHeading, { bold: true, color: calloutColor }));
   cy -= calloutHeadingGap;
   for (const bl of calloutBodyLines) {
     content.push(text(LEFT_X + calloutPadX, cy, calloutBodySize, bl, { color: INK }));
@@ -450,10 +511,19 @@ export function generateBookingPdf(data) {
   }
   y = calloutBottomY - 16;
 
-  const noteLines = wrapText(L.footer2note, 92);
-  for (const nl of noteLines) {
-    content.push(text(LEFT_X, y, 8, nl, { color: MUTED }));
-    y -= 11;
+  if (data.cancelled) {
+    const rebookLines = wrapText(L.rebookMsg, 92);
+    for (const rl of rebookLines) {
+      content.push(text(LEFT_X, y, 9.5, rl, { color: MUTED }));
+      y -= 13;
+    }
+    y -= 5;
+  } else {
+    const noteLines = wrapText(L.footer2note, 92);
+    for (const nl of noteLines) {
+      content.push(text(LEFT_X, y, 8, nl, { color: MUTED }));
+      y -= 11;
+    }
   }
   y -= 18;
   content.push(text(LEFT_X, y, 10, L.closing1, { color: INK }));

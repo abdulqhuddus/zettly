@@ -2,9 +2,11 @@
 // customer self-service cancellation page (src/cancel.js), so both send the
 // exact same notice with the same PDF attached rather than drifting apart.
 
+import catalog from "../catalog.json";
 import { generateBookingPdf, toBase64 } from "./pdf.js";
 import { LOGO_PNG_BASE64 } from "./logo.js";
 import { localizedDate } from "./utils.js";
+import { breadcrumbFromServiceId } from "./catalog-utils.js";
 
 const STRINGS = {
   de: {
@@ -55,7 +57,7 @@ export async function sendCancellationEmail(env, booking, lang = "de") {
               <img src="cid:zettly-logo" width="30" height="30" alt="zettly" style="display:block; width:30px; height:30px;">
             </td>
             <td style="vertical-align:middle;">
-              <div style="font-family:'Helvetica Neue', Arial, sans-serif; font-size:21px; font-weight:300; letter-spacing:0.01em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
+              <div style="font-family:'Helvetica Neue', Arial, sans-serif; font-size:21px; font-weight:200; letter-spacing:0.01em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
             </td>
           </tr>
         </table>
@@ -73,18 +75,21 @@ export async function sendCancellationEmail(env, booking, lang = "de") {
 
   let attachments;
   try {
+    const breadcrumb = breadcrumbFromServiceId(catalog, booking.service_id, lang) || [booking.service_name];
     const pdfBytes = generateBookingPdf({
       bookingRef,
       customerName: booking.customer_name,
       customerEmail: booking.customer_email,
       customerAddress: booking.customer_address,
-      breadcrumb: [booking.service_name],
+      breadcrumb,
       date: booking.date,
       dateDisplay,
       time: booking.time,
       duration: booking.duration_minutes,
       priceText,
       lang,
+      cancelled: true,
+      cancellationReason: booking.cancellation_reason,
     });
     attachments = [
       { filename: `zettly-${bookingRef}-cancelled.pdf`, content: toBase64(pdfBytes) },

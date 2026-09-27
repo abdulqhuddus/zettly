@@ -3,6 +3,7 @@ import { generateBookingPdf, toBase64 } from "./pdf.js";
 import { getSession, createCancelToken } from "./auth.js";
 import { json, toMinutes, berlinNow, isValidEmail, localizedDate } from "./utils.js";
 import { LOGO_PNG_BASE64 } from "./logo.js";
+import { resolveLeaf as resolveLeafFromCatalog, fullBreadcrumb as buildFullBreadcrumb, localizedBreadcrumbName } from "./catalog-utils.js";
 import {
   handleAdminLogin,
   handleAdminLogout,
@@ -13,51 +14,18 @@ import {
 } from "./admin.js";
 import { handleCancelInfo, handleCancelSubmit } from "./cancel.js";
 
-const AUDIENCE_LABELS = {
-  home: { de: "Zuhause", en: "Home" },
-  business: { de: "Unternehmen", en: "Business" },
-};
-
 // How long a "cancel my booking" link in the confirmation email stays valid.
 // Generous on purpose (appointments can be booked weeks out) — the 24-hour
 // cutoff on actually cancelling is enforced separately, server-side, in
 // src/cancel.js based on the booking's real date/time, not this expiry.
 const CANCEL_LINK_TTL_MS = 90 * 24 * 60 * 60 * 1000;
 
-// Full selection breadcrumb: audience, category, then each tree choice - in
-// the same shape the frontend summary card and PDF/email now show.
-function fullBreadcrumb(resolved, audience, lang) {
-  const parts = [AUDIENCE_LABELS[audience]?.[lang] || AUDIENCE_LABELS[audience]?.de || audience];
-  if (resolved.category?.name) parts.push(resolved.category.name[lang] || resolved.category.name.de);
-  for (const b of resolved.breadcrumb) parts.push(b[lang] || b.de);
-  return parts;
-}
-
-// Walk a category's decision tree following a list of chosen option ids,
-// returning the resolved leaf plus the breadcrumb of option labels chosen
-// along the way. Never trusts client-submitted price/duration/name.
 function resolveLeaf(audience, categoryId, path) {
-  const categories = catalog[audience];
-  if (!categories) return null;
-  const category = categories.find((c) => c.id === categoryId);
-  if (!category) return null;
-
-  let node = category.root;
-  const breadcrumb = [];
-  for (const choiceId of path || []) {
-    if (!node || node.type !== "branch") return null;
-    const chosen = node.options.find((o) => o.id === choiceId);
-    if (!chosen) return null;
-    breadcrumb.push(chosen.name);
-    node = chosen.next;
-  }
-  if (!node || node.type !== "leaf") return null;
-  return { leaf: node, breadcrumb, category };
+  return resolveLeafFromCatalog(catalog, audience, categoryId, path);
 }
 
-function localizedBreadcrumbName(resolved, lang) {
-  if (resolved.leaf.name) return resolved.leaf.name[lang] || resolved.leaf.name.de;
-  return resolved.breadcrumb.map((b) => b[lang] || b.de).join(" – ");
+function fullBreadcrumb(resolved, audience, lang) {
+  return buildFullBreadcrumb(resolved, audience, lang);
 }
 
 const OPEN_HOUR = 9;
@@ -185,7 +153,7 @@ async function sendConfirmationEmail(env, booking, service, lang) {
               <img src="cid:zettly-logo" width="34" height="34" alt="zettly" style="display:block; width:34px; height:34px;">
             </td>
             <td style="vertical-align:middle;">
-              <div style="font-family:'Helvetica Neue', Arial, sans-serif; font-size:24px; font-weight:300; letter-spacing:0.01em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
+              <div style="font-family:'Helvetica Neue', Arial, sans-serif; font-size:24px; font-weight:200; letter-spacing:0.01em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
             </td>
           </tr>
         </table>
