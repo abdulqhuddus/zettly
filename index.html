@@ -524,6 +524,8 @@
   .date-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
   .date-chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .date-chip.selected .dow { color: #e6d9ff; }
+  .date-chip.disabled { cursor: not-allowed; opacity: 0.35; background: #fafafa; }
+  .date-chip.disabled:hover { border-color: var(--border); transform: none; }
   @media (max-width: 480px) { .date-chip { flex: 1 1 52px; max-width: 64px; } }
 
   .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 0.6rem; }
@@ -1345,6 +1347,16 @@ function nextBusinessDays(count) {
   return days;
 }
 
+function nextCalendarDays(count) {
+  const days = [];
+  let d = new Date();
+  for (let i = 0; i < count; i++) {
+    days.push(new Date(d));
+    d = new Date(d.getTime() + 86400000);
+  }
+  return days;
+}
+
 function isoDate(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -1357,19 +1369,25 @@ const DOW_LOCALE = { de: "de-DE", en: "en-US" };
 function renderDateStrip() {
   const strip = document.getElementById("date-strip");
   strip.innerHTML = "";
-  const days = nextBusinessDays(10);
-  days.forEach((d, i) => {
+  const days = nextCalendarDays(14);
+  let firstOpenChip = null;
+  days.forEach((d) => {
+    const dow = d.getDay();
+    const isWeekendDay = dow === 0 || dow === 6;
     const chip = document.createElement("div");
-    chip.className = "date-chip";
+    chip.className = "date-chip" + (isWeekendDay ? " disabled" : "");
     chip.dataset.date = isoDate(d);
     chip.innerHTML = `
       <div class="dow">${d.toLocaleDateString(DOW_LOCALE[lang], { weekday: "short" })}</div>
       <div class="dnum">${d.getDate()}</div>
     `;
-    chip.addEventListener("click", () => selectDate(chip));
+    if (!isWeekendDay) {
+      chip.addEventListener("click", () => selectDate(chip));
+      if (!firstOpenChip) firstOpenChip = chip;
+    }
     strip.appendChild(chip);
-    if (i === 0) selectDate(chip);
   });
+  if (firstOpenChip) selectDate(firstOpenChip);
 }
 
 async function selectDate(chip) {
