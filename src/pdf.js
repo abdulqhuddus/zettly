@@ -1,15 +1,27 @@
 // Minimal, dependency-free PDF generator for booking confirmations.
 // Cloudflare Workers can't easily bundle native/Node-only PDF libraries, so
-// this hand-builds a valid single-page PDF using only the standard
-// (non-embedded) Helvetica / Helvetica-Bold fonts for body text, which every
-// PDF viewer ships with. The one exception is the "zettly" wordmark: the
-// site's brand font is Helvetica Neue at weight 200, a commercial Linotype
-// face that can't legally be embedded without a purchased license, so the
-// wordmark is instead set in DejaVu Sans ExtraLight -- a real weight-200
-// sans-serif under a license that explicitly permits embedding -- rather
-// than faking the light weight with plain (400) Helvetica.
+// this hand-builds a valid single-page PDF from scratch.
+//
+// Every font used is embedded, rather than relying on the 14 "standard"
+// PDF fonts every viewer ships with: those aren't actual font files, so
+// each viewer substitutes its own metrically-*similar* stand-in (Nimbus
+// Sans, Liberation Sans, etc.), and small real differences between those
+// substitutes and the Adobe AFM metrics this file used to lay text out
+// against showed up as a few points of drift in right-aligned text --
+// worse on longer lines, since it compounds per character. Embedding real
+// font files means the glyph widths used to *position* text are exactly
+// the widths the viewer will *render* it with, in every viewer.
+//   - Body text: Liberation Sans (regular + bold), metrically compatible
+//     with Arial/Helvetica, under the SIL Open Font License.
+//   - The "zettly" wordmark: the site's brand font is Helvetica Neue at
+//     weight 200, a commercial Linotype face that can't legally be
+//     embedded without a purchased license, so the wordmark is set in
+//     DejaVu Sans ExtraLight instead -- a real weight-200 sans-serif
+//     under a license that explicitly permits embedding.
 
 import { DEJAVU_EXTRALIGHT_BASE64 } from "./fonts/dejavu-extralight-base64.js";
+import { LIBERATION_REGULAR_BASE64 } from "./fonts/liberation-regular-base64.js";
+import { LIBERATION_BOLD_BASE64 } from "./fonts/liberation-bold-base64.js";
 import { parseTTF } from "./ttf.js";
 
 function base64ToBytes(b64) {
@@ -19,11 +31,35 @@ function base64ToBytes(b64) {
   return bytes;
 }
 
-// Parsed once per isolate and reused across every PDF generated in it.
-let _wordmarkFont = null;
+// Each parsed once per isolate and reused across every PDF generated in it.
+let _regularFont = null, _boldFont = null, _wordmarkFont = null;
+function regularFont() {
+  if (!_regularFont) _regularFont = parseTTF(base64ToBytes(LIBERATION_REGULAR_BASE64));
+  return _regularFont;
+}
+function boldFont() {
+  if (!_boldFont) _boldFont = parseTTF(base64ToBytes(LIBERATION_BOLD_BASE64));
+  return _boldFont;
+}
 function wordmarkFont() {
   if (!_wordmarkFont) _wordmarkFont = parseTTF(base64ToBytes(DEJAVU_EXTRALIGHT_BASE64));
   return _wordmarkFont;
+}
+
+// WinAnsiEncoding and Unicode agree everywhere except the 0x80-0x9F block
+// (WinAnsi puts Euro, smart quotes, etc. there); 0xA0-0xFF (Latin-1
+// Supplement, our German umlauts/eszett) map straight across.
+const WINANSI_HIGH = {
+  0x80: 0x20ac, 0x82: 0x201a, 0x83: 0x0192, 0x84: 0x201e, 0x85: 0x2026,
+  0x86: 0x2020, 0x87: 0x2021, 0x88: 0x02c6, 0x89: 0x2030, 0x8a: 0x0160,
+  0x8b: 0x2039, 0x8c: 0x0152, 0x8e: 0x017d, 0x91: 0x2018, 0x92: 0x2019,
+  0x93: 0x201c, 0x94: 0x201d, 0x95: 0x2022, 0x96: 0x2013, 0x97: 0x2014,
+  0x98: 0x02dc, 0x99: 0x2122, 0x9a: 0x0161, 0x9b: 0x203a, 0x9c: 0x0153,
+  0x9e: 0x017e, 0x9f: 0x0178,
+};
+function winAnsiCodeToUnicode(code) {
+  if (code >= 0x80 && code <= 0x9f) return WINANSI_HIGH[code] || code;
+  return code; // ASCII and Latin-1 Supplement both match Unicode directly
 }
 
 const PAGE_W = 595; // A4 in points
@@ -45,22 +81,24 @@ function concat(arrays) {
   return out;
 }
 
-// Map a JS string to WinAnsiEncoding bytes (matches Latin-1 for the
-// German umlauts we need; the Euro sign is remapped to 0x80 as WinAnsi
-// diverges from Latin-1 there).
+// Map one character to its WinAnsiEncoding byte code (matches Latin-1 for
+// the German umlauts we need; a handful of typographic characters are
+// remapped to the WinAnsi position that actually carries them).
+function toWinAnsiByte(ch) {
+  const cp = ch.codePointAt(0);
+  if (cp === 0x20ac) return 0x80; // €
+  if (cp === 0x2013 || cp === 0x2014) return 0x2d; // en/em dash -> hyphen
+  if (cp === 0x2018 || cp === 0x2019) return 0x27; // curly quotes -> '
+  if (cp === 0x201c || cp === 0x201d) return 0x22; // curly double quotes -> "
+  if (cp === 0x203a) return 0x9b; // › (WinAnsi position)
+  if (cp === 0x2039) return 0x8b; // ‹ (WinAnsi position)
+  if (cp <= 0xff) return cp;
+  return 0x3f; // '?' fallback for anything else
+}
+
 function toWinAnsiBytes(str) {
   const bytes = [];
-  for (const ch of str) {
-    const cp = ch.codePointAt(0);
-    if (cp === 0x20ac) { bytes.push(0x80); continue; } // €
-    if (cp === 0x2013 || cp === 0x2014) { bytes.push(0x2d); continue; } // en/em dash -> hyphen
-    if (cp === 0x2018 || cp === 0x2019) { bytes.push(0x27); continue; } // curly quotes -> '
-    if (cp === 0x201c || cp === 0x201d) { bytes.push(0x22); continue; } // curly double quotes -> "
-    if (cp === 0x203a) { bytes.push(0x9b); continue; } // › (WinAnsi position)
-    if (cp === 0x2039) { bytes.push(0x8b); continue; } // ‹ (WinAnsi position)
-    if (cp <= 0xff) { bytes.push(cp); continue; }
-    bytes.push(0x3f); // '?' fallback for anything else
-  }
+  for (const ch of str) bytes.push(toWinAnsiByte(ch));
   return bytes;
 }
 
@@ -114,41 +152,16 @@ function text(x, y, size, str, opts = {}) {
   return concat(parts);
 }
 
-// Real Adobe Core-14 AFM glyph widths (per 1000 em) for Helvetica /
-// Helvetica-Bold, codes 32-126, plus the handful of German/Euro glyphs this
-// site actually needs. Using the real metrics (rather than a flat average
-// per character) is what makes right/center-aligned text land exactly on
-// the intended edge instead of drifting — a short line full of narrow
-// glyphs (i, l, ., @, |) was previously being placed too far left, leaving
-// a visible gap on the right; a line full of wide glyphs (digits, capitals)
-// could run past the edge, as with a booking reference or email address.
-const HELV_WIDTHS = [
-  278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278,
-  556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556,
-  1015, 667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833, 722, 778,
-  667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469, 556,
-  333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556,
-  556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584,
-];
-const HELV_BOLD_WIDTHS = [
-  278, 333, 474, 556, 556, 889, 722, 238, 333, 333, 389, 584, 278, 333, 278, 278,
-  556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 333, 333, 584, 584, 584, 611,
-  975, 722, 722, 722, 722, 667, 611, 778, 722, 278, 556, 722, 611, 833, 722, 778,
-  667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 333, 278, 333, 584, 556,
-  333, 556, 611, 556, 611, 556, 333, 611, 611, 278, 278, 556, 278, 889, 611, 611,
-  611, 611, 389, 556, 333, 611, 556, 778, 556, 556, 500, 389, 280, 389, 584,
-];
-// Extended glyphs beyond ASCII (German umlauts/eszett/Euro), by character.
-const EXTRA_WIDTHS = {
-  regular: { ä: 556, ö: 556, ü: 556, Ä: 667, Ö: 778, Ü: 722, ß: 611, é: 556, É: 667, "€": 556 },
-  bold: { ä: 611, ö: 611, ü: 611, Ä: 722, Ö: 778, Ü: 722, ß: 611, é: 556, É: 722, "€": 556 },
-};
+// Real glyph widths (per 1000 em) read straight out of the embedded
+// Liberation Sans font's own metrics -- the exact font the PDF actually
+// draws with, so this can never drift from what gets rendered the way a
+// static Adobe-AFM table (tuned against one particular viewer's Helvetica
+// substitute) could.
 function charWidthUnits(ch, bold) {
-  const code = ch.codePointAt(0);
-  if (code >= 32 && code <= 126) return (bold ? HELV_BOLD_WIDTHS : HELV_WIDTHS)[code - 32];
-  const extra = EXTRA_WIDTHS[bold ? "bold" : "regular"][ch];
-  if (extra) return extra;
-  return bold ? 611 : 556; // fallback: roughly Helvetica's average glyph width
+  const font = bold ? boldFont() : regularFont();
+  const unicode = winAnsiCodeToUnicode(toWinAnsiByte(ch));
+  const w = font.widthForChar(unicode);
+  return w == null ? (bold ? 611 : 556) : w; // fallback: roughly average glyph width
 }
 function estWidth(str, size, bold) {
   let units = 0;
@@ -373,7 +386,7 @@ export function generateBookingPdf(data) {
     content.push(textRight(RIGHT_X, fromTop(headerBlockStartMM + i * headerLineGap), 8.5, l, { color: MUTED }));
   });
 
-  content.push(line(LEFT_X, fromTop(28), RIGHT_X, fromTop(28), BORDER, 1));
+  content.push(line(LEFT_X, fromTop(23), RIGHT_X, fromTop(23), BORDER, 1));
 
   // ---- DIN 5008 window-envelope address field (left column) ----
   // Small sender return line, then the recipient block beneath it, both
@@ -394,10 +407,10 @@ export function generateBookingPdf(data) {
   // ---- Bordered booking-details box (right column), like a company quote/order box ----
   const boxX = 112 * MM;
   const boxW = RIGHT_X - boxX; // already in pt, like boxX/RIGHT_X
-  // Sits just below the letterhead divider (28mm), in line with the sender
-  // block above it, rather than leaving a large dead gap before the table
-  // starts.
-  const boxTop = 34; // mm from top
+  // Sits just below the letterhead divider, right under the three-line
+  // sender block on the same row, instead of leaving a large dead gap
+  // between the letterhead and the table.
+  const boxTop = 26; // mm from top
   const boxPad = 6; // left/right inset in pt, kept clear of the border on every row
   const boxInnerPt = boxW - boxPad * 2;
   const rowH = 8; // mm, for a normal single-line label/value row
@@ -588,45 +601,79 @@ export function generateBookingPdf(data) {
   const contentStream = concat(content);
 
   // ---- Assemble the PDF object graph ----
-  // Object numbers 1-6 are fixed (Catalog, Pages, Page, F1, F2, content
-  // stream); 7-9 embed the wordmark's TrueType font (raw file, descriptor,
-  // font dict), in that fixed order, so the Page's /Resources can reference
-  // /F3 9 0 R directly.
-  const wf = wordmarkFont();
-  const wfWidths = [];
-  for (let c = 32; c <= 126; c++) {
-    const w = wf.widthForChar(c);
-    wfWidths.push(w == null ? 556 : w);
+  // Every font is embedded (see the file-header comment for why), so each
+  // needs its own raw-file stream + FontDescriptor behind its Font dict.
+  // Object numbers are fixed in this order: 1 Catalog, 2 Pages, 3 Page,
+  // 4 Font F1 (regular), 5 Font F2 (bold), 6 content stream, 7/8 F1's
+  // FontFile2+FontDescriptor, 9/10 F2's, 11/12 F3 (wordmark)'s, 13 Font F3.
+  function widthsArray(font, firstChar, lastChar) {
+    const widths = [];
+    for (let c = firstChar; c <= lastChar; c++) {
+      const w = font.widthForChar(winAnsiCodeToUnicode(c));
+      widths.push(w == null ? 556 : w);
+    }
+    return widths;
+  }
+  function fontFileStream(font) {
+    return concat([
+      te(`<< /Length ${font.raw.length} /Length1 ${font.raw.length} >>\nstream\n`),
+      font.raw,
+      te("\nendstream"),
+    ]);
   }
 
+  const rf = regularFont();
+  const bf = boldFont();
+  const wf = wordmarkFont();
+  // WinAnsiEncoding's full printable range: ASCII (32-126) plus the Latin-1
+  // Supplement block (160-255) that carries the German umlauts/eszett, plus
+  // the handful of typographic characters WinAnsi keeps at 128-159 (€, etc).
+  const rfWidths = widthsArray(rf, 32, 255);
+  const bfWidths = widthsArray(bf, 32, 255);
+  const wfWidths = widthsArray(wf, 32, 126);
+
   const objects = [];
-  objects.push(te("<< /Type /Catalog /Pages 2 0 R >>"));
-  objects.push(te("<< /Type /Pages /Kids [3 0 R] /Count 1 >>"));
+  objects.push(te("<< /Type /Catalog /Pages 2 0 R >>")); // 1
+  objects.push(te("<< /Type /Pages /Kids [3 0 R] /Count 1 >>")); // 2
   objects.push(te(
     `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] ` +
-    `/Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 9 0 R >> >> /Contents 6 0 R >>`
-  ));
-  objects.push(te("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"));
-  objects.push(te("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>"));
+    `/Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 13 0 R >> >> /Contents 6 0 R >>`
+  )); // 3
+  objects.push(te(
+    `<< /Type /Font /Subtype /TrueType /BaseFont /LiberationSans /FirstChar 32 /LastChar 255 ` +
+    `/Widths [${rfWidths.join(" ")}] /Encoding /WinAnsiEncoding /FontDescriptor 8 0 R >>`
+  )); // 4
+  objects.push(te(
+    `<< /Type /Font /Subtype /TrueType /BaseFont /LiberationSans-Bold /FirstChar 32 /LastChar 255 ` +
+    `/Widths [${bfWidths.join(" ")}] /Encoding /WinAnsiEncoding /FontDescriptor 10 0 R >>`
+  )); // 5
   objects.push(concat([
     te(`<< /Length ${contentStream.length} >>\nstream\n`),
     contentStream,
     te("\nendstream"),
-  ]));
-  objects.push(concat([
-    te(`<< /Length ${wf.raw.length} /Length1 ${wf.raw.length} >>\nstream\n`),
-    wf.raw,
-    te("\nendstream"),
-  ]));
+  ])); // 6
+  objects.push(fontFileStream(rf)); // 7
+  objects.push(te(
+    `<< /Type /FontDescriptor /FontName /LiberationSans /Flags 32 ` +
+    `/FontBBox [${rf.bbox.join(" ")}] /ItalicAngle ${rf.italicAngle} /Ascent ${rf.ascent} ` +
+    `/Descent ${rf.descent} /CapHeight ${rf.capHeight} /StemV 80 /FontFile2 7 0 R >>`
+  )); // 8
+  objects.push(fontFileStream(bf)); // 9
+  objects.push(te(
+    `<< /Type /FontDescriptor /FontName /LiberationSans-Bold /Flags 32 /ForceBold true ` +
+    `/FontBBox [${bf.bbox.join(" ")}] /ItalicAngle ${bf.italicAngle} /Ascent ${bf.ascent} ` +
+    `/Descent ${bf.descent} /CapHeight ${bf.capHeight} /StemV 140 /FontFile2 9 0 R >>`
+  )); // 10
+  objects.push(fontFileStream(wf)); // 11
   objects.push(te(
     `<< /Type /FontDescriptor /FontName /DejaVuSansExtraLight /Flags 32 ` +
     `/FontBBox [${wf.bbox.join(" ")}] /ItalicAngle ${wf.italicAngle} /Ascent ${wf.ascent} ` +
-    `/Descent ${wf.descent} /CapHeight ${wf.capHeight} /StemV 50 /FontFile2 7 0 R >>`
-  ));
+    `/Descent ${wf.descent} /CapHeight ${wf.capHeight} /StemV 50 /FontFile2 11 0 R >>`
+  )); // 12
   objects.push(te(
     `<< /Type /Font /Subtype /TrueType /BaseFont /DejaVuSansExtraLight /FirstChar 32 /LastChar 126 ` +
-    `/Widths [${wfWidths.join(" ")}] /Encoding /WinAnsiEncoding /FontDescriptor 8 0 R >>`
-  ));
+    `/Widths [${wfWidths.join(" ")}] /Encoding /WinAnsiEncoding /FontDescriptor 12 0 R >>`
+  )); // 13
 
   const chunks = [te("%PDF-1.4\n")];
   const offsets = [];
