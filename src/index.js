@@ -230,11 +230,11 @@ async function sendConfirmationEmail(env, booking, service, lang) {
     });
     attachments = [
       {
-        filename: `zettly-${booking.bookingRef}-de.pdf`,
+        filename: `zettly-buchung-${booking.bookingRef}-de.pdf`,
         content: toBase64(pdfBytesDe),
       },
       {
-        filename: `zettly-${booking.bookingRef}-en.pdf`,
+        filename: `zettly-booking-${booking.bookingRef}-en.pdf`,
         content: toBase64(pdfBytesEn),
       },
       // Inline logo referenced from the HTML body as `cid:zettly-logo`. A

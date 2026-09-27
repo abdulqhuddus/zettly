@@ -101,8 +101,8 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
       ...basePdfData, breadcrumb: breadcrumbEn, date: booking.date, dateDisplay: dateDisplayEn, lang: "en",
     });
     attachments = [
-      { filename: `zettly-${bookingRef}-cancelled-de.pdf`, content: toBase64(pdfBytesDe) },
-      { filename: `zettly-${bookingRef}-cancelled-en.pdf`, content: toBase64(pdfBytesEn) },
+      { filename: `zettly-storniert-${bookingRef}-de.pdf`, content: toBase64(pdfBytesDe) },
+      { filename: `zettly-cancelled-${bookingRef}-en.pdf`, content: toBase64(pdfBytesEn) },
       { filename: "zettly-logo.png", content: LOGO_PNG_BASE64, content_id: "zettly-logo" },
     ];
   } catch {
