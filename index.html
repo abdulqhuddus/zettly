@@ -21,31 +21,34 @@
     font-family: -apple-system, "Segoe UI", sans-serif;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    padding: 3rem 1.25rem;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 3rem;
   }
 
-  .stage { width: 100%; max-width: 640px; }
+  .stage { width: 100%; max-width: 640px; padding: 0 1.25rem; }
 
   .topbar {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 2rem;
     gap: 1rem;
+    padding: 1.5rem clamp(1.25rem, 4vw, 3rem);
+    margin-bottom: 2.5rem;
   }
 
-  .brand { display: flex; align-items: center; gap: 0.7rem; }
+  .brand { display: flex; align-items: center; gap: 0.85rem; }
   .brand-text {
     font-family: "Helvetica Neue", Arial, sans-serif;
-    font-size: 1.7rem;
+    font-size: 2.2rem;
     font-weight: 200;
     letter-spacing: 0.01em;
     color: var(--ink);
     line-height: 1;
   }
   .brand-text span { color: var(--accent); }
-  .brand-mark { width: 38px; height: 38px; flex: 0 0 auto; }
+  .brand-mark { width: 52px; height: 52px; flex: 0 0 auto; }
   .brand-mark .m1 { animation: markPulse 3s ease-in-out infinite 0s; }
   .brand-mark .m2 { animation: markPulse 3s ease-in-out infinite 0.35s; }
   .brand-mark .m3 { animation: markPulse 3s ease-in-out infinite 0.7s; }
@@ -233,25 +236,25 @@
 </style>
 </head>
 <body>
-<div class="stage">
-
-  <div class="topbar">
-    <div class="brand">
-      <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <rect class="m1" x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
-        <rect class="m2" x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
-        <rect class="m3" x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
-        <rect class="m4" x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
-      </svg>
-      <span class="brand-text">zett<span>ly</span></span>
-    </div>
-    <div class="topbar-right">
-      <div class="lang-switch" id="lang-switch">
-        <button data-lang="de">DE</button>
-        <button data-lang="en">EN</button>
-      </div>
+<div class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect class="m1" x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
+      <rect class="m2" x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
+      <rect class="m3" x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+      <rect class="m4" x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
+    </svg>
+    <span class="brand-text">zett<span>ly</span></span>
+  </div>
+  <div class="topbar-right">
+    <div class="lang-switch" id="lang-switch">
+      <button data-lang="de">DE</button>
+      <button data-lang="en">EN</button>
     </div>
   </div>
+</div>
+
+<div class="stage">
 
   <div class="progress" id="progress">
     <div class="dot active" data-step="0"></div>
