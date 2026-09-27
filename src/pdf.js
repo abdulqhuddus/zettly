@@ -92,11 +92,46 @@ function text(x, y, size, str, opts = {}) {
   return concat(parts);
 }
 
-// Average Helvetica glyph width as a fraction of font size (rough, but close
-// enough for right/center-aligning short lines of Latin text).
-const AVG_CHAR_W = { regular: 0.5, bold: 0.545 };
+// Real Adobe Core-14 AFM glyph widths (per 1000 em) for Helvetica /
+// Helvetica-Bold, codes 32-126, plus the handful of German/Euro glyphs this
+// site actually needs. Using the real metrics (rather than a flat average
+// per character) is what makes right/center-aligned text land exactly on
+// the intended edge instead of drifting — a short line full of narrow
+// glyphs (i, l, ., @, |) was previously being placed too far left, leaving
+// a visible gap on the right; a line full of wide glyphs (digits, capitals)
+// could run past the edge, as with a booking reference or email address.
+const HELV_WIDTHS = [
+  278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278,
+  556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556,
+  1015, 667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833, 722, 778,
+  667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469, 556,
+  333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556,
+  556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584,
+];
+const HELV_BOLD_WIDTHS = [
+  278, 333, 474, 556, 556, 889, 722, 238, 333, 333, 389, 584, 278, 333, 278, 278,
+  556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 333, 333, 584, 584, 584, 611,
+  975, 722, 722, 722, 722, 667, 611, 778, 722, 278, 556, 722, 611, 833, 722, 778,
+  667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 333, 278, 333, 584, 556,
+  333, 556, 611, 556, 611, 556, 333, 611, 611, 278, 278, 556, 278, 889, 611, 611,
+  611, 611, 389, 556, 333, 611, 556, 778, 556, 556, 500, 389, 280, 389, 584,
+];
+// Extended glyphs beyond ASCII (German umlauts/eszett/Euro), by character.
+const EXTRA_WIDTHS = {
+  regular: { ä: 556, ö: 556, ü: 556, Ä: 667, Ö: 778, Ü: 722, ß: 611, é: 556, É: 667, "€": 556 },
+  bold: { ä: 611, ö: 611, ü: 611, Ä: 722, Ö: 778, Ü: 722, ß: 611, é: 556, É: 722, "€": 556 },
+};
+function charWidthUnits(ch, bold) {
+  const code = ch.codePointAt(0);
+  if (code >= 32 && code <= 126) return (bold ? HELV_BOLD_WIDTHS : HELV_WIDTHS)[code - 32];
+  const extra = EXTRA_WIDTHS[bold ? "bold" : "regular"][ch];
+  if (extra) return extra;
+  return bold ? 611 : 556; // fallback: roughly Helvetica's average glyph width
+}
 function estWidth(str, size, bold) {
-  return str.length * size * AVG_CHAR_W[bold ? "bold" : "regular"];
+  let units = 0;
+  for (const ch of str) units += charWidthUnits(ch, bold);
+  return (units / 1000) * size;
 }
 function textRight(xRight, y, size, str, opts = {}) {
   const x = xRight - estWidth(str, size, opts.bold);
@@ -145,6 +180,8 @@ const PINK = [0.925, 0.286, 0.6]; // #EC4899-ish
 const INK = [0.067, 0.067, 0.078]; // #111114
 const MUTED = [0.42, 0.42, 0.455]; // #6b6b74
 const BORDER = [0.914, 0.906, 0.937]; // #e9e7ef
+const DANGER = [0.761, 0.094, 0.357]; // #c2185b, matches the site's cancel/danger accent
+const DANGER_BG = [0.992, 0.933, 0.949]; // #fdeef2
 
 // millimetres -> PDF points (1mm = 2.834645669pt)
 const MM = 2.834645669;
@@ -200,7 +237,8 @@ export function generateBookingPdf(data) {
         price: "Price",
         email: "Email",
         minutes: "min",
-        footer1: "Need to reschedule or cancel? You can cancel free of charge up to one day before your appointment — just reply to this email.",
+        cancelHeading: "Cancellation policy",
+        footer1: "You can cancel this booking free of charge up to 24 hours before your appointment, using the cancellation link in your confirmation email, or by contacting us at kontakt@zettly.de.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
@@ -223,7 +261,8 @@ export function generateBookingPdf(data) {
         price: "Preis",
         email: "E-Mail",
         minutes: "Min.",
-        footer1: "Termin umbuchen oder stornieren? Eine kostenlose Stornierung ist bis zu einem Tag vor dem Termin möglich – antworten Sie einfach auf diese E-Mail.",
+        cancelHeading: "Stornierungsbedingungen",
+        footer1: "Sie können diese Buchung bis 24 Stunden vor dem Termin kostenlos stornieren - über den Stornierungslink in Ihrer Bestätigungs-E-Mail oder per Kontakt an kontakt@zettly.de.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
@@ -324,7 +363,13 @@ export function generateBookingPdf(data) {
   const boxH = headerH + boxRows.reduce((sum, r) => sum + (r.stacked ? stackedRowH : rowH), 0);
   content.push(strokeRect(boxX, fromTop(boxTop + boxH), boxW, boxH * MM, BORDER, 1));
   content.push(rect(boxX, fromTop(boxTop + headerH), boxW, headerH * MM, PURPLE));
-  content.push(textCenter(boxX + boxW / 2, fromTop(boxTop + headerH - 5.5), 8.5, L.boxTitle, { bold: true, color: [1, 1, 1] }));
+  // Vertically center the header title inside the purple bar: place the
+  // baseline half a cap-height below the bar's vertical midpoint, rather
+  // than a fixed offset from the top (which left it sitting too high).
+  const headerTitleSize = 8.5;
+  const headerCapHeightMM = (headerTitleSize * 0.7) / MM;
+  const headerBaselineMM = boxTop + headerH / 2 + headerCapHeightMM / 2;
+  content.push(textCenter(boxX + boxW / 2, fromTop(headerBaselineMM), headerTitleSize, L.boxTitle, { bold: true, color: [1, 1, 1] }));
   let rowCursor = boxTop + headerH;
   boxRows.forEach((row, i) => {
     const h = row.stacked ? stackedRowH : rowH;
@@ -372,12 +417,32 @@ export function generateBookingPdf(data) {
   content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
   y -= 22;
 
-  const footer1Lines = wrapText(L.footer1, 92);
-  for (const fl of footer1Lines) {
-    content.push(text(LEFT_X, y, 9.5, fl, { color: MUTED }));
-    y -= 13;
+  // ---- Cancellation policy callout: a clearly set-off, colored box so the
+  // cancellation terms aren't just another paragraph of grey small print. ----
+  const calloutPadX = 10;
+  const calloutPadTop = 10;
+  const calloutPadBottom = 10;
+  const calloutHeadingSize = 10;
+  const calloutBodySize = 9.5;
+  const calloutHeadingGap = 14;
+  const calloutBodyLineGap = 12.5;
+  const calloutBodyLines = wrapText(L.footer1, 86);
+  const calloutInnerH = calloutHeadingGap + calloutBodyLines.length * calloutBodyLineGap;
+  const calloutH = calloutPadTop + calloutInnerH + calloutPadBottom;
+  const calloutTopY = y;
+  const calloutBottomY = calloutTopY - calloutH;
+  content.push(rect(LEFT_X, calloutBottomY, RIGHT_X - LEFT_X, calloutH, DANGER_BG));
+  content.push(rect(LEFT_X, calloutBottomY, 3, calloutH, DANGER));
+
+  let cy = calloutTopY - calloutPadTop - calloutHeadingSize * 0.8;
+  content.push(text(LEFT_X + calloutPadX, cy, calloutHeadingSize, L.cancelHeading, { bold: true, color: DANGER }));
+  cy -= calloutHeadingGap;
+  for (const bl of calloutBodyLines) {
+    content.push(text(LEFT_X + calloutPadX, cy, calloutBodySize, bl, { color: INK }));
+    cy -= calloutBodyLineGap;
   }
-  y -= 3;
+  y = calloutBottomY - 16;
+
   const noteLines = wrapText(L.footer2note, 92);
   for (const nl of noteLines) {
     content.push(text(LEFT_X, y, 8, nl, { color: MUTED }));

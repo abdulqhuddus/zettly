@@ -43,6 +43,8 @@
     box-shadow: 0 10px 30px rgba(17,17,20,0.06);
   }
   .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .brand-left { display: flex; align-items: center; gap: 0.55rem; }
+  .brand-mark { width: 26px; height: 26px; flex: 0 0 auto; }
   .brand-text { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 300; font-size: 1.4rem; letter-spacing: 0.01em; }
   .brand-text span { color: var(--accent); }
   .lang-toggle { display: flex; gap: 0.3rem; }
@@ -173,7 +175,15 @@
 
   function brandRow(t) {
     return `<div class="brand-row">
-      <div class="brand-text"><span style="color:var(--ink)">zett</span><span>ly</span></div>
+      <div class="brand-left">
+        <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="28" height="28" rx="6" fill="#7C3AED"/>
+          <rect x="36" y="0" width="64" height="64" rx="14" fill="#111114"/>
+          <rect x="0" y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+          <rect x="72" y="72" width="28" height="28" rx="6" fill="#111114"/>
+        </svg>
+        <div class="brand-text"><span style="color:var(--ink)">zett</span><span>ly</span></div>
+      </div>
       <div class="lang-toggle">
         <button data-lang="en" class="${lang === "en" ? "active" : ""}">EN</button>
         <button data-lang="de" class="${lang === "de" ? "active" : ""}">DE</button>
@@ -228,6 +238,18 @@
     return `€${data.price}`;
   }
 
+  function detailRows(t, data) {
+    return `
+      <div class="row"><div class="label">${t.ref}</div><div class="value">${data.bookingRef}</div></div>
+      <div class="row"><div class="label">${t.service}</div><div class="value">${data.serviceName}</div></div>
+      <div class="row"><div class="label">${t.date}</div><div class="value">${data.dateDisplay}</div></div>
+      <div class="row"><div class="label">${t.time}</div><div class="value">${data.time}</div></div>
+      <div class="row"><div class="label">${t.duration}</div><div class="value">${data.durationMinutes} ${t.minutes}</div></div>
+      <div class="row"><div class="label">${t.price}</div><div class="value">${priceDisplay(t, data)}</div></div>
+      <div class="row"><div class="label">${t.address}</div><div class="value">${data.address}</div></div>
+    `;
+  }
+
   function render(data) {
     const t = STR[lang];
     let statusBlock = "";
@@ -242,13 +264,7 @@
     app.innerHTML = `
       ${brandRow(t)}
       <h1>${t.title}</h1>
-      <div class="row"><div class="label">${t.ref}</div><div class="value">${data.bookingRef}</div></div>
-      <div class="row"><div class="label">${t.service}</div><div class="value">${data.serviceName}</div></div>
-      <div class="row"><div class="label">${t.date}</div><div class="value">${data.dateDisplay}</div></div>
-      <div class="row"><div class="label">${t.time}</div><div class="value">${data.time}</div></div>
-      <div class="row"><div class="label">${t.duration}</div><div class="value">${data.durationMinutes} ${t.minutes}</div></div>
-      <div class="row"><div class="label">${t.price}</div><div class="value">${priceDisplay(t, data)}</div></div>
-      <div class="row"><div class="label">${t.address}</div><div class="value">${data.address}</div></div>
+      ${detailRows(t, data)}
       ${statusBlock}
       ${
         data.canCancel
@@ -291,6 +307,7 @@
           app.innerHTML = `
             ${brandRow(t)}
             <h1>${t.title}</h1>
+            ${detailRows(t, { ...data, status: "cancelled" })}
             <div class="badge ok">${t.cancelledOk}</div>
             <a class="btn btn-ghost" href="https://zettly.de" style="text-align:center;">${t.backHome}</a>
           `;
