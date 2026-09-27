@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title data-i18n-title>Zettly — Datenschutz</title>
+<title data-i18n-title>Zettly | Datenschutz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -32,6 +32,29 @@
   }
 
   .stage { width: 100%; max-width: 720px; padding: 0 1.25rem; }
+
+  .announce-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
+    background-size: 200% 200%;
+    animation: ctaShift 6s ease-in-out infinite;
+  }
+  .announce-bar .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #fff; flex: 0 0 auto;
+    animation: dotPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes dotPulse { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+  @keyframes ctaShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
   .topbar {
     width: 100%;
@@ -107,6 +130,10 @@
 </style>
 </head>
 <body>
+<div class="announce-bar">
+  <span class="dot"></span>
+  <span id="announce-text">Wir befinden uns im Aufbau &middot; bald verfügbar</span>
+</div>
 <div class="topbar">
   <a class="brand" href="/">
     <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -133,7 +160,7 @@
   <h2>1. Verantwortlicher</h2>
   <p>Verantwortlich für die Datenverarbeitung auf dieser Website ist:</p>
   <p>
-    Abdul Qhuddus Mohammed — Zettly<br>
+    Abdul Qhuddus Mohammed | Zettly<br>
     München, Deutschland<br>
     E-Mail: kontakt@zettly.de
   </p>
@@ -148,7 +175,7 @@
   <p>Wenn Sie über unser Formular einen Termin buchen, erheben wir die von Ihnen eingegebenen Daten (Name, E-Mail-Adresse, optional Telefonnummer, gewählte Leistung, Termin sowie ggf. Anmerkungen). Diese Daten werden in unserer Datenbank gespeichert, um Ihren Termin zu verwalten und mit Ihnen in Kontakt zu treten. Rechtsgrundlage ist die Erfüllung eines Vertrags bzw. vorvertraglicher Maßnahmen (Art. 6 Abs. 1 lit. b DSGVO).</p>
 
   <h2>5. Fotodokumentation vor Ort</h2>
-  <p>Bei manchen Leistungen fotografieren wir mit Ihrem Einverständnis das betroffene Gerät vor und nach der Reparatur, um den Zustand und die durchgeführte Leistung zu dokumentieren. Es werden ausschließlich das Gerät bzw. der unmittelbare Arbeitsbereich fotografiert — nicht Ihre Wohn- oder Geschäftsräume allgemein. Die Fotos werden nur zur Qualitätssicherung und im Streitfall als Nachweis verwendet und nicht an Dritte weitergegeben. Auf Wunsch können Sie der Anfertigung von Fotos jederzeit widersprechen; die Leistung wird davon nicht beeinträchtigt.</p>
+  <p>Bei manchen Leistungen fotografieren wir mit Ihrem Einverständnis das betroffene Gerät vor und nach der Reparatur, um den Zustand und die durchgeführte Leistung zu dokumentieren. Es werden ausschließlich das Gerät bzw. der unmittelbare Arbeitsbereich fotografiert: nicht Ihre Wohn- oder Geschäftsräume allgemein. Die Fotos werden nur zur Qualitätssicherung und im Streitfall als Nachweis verwendet und nicht an Dritte weitergegeben. Auf Wunsch können Sie der Anfertigung von Fotos jederzeit widersprechen; die Leistung wird davon nicht beeinträchtigt.</p>
 
   <h2>6. E-Mail-Versand</h2>
   <p>Zur Bestätigung Ihrer Buchung versenden wir eine E-Mail über den Dienstleister Resend. Dabei werden Ihre E-Mail-Adresse sowie die Buchungsdetails an Resend übermittelt, damit die Nachricht zugestellt werden kann. Weitere Informationen finden Sie in der <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Datenschutzerklärung von Resend</a>.</p>
@@ -173,7 +200,7 @@
   <h2>1. Data Controller</h2>
   <p>The party responsible for data processing on this website is:</p>
   <p>
-    Abdul Qhuddus Mohammed — Zettly<br>
+    Abdul Qhuddus Mohammed | Zettly<br>
     Munich, Germany<br>
     Email: kontakt@zettly.de
   </p>
@@ -188,7 +215,7 @@
   <p>When you book an appointment through our form, we collect the data you enter (name, email address, optionally phone number, selected service, appointment time, and any notes). This data is stored in our database to manage your appointment and get in touch with you. The legal basis is the performance of a contract or pre-contractual measures (Art. 6(1)(b) GDPR).</p>
 
   <h2>5. On-Site Photo Documentation</h2>
-  <p>For some services, with your consent, we photograph the affected device before and after the repair to document its condition and the work performed. Only the device itself, or the immediate work area, is photographed — never your home or business premises in general. These photos are used solely for quality assurance and as evidence in case of a dispute, and are never shared with third parties. You may object to having photos taken at any time; this will not affect the service provided.</p>
+  <p>For some services, with your consent, we photograph the affected device before and after the repair to document its condition and the work performed. Only the device itself, or the immediate work area, is photographed: never your home or business premises in general. These photos are used solely for quality assurance and as evidence in case of a dispute, and are never shared with third parties. You may object to having photos taken at any time; this will not affect the service provided.</p>
 
   <h2>6. Sending Emails</h2>
   <p>To confirm your booking, we send an email via the service provider Resend. Your email address and booking details are transmitted to Resend so the message can be delivered. See <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend's Privacy Policy</a> for details.</p>
@@ -216,8 +243,8 @@
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly — Datenschutz", back: "← Zur Startseite", home: "Startseite" },
-    en: { title: "Zettly — Privacy Policy", back: "← Back to home", home: "Home" },
+    de: { title: "Zettly | Datenschutz", back: "← Zur Startseite", home: "Startseite", announce: "Wir befinden uns im Aufbau · bald verfügbar" },
+    en: { title: "Zettly | Privacy Policy", back: "← Back to home", home: "Home", announce: "We're under construction · coming soon" },
   };
 
   function setLang(lang) {
@@ -227,6 +254,7 @@
     document.getElementById("legal-en").style.display = lang === "en" ? "" : "none";
     document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
     document.querySelector('[data-i18n="footerHome"]').textContent = STRINGS[lang].home;
+    document.getElementById("announce-text").textContent = STRINGS[lang].announce;
     document.querySelectorAll("#lang-switch button").forEach(b => {
       b.classList.toggle("active", b.dataset.lang === lang);
     });

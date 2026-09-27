@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title data-i18n-title>Zettly — Termin buchen</title>
+<title data-i18n-title>Zettly | Termin buchen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -32,6 +32,28 @@
   }
 
   .stage { width: 100%; max-width: 640px; padding: 0 1.25rem; }
+
+  .announce-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
+    background-size: 200% 200%;
+    animation: ctaShift 6s ease-in-out infinite;
+  }
+  .announce-bar .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #fff; flex: 0 0 auto;
+    animation: dotPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes dotPulse { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
 
   .topbar {
     width: 100%;
@@ -540,6 +562,9 @@
   .slot-empty { color: var(--muted); font-size: 0.9rem; padding: 1rem 0; }
 
   .field { margin-bottom: 1.1rem; }
+  .field-row { display: flex; gap: 0.9rem; }
+  .field-row .field { flex: 1 1 0; min-width: 0; }
+  @media (max-width: 520px) { .field-row { flex-direction: column; gap: 0; } }
   .field label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; }
   .field input, .field textarea {
     width: 100%; padding: 0.75rem 0.9rem; border: 1.5px solid var(--border); border-radius: 10px;
@@ -597,9 +622,9 @@
   .summary-item .ico svg { width: 16px; height: 16px; stroke: var(--accent); }
   .summary-item.price .ico { box-shadow: 0 4px 10px rgba(236,72,153,0.18); }
   .summary-item.price .ico svg { stroke: var(--pink); }
-  .summary-item .meta { min-width: 0; }
-  .summary-item .label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.1rem; }
-  .summary-item .value { font-size: 0.92rem; font-weight: 700; color: var(--ink); overflow-wrap: break-word; }
+  .summary-item .meta { min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+  .summary-item .label { display: block; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .summary-item .value { display: block; font-size: 0.92rem; font-weight: 700; color: var(--ink); overflow-wrap: break-word; }
   .summary-item.price .value { color: var(--accent); font-size: 1.05rem; }
 
   .actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
@@ -626,6 +651,26 @@
   }
   @keyframes draw { to { stroke-dashoffset: 0; } }
 
+  .success-wrap h1 { animation: fadeUp 0.5s 0.15s both; }
+  .success-wrap .subtitle { animation: fadeUp 0.5s 0.25s both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .booking-ref-card {
+    display: inline-flex; align-items: center; gap: 0.7rem; margin: 0.4rem auto 1.6rem;
+    padding: 0.85rem 1.3rem; border-radius: 14px; color: #fff;
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
+    background-size: 200% 200%; animation: ctaShift 6s ease-in-out infinite, fadeUp 0.5s 0.35s both;
+    box-shadow: 0 10px 24px rgba(124,58,237,0.28);
+  }
+  .booking-ref-card .ref-icon {
+    width: 34px; height: 34px; border-radius: 9px; background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center; flex: 0 0 auto;
+  }
+  .booking-ref-card .ref-icon svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .booking-ref-card .ref-meta { text-align: left; }
+  .booking-ref-card .ref-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; }
+  .booking-ref-card .ref-value { font-size: 1.15rem; font-weight: 800; letter-spacing: 0.02em; }
+
   .spinner {
     width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
     border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: -3px; margin-right: 0.5rem;
@@ -634,6 +679,10 @@
 </style>
 </head>
 <body>
+<div class="announce-bar">
+  <span class="dot"></span>
+  <span data-i18n="announceBar">Wir befinden uns im Aufbau &middot; bald verfügbar</span>
+</div>
 <div class="topbar">
   <a class="brand" href="/">
     <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -685,7 +734,7 @@
       <span class="hiw-num">4</span>
       <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke="#7C3AED" stroke-width="1.6"/></svg></div>
       <h4 data-i18n="hiwStep4Title">Gerät im Ist-Zustand</h4>
-      <p data-i18n="hiwStep4Desc">Wir fotografieren nur das betroffene Gerät zur Dokumentation — mit Ihrem Einverständnis.</p>
+      <p data-i18n="hiwStep4Desc">Wir fotografieren nur das betroffene Gerät zur Dokumentation: mit Ihrem Einverständnis.</p>
     </div>
     <div class="hiw-step">
       <span class="hiw-num">5</span>
@@ -714,7 +763,7 @@
   <div class="cta-banner" id="cta-banner">
     <span class="cta-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke-width="1.8"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke-width="1.8" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <strong data-i18n="ctaBannerTitle">Jetzt Termin buchen</strong>
-    <span class="cta-sub" data-i18n="ctaBannerSub">In nur 2 Minuten online — schnell &amp; unkompliziert.</span>
+    <span class="cta-sub" data-i18n="ctaBannerSub">In nur 2 Minuten online: schnell &amp; unkompliziert.</span>
   </div>
 
   <!-- Step 0: home or business -->
@@ -756,7 +805,7 @@
   <!-- Step 1: choose category -->
   <div class="step" data-step="1">
     <h1 data-i18n="step0Title">Wobei können wir helfen?</h1>
-    <p class="subtitle" data-i18n="step0Sub">Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.</p>
+    <p class="subtitle" data-i18n="step0Sub">Wählen Sie einen Bereich: wir zeigen Ihnen die passenden Pakete.</p>
     <div class="path-grid" id="category-grid"></div>
     <div class="actions">
       <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
@@ -790,9 +839,15 @@
     <h1 data-i18n="step3Title">Ihre Angaben</h1>
     <p class="subtitle" data-i18n="step3Sub">Die Bestätigung senden wir an diese Adresse.</p>
     <div class="summary" id="summary"></div>
-    <div class="field">
-      <label data-i18n="fullName">Vollständiger Name</label>
-      <input type="text" id="f-name" placeholder="Max Mustermann" />
+    <div class="field-row">
+      <div class="field">
+        <label data-i18n="firstName">Vorname</label>
+        <input type="text" id="f-firstname" placeholder="Max" />
+      </div>
+      <div class="field">
+        <label data-i18n="lastName">Nachname</label>
+        <input type="text" id="f-lastname" placeholder="Mustermann" />
+      </div>
     </div>
     <div class="field">
       <label data-i18n="email">E-Mail</label>
@@ -821,6 +876,15 @@
       </div>
       <h1 data-i18n="successTitle">Sie sind gebucht!</h1>
       <p class="subtitle" id="success-sub"></p>
+      <div class="booking-ref-card" id="booking-ref-card">
+        <span class="ref-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 8l9 6 9-6"/></svg>
+        </span>
+        <span class="ref-meta">
+          <span class="ref-label" data-i18n="bookingRefLabel">Buchungsnummer</span>
+          <span class="ref-value" id="booking-ref-value"></span>
+        </span>
+      </div>
       <div class="summary" id="success-summary"></div>
       <a class="back-link" href="/" data-i18n="bookAnother">Weiteren Termin buchen</a>
     </div>
@@ -832,7 +896,7 @@
   <div class="footer-inner">
     <div class="footer-col footer-about">
       <div class="footer-brand">zett<span>ly</span></div>
-      <p class="footer-tagline" data-i18n="footerTagline">Zettly ist Ihr IT-Partner in München — von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
+      <p class="footer-tagline" data-i18n="footerTagline">Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
@@ -863,7 +927,7 @@
 <script>
 const I18N = {
   de: {
-    title: "Termin buchen — Zettly",
+    title: "Termin buchen | Zettly",
     bookAnother: "Weiteren Termin buchen",
     step00Title: "Für Zuhause oder Ihr Unternehmen?",
     step00Sub: "So können wir Ihnen gleich die passenden Pakete zeigen.",
@@ -872,7 +936,7 @@ const I18N = {
     audienceBizTitle: "Unternehmen",
     audienceBizDesc: "Kleine & mittlere Unternehmen.",
     step0Title: "Wobei können wir helfen?",
-    step0Sub: "Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.",
+    step0Sub: "Wählen Sie einen Bereich: wir zeigen Ihnen die passenden Pakete.",
     back: "Zurück",
     priceOnRequest: "Preis nach Diagnose",
     trustFast: "Schnelle Termine",
@@ -880,7 +944,7 @@ const I18N = {
     trustOnline: "Direkt online buchen",
     footerPrivacy: "Datenschutz",
     footerHome: "Startseite",
-    footerTagline: "Zettly ist Ihr IT-Partner in München — von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+    footerTagline: "Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
     footerServicesHeading: "Leistungen",
     footerSpecialtyBadge: "Schwerpunkt",
     footerServiceDynamics: "Dynamics 365",
@@ -890,7 +954,7 @@ const I18N = {
     footerLinksHeading: "Links",
     footerContactHeading: "Kontakt",
     ctaBannerTitle: "Jetzt Termin buchen",
-    ctaBannerSub: "In nur 2 Minuten online — schnell & unkompliziert.",
+    ctaBannerSub: "In nur 2 Minuten online: schnell & unkompliziert.",
     hiwTitle: "So läuft Ihr Termin ab",
     hiwSub: "Transparent von der Buchung bis zur Bezahlung.",
     hiwStep1Title: "Leistung wählen",
@@ -900,7 +964,7 @@ const I18N = {
     hiwStep3Title: "Wir kommen vorbei",
     hiwStep3Desc: "Wir kommen pünktlich zu Ihnen nach Hause oder ins Büro.",
     hiwStep4Title: "Gerät im Ist-Zustand",
-    hiwStep4Desc: "Wir fotografieren nur das betroffene Gerät zur Dokumentation — mit Ihrem Einverständnis.",
+    hiwStep4Desc: "Wir fotografieren nur das betroffene Gerät zur Dokumentation: mit Ihrem Einverständnis.",
     hiwStep5Title: "Service durchführen",
     hiwStep5Desc: "Wir erledigen die vereinbarte Leistung fachgerecht.",
     hiwStep6Title: "Gerät nach Abschluss",
@@ -912,15 +976,18 @@ const I18N = {
     continue: "Weiter",
     step3Title: "Ihre Angaben",
     step3Sub: "Die Bestätigung senden wir an diese Adresse.",
-    fullName: "Vollständiger Name",
+    firstName: "Vorname",
+    lastName: "Nachname",
     email: "E-Mail",
     phone: "Telefon (optional)",
     notes: "Was sollten wir wissen? (optional)",
     notesPlaceholder: "Kurze Beschreibung des Anliegens",
     confirmBooking: "Buchung bestätigen",
     successTitle: "Sie sind gebucht!",
+    bookingRefLabel: "Buchungsnummer",
+    announceBar: "Wir befinden uns im Aufbau · bald verfügbar",
     loadingTimes: "Lade Termine…",
-    noSlots: "Keine Termine an diesem Tag — bitte anderes Datum wählen.",
+    noSlots: "Keine Termine an diesem Tag: bitte anderes Datum wählen.",
     slotLoadError: "Termine konnten nicht geladen werden. Bitte erneut versuchen.",
     minLabel: "Min.",
     summaryService: "Leistung",
@@ -935,7 +1002,7 @@ const I18N = {
     emailPendingMsg: "Gespeichert! (Die Bestätigungs-E-Mail folgt in Kürze.)",
   },
   en: {
-    title: "Book an Appointment — Zettly",
+    title: "Book an Appointment | Zettly",
     bookAnother: "Book another appointment",
     step00Title: "For your home or your business?",
     step00Sub: "So we can show you the right packages right away.",
@@ -952,7 +1019,7 @@ const I18N = {
     trustOnline: "Book directly online",
     footerPrivacy: "Privacy Policy",
     footerHome: "Home",
-    footerTagline: "Zettly is your IT partner in Munich — from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+    footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
     footerServicesHeading: "Services",
     footerSpecialtyBadge: "Specialty",
     footerServiceDynamics: "Dynamics 365",
@@ -962,7 +1029,7 @@ const I18N = {
     footerLinksHeading: "Links",
     footerContactHeading: "Contact",
     ctaBannerTitle: "Book an appointment now",
-    ctaBannerSub: "Online in just 2 minutes — fast & simple.",
+    ctaBannerSub: "Online in just 2 minutes: fast & simple.",
     hiwTitle: "How your appointment works",
     hiwSub: "Fully transparent, from booking to payment.",
     hiwStep1Title: "Pick a service",
@@ -972,7 +1039,7 @@ const I18N = {
     hiwStep3Title: "We come to you",
     hiwStep3Desc: "We arrive on time at your home or office.",
     hiwStep4Title: "Device before we start",
-    hiwStep4Desc: "We photograph only the device itself for documentation — with your consent.",
+    hiwStep4Desc: "We photograph only the device itself for documentation: with your consent.",
     hiwStep5Title: "Service performed",
     hiwStep5Desc: "We carry out the agreed work professionally.",
     hiwStep6Title: "Device once finished",
@@ -984,15 +1051,18 @@ const I18N = {
     continue: "Continue",
     step3Title: "Your details",
     step3Sub: "We'll send your confirmation here.",
-    fullName: "Full name",
+    firstName: "First name",
+    lastName: "Last name",
     email: "Email",
     phone: "Phone (optional)",
     notes: "Anything we should know? (optional)",
     notesPlaceholder: "Briefly describe the issue or what you need",
     confirmBooking: "Confirm booking",
     successTitle: "You're booked!",
+    bookingRefLabel: "Booking reference",
+    announceBar: "We're under construction · coming soon",
     loadingTimes: "Loading times…",
-    noSlots: "No slots this day — try another date.",
+    noSlots: "No slots this day: try another date.",
     slotLoadError: "Couldn't load availability. Try again.",
     minLabel: "min",
     summaryService: "Service",
@@ -1010,7 +1080,7 @@ const I18N = {
 
 let lang = localStorage.getItem("zettly_lang") || "de";
 
-// state.treePath: [{ node, choiceId, choiceLabel }] — the branch nodes and
+// state.treePath: [{ node, choiceId, choiceLabel }] | the branch nodes and
 // choices made from the category root down to (but not including) the leaf.
 const state = { audience: null, categoryId: null, category: null, currentNode: null, treePath: [], service: null, date: null, time: null };
 let CATALOG = { home: [], business: [] };
@@ -1562,14 +1632,16 @@ document.getElementById("to-details").addEventListener("click", () => {
 });
 
 document.getElementById("submit-booking").addEventListener("click", async () => {
-  const name = document.getElementById("f-name").value.trim();
+  const firstName = document.getElementById("f-firstname").value.trim();
+  const lastName = document.getElementById("f-lastname").value.trim();
+  const name = `${firstName} ${lastName}`.trim();
   const email = document.getElementById("f-email").value.trim();
   const phone = document.getElementById("f-phone").value.trim();
   const notes = document.getElementById("f-notes").value.trim();
   const errorEl = document.getElementById("form-error");
   errorEl.style.display = "none";
 
-  if (!name || !email) {
+  if (!firstName || !lastName || !email) {
     errorEl.textContent = t("fillNameEmail");
     errorEl.style.display = "block";
     return;
@@ -1607,6 +1679,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
     document.getElementById("success-sub").textContent = data.emailSent
       ? t("emailSentMsg")(email)
       : t("emailPendingMsg");
+    document.getElementById("booking-ref-value").textContent = data.bookingRef || "";
     renderSummary("success-summary");
     showStep(5);
   } catch (e) {
