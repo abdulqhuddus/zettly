@@ -137,6 +137,49 @@
   @keyframes pillIn { to { opacity: 1; transform: translateY(0); } }
   @keyframes pillPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
+  /* Bright CTA banner above the audience-selection section */
+  .cta-banner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    text-align: center;
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
+    background-size: 200% 200%;
+    animation: ctaShift 6s ease-in-out infinite;
+    border-radius: 22px;
+    padding: 1.35rem 1.75rem;
+    margin-bottom: 2.2rem;
+    box-shadow: 0 18px 40px rgba(124,58,237,0.28);
+    transition: opacity 0.25s ease, max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
+    max-height: 200px;
+  }
+  .cta-banner.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; pointer-events: none; }
+  @keyframes ctaShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  .cta-banner .cta-icon {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
+    animation: ctaPulse 1.8s ease-in-out infinite;
+  }
+  .cta-banner .cta-icon svg { width: 22px; height: 22px; stroke: #fff; }
+  @keyframes ctaPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.35); } 50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(255,255,255,0); } }
+  .cta-banner strong {
+    color: #fff;
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .cta-banner span.cta-sub {
+    color: rgba(255,255,255,0.92);
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
   /* "How it works" interactive marketing banner, shown above the booking flow */
   .how-it-works {
     width: 100%;
@@ -611,6 +654,12 @@
 
 <div class="stage">
 
+  <div class="cta-banner" id="cta-banner">
+    <span class="cta-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke-width="1.8"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke-width="1.8" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <strong data-i18n="ctaBannerTitle">Jetzt Termin buchen</strong>
+    <span class="cta-sub" data-i18n="ctaBannerSub">In nur 2 Minuten online — schnell &amp; unkompliziert.</span>
+  </div>
+
   <!-- Step 0: home or business -->
   <div class="step visible" data-step="0">
     <h1 data-i18n="step00Title">Für Zuhause oder Ihr Unternehmen?</h1>
@@ -770,6 +819,8 @@ const I18N = {
     footerTagline: "IT-Support für Zuhause und Ihr Unternehmen — München.",
     footerLinksHeading: "Links",
     footerContactHeading: "Kontakt",
+    ctaBannerTitle: "Jetzt Termin buchen",
+    ctaBannerSub: "In nur 2 Minuten online — schnell & unkompliziert.",
     hiwTitle: "So läuft Ihr Termin ab",
     hiwSub: "Transparent von der Buchung bis zur Bezahlung.",
     hiwStep1Title: "Leistung wählen",
@@ -834,6 +885,8 @@ const I18N = {
     footerTagline: "IT support for your home and business — Munich.",
     footerLinksHeading: "Links",
     footerContactHeading: "Contact",
+    ctaBannerTitle: "Book an appointment now",
+    ctaBannerSub: "Online in just 2 minutes — fast & simple.",
     hiwTitle: "How your appointment works",
     hiwSub: "Fully transparent, from booking to payment.",
     hiwStep1Title: "Pick a service",
@@ -931,6 +984,7 @@ function showStep(n) {
   document.querySelector(".stage").classList.toggle("wide", n === 1);
   document.querySelector(".trust-strip").classList.toggle("wide", n === 1);
   document.getElementById("how-it-works").classList.toggle("collapsed", n !== 0);
+  document.getElementById("cta-banner").classList.toggle("collapsed", n !== 0);
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
