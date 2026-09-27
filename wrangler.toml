@@ -12,4 +12,4 @@ binding = "ASSETS"
 [[d1_databases]]
 binding = "DB"
 database_name = "zettly-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "196c9e0f-2ae9-4bfb-858d-0870dfc8e663"
