@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title data-i18n-title>Zettly — Datenschutz</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #7C3AED;
+    --accent-light: #F3EEFF;
+    --ink: #111114;
+    --muted: #6b6b74;
+    --border: #e9e7ef;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 3rem;
+  }
+
+  .stage { width: 100%; max-width: 720px; padding: 0 1.25rem; }
+
+  .topbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem clamp(1.25rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .brand { display: flex; align-items: center; gap: 0.85rem; text-decoration: none; }
+  .brand-text {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 2.2rem;
+    font-weight: 200;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .brand-text span { color: var(--accent); }
+  .brand-mark { width: 52px; height: 52px; flex: 0 0 auto; }
+
+  .topbar-right { display: flex; align-items: center; gap: 1rem; }
+
+  .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .back-link:hover { color: var(--ink); }
+
+  .lang-switch {
+    display: flex;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .lang-switch button {
+    border: none;
+    background: transparent;
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+    color: var(--muted);
+    transition: background 0.2s, color 0.2s;
+  }
+  .lang-switch button.active { background: var(--accent); color: #fff; }
+
+  .legal {
+    width: 100%;
+    max-width: 720px;
+    padding: 0.5rem 1.25rem 3rem;
+    line-height: 1.65;
+  }
+  .legal h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .legal .updated { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.6rem; }
+  .legal h2 { font-size: 1.05rem; font-weight: 700; margin: 2rem 0 0.6rem; }
+  .legal p, .legal li { font-size: 0.92rem; color: #33333a; }
+  .legal ul { margin: 0.4rem 0 0.4rem 1.2rem; }
+  .legal a { color: var(--accent); }
+
+  .notice {
+    background: var(--accent-light);
+    border: 1px solid #e2d6fb;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    font-size: 0.85rem;
+    color: #4a3a80;
+    margin-bottom: 2rem;
+  }
+  .notice strong { color: #3a2c66; }
+
+  .placeholder {
+    background: #fff7e6;
+    border: 1px solid #f3ddaa;
+    border-radius: 10px;
+    padding: 0.15rem 0.4rem;
+    color: #8a6100;
+    font-weight: 600;
+  }
+
+  .site-footer {
+    width: 100%;
+    max-width: 720px;
+    padding: 2.5rem 1.25rem 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+  .site-footer .footer-links a { color: var(--muted); text-decoration: none; margin-right: 1.2rem; }
+  .site-footer .footer-links a:hover { color: var(--accent); }
+  .site-footer .footer-bottom { color: #b3b1ba; margin-top: 0.8rem; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="/">
+    <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
+      <rect x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
+      <rect x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+      <rect x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
+    </svg>
+    <span class="brand-text">zett<span>ly</span></span>
+  </a>
+  <div class="topbar-right">
+    <a class="back-link" href="/" data-i18n="backHome">&larr; Zur Startseite</a>
+    <div class="lang-switch" id="lang-switch">
+      <button data-lang="de">DE</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+</div>
+
+<div class="legal" id="legal-de">
+  <h1>Datenschutzerklärung</h1>
+  <div class="updated">Stand: September 2026</div>
+
+  <div class="notice">
+    <strong>Hinweis:</strong> Dies ist eine Vorlage auf Basis allgemeiner Anforderungen der DSGVO und dient nicht als Rechtsberatung. Bitte prüfen Sie den Text — insbesondere die mit <span class="placeholder">Platzhalter</span> markierten Angaben — vor der Veröffentlichung mit echten Kundendaten, ggf. gemeinsam mit einem Anwalt oder Datenschutzbeauftragten.
+  </div>
+
+  <h2>1. Verantwortlicher</h2>
+  <p>Verantwortlich für die Datenverarbeitung auf dieser Website ist:</p>
+  <p>
+    <span class="placeholder">[Vor- und Nachname / Firmenname]</span><br>
+    <span class="placeholder">[Straße und Hausnummer]</span><br>
+    <span class="placeholder">[PLZ und Ort]</span><br>
+    E-Mail: <span class="placeholder">kontakt@zettly.de</span>
+  </p>
+
+  <h2>2. Hosting</h2>
+  <p>Diese Website wird über Cloudflare Workers gehostet. Cloudflare verarbeitet dabei technisch notwendige Daten (u. a. IP-Adresse, Zeitpunkt der Anfrage) zur Auslieferung der Seite und zum Schutz vor Missbrauch. Weitere Informationen finden Sie in der <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Datenschutzerklärung von Cloudflare</a>.</p>
+
+  <h2>3. Server-Log-Dateien</h2>
+  <p>Beim Aufruf dieser Website können automatisch Informationen erfasst werden, die Ihr Browser übermittelt (z. B. Browsertyp, verwendetes Betriebssystem, Referrer-URL, IP-Adresse, Datum und Uhrzeit der Anfrage). Diese Daten dienen der Sicherheit und Stabilität des Angebots und werden nicht mit anderen Datenquellen zusammengeführt.</p>
+
+  <h2>4. Terminbuchung</h2>
+  <p>Wenn Sie über unser Formular einen Termin buchen, erheben wir die von Ihnen eingegebenen Daten (Name, E-Mail-Adresse, optional Telefonnummer, gewählte Leistung, Termin sowie ggf. Anmerkungen). Diese Daten werden in unserer Datenbank gespeichert, um Ihren Termin zu verwalten und mit Ihnen in Kontakt zu treten. Rechtsgrundlage ist die Erfüllung eines Vertrags bzw. vorvertraglicher Maßnahmen (Art. 6 Abs. 1 lit. b DSGVO).</p>
+
+  <h2>5. E-Mail-Versand</h2>
+  <p>Zur Bestätigung Ihrer Buchung versenden wir eine E-Mail über den Dienstleister Resend. Dabei werden Ihre E-Mail-Adresse sowie die Buchungsdetails an Resend übermittelt, damit die Nachricht zugestellt werden kann. Weitere Informationen finden Sie in der <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Datenschutzerklärung von Resend</a>.</p>
+
+  <h2>6. Cookies &amp; lokale Speicherung</h2>
+  <p>Diese Website verwendet keine Tracking-Cookies. Ihre gewählte Sprache (Deutsch/Englisch) wird lediglich lokal in Ihrem Browser gespeichert (localStorage), damit sie bei einem erneuten Besuch erhalten bleibt. Diese Information verlässt Ihr Gerät nicht.</p>
+
+  <h2>7. Ihre Rechte</h2>
+  <p>Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung Ihrer personenbezogenen Daten sowie ein Recht auf Datenübertragbarkeit und Widerspruch. Wenden Sie sich hierzu bitte an die oben genannte Kontaktadresse. Ihnen steht zudem ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde zu.</p>
+
+  <h2>8. Speicherdauer</h2>
+  <p>Wir speichern Ihre Daten nur so lange, wie es für die Erbringung unserer Leistungen und zur Erfüllung gesetzlicher Aufbewahrungspflichten erforderlich ist.</p>
+
+  <h2>9. Änderungen dieser Datenschutzerklärung</h2>
+  <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen umzusetzen.</p>
+</div>
+
+<div class="legal" id="legal-en" style="display:none;">
+  <h1>Privacy Policy</h1>
+  <div class="updated">Last updated: September 2026</div>
+
+  <div class="notice">
+    <strong>Note:</strong> This is a template based on general GDPR requirements and does not constitute legal advice. Please review this text — especially the fields marked <span class="placeholder">placeholder</span> — before publishing with real customer data, ideally together with a lawyer or data protection officer.
+  </div>
+
+  <h2>1. Data Controller</h2>
+  <p>The party responsible for data processing on this website is:</p>
+  <p>
+    <span class="placeholder">[Full name / company name]</span><br>
+    <span class="placeholder">[Street and number]</span><br>
+    <span class="placeholder">[Postal code and city]</span><br>
+    Email: <span class="placeholder">kontakt@zettly.de</span>
+  </p>
+
+  <h2>2. Hosting</h2>
+  <p>This website is hosted on Cloudflare Workers. Cloudflare processes technically necessary data (including IP address and request timestamp) to deliver the site and protect against abuse. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's Privacy Policy</a> for details.</p>
+
+  <h2>3. Server Log Files</h2>
+  <p>When you visit this website, information transmitted automatically by your browser may be collected (e.g. browser type, operating system, referrer URL, IP address, date and time of the request). This data is used to keep the service secure and stable and is not combined with other data sources.</p>
+
+  <h2>4. Appointment Booking</h2>
+  <p>When you book an appointment through our form, we collect the data you enter (name, email address, optionally phone number, selected service, appointment time, and any notes). This data is stored in our database to manage your appointment and get in touch with you. The legal basis is the performance of a contract or pre-contractual measures (Art. 6(1)(b) GDPR).</p>
+
+  <h2>5. Sending Emails</h2>
+  <p>To confirm your booking, we send an email via the service provider Resend. Your email address and booking details are transmitted to Resend so the message can be delivered. See <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend's Privacy Policy</a> for details.</p>
+
+  <h2>6. Cookies &amp; Local Storage</h2>
+  <p>This website does not use tracking cookies. Your chosen language (German/English) is stored only locally in your browser (localStorage) so it is remembered on your next visit. This information never leaves your device.</p>
+
+  <h2>7. Your Rights</h2>
+  <p>You have the right at any time to access, correct, delete, or restrict the processing of your personal data, as well as a right to data portability and objection. Please contact us at the address above. You also have the right to lodge a complaint with a data protection supervisory authority.</p>
+
+  <h2>8. Data Retention</h2>
+  <p>We store your data only for as long as necessary to provide our services and to comply with legal retention obligations.</p>
+
+  <h2>9. Changes to this Privacy Policy</h2>
+  <p>We reserve the right to update this privacy policy to reflect current legal requirements or changes to our services.</p>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="/" data-i18n="footerHome">Startseite</a>
+    <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+  </div>
+  <div class="footer-bottom">&copy; <span id="footer-year"></span> Zettly</div>
+</footer>
+
+<script>
+  const STRINGS = {
+    de: { title: "Zettly — Datenschutz", back: "← Zur Startseite", home: "Startseite" },
+    en: { title: "Zettly — Privacy Policy", back: "← Back to home", home: "Home" },
+  };
+
+  function setLang(lang) {
+    localStorage.setItem("zettly_lang", lang);
+    document.title = STRINGS[lang].title;
+    document.getElementById("legal-de").style.display = lang === "de" ? "" : "none";
+    document.getElementById("legal-en").style.display = lang === "en" ? "" : "none";
+    document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
+    document.querySelector('[data-i18n="footerHome"]').textContent = STRINGS[lang].home;
+    document.querySelectorAll("#lang-switch button").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+  }
+
+  document.getElementById("lang-switch").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-lang]");
+    if (btn) setLang(btn.dataset.lang);
+  });
+
+  document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+  const saved = localStorage.getItem("zettly_lang");
+  setLang(saved === "en" ? "en" : "de");
+</script>
+</body>
+</html>

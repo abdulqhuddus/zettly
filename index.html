@@ -78,6 +78,69 @@
   }
   .lang-switch button.active { background: var(--accent); color: #fff; }
 
+  .trust-strip {
+    width: 100%;
+    max-width: 640px;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.6rem;
+    transition: max-width 0.3s ease;
+  }
+  .trust-strip.wide { max-width: 1180px; }
+  .trust-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: pillIn 0.5s cubic-bezier(.2,.9,.3,1) forwards;
+  }
+  .trust-pill:nth-child(1) { animation-delay: 0.05s; }
+  .trust-pill:nth-child(2) { animation-delay: 0.2s; }
+  .trust-pill:nth-child(3) { animation-delay: 0.35s; }
+  .trust-pill .dot {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px;
+    animation: pillPulse 2.4s ease-in-out infinite;
+  }
+  .trust-pill:nth-child(2) .dot { animation-delay: 0.4s; }
+  .trust-pill:nth-child(3) .dot { animation-delay: 0.8s; }
+  .trust-pill .dot svg { width: 14px; height: 14px; }
+  @keyframes pillIn { to { opacity: 1; transform: translateY(0); } }
+  @keyframes pillPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+
+  .site-footer {
+    width: 100%;
+    max-width: 640px;
+    padding: 2.5rem 1.25rem 6rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+  .site-footer .footer-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
+  }
+  .site-footer .footer-brand {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 200; font-size: 1.2rem; color: var(--ink);
+  }
+  .site-footer .footer-brand span { color: var(--accent); }
+  .site-footer .footer-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .site-footer .footer-links a { color: var(--muted); text-decoration: none; }
+  .site-footer .footer-links a:hover { color: var(--accent); }
+  .site-footer .footer-bottom { color: #b3b1ba; }
+
   body { padding-bottom: 5rem; }
 
   .progress-bar {
@@ -195,6 +258,18 @@
   }
   .path-card:hover .go-btn { background: var(--accent); color: #fff; transform: translateX(3px); }
 
+  /* Stacked, full-width cards used for every tree step after the main category grid */
+  .path-list { display: flex; flex-direction: column; gap: 0.9rem; }
+  .path-list .path-card {
+    padding: 1.05rem 1.3rem;
+    transition: padding 0.25s ease, border-color 0.3s, transform 0.25s cubic-bezier(.2,.9,.3,1), box-shadow 0.3s;
+  }
+  .path-list .path-card h3, .path-list .path-card p { -webkit-line-clamp: unset; }
+  .path-list .path-card:hover {
+    padding: 1.4rem 1.3rem;
+    z-index: 2;
+  }
+
   .service-list { display: flex; flex-direction: column; gap: 1rem; }
   .service-card {
     position: relative;
@@ -206,7 +281,7 @@
     background: #fff;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(17,17,20,0.04);
-    transition: border-color 0.25s, transform 0.2s cubic-bezier(.2,.9,.3,1), box-shadow 0.25s;
+    transition: padding 0.25s ease, border-color 0.25s, transform 0.2s cubic-bezier(.2,.9,.3,1), box-shadow 0.25s;
   }
   .service-card::before {
     content: '';
@@ -217,8 +292,10 @@
   }
   .service-card:hover {
     border-color: var(--accent);
+    padding: 1.55rem 1.5rem;
     transform: translateY(-3px);
     box-shadow: 0 14px 30px rgba(124,58,237,0.14);
+    z-index: 2;
   }
   .service-card:hover::before { transform: scaleY(1); }
   .service-card:active { transform: translateY(-1px) scale(0.995); }
@@ -315,6 +392,12 @@
       <button data-lang="en">EN</button>
     </div>
   </div>
+</div>
+
+<div class="trust-strip">
+  <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span><span data-i18n="trustFast">Schnelle Termine</span></span>
+  <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" fill="none" d="M9.5 15s.8 1 2.5 1 2.5-.8 2.5-1.8-1-1.5-2.5-1.7-2.5-.7-2.5-1.7S10.5 9 12 9s2 .5 2.3 1"/><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" d="M12 7.3v1M12 15.7v1"/></svg></span><span data-i18n="trustNoHidden">Keine versteckten Kosten</span></span>
+  <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M8 12.5l2.5 2.5L16 9"/></svg></span><span data-i18n="trustOnline">Direkt online buchen</span></span>
 </div>
 
 <div class="stage">
@@ -430,6 +513,18 @@
 
 </div>
 
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">zett<span>ly</span></div>
+    <div class="footer-links">
+      <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
+      <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+    </div>
+  </div>
+  <p data-i18n="footerTagline">IT-Support für Zuhause und Ihr Unternehmen — München.</p>
+  <p class="footer-bottom">&copy; <span id="footer-year"></span> Zettly</p>
+</footer>
+
 <div class="progress-bar" id="progress">
   <div class="track"><div class="fill" id="progress-fill"></div></div>
   <div class="step-label" id="progress-label"><b>1</b> / 5</div>
@@ -450,6 +545,11 @@ const I18N = {
     step0Sub: "Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.",
     back: "Zurück",
     priceOnRequest: "Preis nach Diagnose",
+    trustFast: "Schnelle Termine",
+    trustNoHidden: "Keine versteckten Kosten",
+    trustOnline: "Direkt online buchen",
+    footerPrivacy: "Datenschutz",
+    footerTagline: "IT-Support für Zuhause und Ihr Unternehmen — München.",
     step2Title: "Datum & Uhrzeit wählen",
     step2Sub: "Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.",
     continue: "Weiter",
@@ -490,6 +590,11 @@ const I18N = {
     step0Sub: "Pick a path and we'll show you the right packages.",
     back: "Back",
     priceOnRequest: "Price after diagnosis",
+    trustFast: "Fast appointments",
+    trustNoHidden: "No hidden charges",
+    trustOnline: "Book directly online",
+    footerPrivacy: "Privacy Policy",
+    footerTagline: "IT support for your home and business — Munich.",
     step2Title: "Pick a date & time",
     step2Sub: "Business hours, Monday to Friday, 9:00–17:00.",
     continue: "Continue",
@@ -569,6 +674,7 @@ function showStep(n) {
     el.classList.toggle("visible", el.dataset.step == n);
   });
   document.querySelector(".stage").classList.toggle("wide", n === 1);
+  document.querySelector(".trust-strip").classList.toggle("wide", n === 1);
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
@@ -708,6 +814,96 @@ function iconForOption(id, fallback) {
   return OPTION_ICONS[id] || fallback;
 }
 
+// Short fallback descriptions for option ids that don't carry their own catalog `desc`.
+function tr(de, en) { return { de, en }; }
+const OPTION_HELP = {
+  desktop: tr("Fest installierter Rechner mit separatem Monitor.", "A stationary computer with a separate monitor."),
+  laptop: tr("Tragbarer Computer.", "A portable computer."),
+  allinone: tr("Rechner und Bildschirm in einem Gehäuse.", "Computer and display in one unit."),
+  apple: tr("iMac, MacBook oder Mac mini.", "iMac, MacBook, or Mac mini."),
+  other: tr("Windows- oder Linux-Gerät.", "A Windows or Linux device."),
+  windows: tr("Läuft mit Microsoft Windows.", "Runs Microsoft Windows."),
+  linux: tr("Läuft mit einer Linux-Distribution.", "Runs a Linux distribution."),
+  setupNew: tr("Für ein neues oder zurückgesetztes Gerät.", "For a new or freshly reset device."),
+  fixSoftware: tr("Etwas funktioniert nicht mehr wie gewohnt.", "Something isn't working the way it should."),
+  fixHardware: tr("Das Gerät selbst reagiert nicht richtig.", "The device itself isn't responding properly."),
+  fixIssue: tr("Ein bestehendes Problem beheben.", "Fix an existing problem."),
+  withData: tr("Ihre Dateien werden mit übernommen.", "Your files come along with the setup."),
+  withoutData: tr("Reine Neueinrichtung ohne Datenübernahme.", "A clean setup with no data transfer."),
+  osIssues: tr("Probleme mit dem Betriebssystem selbst.", "Issues with the operating system itself."),
+  programsReinstall: tr("Ein oder mehrere Programme neu aufsetzen.", "Reinstall one or more programs."),
+  freeUpStorage: tr("Alte Dateien sichern und Platz schaffen.", "Back up old files and free up space."),
+  bootingUp: tr("Das Gerät startet, aber etwas stimmt nicht.", "The device starts, but something's off."),
+  notBooting: tr("Kommt über den Startbildschirm nicht hinaus.", "Doesn't get past the startup screen."),
+  loginWorks: tr("Anmeldung klappt, das Problem liegt danach.", "Login works, the issue is somewhere after that."),
+  loginFails: tr("Kommt nicht über den Anmeldebildschirm hinaus.", "Doesn't get past the login screen."),
+  powersOnNoResponse: tr("Lüfter/Lichter an, aber kein Bild oder Reaktion.", "Fans/lights on, but no picture or response."),
+  noPower: tr("Absolut keine Reaktion beim Einschalten.", "No reaction at all when powering on."),
+  bootMenu: tr("Es erscheint ein Menü oder Text auf dem Bildschirm.", "A menu or text appears on screen."),
+  blankScreen: tr("Der Bildschirm bleibt komplett schwarz.", "The screen stays completely black."),
+  "10gb": tr("Für ein paar Dokumente und Fotos.", "For a handful of documents and photos."),
+  "50gb": tr("Für eine mittlere Foto-/Dokumentensammlung.", "For a moderate collection of photos/documents."),
+  "100gb": tr("Für eine größere persönliche Sammlung.", "For a larger personal collection."),
+  "250gb": tr("Für viele Fotos, Videos und Dokumente.", "For lots of photos, videos, and documents."),
+  "500gb": tr("Für eine umfangreiche Mediensammlung.", "For an extensive media collection."),
+  "1tb": tr("Für sehr große Datenmengen.", "For very large amounts of data."),
+  printer: tr("Klassischer Drucker.", "A standard printer."),
+  scanner: tr("Eigenständiger Scanner.", "A standalone scanner."),
+  camera: tr("Feste Überwachungskamera.", "A fixed security camera."),
+  doorbell: tr("Klingel mit Kamera.", "A doorbell with a built-in camera."),
+  plug: tr("Steckdose, die sich per App steuern lässt.", "An outlet you can control from an app."),
+  bulb: tr("Lampe, die sich per App steuern lässt.", "A bulb you can control from an app."),
+  thermostat: tr("Smarte Heizungssteuerung.", "Smart heating control."),
+  sensor: tr("Bewegungs-, Tür- oder Fenstersensor.", "Motion, door, or window sensor."),
+  smarttv: tr("Fernseher mit eingebauten Apps.", "A TV with built-in apps."),
+  stick: tr("Streaming-Stick oder -Box an einem normalen Fernseher.", "A streaming stick or box on a regular TV."),
+  router: tr("Zentrales Gerät für Ihren Internetanschluss.", "The central device for your internet connection."),
+  accessPoints: tr("Erweitert das WLAN in weitere Räume.", "Extends WiFi into more rooms."),
+  switches: tr("Verteilt die Netzwerkverbindung auf mehrere Geräte.", "Distributes the network connection to multiple devices."),
+  physical: tr("Server-Hardware vor Ort.", "On-site server hardware."),
+  nasServer: tr("Netzwerkspeicher, der auch als Server dient.", "Network storage that also serves as a server."),
+  domain: tr("Verwaltet Nutzerkonten im Netzwerk.", "Manages user accounts on the network."),
+  doorAccess: tr("Elektronisches Zutrittssystem an der Tür.", "An electronic access system at the door."),
+  computer: tr("Desktop-Rechner oder Laptop.", "A desktop computer or laptop."),
+  server: tr("Server-Hardware.", "Server hardware."),
+  external: tr("Externe Festplatte oder SSD.", "An external hard drive or SSD."),
+  nas: tr("Netzwerkspeicher (NAS).", "Network-attached storage (NAS)."),
+  mobile: tr("Smartphone oder Tablet.", "A smartphone or tablet."),
+  deleted: tr("Dateien wurden versehentlich entfernt.", "Files were accidentally removed."),
+  failure: tr("Das Laufwerk reagiert nicht mehr.", "The drive no longer responds."),
+  corrupted: tr("Daten sind vorhanden, aber nicht mehr lesbar.", "Data is present but no longer readable."),
+  m365: tr("Word, Excel, Outlook & Co.", "Word, Excel, Outlook & co."),
+  antivirus: tr("Schutz vor Viren und Malware.", "Protection against viruses and malware."),
+  newTenant: tr("Erstmalige Einrichtung für Ihr Unternehmen.", "First-time setup for your business."),
+  migrate: tr("Von einem alten Anbieter übernehmen.", "Move over from an old provider."),
+  access: tr("Zugriff oder Anmeldung funktioniert nicht.", "Access or login isn't working."),
+  endpoint: tr("Schutzsoftware auf den Geräten.", "Protective software on the devices."),
+  firewall: tr("Kontrolliert den Netzwerkverkehr.", "Controls network traffic."),
+  backup: tr("Regelmäßige Sicherung Ihrer Daten.", "Regular backup of your data."),
+  extensions: tr("Weitere Nebenstellen für Mitarbeiter.", "More extensions for staff."),
+  device: tr("Laptop oder Desktop für die neue Person.", "A laptop or desktop for the new person."),
+  account: tr("Zugänge und Postfach anlegen.", "Set up logins and mailbox."),
+  software: tr("Benötigte Programme installieren.", "Install the programs they'll need."),
+  winserver: tr("Serverbetriebssystem von Microsoft.", "Microsoft's server operating system."),
+  m365biz: tr("Microsofts Business-Abo mit Office & E-Mail.", "Microsoft's business plan with Office & email."),
+  one: tr("Ein einzelnes Gerät.", "A single device."),
+  small: tr("Eine kleine Gruppe.", "A small group."),
+  medium: tr("Eine mittlere Gruppe.", "A medium-sized group."),
+  large: tr("Eine größere Gruppe.", "A larger group."),
+  basic: tr("Der Einstieg in laufende Betreuung.", "The entry point into ongoing support."),
+  standard: tr("Unser meistgewähltes Paket.", "Our most commonly chosen tier."),
+  premium: tr("Umfassende, priorisierte Betreuung.", "Comprehensive, priority support."),
+  consult: tr("Klarheit, bevor es losgeht.", "Clarity before you commit."),
+  workflow: tr("Ein Prozess wird automatisiert.", "One process gets automated."),
+  integration: tr("D365 mit anderen Systemen verbinden.", "Connect D365 with other systems."),
+};
+
+function optionDesc(o) {
+  if (o.desc) return o.desc[lang];
+  const h = OPTION_HELP[o.id];
+  return h ? h[lang] : "";
+}
+
 function nodeIsTerminal(node) {
   return node.options.every(o => o.next && o.next.type === "leaf");
 }
@@ -763,14 +959,14 @@ function renderTreeStep() {
               <div class="duration">${leaf.duration} ${t("minLabel")}</div>
             </div>
           </div>
-          ${o.desc ? `<div class="tagline">${o.desc[lang]}</div>` : ""}
+          ${optionDesc(o) ? `<div class="tagline">${optionDesc(o)}</div>` : ""}
         </div>
       `;
       div.addEventListener("click", () => selectTreeOption(o));
       container.appendChild(div);
     });
   } else {
-    container.className = "path-grid";
+    container.className = "path-list";
     node.options.forEach(o => {
       const div = document.createElement("div");
       div.className = "path-card";
@@ -778,7 +974,7 @@ function renderTreeStep() {
         <div class="icon">${iconForOption(o.id, GENERIC_BRANCH_ICON)}</div>
         <div class="body">
           <h3>${o.name[lang]}</h3>
-          <p>${o.desc ? o.desc[lang] : ""}</p>
+          <p>${optionDesc(o)}</p>
         </div>
         <span class="go-btn">&rarr;</span>
       `;
@@ -991,6 +1187,8 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
     btn.textContent = originalText;
   }
 });
+
+document.getElementById("footer-year").textContent = new Date().getFullYear();
 
 applyStaticTranslations();
 showStep(0);
