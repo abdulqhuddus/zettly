@@ -84,7 +84,7 @@
 
   .topbar-right { display: flex; align-items: center; gap: 1rem; }
 
-  .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .back-link { display: inline-block; margin-top: 1.2rem; font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: var(--ink); }
 
   .lang-switch {
@@ -564,7 +564,34 @@
   .field { margin-bottom: 1.1rem; }
   .field-row { display: flex; gap: 0.9rem; }
   .field-row .field { flex: 1 1 0; min-width: 0; }
-  @media (max-width: 520px) { .field-row { flex-direction: column; gap: 0; } }
+  @media (max-width: 520px) {
+    .field-row { flex-direction: column; gap: 0; }
+    .field-row .field { flex: 1 1 auto !important; }
+  }
+
+  .address-section {
+    background: var(--accent-light); border: 1.5px solid #e4d9ff; border-radius: 16px;
+    padding: 1.1rem 1.2rem 0.2rem; margin-bottom: 1.1rem;
+  }
+  .address-section-head { display: flex; align-items: flex-start; gap: 0.7rem; margin-bottom: 1rem; }
+  .address-section-icon {
+    width: 34px; height: 34px; border-radius: 10px; background: #fff; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center; color: var(--accent);
+    box-shadow: 0 4px 10px rgba(124,58,237,0.15);
+  }
+  .address-section-icon svg { width: 18px; height: 18px; }
+  .address-section-title { font-weight: 700; font-size: 0.95rem; color: var(--ink); }
+  .address-section-sub { font-size: 0.82rem; color: var(--muted); margin-top: 0.1rem; }
+  .address-section .field label { color: var(--ink); }
+
+  .consent-check {
+    display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 1rem;
+    font-size: 0.82rem; color: var(--muted); line-height: 1.5; cursor: pointer;
+  }
+  .consent-check input[type="checkbox"] {
+    margin-top: 0.2rem; width: 17px; height: 17px; flex: 0 0 auto; accent-color: var(--accent); cursor: pointer;
+  }
+  .consent-check a { color: var(--accent); font-weight: 600; }
   .field label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; }
   .field input, .field textarea {
     width: 100%; padding: 0.75rem 0.9rem; border: 1.5px solid var(--border); border-radius: 10px;
@@ -626,6 +653,18 @@
   .summary-item .label { display: block; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .summary-item .value { display: block; font-size: 0.92rem; font-weight: 700; color: var(--ink); overflow-wrap: break-word; }
   .summary-item.price .value { color: var(--accent); font-size: 1.05rem; }
+  .summary-address {
+    display: flex; align-items: flex-start; gap: 0.55rem; margin-top: 0.9rem; padding-top: 0.9rem;
+    border-top: 1px dashed var(--border);
+  }
+  .summary-address .ico {
+    width: 34px; height: 34px; border-radius: 10px; flex: 0 0 auto; background: #fff;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(124,58,237,0.15);
+  }
+  .summary-address .ico svg { width: 16px; height: 16px; stroke: var(--pink); }
+  .summary-address .meta { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+  .summary-address .label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .summary-address .value { font-size: 0.9rem; font-weight: 700; color: var(--ink); overflow-wrap: break-word; }
 
   .actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
   button.btn { border: none; border-radius: 10px; padding: 0.85rem 1.5rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: transform 0.15s, background 0.2s, opacity 0.2s; }
@@ -651,6 +690,10 @@
   }
   @keyframes draw { to { stroke-dashoffset: 0; } }
 
+  .cancel-note {
+    font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-top: 1rem;
+    max-width: 420px; margin-left: auto; margin-right: auto;
+  }
   .success-wrap h1 { animation: fadeUp 0.5s 0.15s both; }
   .success-wrap .subtitle { animation: fadeUp 0.5s 0.25s both; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -857,10 +900,39 @@
       <label data-i18n="phone">Telefon (optional)</label>
       <input type="tel" id="f-phone" placeholder="+49 ..." />
     </div>
+    <div class="address-section">
+      <div class="address-section-head">
+        <span class="address-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
+        </span>
+        <div>
+          <div class="address-section-title" data-i18n="addressTitle">Adresse für den Vor-Ort-Termin</div>
+          <div class="address-section-sub" data-i18n="addressSub">Damit wir Sie finden: hier kommen wir zum Termin vorbei.</div>
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="addressStreet">Straße &amp; Hausnummer</label>
+        <input type="text" id="f-street" placeholder="Musterstraße 12" />
+      </div>
+      <div class="field-row">
+        <div class="field" style="flex: 0 0 130px;">
+          <label data-i18n="addressZip">PLZ</label>
+          <input type="text" id="f-zip" inputmode="numeric" placeholder="80331" />
+        </div>
+        <div class="field">
+          <label data-i18n="addressCity">Ort</label>
+          <input type="text" id="f-city" placeholder="München" />
+        </div>
+      </div>
+    </div>
     <div class="field">
       <label data-i18n="notes">Was sollten wir wissen? (optional)</label>
       <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens"></textarea>
     </div>
+    <label class="consent-check">
+      <input type="checkbox" id="f-consent" />
+      <span data-i18n="consentLabel">Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
+    </label>
     <p class="error-msg" id="form-error"></p>
     <div class="actions">
       <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
@@ -886,6 +958,7 @@
         </span>
       </div>
       <div class="summary" id="success-summary"></div>
+      <p class="cancel-note" data-i18n="cancelNote">Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen (z. B. bei Krankheit oder Verhinderung) zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.</p>
       <a class="back-link" href="/" data-i18n="bookAnother">Weiteren Termin buchen</a>
     </div>
   </div>
@@ -980,11 +1053,21 @@ const I18N = {
     lastName: "Nachname",
     email: "E-Mail",
     phone: "Telefon (optional)",
+    addressTitle: "Adresse für den Vor-Ort-Termin",
+    addressSub: "Damit wir Sie finden: hier kommen wir zum Termin vorbei.",
+    addressStreet: "Straße & Hausnummer",
+    addressZip: "PLZ",
+    addressCity: "Ort",
+    fillAddress: "Bitte geben Sie Ihre vollständige Adresse an.",
+    summaryAddress: "Adresse",
+    consentLabel: 'Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.',
+    fillConsent: "Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.",
     notes: "Was sollten wir wissen? (optional)",
     notesPlaceholder: "Kurze Beschreibung des Anliegens",
     confirmBooking: "Buchung bestätigen",
     successTitle: "Sie sind gebucht!",
     bookingRefLabel: "Buchungsnummer",
+    cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen (z. B. bei Krankheit oder Verhinderung) zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
     announceBar: "Wir befinden uns im Aufbau · bald verfügbar",
     loadingTimes: "Lade Termine…",
     noSlots: "Keine Termine an diesem Tag: bitte anderes Datum wählen.",
@@ -1055,11 +1138,21 @@ const I18N = {
     lastName: "Last name",
     email: "Email",
     phone: "Phone (optional)",
+    addressTitle: "Address for the on-site visit",
+    addressSub: "So we can find you: this is where we'll come for the appointment.",
+    addressStreet: "Street & house number",
+    addressZip: "Postcode",
+    addressCity: "City",
+    fillAddress: "Please enter your full address.",
+    summaryAddress: "Address",
+    consentLabel: 'I have read the <a href="/datenschutz/" target="_blank" rel="noopener">privacy policy</a> and agree that my details will be stored and processed to handle my booking.',
+    fillConsent: "Please agree to the privacy policy to continue.",
     notes: "Anything we should know? (optional)",
     notesPlaceholder: "Briefly describe the issue or what you need",
     confirmBooking: "Confirm booking",
     successTitle: "You're booked!",
     bookingRefLabel: "Booking reference",
+    cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases (e.g. illness or unavailability). We will inform you immediately if this happens.",
     announceBar: "We're under construction · coming soon",
     loadingTimes: "Loading times…",
     noSlots: "No slots this day: try another date.",
@@ -1092,9 +1185,12 @@ function fmtPrice(svc) { return svc.quote ? t("priceOnRequest") : fmtEuro(svc.pr
 function applyStaticTranslations() {
   document.documentElement.lang = lang;
   document.title = t("title");
+  const HTML_I18N_KEYS = new Set(["consentLabel"]);
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
-    if (I18N[lang][key]) el.textContent = I18N[lang][key];
+    if (!I18N[lang][key]) return;
+    if (HTML_I18N_KEYS.has(key)) el.innerHTML = I18N[lang][key];
+    else el.textContent = I18N[lang][key];
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
     const key = el.getAttribute("data-i18n-placeholder");
@@ -1573,6 +1669,7 @@ const SUMMARY_ICONS = {
   clock: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M12 7.5V12l3 2" ${ICON_STROKE}/></svg>`,
   price: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M9.5 15s.8 1 2.5 1 2.5-.8 2.5-1.8-1-1.5-2.5-1.7-2.5-.7-2.5-1.7S10.5 9 12 9s2 .5 2.3 1" ${ICON_STROKE}/><path d="M12 7.3v1M12 15.7v1" ${ICON_STROKE}/></svg>`,
   duration: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M12 8v4l2.5 1.5" ${ICON_STROKE}/></svg>`,
+  location: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z" ${ICON_STROKE}/><circle cx="12" cy="9.5" r="2.4" ${ICON_STROKE}/></svg>`,
 };
 
 function renderSummary(targetId) {
@@ -1606,6 +1703,11 @@ function renderSummary(targetId) {
         <span class="meta"><span class="label">${t("summaryPrice")}</span><span class="value">${fmtPrice(state.service)}</span></span>
       </div>
     </div>
+    ${state.address ? `
+    <div class="summary-address">
+      <span class="ico">${SUMMARY_ICONS.location}</span>
+      <span class="meta"><span class="label">${t("summaryAddress")}</span><span class="value">${state.address}</span></span>
+    </div>` : ""}
   `;
 }
 
@@ -1637,12 +1739,26 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
   const name = `${firstName} ${lastName}`.trim();
   const email = document.getElementById("f-email").value.trim();
   const phone = document.getElementById("f-phone").value.trim();
+  const street = document.getElementById("f-street").value.trim();
+  const zip = document.getElementById("f-zip").value.trim();
+  const city = document.getElementById("f-city").value.trim();
+  const address = [street, [zip, city].filter(Boolean).join(" ")].filter(Boolean).join(", ");
   const notes = document.getElementById("f-notes").value.trim();
   const errorEl = document.getElementById("form-error");
   errorEl.style.display = "none";
 
   if (!firstName || !lastName || !email) {
     errorEl.textContent = t("fillNameEmail");
+    errorEl.style.display = "block";
+    return;
+  }
+  if (!street || !zip || !city) {
+    errorEl.textContent = t("fillAddress");
+    errorEl.style.display = "block";
+    return;
+  }
+  if (!document.getElementById("f-consent").checked) {
+    errorEl.textContent = t("fillConsent");
     errorEl.style.display = "block";
     return;
   }
@@ -1662,7 +1778,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         path: state.service.path,
         date: state.date,
         time: state.time,
-        name, email, phone, notes, lang,
+        name, email, phone, address, notes, lang,
       }),
     });
     const data = await res.json();
@@ -1680,6 +1796,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
       ? t("emailSentMsg")(email)
       : t("emailPendingMsg");
     document.getElementById("booking-ref-value").textContent = data.bookingRef || "";
+    state.address = address;
     renderSummary("success-summary");
     showStep(5);
   } catch (e) {

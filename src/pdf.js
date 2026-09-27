@@ -179,6 +179,7 @@ export function generateBookingPdf(data) {
         price: "Price",
         minutes: "min",
         footer1: "Need to reschedule or cancel? Just reply to the confirmation email.",
+        footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases (e.g. illness or unavailability); we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
         addrTo: (n) => n,
@@ -200,6 +201,7 @@ export function generateBookingPdf(data) {
         price: "Preis",
         minutes: "Min.",
         footer1: "Termin umbuchen oder stornieren? Antworten Sie einfach auf die Bestätigungs-E-Mail.",
+        footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen (z. B. bei Krankheit oder Verhinderung) zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
         addrTo: (n) => n,
@@ -236,7 +238,16 @@ export function generateBookingPdf(data) {
   content.push(line(LEFT_X, fromTop(49.6), LEFT_X + 78 * MM, fromTop(49.6), BORDER, 0.6));
 
   content.push(text(LEFT_X, fromTop(59), 11.5, L.addrTo(data.customerName), { bold: true, color: INK }));
-  content.push(text(LEFT_X, fromTop(64.5), 9.5, data.customerEmail || "", { color: MUTED }));
+  const addressLines = data.customerAddress ? wrapText(data.customerAddress, 46).slice(0, 2) : [];
+  let addrY = 64.5;
+  for (const al of addressLines) {
+    content.push(text(LEFT_X, fromTop(addrY), 10, al, { color: INK }));
+    addrY += 5;
+  }
+  if (data.customerEmail) {
+    content.push(text(LEFT_X, fromTop(addrY), 8.5, data.customerEmail, { color: MUTED }));
+    addrY += 4.5;
+  }
 
   // ---- Bordered booking-details box (right column), like a company quote/order box ----
   const boxX = 125 * MM;
@@ -263,7 +274,7 @@ export function generateBookingPdf(data) {
   });
 
   // ---- Place/date, right-aligned above the subject line ----
-  const belowBlockY = Math.max(70, boxTop + boxH + 8);
+  const belowBlockY = Math.max(70, boxTop + boxH + 8, addrY + 6);
   content.push(textRight(RIGHT_X, fromTop(belowBlockY), 9.5, L.place(today), { color: MUTED }));
 
   // ---- Subject line ----
@@ -296,7 +307,13 @@ export function generateBookingPdf(data) {
   y -= 22;
 
   content.push(text(LEFT_X, y, 9.5, L.footer1, { color: MUTED }));
-  y -= 34;
+  y -= 16;
+  const noteLines = wrapText(L.footer2note, 92);
+  for (const nl of noteLines) {
+    content.push(text(LEFT_X, y, 8, nl, { color: MUTED }));
+    y -= 11;
+  }
+  y -= 18;
   content.push(text(LEFT_X, y, 10, L.closing1, { color: INK }));
   y -= 15;
   content.push(text(LEFT_X, y, 10, L.closing2, { bold: true, color: PURPLE }));
