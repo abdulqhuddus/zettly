@@ -288,9 +288,16 @@ export function generateBookingPdf(data) {
   drawLogoMark(content, LEFT_X / MM, logoTopMM, logoSizeMM);
   const logoCenterMM = logoTopMM + logoSizeMM / 2;
   const wordmarkSize = 17;
+  const wordmarkCharSpace = 0.3;
   const wordmarkBaselineMM = logoCenterMM + 2.6; // optical baseline offset for a centered look
-  content.push(text(LEFT_X + 11.5 * MM, fromTop(wordmarkBaselineMM), wordmarkSize, "zett", { color: INK, charSpace: 0.3 }));
-  content.push(text(LEFT_X + 11.5 * MM + estWidth("zett", wordmarkSize, false) * 0.86, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: PURPLE, charSpace: 0.3 }));
+  // "zett" and "ly" are drawn as two separate runs (different colors), so
+  // "ly" must start exactly where "zett" ends: its glyph width PLUS the
+  // character-spacing (Tc) added after each of its 4 letters, including the
+  // trailing one — leaving that out (or fudging it with an arbitrary
+  // multiplier) is what let "ly" creep back and overlap the "t".
+  const zettWidth = estWidth("zett", wordmarkSize, false) + 4 * wordmarkCharSpace;
+  content.push(text(LEFT_X + 11.5 * MM, fromTop(wordmarkBaselineMM), wordmarkSize, "zett", { color: INK, charSpace: wordmarkCharSpace }));
+  content.push(text(LEFT_X + 11.5 * MM + zettWidth, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: PURPLE, charSpace: wordmarkCharSpace }));
 
   const headerLines = data.lang === "en"
     ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
