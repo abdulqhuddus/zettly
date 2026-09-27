@@ -3,343 +3,372 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title data-i18n-title>Zettly — Bald verfügbar</title>
+<title data-i18n-title>Zettly — Termin buchen</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --accent: #7C3AED;
+    --accent-light: #F3EEFF;
+    --ink: #111114;
+    --muted: #6b6b74;
+    --border: #e9e7ef;
+  }
+
   body {
-    background: #0a0a0a;
-    color: #fff;
+    background: #ffffff;
+    color: var(--ink);
     font-family: -apple-system, "Segoe UI", sans-serif;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 2rem;
-    overflow: hidden;
-    position: relative;
+    padding: 3rem 1.25rem;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    top: -10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
+  .stage { width: 100%; max-width: 640px; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1rem;
   }
+
+  .brand { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.01em; }
+  .brand span { color: var(--accent); }
+
+  .topbar-right { display: flex; align-items: center; gap: 1rem; }
+
+  .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .back-link:hover { color: var(--ink); }
 
   .lang-switch {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
     display: flex;
-    border: 1.5px solid rgba(124,58,237,0.35);
+    border: 1.5px solid var(--border);
     border-radius: 999px;
     overflow: hidden;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    z-index: 2;
   }
   .lang-switch button {
     border: none;
     background: transparent;
-    padding: 0.4rem 0.8rem;
+    padding: 0.35rem 0.7rem;
     cursor: pointer;
-    color: #888;
+    color: var(--muted);
     transition: background 0.2s, color 0.2s;
   }
-  .lang-switch button.active { background: #7C3AED; color: #fff; }
+  .lang-switch button.active { background: var(--accent); color: #fff; }
 
-  .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.8rem;
-    max-width: 520px;
-    width: 100%;
-    text-align: center;
+  .progress { display: flex; gap: 0.4rem; justify-content: center; margin-bottom: 2.5rem; }
+  .progress .dot { width: 34px; height: 4px; border-radius: 4px; background: var(--border); transition: background 0.35s ease; }
+  .progress .dot.active { background: var(--accent); }
+  .progress .dot.done { background: #c9b6f8; }
+
+  .step { display: none; animation: stepIn 0.45s cubic-bezier(.2,.9,.3,1); }
+  .step.visible { display: block; }
+
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  .logo-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    animation: floatLogo 4s ease-in-out infinite;
-  }
+  h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+  .subtitle { color: var(--muted); font-size: 0.98rem; margin-bottom: 1.8rem; line-height: 1.5; }
 
-  @keyframes floatLogo {
-    0%, 100% { transform: translateY(0px); }
-    50%       { transform: translateY(-10px); }
-  }
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 520px) { .path-grid { grid-template-columns: 1fr; } }
 
-  .sq1 { animation: sqPulse 3s ease-in-out infinite 0s; }
-  .sq2 { animation: sqPulse 3s ease-in-out infinite 0.35s; }
-  .sq3 { animation: sqPulse 3s ease-in-out infinite 0.7s; }
-  .sq4 { animation: sqPulse 3s ease-in-out infinite 1.05s; }
-
-  @keyframes sqPulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.5; }
-  }
-
-  .brand-name {
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    font-size: 2.6rem;
-    font-weight: 200;
-    letter-spacing: 0.01em;
-    line-height: 1;
-    color: #ffffff;
-  }
-
-  .brand-name span { color: #7C3AED; }
-
-  .brand-sub {
-    font-size: 0.68rem;
-    letter-spacing: 0.2em;
-    color: #666;
-    text-transform: uppercase;
-    margin-top: -0.5rem;
-  }
-
-  .divider {
-    width: 40px;
-    height: 1.5px;
-    background: #7C3AED;
-    border-radius: 2px;
-    opacity: 0.5;
-  }
-
-  .tagline {
-    font-size: 1rem;
-    color: #999;
-    line-height: 1.7;
-    max-width: 380px;
-  }
-
-  .pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    justify-content: center;
-  }
-
-  .pill {
-    padding: 0.3rem 0.8rem;
-    border-radius: 999px;
-    border: 1px solid rgba(124,58,237,0.28);
-    font-size: 0.78rem;
-    color: #888;
-    background: rgba(124,58,237,0.06);
-  }
-
-  .launch-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .launch-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #7C3AED;
-    font-weight: 500;
-  }
-
-  .launch-text {
-    font-size: 0.92rem;
-    color: #bbb;
-  }
-
-  .book-cta {
-    display: inline-block;
-    padding: 0.8rem 1.8rem;
-    border-radius: 8px;
-    background: #7C3AED;
-    color: #fff;
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .book-cta:hover { background: #9F67F5; transform: translateY(-1px); }
-
-  .notify-form {
-    display: flex;
-    gap: 0.5rem;
-    width: 100%;
-    max-width: 380px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .notify-form input {
-    flex: 1;
-    min-width: 190px;
-    padding: 0.72rem 1rem;
-    border-radius: 8px;
-    border: 1px solid rgba(124,58,237,0.3);
-    background: rgba(255,255,255,0.04);
-    color: #fff;
-    font-size: 0.92rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .notify-form input::placeholder { color: #444; }
-  .notify-form input:focus { border-color: #7C3AED; }
-
-  .notify-form button {
-    padding: 0.72rem 1.3rem;
-    border-radius: 8px;
-    border: none;
-    background: #7C3AED;
-    color: #fff;
-    font-size: 0.92rem;
-    font-weight: 500;
+  .path-card {
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.6rem 1.3rem;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    white-space: nowrap;
+    transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    text-align: left;
   }
-
-  .notify-form button:hover  { background: #9F67F5; transform: translateY(-1px); }
-  .notify-form button:active { transform: translateY(0); }
-
-  .thanks {
-    display: none;
-    color: #9F67F5;
-    font-size: 0.92rem;
+  .path-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(124,58,237,0.12); }
+  .path-card .icon {
+    width: 42px; height: 42px; border-radius: 12px; background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    margin-bottom: 0.9rem; transition: transform 0.3s;
   }
+  .path-card:hover .icon { transform: scale(1.1) rotate(-4deg); }
+  .path-card h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
+  .path-card p { font-size: 0.85rem; color: var(--muted); }
 
-  .footer {
-    font-size: 0.75rem;
-    color: #333;
-    margin-top: 0.5rem;
+  .service-list { display: flex; flex-direction: column; gap: 0.9rem; }
+  .service-card {
+    border: 1.5px solid var(--border); border-radius: 14px; padding: 1.1rem 1.3rem;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    cursor: pointer; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
   }
+  .service-card:hover { border-color: var(--accent); transform: translateX(4px); box-shadow: 0 8px 22px rgba(124,58,237,0.10); }
+  .service-main h3 { font-size: 1rem; margin-bottom: 0.15rem; }
+  .service-main .tagline { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.5rem; }
+  .service-main ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .service-main li { font-size: 0.72rem; color: var(--accent); background: var(--accent-light); padding: 0.15rem 0.55rem; border-radius: 999px; }
+  .service-price { text-align: right; white-space: nowrap; }
+  .service-price .amount { font-size: 1.25rem; font-weight: 700; }
+  .service-price .duration { font-size: 0.75rem; color: var(--muted); }
 
-  .container > * {
-    opacity: 0;
-    animation: fadeUp 0.55s ease forwards;
-  }
-  .container > *:nth-child(1) { animation-delay: 0.1s; }
-  .container > *:nth-child(2) { animation-delay: 0.22s; }
-  .container > *:nth-child(3) { animation-delay: 0.34s; }
-  .container > *:nth-child(4) { animation-delay: 0.46s; }
-  .container > *:nth-child(5) { animation-delay: 0.58s; }
-  .container > *:nth-child(6) { animation-delay: 0.70s; }
-  .container > *:nth-child(7) { animation-delay: 0.82s; }
-  .container > *:nth-child(8) { animation-delay: 0.94s; }
+  .date-strip { display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1.6rem; }
+  .date-chip { flex: 0 0 auto; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; text-align: center; cursor: pointer; transition: all 0.2s; min-width: 64px; }
+  .date-chip .dow { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
+  .date-chip .dnum { font-size: 1.1rem; font-weight: 700; margin-top: 0.15rem; }
+  .date-chip:hover { border-color: var(--accent); }
+  .date-chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .date-chip.selected .dow { color: #e6d9ff; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 0.6rem; }
+  .slot { border: 1.5px solid var(--border); border-radius: 10px; padding: 0.55rem 0; text-align: center; font-size: 0.85rem; cursor: pointer; transition: all 0.18s; }
+  .slot:hover:not(.disabled) { border-color: var(--accent); transform: translateY(-2px); }
+  .slot.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .slot.disabled { color: #ccc; border-color: #f0f0f0; cursor: not-allowed; text-decoration: line-through; }
+  .slot-empty { color: var(--muted); font-size: 0.9rem; padding: 1rem 0; }
+
+  .field { margin-bottom: 1.1rem; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .field input, .field textarea {
+    width: 100%; padding: 0.75rem 0.9rem; border: 1.5px solid var(--border); border-radius: 10px;
+    font-size: 0.95rem; font-family: inherit; outline: none; transition: border-color 0.2s;
   }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  .summary { background: var(--accent-light); border-radius: 14px; padding: 1.1rem 1.3rem; margin-bottom: 1.6rem; font-size: 0.9rem; }
+  .summary .row { display: flex; justify-content: space-between; padding: 0.25rem 0; }
+  .summary .row b { font-weight: 600; }
+
+  .actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
+  button.btn { border: none; border-radius: 10px; padding: 0.85rem 1.5rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: transform 0.15s, background 0.2s, opacity 0.2s; }
+  .btn-primary { background: var(--accent); color: #fff; flex: 1; }
+  .btn-primary:hover { background: #6d2fe0; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+  .error-msg { color: #d64545; font-size: 0.85rem; margin-top: 0.6rem; display: none; }
+
+  .success-wrap { text-align: center; padding: 1rem 0; }
+  .success-ring {
+    width: 84px; height: 84px; border-radius: 50%; background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 1.4rem;
+    animation: pop 0.5s cubic-bezier(.2,1.4,.4,1);
+  }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  .success-ring svg { width: 40px; height: 40px; }
+  .success-ring path {
+    stroke: var(--accent); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw 0.5s 0.35s ease forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  .spinner {
+    width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: -3px; margin-right: 0.5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
+<div class="stage">
 
-<div class="lang-switch" id="lang-switch">
-  <button data-lang="de">DE</button>
-  <button data-lang="en">EN</button>
+  <div class="topbar">
+    <div class="brand">zett<span>ly</span></div>
+    <div class="topbar-right">
+      <div class="lang-switch" id="lang-switch">
+        <button data-lang="de">DE</button>
+        <button data-lang="en">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress" id="progress">
+    <div class="dot active" data-step="0"></div>
+    <div class="dot" data-step="1"></div>
+    <div class="dot" data-step="2"></div>
+    <div class="dot" data-step="3"></div>
+    <div class="dot" data-step="4"></div>
+  </div>
+
+  <!-- Step 0: choose path -->
+  <div class="step visible" data-step="0">
+    <h1 data-i18n="step0Title">Wobei können wir helfen?</h1>
+    <p class="subtitle" data-i18n="step0Sub">Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.</p>
+    <div class="path-grid">
+      <div class="path-card" data-path="it">
+        <div class="icon">🖥️</div>
+        <h3 data-i18n="pathItTitle">IT-Services</h3>
+        <p data-i18n="pathItDesc">Reparaturen, Netzwerke, Virenentfernung, laufender Support.</p>
+      </div>
+      <div class="path-card" data-path="dynamics">
+        <div class="icon">⚙️</div>
+        <h3 data-i18n="pathDynTitle">Dynamics 365</h3>
+        <p data-i18n="pathDynDesc">Beratung, Workflows und individuelle Integrationen.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1: choose service -->
+  <div class="step" data-step="1">
+    <h1 data-i18n="step1Title">Paket auswählen</h1>
+    <p class="subtitle" data-i18n="step1Sub">Details besprechen wir nach der Buchung gerne genauer.</p>
+    <div class="service-list" id="service-list"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
+    </div>
+  </div>
+
+  <!-- Step 2: date & time -->
+  <div class="step" data-step="2">
+    <h1 data-i18n="step2Title">Datum & Uhrzeit wählen</h1>
+    <p class="subtitle" data-i18n="step2Sub">Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.</p>
+    <div class="date-strip" id="date-strip"></div>
+    <div class="slot-grid" id="slot-grid"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
+      <button class="btn btn-primary" id="to-details" disabled data-i18n="continue">Weiter</button>
+    </div>
+  </div>
+
+  <!-- Step 3: details -->
+  <div class="step" data-step="3">
+    <h1 data-i18n="step3Title">Ihre Angaben</h1>
+    <p class="subtitle" data-i18n="step3Sub">Die Bestätigung senden wir an diese Adresse.</p>
+    <div class="summary" id="summary"></div>
+    <div class="field">
+      <label data-i18n="fullName">Vollständiger Name</label>
+      <input type="text" id="f-name" placeholder="Max Mustermann" />
+    </div>
+    <div class="field">
+      <label data-i18n="email">E-Mail</label>
+      <input type="email" id="f-email" placeholder="max@beispiel.de" />
+    </div>
+    <div class="field">
+      <label data-i18n="phone">Telefon (optional)</label>
+      <input type="tel" id="f-phone" placeholder="+49 ..." />
+    </div>
+    <div class="field">
+      <label data-i18n="notes">Was sollten wir wissen? (optional)</label>
+      <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens"></textarea>
+    </div>
+    <p class="error-msg" id="form-error"></p>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
+      <button class="btn btn-primary" id="submit-booking" data-i18n="confirmBooking">Buchung bestätigen</button>
+    </div>
+  </div>
+
+  <!-- Step 4: success -->
+  <div class="step" data-step="4">
+    <div class="success-wrap">
+      <div class="success-ring">
+        <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>
+      </div>
+      <h1 data-i18n="successTitle">Sie sind gebucht!</h1>
+      <p class="subtitle" id="success-sub"></p>
+      <div class="summary" id="success-summary"></div>
+      <a class="back-link" href="/" data-i18n="bookAnother">Weiteren Termin buchen</a>
+    </div>
+  </div>
+
 </div>
 
-<div class="container">
-
-  <div class="logo-block">
-    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <rect class="sq1" x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
-      <rect class="sq2" x="36" y="0"  width="64" height="64" rx="14" fill="#ffffff"/>
-      <rect class="sq3" x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
-      <rect class="sq4" x="72" y="72" width="28" height="28" rx="6"  fill="#ffffff"/>
-    </svg>
-    <div class="brand-name">zett<span>ly</span></div>
-    <div class="brand-sub" data-i18n="brandSub">Smarte IT-Services</div>
-  </div>
-
-  <div class="divider"></div>
-
-  <p class="tagline" data-i18n="tagline">Professioneller IT-Support für Zuhause und kleine Unternehmen. Schnell, zuverlässig und persönlich.</p>
-
-  <div class="pills">
-    <span class="pill" data-i18n="pill1">PC- &amp; Laptop-Reparatur</span>
-    <span class="pill" data-i18n="pill2">Virenentfernung</span>
-    <span class="pill" data-i18n="pill3">Netzwerk &amp; WLAN-Einrichtung</span>
-    <span class="pill" data-i18n="pill4">Smart-Home-Einrichtung</span>
-    <span class="pill" data-i18n="pill5">Fernwartung</span>
-    <span class="pill" data-i18n="pill6">Software-Fehlerbehebung</span>
-  </div>
-
-  <div class="launch-info">
-    <span class="launch-label" data-i18n="launchLabel">Bald verfügbar</span>
-    <span class="launch-text" data-i18n="launchText">Wir legen letzte Hand an etwas Großartiges.</span>
-  </div>
-
-  <a href="/book/" class="book-cta" data-i18n="bookCta">Termin buchen</a>
-
-  <div class="notify-form">
-    <input type="email" id="email-input" data-i18n-placeholder="emailPlaceholder" placeholder="Ihre E-Mail-Adresse" />
-    <button onclick="handleNotify()" data-i18n="notifyBtn">Benachrichtigen</button>
-  </div>
-  <p class="thanks" id="thanks-msg" data-i18n="thanksMsg">✓ Danke! Wir melden uns beim Start.</p>
-
-  <p class="footer" data-i18n="footer">© 2026 Zettly · Deutschland</p>
-
-</div>
 <script>
 const I18N = {
   de: {
-    title: "Zettly — Bald verfügbar",
-    brandSub: "Smarte IT-Services",
-    tagline: "Professioneller IT-Support für Zuhause und kleine Unternehmen. Schnell, zuverlässig und persönlich.",
-    pill1: "PC- & Laptop-Reparatur",
-    pill2: "Virenentfernung",
-    pill3: "Netzwerk & WLAN-Einrichtung",
-    pill4: "Smart-Home-Einrichtung",
-    pill5: "Fernwartung",
-    pill6: "Software-Fehlerbehebung",
-    launchLabel: "Bald verfügbar",
-    launchText: "Wir legen letzte Hand an etwas Großartiges.",
-    bookCta: "Termin buchen",
-    emailPlaceholder: "Ihre E-Mail-Adresse",
-    notifyBtn: "Benachrichtigen",
-    thanksMsg: "✓ Danke! Wir melden uns beim Start.",
-    footer: "© 2026 Zettly · Deutschland",
+    title: "Termin buchen — Zettly",
+    bookAnother: "Weiteren Termin buchen",
+    step0Title: "Wobei können wir helfen?",
+    step0Sub: "Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.",
+    pathItTitle: "IT-Services",
+    pathItDesc: "Reparaturen, Netzwerke, Virenentfernung, laufender Support.",
+    pathDynTitle: "Dynamics 365",
+    pathDynDesc: "Beratung, Workflows und individuelle Integrationen.",
+    step1Title: "Paket auswählen",
+    step1Sub: "Details besprechen wir nach der Buchung gerne genauer.",
+    back: "Zurück",
+    step2Title: "Datum & Uhrzeit wählen",
+    step2Sub: "Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.",
+    continue: "Weiter",
+    step3Title: "Ihre Angaben",
+    step3Sub: "Die Bestätigung senden wir an diese Adresse.",
+    fullName: "Vollständiger Name",
+    email: "E-Mail",
+    phone: "Telefon (optional)",
+    notes: "Was sollten wir wissen? (optional)",
+    notesPlaceholder: "Kurze Beschreibung des Anliegens",
+    confirmBooking: "Buchung bestätigen",
+    successTitle: "Sie sind gebucht!",
+    loadingTimes: "Lade Termine…",
+    noSlots: "Keine Termine an diesem Tag — bitte anderes Datum wählen.",
+    slotLoadError: "Termine konnten nicht geladen werden. Bitte erneut versuchen.",
+    minLabel: "Min.",
+    summaryService: "Leistung",
+    summaryDate: "Datum",
+    summaryTime: "Uhrzeit",
+    summaryPrice: "Preis",
+    fillNameEmail: "Bitte Name und E-Mail-Adresse angeben.",
+    genericError: "Etwas ist schiefgelaufen. Bitte anderen Termin wählen.",
+    networkError: "Netzwerkfehler. Bitte erneut versuchen.",
+    booking: "Wird gebucht…",
+    emailSentMsg: (email) => `Eine Bestätigung wurde an ${email} gesendet.`,
+    emailPendingMsg: "Gespeichert! (Die Bestätigungs-E-Mail folgt in Kürze.)",
   },
   en: {
-    title: "Zettly — Coming Soon",
-    brandSub: "Smart IT Services",
-    tagline: "Professional IT support for homes and small businesses. Fast, reliable and personal.",
-    pill1: "PC & Laptop Repair",
-    pill2: "Virus Removal",
-    pill3: "Network & WiFi Setup",
-    pill4: "Smart Home Setup",
-    pill5: "Remote Support",
-    pill6: "Software Troubleshooting",
-    launchLabel: "Launching soon",
-    launchText: "We are putting the finishing touches on something great.",
-    bookCta: "Book an appointment",
-    emailPlaceholder: "Your email address",
-    notifyBtn: "Notify me",
-    thanksMsg: "✓ Thank you! We will let you know when we launch.",
-    footer: "© 2026 Zettly · Germany",
+    title: "Book an Appointment — Zettly",
+    bookAnother: "Book another appointment",
+    step0Title: "What brings you here today?",
+    step0Sub: "Pick a path and we'll show you the right packages.",
+    pathItTitle: "IT Services",
+    pathItDesc: "Repairs, networks, virus removal, ongoing support.",
+    pathDynTitle: "Dynamics 365",
+    pathDynDesc: "Consulting, workflows, and custom integrations.",
+    step1Title: "Choose your package",
+    step1Sub: "Pick the one that fits — you can always talk through details after booking.",
+    back: "Back",
+    step2Title: "Pick a date & time",
+    step2Sub: "Business hours, Monday to Friday, 9:00–17:00.",
+    continue: "Continue",
+    step3Title: "Your details",
+    step3Sub: "We'll send your confirmation here.",
+    fullName: "Full name",
+    email: "Email",
+    phone: "Phone (optional)",
+    notes: "Anything we should know? (optional)",
+    notesPlaceholder: "Briefly describe the issue or what you need",
+    confirmBooking: "Confirm booking",
+    successTitle: "You're booked!",
+    loadingTimes: "Loading times…",
+    noSlots: "No slots this day — try another date.",
+    slotLoadError: "Couldn't load availability. Try again.",
+    minLabel: "min",
+    summaryService: "Service",
+    summaryDate: "Date",
+    summaryTime: "Time",
+    summaryPrice: "Price",
+    fillNameEmail: "Please enter your name and email.",
+    genericError: "Something went wrong. Please try another slot.",
+    networkError: "Network error. Please try again.",
+    booking: "Booking…",
+    emailSentMsg: (email) => `A confirmation has been sent to ${email}.`,
+    emailPendingMsg: "Saved! (Confirmation email will follow shortly.)",
   },
 };
 
 let lang = localStorage.getItem("zettly_lang") || "de";
 
-function applyTranslations() {
+const state = { path: null, service: null, date: null, time: null };
+let SERVICES = { it: [], dynamics: [] };
+
+function t(key) { return I18N[lang][key]; }
+function fmtEuro(n) { return "€" + n; }
+
+function applyStaticTranslations() {
   document.documentElement.lang = lang;
-  document.title = I18N[lang].title;
+  document.title = t("title");
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     if (I18N[lang][key]) el.textContent = I18N[lang][key];
@@ -353,29 +382,223 @@ function applyTranslations() {
   });
 }
 
+function setLang(newLang) {
+  lang = newLang;
+  localStorage.setItem("zettly_lang", lang);
+  applyStaticTranslations();
+  // re-render dynamic content in the current step, if any
+  if (state.path) renderServiceList();
+  if (state.date) renderSlots();
+  if (document.querySelector('.step[data-step="3"]').classList.contains("visible")) renderSummary("summary");
+}
+
 document.getElementById("lang-switch").addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-lang]");
-  if (btn) {
-    lang = btn.dataset.lang;
-    localStorage.setItem("zettly_lang", lang);
-    applyTranslations();
+  if (btn) setLang(btn.dataset.lang);
+});
+
+function showStep(n) {
+  document.querySelectorAll(".step").forEach(el => {
+    el.classList.toggle("visible", el.dataset.step == n);
+  });
+  document.querySelectorAll(".progress .dot").forEach(el => {
+    const s = Number(el.dataset.step);
+    el.classList.toggle("active", s === n);
+    el.classList.toggle("done", s < n);
+  });
+}
+
+async function loadServices() {
+  const res = await fetch("/api/services");
+  SERVICES = await res.json();
+}
+
+function renderServiceList() {
+  const list = SERVICES[state.path] || [];
+  const container = document.getElementById("service-list");
+  container.innerHTML = "";
+  list.forEach(svc => {
+    const div = document.createElement("div");
+    div.className = "service-card";
+    div.dataset.id = svc.id;
+    div.innerHTML = `
+      <div class="service-main">
+        <h3>${svc.name[lang]}</h3>
+        <div class="tagline">${svc.tagline[lang]}</div>
+        <ul>${svc.features[lang].map(f => `<li>${f}</li>`).join("")}</ul>
+      </div>
+      <div class="service-price">
+        <div class="amount">${fmtEuro(svc.price)}</div>
+        <div class="duration">${svc.duration} ${t("minLabel")}</div>
+      </div>
+    `;
+    div.addEventListener("click", () => {
+      state.service = svc;
+      renderDateStrip();
+      showStep(2);
+    });
+    container.appendChild(div);
+  });
+}
+
+function nextBusinessDays(count) {
+  const days = [];
+  let d = new Date();
+  while (days.length < count) {
+    d = new Date(d.getTime() + 86400000);
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6) days.push(new Date(d));
+  }
+  return days;
+}
+
+function isoDate(d) { return d.toISOString().slice(0, 10); }
+
+const DOW_LOCALE = { de: "de-DE", en: "en-US" };
+
+function renderDateStrip() {
+  const strip = document.getElementById("date-strip");
+  strip.innerHTML = "";
+  const days = nextBusinessDays(10);
+  days.forEach((d, i) => {
+    const chip = document.createElement("div");
+    chip.className = "date-chip";
+    chip.dataset.date = isoDate(d);
+    chip.innerHTML = `
+      <div class="dow">${d.toLocaleDateString(DOW_LOCALE[lang], { weekday: "short" })}</div>
+      <div class="dnum">${d.getDate()}</div>
+    `;
+    chip.addEventListener("click", () => selectDate(chip));
+    strip.appendChild(chip);
+    if (i === 0) selectDate(chip);
+  });
+}
+
+async function selectDate(chip) {
+  document.querySelectorAll(".date-chip").forEach(c => c.classList.remove("selected"));
+  chip.classList.add("selected");
+  state.date = chip.dataset.date;
+  state.time = null;
+  document.getElementById("to-details").disabled = true;
+  await renderSlots();
+}
+
+async function renderSlots() {
+  const grid = document.getElementById("slot-grid");
+  grid.innerHTML = `<div class="slot-empty">${t("loadingTimes")}</div>`;
+  try {
+    const res = await fetch(`/api/availability?date=${state.date}&duration=${state.service.duration}`);
+    const data = await res.json();
+    grid.innerHTML = "";
+    if (!data.slots || data.slots.length === 0) {
+      grid.innerHTML = `<div class="slot-empty">${t("noSlots")}</div>`;
+      return;
+    }
+    data.slots.forEach(s => {
+      const el = document.createElement("div");
+      el.className = "slot" + (s.available ? "" : " disabled");
+      el.textContent = s.time;
+      if (s.available) {
+        el.addEventListener("click", () => {
+          document.querySelectorAll(".slot").forEach(x => x.classList.remove("selected"));
+          el.classList.add("selected");
+          state.time = s.time;
+          document.getElementById("to-details").disabled = false;
+        });
+      }
+      grid.appendChild(el);
+    });
+  } catch (e) {
+    grid.innerHTML = `<div class="slot-empty">${t("slotLoadError")}</div>`;
+  }
+}
+
+function renderSummary(targetId) {
+  const el = document.getElementById(targetId);
+  el.innerHTML = `
+    <div class="row"><span>${t("summaryService")}</span><b>${state.service.name[lang]}</b></div>
+    <div class="row"><span>${t("summaryDate")}</span><b>${state.date}</b></div>
+    <div class="row"><span>${t("summaryTime")}</span><b>${state.time}</b></div>
+    <div class="row"><span>${t("summaryPrice")}</span><b>${fmtEuro(state.service.price)}</b></div>
+  `;
+}
+
+document.querySelectorAll(".path-card").forEach(card => {
+  card.addEventListener("click", async () => {
+    state.path = card.dataset.path;
+    if (!SERVICES.it.length && !SERVICES.dynamics.length) await loadServices();
+    renderServiceList();
+    showStep(1);
+  });
+});
+
+document.querySelectorAll('[data-action="back"]').forEach(btn => {
+  btn.addEventListener("click", () => {
+    const current = Number(document.querySelector(".step.visible").dataset.step);
+    showStep(Math.max(0, current - 1));
+  });
+});
+
+document.getElementById("to-details").addEventListener("click", () => {
+  renderSummary("summary");
+  showStep(3);
+});
+
+document.getElementById("submit-booking").addEventListener("click", async () => {
+  const name = document.getElementById("f-name").value.trim();
+  const email = document.getElementById("f-email").value.trim();
+  const phone = document.getElementById("f-phone").value.trim();
+  const notes = document.getElementById("f-notes").value.trim();
+  const errorEl = document.getElementById("form-error");
+  errorEl.style.display = "none";
+
+  if (!name || !email) {
+    errorEl.textContent = t("fillNameEmail");
+    errorEl.style.display = "block";
+    return;
+  }
+
+  const btn = document.getElementById("submit-booking");
+  const originalText = t("confirmBooking");
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> ${t("booking")}`;
+
+  try {
+    const res = await fetch("/api/book", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        serviceId: state.service.id,
+        date: state.date,
+        time: state.time,
+        name, email, phone, notes, lang,
+      }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      errorEl.textContent = data.error || t("genericError");
+      errorEl.style.display = "block";
+      btn.disabled = false;
+      btn.textContent = originalText;
+      if (res.status === 409) await renderSlots();
+      return;
+    }
+
+    document.getElementById("success-sub").textContent = data.emailSent
+      ? t("emailSentMsg")(email)
+      : t("emailPendingMsg");
+    renderSummary("success-summary");
+    showStep(4);
+  } catch (e) {
+    errorEl.textContent = t("networkError");
+    errorEl.style.display = "block";
+    btn.disabled = false;
+    btn.textContent = originalText;
   }
 });
 
-function handleNotify() {
-  const input = document.getElementById('email-input');
-  const thanks = document.getElementById('thanks-msg');
-  const form = document.querySelector('.notify-form');
-  if (!input.value || !input.value.includes('@')) {
-    input.style.borderColor = '#e74c3c';
-    input.focus();
-    return;
-  }
-  form.style.display = 'none';
-  thanks.style.display = 'block';
-}
-
-applyTranslations();
+applyStaticTranslations();
 </script>
 </body>
 </html>
