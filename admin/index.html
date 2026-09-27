@@ -115,6 +115,34 @@
   .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 0.5rem 0.9rem; border-radius: 8px; font-size: 0.82rem; }
   main { padding: 1.5rem; max-width: 1180px; margin: 0 auto; }
 
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.95rem 1.1rem;
+  }
+  .stat-card .stat-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 0.45rem;
+  }
+  .stat-card .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--ink); line-height: 1.1; }
+  .stat-card.stat-total .stat-value { color: var(--accent); }
+  .stat-card.stat-completed .stat-value { color: var(--ok); }
+  .stat-card.stat-pending .stat-value { color: var(--warn); }
+  @media (max-width: 760px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
   .filters {
     display: flex;
     flex-wrap: wrap;
@@ -156,8 +184,22 @@
   .ref { font-weight: 700; }
   .muted { color: var(--muted); }
   .empty-state { padding: 3rem 1rem; text-align: center; color: var(--muted); }
-  .pager { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1rem; font-size: 0.82rem; color: var(--muted); }
+  .pager { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1rem; font-size: 0.82rem; color: var(--muted); flex-wrap: wrap; gap: 0.6rem; }
   .pager button { padding: 0.4rem 0.8rem; }
+  .pager-pages { display: flex; align-items: center; gap: 0.3rem; }
+  .pager-pages button {
+    min-width: 2.1rem;
+    padding: 0.4rem 0.55rem;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .pager-pages button.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+  .pager-pages button:disabled { cursor: default; color: var(--muted); border: none; background: none; padding: 0.4rem 0.2rem; }
 
   /* ---- Detail modal ---- */
   .modal-backdrop {
@@ -282,6 +324,24 @@
     </div>
   </header>
   <main>
+    <div class="stats-row">
+      <div class="stat-card stat-count">
+        <div class="stat-label" id="t-stat-count">Total Bookings</div>
+        <div class="stat-value" id="stat-count">–</div>
+      </div>
+      <div class="stat-card stat-total">
+        <div class="stat-label" id="t-stat-total">Total Bookings Amount</div>
+        <div class="stat-value" id="stat-total">–</div>
+      </div>
+      <div class="stat-card stat-completed">
+        <div class="stat-label" id="t-stat-completed">Completed Amount</div>
+        <div class="stat-value" id="stat-completed">–</div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="stat-label" id="t-stat-pending">Pending Amount</div>
+        <div class="stat-value" id="stat-pending">–</div>
+      </div>
+    </div>
     <div class="filters">
       <input type="search" id="f-q" placeholder="Search: name, email, booking ID …">
       <select id="f-status">
@@ -311,10 +371,7 @@
       <div class="empty-state" id="empty" style="display:none;">No bookings found.</div>
       <div class="pager">
         <span id="pager-info"></span>
-        <div>
-          <button class="btn btn-ghost" id="prev-btn">← Prev</button>
-          <button class="btn btn-ghost" id="next-btn">Next →</button>
-        </div>
+        <div class="pager-pages" id="pager-pages"></div>
       </div>
     </div>
   </main>
@@ -372,6 +429,10 @@
       loginFailed: "Login failed",
       adminLabel: "Admin",
       logoutBtn: "Log out",
+      statCount: "Total Bookings",
+      statTotal: "Total Bookings Amount",
+      statCompleted: "Completed Amount",
+      statPending: "Pending Amount",
       searchPlaceholder: "Search: name, email, booking ID …",
       statusAll: "All statuses",
       statusConfirmed: "Confirmed",
@@ -427,6 +488,10 @@
       loginFailed: "Anmeldung fehlgeschlagen",
       adminLabel: "Admin",
       logoutBtn: "Abmelden",
+      statCount: "Buchungen gesamt",
+      statTotal: "Gesamtbetrag Buchungen",
+      statCompleted: "Betrag abgeschlossen",
+      statPending: "Betrag ausstehend",
       searchPlaceholder: "Suche: Name, E-Mail, Buchungs-ID …",
       statusAll: "Alle Status",
       statusConfirmed: "Bestätigt",
@@ -505,6 +570,10 @@
     document.getElementById("login-btn").textContent = s.loginBtn;
     document.getElementById("t-admin-label").textContent = s.adminLabel;
     document.getElementById("logout-btn").textContent = s.logoutBtn;
+    document.getElementById("t-stat-count").textContent = s.statCount;
+    document.getElementById("t-stat-total").textContent = s.statTotal;
+    document.getElementById("t-stat-completed").textContent = s.statCompleted;
+    document.getElementById("t-stat-pending").textContent = s.statPending;
     document.getElementById("f-q").placeholder = s.searchPlaceholder;
     document.getElementById("opt-status-all").textContent = s.statusAll;
     document.getElementById("opt-status-confirmed").textContent = s.statusConfirmed;
@@ -520,8 +589,6 @@
     document.getElementById("th-price").textContent = s.thPrice;
     document.getElementById("th-status").textContent = s.thStatus;
     document.getElementById("empty").textContent = s.empty;
-    document.getElementById("prev-btn").textContent = s.prev;
-    document.getElementById("next-btn").textContent = s.next;
     document.getElementById("t-m-status").textContent = s.mStatus;
     document.getElementById("t-m-service").textContent = s.mService;
     document.getElementById("t-m-when").textContent = s.mWhen;
@@ -552,7 +619,7 @@
   const loginError = document.getElementById("login-error");
   const loginBtn = document.getElementById("login-btn");
 
-  let state = { offset: 0, limit: 20, total: 0 };
+  let state = { offset: 0, limit: 10, total: 0 };
 
   function toast(msg) {
     const el = document.getElementById("toast");
@@ -633,6 +700,22 @@
     state.lastBookings = data.bookings;
     renderRows(data.bookings);
     renderPager();
+    renderStats(data.stats);
+  }
+
+  function formatMoney(n) {
+    return "€" + (Math.round((n || 0) * 100) / 100).toLocaleString(lang === "de" ? "de-DE" : "en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  function renderStats(stats) {
+    stats = stats || { count: 0, totalAmount: 0, completedAmount: 0, pendingAmount: 0 };
+    document.getElementById("stat-count").textContent = stats.count;
+    document.getElementById("stat-total").textContent = formatMoney(stats.totalAmount);
+    document.getElementById("stat-completed").textContent = formatMoney(stats.completedAmount);
+    document.getElementById("stat-pending").textContent = formatMoney(stats.pendingAmount);
   }
 
   function renderRows(bookings) {
@@ -660,23 +743,52 @@
     }
   }
 
+  function goToPage(page) {
+    const totalPages = Math.max(1, Math.ceil(state.total / state.limit));
+    page = Math.min(Math.max(1, page), totalPages);
+    state.offset = (page - 1) * state.limit;
+    loadBookings();
+  }
+
   function renderPager() {
     const s = t();
     const from = state.total === 0 ? 0 : state.offset + 1;
     const to = Math.min(state.offset + state.limit, state.total);
     document.getElementById("pager-info").textContent = s.pagerInfo(from, to, state.total);
-    document.getElementById("prev-btn").disabled = state.offset === 0;
-    document.getElementById("next-btn").disabled = to >= state.total;
-  }
 
-  document.getElementById("prev-btn").addEventListener("click", () => {
-    state.offset = Math.max(0, state.offset - state.limit);
-    loadBookings();
-  });
-  document.getElementById("next-btn").addEventListener("click", () => {
-    state.offset += state.limit;
-    loadBookings();
-  });
+    const totalPages = Math.max(1, Math.ceil(state.total / state.limit));
+    const currentPage = Math.floor(state.offset / state.limit) + 1;
+    const container = document.getElementById("pager-pages");
+    container.innerHTML = "";
+
+    const makeBtn = (label, page, opts = {}) => {
+      const btn = document.createElement("button");
+      btn.textContent = label;
+      if (opts.active) btn.classList.add("active");
+      if (opts.disabled) btn.disabled = true;
+      else btn.addEventListener("click", () => goToPage(page));
+      return btn;
+    };
+
+    container.appendChild(makeBtn(s.prev, currentPage - 1, { disabled: currentPage === 1 }));
+
+    // Show first, last, current, and one neighbour on each side; collapse the
+    // rest into an ellipsis so the pager stays usable with many pages.
+    const pages = new Set([1, totalPages, currentPage, currentPage - 1, currentPage + 1]);
+    let prevPage = 0;
+    for (const p of [...pages].filter((p) => p >= 1 && p <= totalPages).sort((a, b) => a - b)) {
+      if (prevPage && p - prevPage > 1) {
+        const dots = document.createElement("span");
+        dots.textContent = "…";
+        dots.style.padding = "0 0.2rem";
+        container.appendChild(dots);
+      }
+      container.appendChild(makeBtn(String(p), p, { active: p === currentPage }));
+      prevPage = p;
+    }
+
+    container.appendChild(makeBtn(s.next, currentPage + 1, { disabled: currentPage === totalPages }));
+  }
   ["f-q", "f-status", "f-from", "f-to"].forEach((id) => {
     document.getElementById(id).addEventListener("change", () => { state.offset = 0; loadBookings(); });
   });

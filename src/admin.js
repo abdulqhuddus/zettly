@@ -89,29 +89,31 @@ export async function handleAdminListBookings(url, env) {
   const limit = Math.min(parseInt(url.searchParams.get("limit") || "50", 10) || 50, 200);
   const offset = Math.max(parseInt(url.searchParams.get("offset") || "0", 10) || 0, 0);
 
-  const where = [];
-  const params = [];
-  if (status) {
-    where.push("status = ?");
-    params.push(status);
-  }
+  // Built without the status filter so it can be reused, unmodified, for the
+  // status-independent summary-card totals below; the paginated list query
+  // adds the status clause back on top of these.
+  const baseWhere = [];
+  const baseParams = [];
   if (date) {
-    where.push("date = ?");
-    params.push(date);
+    baseWhere.push("date = ?");
+    baseParams.push(date);
   }
   if (from) {
-    where.push("date >= ?");
-    params.push(from);
+    baseWhere.push("date >= ?");
+    baseParams.push(from);
   }
   if (to) {
-    where.push("date <= ?");
-    params.push(to);
+    baseWhere.push("date <= ?");
+    baseParams.push(to);
   }
   if (q) {
-    where.push("(customer_name LIKE ? OR customer_email LIKE ? OR id LIKE ?)");
+    baseWhere.push("(customer_name LIKE ? OR customer_email LIKE ? OR id LIKE ?)");
     const like = `%${q}%`;
-    params.push(like, like, like);
+    baseParams.push(like, like, like);
   }
+
+  const where = status ? ["status = ?", ...baseWhere] : [...baseWhere];
+  const params = status ? [status, ...baseParams] : [...baseParams];
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
   const { results } = await env.DB.prepare(
@@ -128,8 +130,29 @@ export async function handleAdminListBookings(url, env) {
     .bind(...params)
     .first();
 
+  // Summary cards on the dashboard: totals across whatever the current
+  // filters select (search/date range), independent of the status filter
+  // and of pagination, broken down by status so the UI can show completed
+  // vs. still-pending revenue alongside the grand total.
+  const baseWhereSql = baseWhere.length ? `WHERE ${baseWhere.join(" AND ")}` : "";
+  const { results: statusRows } = await env.DB.prepare(
+    `SELECT status, COUNT(*) AS n, COALESCE(SUM(price), 0) AS sum
+     FROM bookings ${baseWhereSql}
+     GROUP BY status`
+  )
+    .bind(...baseParams)
+    .all();
+
+  const stats = { count: 0, totalAmount: 0, completedAmount: 0, pendingAmount: 0 };
+  for (const row of statusRows) {
+    stats.count += row.n;
+    if (row.status !== "cancelled") stats.totalAmount += row.sum;
+    if (row.status === "completed") stats.completedAmount += row.sum;
+    if (row.status === "confirmed") stats.pendingAmount += row.sum;
+  }
+
   const bookings = results.map((r) => withServiceBreadcrumb({ ...r, bookingRef: `ZTL-${r.id.split("-")[0].toUpperCase()}` }));
-  return json({ bookings, total: totalRow?.n || 0, limit, offset });
+  return json({ bookings, total: totalRow?.n || 0, limit, offset, stats });
 }
 
 export async function handleAdminBookingDetail(env, id) {
