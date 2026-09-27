@@ -125,17 +125,25 @@
   h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
   .subtitle { color: var(--muted); font-size: 0.98rem; margin-bottom: 1.8rem; line-height: 1.5; }
 
-  .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  .stage { transition: max-width 0.3s ease; }
+  .stage.wide { max-width: 1180px; }
+
+  .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .path-grid.audience-grid { grid-template-columns: 1fr 1fr; }
+  .path-grid.category-grid { grid-template-columns: repeat(5, 1fr); }
+  @media (max-width: 1000px) { .path-grid.category-grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 760px) { .path-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 520px) { .path-grid { grid-template-columns: 1fr; } }
-  .path-card .icon img { width: 30px; height: 30px; object-fit: contain; }
+  @media (max-width: 520px) { .path-grid { grid-template-columns: 1fr; } .path-grid.category-grid { grid-template-columns: 1fr 1fr; } }
+  .path-card .icon img { width: 26px; height: 26px; object-fit: contain; }
 
   .path-card {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
     border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 2rem 1.5rem 3.6rem;
+    border-radius: 18px;
+    padding: 1rem 1.1rem;
     cursor: pointer;
     text-align: left;
     background: #fff;
@@ -152,29 +160,36 @@
   }
   .path-card:hover {
     border-color: var(--accent);
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(124,58,237,0.18);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(124,58,237,0.16);
   }
   .path-card:hover::before { opacity: 1; }
-  .path-card:active { transform: translateY(-2px) scale(0.99); }
+  .path-card:active { transform: translateY(-1px) scale(0.99); }
   .path-card .icon {
     position: relative;
     z-index: 1;
-    width: 58px; height: 58px; border-radius: 50%;
+    flex: 0 0 auto;
+    width: 46px; height: 46px; border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #fff, var(--accent-light));
-    display: flex; align-items: center; justify-content: center; font-size: 1.7rem;
-    margin-bottom: 1.3rem;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 6px 16px rgba(124,58,237,0.18), inset 0 0 0 1px rgba(124,58,237,0.12);
     transition: transform 0.35s cubic-bezier(.2,1.4,.4,1), box-shadow 0.3s;
   }
-  .path-card .icon svg { width: 30px; height: 30px; }
-  .path-card:hover .icon { transform: scale(1.1) rotate(-4deg); box-shadow: 0 10px 24px rgba(124,58,237,0.3), inset 0 0 0 1px rgba(124,58,237,0.2); }
-  .path-card h3 { position: relative; z-index: 1; font-size: 1.15rem; margin-bottom: 0.4rem; }
-  .path-card p { position: relative; z-index: 1; font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; }
+  .path-card .icon svg { width: 24px; height: 24px; }
+  .path-card:hover .icon { transform: scale(1.08) rotate(-4deg); box-shadow: 0 10px 24px rgba(124,58,237,0.3), inset 0 0 0 1px rgba(124,58,237,0.2); }
+  .path-card .body { position: relative; z-index: 1; flex: 1; min-width: 0; }
+  .path-card h3 {
+    font-size: 0.95rem; font-weight: 700; margin-bottom: 0.15rem;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .path-card p {
+    font-size: 0.78rem; color: var(--muted); line-height: 1.4; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
   .path-card .go-btn {
-    position: absolute; bottom: 1.5rem; right: 1.5rem; z-index: 1;
+    position: relative; z-index: 1; flex: 0 0 auto;
     display: inline-flex; align-items: center; justify-content: center;
-    width: 34px; height: 34px; border-radius: 50%;
+    width: 30px; height: 30px; border-radius: 50%;
     background: var(--accent-light); color: var(--accent);
     transition: background 0.25s, color 0.25s, transform 0.25s;
   }
@@ -317,8 +332,10 @@
             <path d="M10 19v-5h4v5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <h3 data-i18n="audienceHomeTitle">Zuhause</h3>
-        <p data-i18n="audienceHomeDesc">Privatpersonen & Homeoffice.</p>
+        <div class="body">
+          <h3 data-i18n="audienceHomeTitle">Zuhause</h3>
+          <p data-i18n="audienceHomeDesc">Privatpersonen & Homeoffice.</p>
+        </div>
         <span class="go-btn">&rarr;</span>
       </div>
       <div class="path-card" data-audience="business">
@@ -329,8 +346,10 @@
             <path d="M4 13h16" stroke="#7C3AED" stroke-width="1.6"/>
           </svg>
         </div>
-        <h3 data-i18n="audienceBizTitle">Unternehmen</h3>
-        <p data-i18n="audienceBizDesc">Kleine & mittlere Unternehmen.</p>
+        <div class="body">
+          <h3 data-i18n="audienceBizTitle">Unternehmen</h3>
+          <p data-i18n="audienceBizDesc">Kleine & mittlere Unternehmen.</p>
+        </div>
         <span class="go-btn">&rarr;</span>
       </div>
     </div>
@@ -549,6 +568,7 @@ function showStep(n) {
   document.querySelectorAll(".step").forEach(el => {
     el.classList.toggle("visible", el.dataset.step == n);
   });
+  document.querySelector(".stage").classList.toggle("wide", n === 1);
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
@@ -590,13 +610,111 @@ const CATEGORY_ICONS = {
   handshake: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M2.5 12l4-4 4 3-2 2.5M21.5 12l-4-4-4 3 2 2.5"/><path ${ICON_STROKE} d="M8.5 13.5l3 2.5 3-2.5"/></svg>`,
 };
 
+const DISK_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="9"/><circle ${ICON_STROKE} cx="12" cy="12" r="2.2"/></svg>`;
+const CHECK_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="9"/><path ${ICON_STROKE} d="M8 12.5l2.5 2.5L16 9"/></svg>`;
+const CROSS_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="9"/><path ${ICON_STROKE} d="M9 9l6 6M15 9l-6 6"/></svg>`;
+const GROUP_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="8.5" cy="8" r="3"/><circle ${ICON_STROKE} cx="17" cy="9.5" r="2.4"/><path ${ICON_STROKE} d="M3 20c0-3 2.5-5.2 5.5-5.2S14 17 14 20"/><path ${ICON_STROKE} d="M15.5 14.6c2.4.3 4 2.3 4 5.4"/></svg>`;
+
+// Icons for the most commonly reused branch/leaf option ids across the catalog tree.
+// Anything not listed here falls back to a generic icon (still consistent, just less specific).
+const OPTION_ICONS = {
+  // Computers & Laptops: device type / brand / OS
+  desktop: CATEGORY_ICONS.computer,
+  laptop: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="4" width="16" height="10" rx="1.5"/><path ${ICON_STROKE} d="M2.5 18.5h19L20 17H4l-1.5 1.5z"/></svg>`,
+  allinone: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="3" width="16" height="14" rx="2"/><path ${ICON_STROKE} d="M9 21h6M12 17v4"/></svg>`,
+  apple: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M15.5 8.2c-1-.9-2.1-.9-3-.5-.8.4-1.4.4-2.2 0-1-.5-2-.5-3 .3-2 1.6-1.6 6 .8 9.2.8 1.1 1.7 2.3 2.9 2.3 1.1 0 1.5-.7 2.9-.7s1.8.7 2.9.7c1.2 0 2.1-1.3 2.9-2.4a10 10 0 001.2-2.2 4 4 0 01-2.4-3.7c0-1.6.9-2.7 1.5-3.2-.8-1.2-2-1.3-2.5-1.4"/><path ${ICON_STROKE} d="M13 5.5c.4-.6.7-1.4.6-2.3-.8.1-1.7.6-2.2 1.2-.4.5-.8 1.3-.6 2.1.9.1 1.8-.4 2.2-1z"/></svg>`,
+  other: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M3 6h8v8H3zM13 6h8v8h-8zM3 16h8v2H3zM13 16h8v2h-8z"/></svg>`,
+  windows: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M3 6h8v8H3zM13 6h8v8h-8zM3 16h8v2H3zM13 16h8v2h-8z"/></svg>`,
+  linux: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="9" r="4.5"/><path ${ICON_STROKE} d="M8.5 13c-1.5 2-2 4.5-1 7h9c1-2.5.5-5-1-7"/></svg>`,
+  // service type / issue category
+  setupNew: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="9"/><path ${ICON_STROKE} d="M12 8v8M8 12h8"/></svg>`,
+  fixSoftware: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="13" r="4.5"/><path ${ICON_STROKE} d="M12 3v2.5M12 18.5V21M3 13h2.5M18.5 13H21M5.6 6.6l1.8 1.8M16.6 6.6l-1.8 1.8"/></svg>`,
+  fixHardware: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M14.7 6.3a4 4 0 00-5.4 4.9L4 16.5V20h3.5l5.3-5.3a4 4 0 004.9-5.4l-2.6 2.6-2.1-.6-.6-2.1 2.3-2.9z"/></svg>`,
+  fixIssue: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M14.7 6.3a4 4 0 00-5.4 4.9L4 16.5V20h3.5l5.3-5.3a4 4 0 004.9-5.4l-2.6 2.6-2.1-.6-.6-2.1 2.3-2.9z"/></svg>`,
+  // data migration
+  withData: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M7 17a4.5 4.5 0 01-1-8.9 5.5 5.5 0 0110.8-1.5A4 4 0 0118 15"/><path ${ICON_STROKE} d="M12 12v7M9.5 15.5L12 13l2.5 2.5"/></svg>`,
+  withoutData: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M7 17a4.5 4.5 0 01-1-8.9 5.5 5.5 0 0110.8-1.5A4 4 0 0118 15"/></svg>`,
+  osIssues: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="3"/><path ${ICON_STROKE} d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/></svg>`,
+  programsReinstall: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path ${ICON_STROKE} d="M18 3v4h-4M6 21v-4h4"/></svg>`,
+  freeUpStorage: DISK_ICON,
+  bootingUp: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="8.5"/><path ${ICON_STROKE} d="M12 7v5"/></svg>`,
+  notBooting: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="8.5"/><path ${ICON_STROKE} d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>`,
+  loginWorks: CHECK_ICON,
+  loginFails: CROSS_ICON,
+  powersOnNoResponse: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l9 16H3l9-16z"/><path ${ICON_STROKE} d="M12 10v4M12 17v.1"/></svg>`,
+  noPower: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M9 3v6M15 3v6M6 9h12v3a6 6 0 01-12 0V9z"/><path ${ICON_STROKE} d="M4 4l16 16"/></svg>`,
+  bootMenu: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="5" width="16" height="14" rx="1.5"/><path ${ICON_STROKE} d="M8 9.5h8M8 13h8M8 16.5h5"/></svg>`,
+  blankScreen: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="4.5" width="19" height="12.5" rx="1.5"/><path ${ICON_STROKE} d="M8 21h8M12 17v4"/></svg>`,
+  // data-size tiers
+  "10gb": DISK_ICON, "50gb": DISK_ICON, "100gb": DISK_ICON, "250gb": DISK_ICON, "500gb": DISK_ICON, "1tb": DISK_ICON,
+  // device sub-types reused across "deviceThenSimple" categories
+  printer: CATEGORY_ICONS.printer,
+  scanner: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="3" width="16" height="7" rx="1.5"/><rect ${ICON_STROKE} x="4" y="14" width="16" height="7" rx="1.5"/></svg>`,
+  camera: CATEGORY_ICONS.camera,
+  doorbell: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="10" r="6"/><path ${ICON_STROKE} d="M8 21l4-4 4 4"/></svg>`,
+  plug: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M9 2v6M15 2v6M6 8h12v4a6 6 0 01-12 0V8zM12 18v4"/></svg>`,
+  bulb: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M9 18h6M10 21h4M12 3a6 6 0 00-3 11.2c.6.4 1 1 1 1.8h4c0-.8.4-1.4 1-1.8A6 6 0 0012 3z"/></svg>`,
+  thermostat: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="9"/><circle ${ICON_STROKE} cx="12" cy="12" r="3"/></svg>`,
+  sensor: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="2.2"/><path ${ICON_STROKE} d="M7 12a5 5 0 015-5M7 12a5 5 0 005 5M4 12a8 8 0 018-8M4 12a8 8 0 008 8"/></svg>`,
+  smarttv: CATEGORY_ICONS.tv,
+  stick: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="7" y="4" width="10" height="5" rx="1.5"/><path ${ICON_STROKE} d="M9 9v11M15 9v11"/></svg>`,
+  router: CATEGORY_ICONS.router,
+  accessPoints: CATEGORY_ICONS.wifi,
+  switches: CATEGORY_ICONS.switch,
+  physical: CATEGORY_ICONS.server,
+  nasServer: CATEGORY_ICONS.nas,
+  domain: CATEGORY_ICONS.server,
+  doorAccess: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="5" y="2.5" width="14" height="19" rx="1.5"/><circle cx="14.5" cy="12" r="1" fill="#7C3AED"/></svg>`,
+  computer: CATEGORY_ICONS.computer,
+  server: CATEGORY_ICONS.server,
+  external: CATEGORY_ICONS.nas,
+  nas: CATEGORY_ICONS.nas,
+  mobile: CATEGORY_ICONS.tablet,
+  // data recovery causes
+  deleted: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>`,
+  failure: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l9 16H3l9-16z"/><path ${ICON_STROKE} d="M12 10v4M12 17v.1"/></svg>`,
+  corrupted: DISK_ICON,
+  // license / M365 / security / voip / onboarding
+  m365: CATEGORY_ICONS.mail,
+  antivirus: CATEGORY_ICONS.shield,
+  newTenant: CATEGORY_ICONS.mail,
+  migrate: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12h13M13 7l5 5-5 5"/></svg>`,
+  access: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="9" cy="9" r="4"/><path ${ICON_STROKE} d="M12 12l7 7M16 15l2.5-2.5"/></svg>`,
+  endpoint: CATEGORY_ICONS.shield,
+  firewall: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 4h16v6c0 6-4 9-8 10-4-1-8-4-8-10V4z"/><path ${ICON_STROKE} d="M8 9h8M8 13h8"/></svg>`,
+  backup: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M7 17a4.5 4.5 0 01-1-8.9 5.5 5.5 0 0110.8-1.5A4 4 0 0118 15"/><path ${ICON_STROKE} d="M12 19v-7M9.5 14.5L12 12l2.5 2.5"/></svg>`,
+  extensions: CATEGORY_ICONS.phone,
+  device: CATEGORY_ICONS.computer,
+  account: CATEGORY_ICONS.user,
+  software: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="3" y="3" width="7" height="7" rx="1.2"/><rect ${ICON_STROKE} x="14" y="3" width="7" height="7" rx="1.2"/><rect ${ICON_STROKE} x="3" y="14" width="7" height="7" rx="1.2"/><rect ${ICON_STROKE} x="14" y="14" width="7" height="7" rx="1.2"/></svg>`,
+  winserver: CATEGORY_ICONS.server,
+  m365biz: CATEGORY_ICONS.mail,
+  // counts (device count / seat count)
+  one: CATEGORY_ICONS.user,
+  small: GROUP_ICON,
+  medium: GROUP_ICON,
+  large: GROUP_ICON,
+  // support tiers
+  basic: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>`,
+  standard: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>`,
+  premium: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>`,
+  // Dynamics 365 packages
+  consult: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="10.5" cy="10.5" r="6.5"/><path ${ICON_STROKE} d="M15.3 15.3L20 20"/></svg>`,
+  workflow: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path ${ICON_STROKE} d="M18 3v4h-4M6 21v-4h4"/></svg>`,
+  integration: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M9 7V4M15 7V4M9 20v-3M15 20v-3"/><rect ${ICON_STROKE} x="7" y="7" width="10" height="10" rx="2"/></svg>`,
+};
+
+function iconForOption(id, fallback) {
+  return OPTION_ICONS[id] || fallback;
+}
+
 function nodeIsTerminal(node) {
   return node.options.every(o => o.next && o.next.type === "leaf");
 }
 
 function renderCategoryGrid() {
   const grid = document.getElementById("category-grid");
-  grid.className = "path-grid";
+  grid.className = "path-grid category-grid";
   grid.innerHTML = "";
   const cats = CATALOG[state.audience] || [];
   cats.forEach(cat => {
@@ -604,8 +722,10 @@ function renderCategoryGrid() {
     div.className = "path-card";
     div.innerHTML = `
       <div class="icon">${CATEGORY_ICONS[cat.icon] || GENERIC_BRANCH_ICON}</div>
-      <h3>${cat.name[lang]}</h3>
-      <p>${cat.desc[lang]}</p>
+      <div class="body">
+        <h3>${cat.name[lang]}</h3>
+        <p>${cat.desc[lang]}</p>
+      </div>
       <span class="go-btn">&rarr;</span>
     `;
     div.addEventListener("click", () => {
@@ -634,7 +754,7 @@ function renderTreeStep() {
       const div = document.createElement("div");
       div.className = "service-card";
       div.innerHTML = `
-        <div class="service-icon">${GENERIC_LEAF_ICON}</div>
+        <div class="service-icon">${iconForOption(o.id, GENERIC_LEAF_ICON)}</div>
         <div class="service-main">
           <div class="service-top-row">
             <h3>${o.name[lang]}</h3>
@@ -655,9 +775,11 @@ function renderTreeStep() {
       const div = document.createElement("div");
       div.className = "path-card";
       div.innerHTML = `
-        <div class="icon">${GENERIC_BRANCH_ICON}</div>
-        <h3>${o.name[lang]}</h3>
-        <p>${o.desc ? o.desc[lang] : ""}</p>
+        <div class="icon">${iconForOption(o.id, GENERIC_BRANCH_ICON)}</div>
+        <div class="body">
+          <h3>${o.name[lang]}</h3>
+          <p>${o.desc ? o.desc[lang] : ""}</p>
+        </div>
         <span class="go-btn">&rarr;</span>
       `;
       div.addEventListener("click", () => selectTreeOption(o));
