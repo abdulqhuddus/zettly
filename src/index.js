@@ -1,6 +1,31 @@
-import services from "../services.json";
+import catalog from "../catalog.json";
 
-const ALL_SERVICES = Object.values(services).flat();
+// Walk a category's decision tree following a list of chosen option ids,
+// returning the resolved leaf plus the breadcrumb of option labels chosen
+// along the way. Never trusts client-submitted price/duration/name.
+function resolveLeaf(audience, categoryId, path) {
+  const categories = catalog[audience];
+  if (!categories) return null;
+  const category = categories.find((c) => c.id === categoryId);
+  if (!category) return null;
+
+  let node = category.root;
+  const breadcrumb = [];
+  for (const choiceId of path || []) {
+    if (!node || node.type !== "branch") return null;
+    const chosen = node.options.find((o) => o.id === choiceId);
+    if (!chosen) return null;
+    breadcrumb.push(chosen.name);
+    node = chosen.next;
+  }
+  if (!node || node.type !== "leaf") return null;
+  return { leaf: node, breadcrumb, category };
+}
+
+function localizedBreadcrumbName(resolved, lang) {
+  if (resolved.leaf.name) return resolved.leaf.name[lang] || resolved.leaf.name.de;
+  return resolved.breadcrumb.map((b) => b[lang] || b.de).join(" – ");
+}
 
 const OPEN_HOUR = 9;
 const CLOSE_HOUR = 17;
@@ -47,16 +72,8 @@ function berlinNow() {
   };
 }
 
-function findService(id) {
-  return ALL_SERVICES.find((s) => s.id === id);
-}
-
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function localizedName(service, lang) {
-  return service.name[lang] || service.name.de;
 }
 
 const EMAIL_STRINGS = {
@@ -69,6 +86,7 @@ const EMAIL_STRINGS = {
     time: "Uhrzeit",
     duration: "Dauer",
     price: "Preis",
+    priceOnRequest: "Wird nach Diagnose vor Ort mitgeteilt",
     minutes: "Min.",
     reschedule: "Falls Sie umbuchen oder stornieren möchten, antworten Sie einfach auf diese E-Mail.",
     signature: "- Zettly",
@@ -83,6 +101,7 @@ const EMAIL_STRINGS = {
     time: "Time",
     duration: "Duration",
     price: "Price",
+    priceOnRequest: "Quoted after on-site diagnosis",
     minutes: "min",
     reschedule: "If you need to reschedule or cancel, just reply to this email.",
     signature: "- Zettly",
@@ -91,7 +110,7 @@ const EMAIL_STRINGS = {
 };
 
 async function handleServices() {
-  return json(services);
+  return json(catalog);
 }
 
 async function handleAvailability(url, env) {
@@ -148,8 +167,9 @@ async function sendConfirmationEmail(env, booking, service, lang) {
   }
 
   const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
-  const serviceName = localizedName(service, lang);
+  const serviceName = booking.serviceName;
   const from = env.RESEND_FROM || "Zettly <onboarding@resend.dev>";
+  const priceCell = service.quote ? t.priceOnRequest : `&euro;${service.price}`;
 
   const html = `
     <div style="font-family: Arial, sans-serif; color: #111;">
@@ -161,7 +181,7 @@ async function sendConfirmationEmail(env, booking, service, lang) {
         <tr><td style="padding:4px 12px 4px 0;"><b>${t.date}</b></td><td>${booking.date}</td></tr>
         <tr><td style="padding:4px 12px 4px 0;"><b>${t.time}</b></td><td>${booking.time}</td></tr>
         <tr><td style="padding:4px 12px 4px 0;"><b>${t.duration}</b></td><td>${service.duration} ${t.minutes}</td></tr>
-        <tr><td style="padding:4px 12px 4px 0;"><b>${t.price}</b></td><td>&euro;${service.price}</td></tr>
+        <tr><td style="padding:4px 12px 4px 0;"><b>${t.price}</b></td><td>${priceCell}</td></tr>
       </table>
       <p>${t.reschedule}</p>
       <p>${t.signature}</p>
@@ -193,19 +213,23 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { serviceId, date, time, name, email, phone, notes, lang: rawLang, audience } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, notes, lang: rawLang } = body;
   const lang = rawLang === "en" ? "en" : "de";
   const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
-  const notesWithAudience = audienceTag ? `${audienceTag}${notes || ""}`.trim() : notes;
 
-  if (!serviceId || !date || !time || !name || !email) {
+  if (!audience || !categoryId || !date || !time || !name || !email) {
     return json({ error: "Missing required fields" }, 400);
   }
 
-  const service = findService(serviceId);
-  if (!service) {
+  const resolved = resolveLeaf(audience, categoryId, path);
+  if (!resolved) {
     return json({ error: "Unknown service" }, 400);
   }
+  const { leaf } = resolved;
+  const serviceName = localizedBreadcrumbName(resolved, lang);
+  const service = { duration: leaf.duration, price: leaf.price, quote: leaf.quote };
+  const quoteTag = leaf.quote ? "[Kostenvoranschlag vor Ort] " : "";
+  const notesWithAudience = `${audienceTag}${quoteTag}${notes || ""}`.trim() || null;
 
   if (!isValidEmail(email)) {
     return json({ error: "Invalid email" }, 400);
@@ -242,7 +266,7 @@ async function handleBook(request, env) {
   }
 
   const id = crypto.randomUUID();
-  const serviceName = localizedName(service, lang);
+  const serviceIdStr = `${audience}:${categoryId}:${(path || []).join(":")}`;
 
   await env.DB.prepare(
     `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, notes)
@@ -250,20 +274,20 @@ async function handleBook(request, env) {
   )
     .bind(
       id,
-      service.id,
+      serviceIdStr,
       serviceName,
-      service.price,
-      service.duration,
+      leaf.quote ? 0 : leaf.price,
+      leaf.duration,
       date,
       time,
       name,
       email,
       phone || null,
-      notesWithAudience || null
+      notesWithAudience
     )
     .run();
 
-  const booking = { id, date, time, customer_name: name, customer_email: email };
+  const booking = { id, date, time, customer_name: name, customer_email: email, serviceName };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
 
   return json({
@@ -271,7 +295,8 @@ async function handleBook(request, env) {
     service: serviceName,
     date,
     time,
-    price: service.price,
+    price: leaf.quote ? null : leaf.price,
+    quote: !!leaf.quote,
     emailSent: emailResult.sent,
   });
 }

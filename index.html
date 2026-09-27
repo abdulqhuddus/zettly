@@ -340,50 +340,17 @@
   <div class="step" data-step="1">
     <h1 data-i18n="step0Title">Wobei können wir helfen?</h1>
     <p class="subtitle" data-i18n="step0Sub">Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.</p>
-    <div class="path-grid">
-      <div class="path-card" data-path="hardware">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2.5" y="4" width="19" height="12" rx="2" stroke="#7C3AED" stroke-width="1.6"/>
-            <path d="M8.5 20h7M12 16v4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/>
-            <circle cx="12" cy="10" r="2.4" stroke="#7C3AED" stroke-width="1.6"/>
-          </svg>
-        </div>
-        <h3 data-i18n="pathHwTitle">IT-Hardware-Service</h3>
-        <p data-i18n="pathHwDesc">Reparaturen, Netzwerke, Geräte-Aufrüstung.</p>
-        <span class="go-btn">&rarr;</span>
-      </div>
-      <div class="path-card" data-path="software">
-        <div class="icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="4.5" width="18" height="13" rx="2" stroke="#7C3AED" stroke-width="1.6"/>
-            <path d="M8 20h8" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M7.5 9.5l2 2-2 2M12.5 13.5h2.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3 data-i18n="pathSwTitle">IT-Software-Service</h3>
-        <p data-i18n="pathSwDesc">Virenentfernung, Optimierung, Support.</p>
-        <span class="go-btn">&rarr;</span>
-      </div>
-      <div class="path-card" data-path="dynamics">
-        <div class="icon">
-          <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
-        </div>
-        <h3 data-i18n="pathDynTitle">Dynamics 365</h3>
-        <p data-i18n="pathDynDesc">Beratung, Workflows und individuelle Integrationen.</p>
-        <span class="go-btn">&rarr;</span>
-      </div>
-    </div>
+    <div class="path-grid" id="category-grid"></div>
     <div class="actions">
       <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
     </div>
   </div>
 
-  <!-- Step 2: choose service -->
+  <!-- Step 2: walk the category's decision tree until a bookable package is reached -->
   <div class="step" data-step="2">
-    <h1 data-i18n="step1Title">Paket auswählen</h1>
-    <p class="subtitle" data-i18n="step1Sub">Details besprechen wir nach der Buchung gerne genauer.</p>
-    <div class="service-list" id="service-list"></div>
+    <h1 id="tree-title"></h1>
+    <p class="subtitle" id="tree-sub"></p>
+    <div id="tree-grid"></div>
     <div class="actions">
       <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
     </div>
@@ -462,15 +429,8 @@ const I18N = {
     audienceBizDesc: "Kleine & mittlere Unternehmen.",
     step0Title: "Wobei können wir helfen?",
     step0Sub: "Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.",
-    pathHwTitle: "IT-Hardware-Service",
-    pathHwDesc: "Reparaturen, Netzwerke, Geräte-Aufrüstung.",
-    pathSwTitle: "IT-Software-Service",
-    pathSwDesc: "Virenentfernung, Optimierung, Support.",
-    pathDynTitle: "Dynamics 365",
-    pathDynDesc: "Beratung, Workflows und individuelle Integrationen.",
-    step1Title: "Paket auswählen",
-    step1Sub: "Details besprechen wir nach der Buchung gerne genauer.",
     back: "Zurück",
+    priceOnRequest: "Preis nach Diagnose",
     step2Title: "Datum & Uhrzeit wählen",
     step2Sub: "Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.",
     continue: "Weiter",
@@ -509,15 +469,8 @@ const I18N = {
     audienceBizDesc: "Small & medium businesses.",
     step0Title: "What brings you here today?",
     step0Sub: "Pick a path and we'll show you the right packages.",
-    pathHwTitle: "IT Hardware Service",
-    pathHwDesc: "Repairs, networks, device upgrades.",
-    pathSwTitle: "IT Software Service",
-    pathSwDesc: "Virus removal, optimization, support.",
-    pathDynTitle: "Dynamics 365",
-    pathDynDesc: "Consulting, workflows, and custom integrations.",
-    step1Title: "Choose your package",
-    step1Sub: "Pick the one that fits — you can always talk through details after booking.",
     back: "Back",
+    priceOnRequest: "Price after diagnosis",
     step2Title: "Pick a date & time",
     step2Sub: "Business hours, Monday to Friday, 9:00–17:00.",
     continue: "Continue",
@@ -549,11 +502,14 @@ const I18N = {
 
 let lang = localStorage.getItem("zettly_lang") || "de";
 
-const state = { path: null, service: null, date: null, time: null };
-let SERVICES = { hardware: [], software: [], dynamics: [] };
+// state.treePath: [{ node, choiceId, choiceLabel }] — the branch nodes and
+// choices made from the category root down to (but not including) the leaf.
+const state = { audience: null, categoryId: null, category: null, currentNode: null, treePath: [], service: null, date: null, time: null };
+let CATALOG = { home: [], business: [] };
 
 function t(key) { return I18N[lang][key]; }
 function fmtEuro(n) { return "€" + n; }
+function fmtPrice(svc) { return svc.quote ? t("priceOnRequest") : fmtEuro(svc.price); }
 
 function applyStaticTranslations() {
   document.documentElement.lang = lang;
@@ -576,7 +532,8 @@ function setLang(newLang) {
   localStorage.setItem("zettly_lang", lang);
   applyStaticTranslations();
   // re-render dynamic content in the current step, if any
-  if (state.path) renderServiceList();
+  if (document.querySelector('.step[data-step="1"]').classList.contains("visible")) renderCategoryGrid();
+  if (document.querySelector('.step[data-step="2"]').classList.contains("visible")) renderTreeStep();
   if (state.date) renderSlots();
   if (document.querySelector('.step[data-step="4"]').classList.contains("visible")) renderSummary("summary");
 }
@@ -597,53 +554,155 @@ function showStep(n) {
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
 }
 
-async function loadServices() {
+async function loadCatalog() {
   const res = await fetch("/api/services");
-  SERVICES = await res.json();
+  CATALOG = await res.json();
 }
 
 const ICON_STROKE = 'stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"';
-const SERVICE_ICONS = {
-  "hw-quickfix": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M14.7 6.3a4 4 0 00-5.4 4.9L4 16.5V20h3.5l5.3-5.3a4 4 0 004.9-5.4l-2.6 2.6-2.1-.6-.6-2.1 2.3-2.9z"/></svg>`,
-  "hw-networksetup": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M3 8.5a15 15 0 0118 0"/><path ${ICON_STROKE} d="M6.2 12a10 10 0 0111.6 0"/><path ${ICON_STROKE} d="M9.5 15.5a5 5 0 015 0"/><circle cx="12" cy="19" r="1" fill="#7C3AED"/></svg>`,
-  "hw-fullcare": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>`,
-  "sw-quickfix": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="3" y="5" width="18" height="12" rx="1.5"/><path ${ICON_STROKE} d="M8 20h8M12 17v3"/></svg>`,
-  "sw-virusremoval": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="4.5"/><path ${ICON_STROKE} d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/></svg>`,
-  "sw-fullcare": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 4l4 4M8 4L4 8"/><path ${ICON_STROKE} d="M12.5 6l1.4 3 3 1.4-3 1.4-1.4 3-1.4-3-3-1.4 3-1.4 1.4-3z"/><path ${ICON_STROKE} d="M17 15l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9.9-2z"/></svg>`,
-  "d365-consult": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="10.5" cy="10.5" r="6.5"/><path ${ICON_STROKE} d="M15.3 15.3L20 20"/></svg>`,
-  "d365-workflow": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path ${ICON_STROKE} d="M18 3v4h-4M6 21v-4h4"/></svg>`,
-  "d365-integration": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M9 7V4M15 7V4M9 20v-3M15 20v-3"/><rect ${ICON_STROKE} x="7" y="7" width="10" height="10" rx="2"/></svg>`,
+const GENERIC_LEAF_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l1.8 4.9L19 9.7l-4 3.4 1.2 5.1L12 15.8 7.8 18.2 9 13.1l-4-3.4 5.2-1.8z"/></svg>`;
+const GENERIC_BRANCH_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="8"/><path ${ICON_STROKE} d="M12 8v4l3 2"/></svg>`;
+
+// One line icon per top-level category (matches the icon slug set in catalog.json)
+const CATEGORY_ICONS = {
+  computer: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="4" width="19" height="12" rx="2"/><path ${ICON_STROKE} d="M8.5 20h7M12 16v4"/></svg>`,
+  router: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="3" y="9" width="18" height="7" rx="1.5"/><path ${ICON_STROKE} d="M7 9V7a2 2 0 012-2h6a2 2 0 012 2v2M7 19v-3M11 19v-3M15 19v-3"/></svg>`,
+  wifi: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M3 8.5a15 15 0 0118 0"/><path ${ICON_STROKE} d="M6.2 12a10 10 0 0111.6 0"/><path ${ICON_STROKE} d="M9.5 15.5a5 5 0 015 0"/><circle cx="12" cy="19" r="1" fill="#7C3AED"/></svg>`,
+  switch: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="3" y="5" width="18" height="4"/><rect ${ICON_STROKE} x="3" y="11" width="18" height="4"/><rect ${ICON_STROKE} x="3" y="17" width="18" height="4"/></svg>`,
+  speaker: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="7" y="2.5" width="10" height="19" rx="4"/><circle ${ICON_STROKE} cx="12" cy="15" r="3"/><circle cx="12" cy="7" r="1" fill="#7C3AED"/></svg>`,
+  printer: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="8" width="16" height="8" rx="1.5"/><path ${ICON_STROKE} d="M7 8V4h10v4M7 16v4h10v-4"/></svg>`,
+  tv: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="4.5" width="19" height="12.5" rx="1.5"/><path ${ICON_STROKE} d="M8 21h8M12 17v4"/></svg>`,
+  smarthome: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 11.5L12 4l8 7.5"/><path ${ICON_STROKE} d="M6 10v9h12v-9"/><circle ${ICON_STROKE} cx="12" cy="15" r="2"/></svg>`,
+  camera: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="7" width="14" height="10" rx="2"/><path ${ICON_STROKE} d="M16.5 10l5-2.5v9l-5-2.5"/></svg>`,
+  lock: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="5" y="11" width="14" height="9" rx="2"/><path ${ICON_STROKE} d="M8 11V7a4 4 0 018 0v4"/></svg>`,
+  nas: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="3" width="16" height="8" rx="1.5"/><rect ${ICON_STROKE} x="4" y="13" width="16" height="8" rx="1.5"/><circle cx="7.5" cy="7" r="1" fill="#7C3AED"/><circle cx="7.5" cy="17" r="1" fill="#7C3AED"/></svg>`,
+  tablet: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="5" y="2.5" width="14" height="19" rx="2.2"/><path ${ICON_STROKE} d="M11 19h2"/></svg>`,
+  ups: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="7" y="2.5" width="10" height="19" rx="2"/><path ${ICON_STROKE} d="M13 7l-3.5 5H12l-1 5 4-6h-2.5z"/></svg>`,
+  cabling: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M6 3v6a3 3 0 003 3h6a3 3 0 003-3V3M9 21v-6M15 21v-6"/></svg>`,
+  license: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="3" y="5" width="18" height="14" rx="2"/><circle ${ICON_STROKE} cx="8.5" cy="12" r="2.2"/><path ${ICON_STROKE} d="M13.5 10h5M13.5 14h3.5"/></svg>`,
+  recovery: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path ${ICON_STROKE} d="M18 3v4h-4M6 21v-4h4"/></svg>`,
+  server: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="3" width="16" height="7" rx="1.5"/><rect ${ICON_STROKE} x="4" y="14" width="16" height="7" rx="1.5"/><circle cx="7.5" cy="6.5" r="1" fill="#7C3AED"/><circle cx="7.5" cy="17.5" r="1" fill="#7C3AED"/></svg>`,
+  mail: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="5" width="19" height="14" rx="2"/><path ${ICON_STROKE} d="M3 6.5l9 6.5 9-6.5"/></svg>`,
+  shield: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z"/></svg>`,
+  user: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="8" r="3.5"/><path ${ICON_STROKE} d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`,
+  dynamics: `<img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">`,
+  handshake: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M2.5 12l4-4 4 3-2 2.5M21.5 12l-4-4-4 3 2 2.5"/><path ${ICON_STROKE} d="M8.5 13.5l3 2.5 3-2.5"/></svg>`,
 };
 
-function renderServiceList() {
-  const list = SERVICES[state.path] || [];
-  const container = document.getElementById("service-list");
-  container.innerHTML = "";
-  list.forEach(svc => {
+function nodeIsTerminal(node) {
+  return node.options.every(o => o.next && o.next.type === "leaf");
+}
+
+function renderCategoryGrid() {
+  const grid = document.getElementById("category-grid");
+  grid.className = "path-grid";
+  grid.innerHTML = "";
+  const cats = CATALOG[state.audience] || [];
+  cats.forEach(cat => {
     const div = document.createElement("div");
-    div.className = "service-card";
-    div.dataset.id = svc.id;
+    div.className = "path-card";
     div.innerHTML = `
-      <div class="service-icon">${SERVICE_ICONS[svc.id] || `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l1.8 4.9L19 9.7l-4 3.4 1.2 5.1L12 15.8 7.8 18.2 9 13.1l-4-3.4 5.2-1.8z"/></svg>`}</div>
-      <div class="service-main">
-        <div class="service-top-row">
-          <h3>${svc.name[lang]}</h3>
-          <div class="service-price">
-            <div class="amount">${fmtEuro(svc.price)}</div>
-            <div class="duration">${svc.duration} ${t("minLabel")}</div>
-          </div>
-        </div>
-        <div class="tagline">${svc.tagline[lang]}</div>
-        <ul>${svc.features[lang].map(f => `<li>${f}</li>`).join("")}</ul>
-      </div>
+      <div class="icon">${CATEGORY_ICONS[cat.icon] || GENERIC_BRANCH_ICON}</div>
+      <h3>${cat.name[lang]}</h3>
+      <p>${cat.desc[lang]}</p>
+      <span class="go-btn">&rarr;</span>
     `;
     div.addEventListener("click", () => {
-      state.service = svc;
-      renderDateStrip();
-      showStep(3);
+      state.categoryId = cat.id;
+      state.category = cat;
+      state.treePath = [];
+      state.currentNode = cat.root;
+      renderTreeStep();
+      showStep(2);
     });
-    container.appendChild(div);
+    grid.appendChild(div);
   });
+}
+
+function renderTreeStep() {
+  const node = state.currentNode;
+  document.getElementById("tree-title").textContent = (node.prompt && node.prompt[lang]) || state.category.name[lang];
+  document.getElementById("tree-sub").textContent = (node.sub && node.sub[lang]) || "";
+  const container = document.getElementById("tree-grid");
+  container.innerHTML = "";
+
+  if (nodeIsTerminal(node)) {
+    container.className = "service-list";
+    node.options.forEach(o => {
+      const leaf = o.next;
+      const div = document.createElement("div");
+      div.className = "service-card";
+      div.innerHTML = `
+        <div class="service-icon">${GENERIC_LEAF_ICON}</div>
+        <div class="service-main">
+          <div class="service-top-row">
+            <h3>${o.name[lang]}</h3>
+            <div class="service-price">
+              <div class="amount">${leaf.quote ? t("priceOnRequest") : fmtEuro(leaf.price)}</div>
+              <div class="duration">${leaf.duration} ${t("minLabel")}</div>
+            </div>
+          </div>
+          ${o.desc ? `<div class="tagline">${o.desc[lang]}</div>` : ""}
+        </div>
+      `;
+      div.addEventListener("click", () => selectTreeOption(o));
+      container.appendChild(div);
+    });
+  } else {
+    container.className = "path-grid";
+    node.options.forEach(o => {
+      const div = document.createElement("div");
+      div.className = "path-card";
+      div.innerHTML = `
+        <div class="icon">${GENERIC_BRANCH_ICON}</div>
+        <h3>${o.name[lang]}</h3>
+        <p>${o.desc ? o.desc[lang] : ""}</p>
+        <span class="go-btn">&rarr;</span>
+      `;
+      div.addEventListener("click", () => selectTreeOption(o));
+      container.appendChild(div);
+    });
+  }
+}
+
+function selectTreeOption(option) {
+  state.treePath.push({ node: state.currentNode, choiceId: option.id, choiceLabel: option.name });
+  const next = option.next;
+  if (next.type === "leaf") {
+    finalizeLeaf(next);
+  } else {
+    state.currentNode = next;
+    renderTreeStep();
+  }
+}
+
+function finalizeLeaf(leaf) {
+  const breadcrumb = state.treePath.map(e => e.choiceLabel);
+  const composedName = leaf.name || {
+    de: breadcrumb.map(b => b.de).join(" – "),
+    en: breadcrumb.map(b => b.en).join(" – "),
+  };
+  state.service = {
+    name: composedName,
+    price: leaf.quote ? null : leaf.price,
+    duration: leaf.duration || 30,
+    quote: !!leaf.quote,
+    path: state.treePath.map(e => e.choiceId),
+  };
+  renderDateStrip();
+  showStep(3);
+}
+
+function treeGoBack() {
+  if (state.treePath.length === 0) {
+    showStep(1);
+    return;
+  }
+  const prev = state.treePath.pop();
+  state.currentNode = prev.node;
+  renderTreeStep();
+  showStep(2);
 }
 
 function nextBusinessDays(count) {
@@ -729,29 +788,23 @@ function renderSummary(targetId) {
     <div class="row"><span>${t("summaryService")}</span><b>${state.service.name[lang]}</b></div>
     <div class="row"><span>${t("summaryDate")}</span><b>${state.date}</b></div>
     <div class="row"><span>${t("summaryTime")}</span><b>${state.time}</b></div>
-    <div class="row"><span>${t("summaryPrice")}</span><b>${fmtEuro(state.service.price)}</b></div>
+    <div class="row"><span>${t("summaryPrice")}</span><b>${fmtPrice(state.service)}</b></div>
   `;
 }
 
 document.querySelectorAll(".path-card[data-audience]").forEach(card => {
-  card.addEventListener("click", () => {
-    state.audience = card.dataset.audience;
-    showStep(1);
-  });
-});
-
-document.querySelectorAll(".path-card[data-path]").forEach(card => {
   card.addEventListener("click", async () => {
-    state.path = card.dataset.path;
-    if (!SERVICES.hardware || !SERVICES.hardware.length) await loadServices();
-    renderServiceList();
-    showStep(2);
+    state.audience = card.dataset.audience;
+    if (!CATALOG[state.audience] || !CATALOG[state.audience].length) await loadCatalog();
+    renderCategoryGrid();
+    showStep(1);
   });
 });
 
 document.querySelectorAll('[data-action="back"]').forEach(btn => {
   btn.addEventListener("click", () => {
     const current = Number(document.querySelector(".step.visible").dataset.step);
+    if (current === 2) { treeGoBack(); return; }
     showStep(Math.max(0, current - 1));
   });
 });
@@ -785,11 +838,12 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        serviceId: state.service.id,
+        audience: state.audience,
+        categoryId: state.categoryId,
+        path: state.service.path,
         date: state.date,
         time: state.time,
         name, email, phone, notes, lang,
-        audience: state.audience,
       }),
     });
     const data = await res.json();
