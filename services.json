@@ -1,36 +1,71 @@
 {
-  "it": [
+  "hardware": [
     {
-      "id": "it-quickfix",
+      "id": "hw-quickfix",
       "price": 39,
       "duration": 30,
-      "name": { "de": "Schnelle Hilfe", "en": "Quick Fix" },
-      "tagline": { "de": "Ein Problem, schnell gelöst", "en": "One issue, solved fast" },
+      "name": { "de": "Schnelle Hardware-Hilfe", "en": "Quick Hardware Fix" },
+      "tagline": { "de": "Ein Gerät, schnell repariert", "en": "One device, fixed fast" },
       "features": {
         "de": ["Fernwartung oder vor Ort", "Ein Gerät", "Termin noch diese Woche"],
         "en": ["Remote or on-site diagnosis", "Single device", "Same-week slot"]
       }
     },
     {
-      "id": "it-homesetup",
+      "id": "hw-networksetup",
       "price": 89,
       "duration": 60,
       "name": { "de": "Heimnetzwerk-Einrichtung", "en": "Home Network Setup" },
-      "tagline": { "de": "WLAN & Smart Home, richtig gemacht", "en": "WiFi & smart home, done right" },
+      "tagline": { "de": "WLAN & Smart Home, richtig verkabelt", "en": "WiFi & smart home, wired right" },
       "features": {
-        "de": ["WLAN-Optimierung", "Bis zu 5 Geräte", "Smart-Home-Grundlagen"],
+        "de": ["Router- & WLAN-Optimierung", "Bis zu 5 Geräte", "Smart-Home-Grundlagen"],
         "en": ["Router & WiFi optimization", "Up to 5 devices", "Smart home basics"]
       }
     },
     {
-      "id": "it-fullcare",
+      "id": "hw-fullcare",
       "price": 149,
       "duration": 90,
-      "name": { "de": "Rundum-Betreuung", "en": "Full Care" },
-      "tagline": { "de": "Dauerhafte IT-Sicherheit", "en": "Ongoing IT peace of mind" },
+      "name": { "de": "Hardware-Rundum-Check", "en": "Full Hardware Care" },
+      "tagline": { "de": "Komplettcheck & Aufrüstung", "en": "Full check-up and upgrades" },
       "features": {
-        "de": ["Vollständiger Systemcheck", "Viren- & Malware-Scan", "30 Tage Nachbetreuung"],
-        "en": ["Full system health check", "Virus & malware sweep", "30-day follow-up support"]
+        "de": ["Vollständiger Hardware-Check", "Aufrüstberatung", "30 Tage Nachbetreuung"],
+        "en": ["Full hardware health check", "Upgrade advice", "30-day follow-up support"]
+      }
+    }
+  ],
+  "software": [
+    {
+      "id": "sw-quickfix",
+      "price": 35,
+      "duration": 30,
+      "name": { "de": "Schnelle Software-Hilfe", "en": "Quick Software Fix" },
+      "tagline": { "de": "Ein Problem, schnell gelöst", "en": "One issue, solved fast" },
+      "features": {
+        "de": ["Fernwartung", "Ein Programm/System", "Termin noch diese Woche"],
+        "en": ["Remote support", "Single app/system", "Same-week slot"]
+      }
+    },
+    {
+      "id": "sw-virusremoval",
+      "price": 79,
+      "duration": 60,
+      "name": { "de": "Viren- & Malware-Entfernung", "en": "Virus & Malware Removal" },
+      "tagline": { "de": "Sauber und sicher wieder unterwegs", "en": "Clean and safe again" },
+      "features": {
+        "de": ["Vollständiger Scan", "Bereinigung", "Schutz-Empfehlungen"],
+        "en": ["Full system scan", "Cleanup", "Protection recommendations"]
+      }
+    },
+    {
+      "id": "sw-fullcare",
+      "price": 129,
+      "duration": 90,
+      "name": { "de": "System-Optimierung", "en": "Full Software Care" },
+      "tagline": { "de": "Schneller, aufgeräumt, aktuell", "en": "Faster, tidied up, up to date" },
+      "features": {
+        "de": ["Updates & Bereinigung", "Leistungsoptimierung", "30 Tage Nachbetreuung"],
+        "en": ["Updates & cleanup", "Performance tuning", "30-day follow-up support"]
       }
     }
   ],

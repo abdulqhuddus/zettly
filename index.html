@@ -125,8 +125,11 @@
   h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
   .subtitle { color: var(--muted); font-size: 0.98rem; margin-bottom: 1.8rem; line-height: 1.5; }
 
-  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  .path-grid.audience-grid { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 760px) { .path-grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 520px) { .path-grid { grid-template-columns: 1fr; } }
+  .path-card .icon img { width: 30px; height: 30px; object-fit: contain; }
 
   .path-card {
     position: relative;
@@ -300,50 +303,83 @@
 
 <div class="stage">
 
-  <!-- Step 0: choose path -->
+  <!-- Step 0: home or business -->
   <div class="step visible" data-step="0">
+    <h1 data-i18n="step00Title">Für Zuhause oder Ihr Unternehmen?</h1>
+    <p class="subtitle" data-i18n="step00Sub">So können wir Ihnen gleich die passenden Pakete zeigen.</p>
+    <div class="path-grid audience-grid">
+      <div class="path-card" data-audience="home">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 11.5L12 4l8 7.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 10v9h12v-9" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 19v-5h4v5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 data-i18n="audienceHomeTitle">Zuhause</h3>
+        <p data-i18n="audienceHomeDesc">Privatpersonen & Homeoffice.</p>
+        <span class="go-btn">&rarr;</span>
+      </div>
+      <div class="path-card" data-audience="business">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="8" width="16" height="12" rx="1.5" stroke="#7C3AED" stroke-width="1.6"/>
+            <path d="M9 8V6a3 3 0 013-3v0a3 3 0 013 3v2" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M4 13h16" stroke="#7C3AED" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <h3 data-i18n="audienceBizTitle">Unternehmen</h3>
+        <p data-i18n="audienceBizDesc">Kleine & mittlere Unternehmen.</p>
+        <span class="go-btn">&rarr;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1: choose category -->
+  <div class="step" data-step="1">
     <h1 data-i18n="step0Title">Wobei können wir helfen?</h1>
     <p class="subtitle" data-i18n="step0Sub">Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.</p>
     <div class="path-grid">
-      <div class="path-card" data-path="it">
+      <div class="path-card" data-path="hardware">
         <div class="icon">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="2.5" y="4" width="19" height="12" rx="2" stroke="#7C3AED" stroke-width="1.6"/>
             <path d="M8.5 20h7M12 16v4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M7 9.5l2 2-2 2M12.5 13.5h2.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="10" r="2.4" stroke="#7C3AED" stroke-width="1.6"/>
           </svg>
         </div>
-        <h3 data-i18n="pathItTitle">IT-Services</h3>
-        <p data-i18n="pathItDesc">Reparaturen, Netzwerke, Virenentfernung, laufender Support.</p>
+        <h3 data-i18n="pathHwTitle">IT-Hardware-Service</h3>
+        <p data-i18n="pathHwDesc">Reparaturen, Netzwerke, Geräte-Aufrüstung.</p>
+        <span class="go-btn">&rarr;</span>
+      </div>
+      <div class="path-card" data-path="software">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4.5" width="18" height="13" rx="2" stroke="#7C3AED" stroke-width="1.6"/>
+            <path d="M8 20h8" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M7.5 9.5l2 2-2 2M12.5 13.5h2.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 data-i18n="pathSwTitle">IT-Software-Service</h3>
+        <p data-i18n="pathSwDesc">Virenentfernung, Optimierung, Support.</p>
         <span class="go-btn">&rarr;</span>
       </div>
       <div class="path-card" data-path="dynamics">
         <div class="icon">
-          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="d365a" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#0F6CBD"/><stop offset="1" stop-color="#2AA4EF"/>
-              </linearGradient>
-              <linearGradient id="d365b" x1="0" y1="1" x2="1" y2="0">
-                <stop offset="0" stop-color="#50E6FF"/><stop offset="1" stop-color="#2AA4EF"/>
-              </linearGradient>
-            </defs>
-            <circle cx="24" cy="15" r="9" fill="url(#d365a)"/>
-            <circle cx="33" cy="24" r="9" fill="url(#d365b)"/>
-            <circle cx="24" cy="33" r="9" fill="url(#d365a)" opacity="0.85"/>
-            <circle cx="15" cy="24" r="9" fill="url(#d365b)" opacity="0.85"/>
-            <circle cx="24" cy="24" r="6" fill="#ffffff"/>
-          </svg>
+          <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
         </div>
         <h3 data-i18n="pathDynTitle">Dynamics 365</h3>
         <p data-i18n="pathDynDesc">Beratung, Workflows und individuelle Integrationen.</p>
         <span class="go-btn">&rarr;</span>
       </div>
     </div>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
+    </div>
   </div>
 
-  <!-- Step 1: choose service -->
-  <div class="step" data-step="1">
+  <!-- Step 2: choose service -->
+  <div class="step" data-step="2">
     <h1 data-i18n="step1Title">Paket auswählen</h1>
     <p class="subtitle" data-i18n="step1Sub">Details besprechen wir nach der Buchung gerne genauer.</p>
     <div class="service-list" id="service-list"></div>
@@ -352,8 +388,8 @@
     </div>
   </div>
 
-  <!-- Step 2: date & time -->
-  <div class="step" data-step="2">
+  <!-- Step 3: date & time -->
+  <div class="step" data-step="3">
     <h1 data-i18n="step2Title">Datum & Uhrzeit wählen</h1>
     <p class="subtitle" data-i18n="step2Sub">Geschäftszeiten: Montag bis Freitag, 9:00–17:00 Uhr.</p>
     <div class="date-strip" id="date-strip"></div>
@@ -364,8 +400,8 @@
     </div>
   </div>
 
-  <!-- Step 3: details -->
-  <div class="step" data-step="3">
+  <!-- Step 4: details -->
+  <div class="step" data-step="4">
     <h1 data-i18n="step3Title">Ihre Angaben</h1>
     <p class="subtitle" data-i18n="step3Sub">Die Bestätigung senden wir an diese Adresse.</p>
     <div class="summary" id="summary"></div>
@@ -392,8 +428,8 @@
     </div>
   </div>
 
-  <!-- Step 4: success -->
-  <div class="step" data-step="4">
+  <!-- Step 5: success -->
+  <div class="step" data-step="5">
     <div class="success-wrap">
       <div class="success-ring">
         <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>
@@ -417,10 +453,18 @@ const I18N = {
   de: {
     title: "Termin buchen — Zettly",
     bookAnother: "Weiteren Termin buchen",
+    step00Title: "Für Zuhause oder Ihr Unternehmen?",
+    step00Sub: "So können wir Ihnen gleich die passenden Pakete zeigen.",
+    audienceHomeTitle: "Zuhause",
+    audienceHomeDesc: "Privatpersonen & Homeoffice.",
+    audienceBizTitle: "Unternehmen",
+    audienceBizDesc: "Kleine & mittlere Unternehmen.",
     step0Title: "Wobei können wir helfen?",
     step0Sub: "Wählen Sie einen Bereich — wir zeigen Ihnen die passenden Pakete.",
-    pathItTitle: "IT-Services",
-    pathItDesc: "Reparaturen, Netzwerke, Virenentfernung, laufender Support.",
+    pathHwTitle: "IT-Hardware-Service",
+    pathHwDesc: "Reparaturen, Netzwerke, Geräte-Aufrüstung.",
+    pathSwTitle: "IT-Software-Service",
+    pathSwDesc: "Virenentfernung, Optimierung, Support.",
     pathDynTitle: "Dynamics 365",
     pathDynDesc: "Beratung, Workflows und individuelle Integrationen.",
     step1Title: "Paket auswählen",
@@ -456,10 +500,18 @@ const I18N = {
   en: {
     title: "Book an Appointment — Zettly",
     bookAnother: "Book another appointment",
+    step00Title: "For your home or your business?",
+    step00Sub: "So we can show you the right packages right away.",
+    audienceHomeTitle: "Home",
+    audienceHomeDesc: "Individuals & home offices.",
+    audienceBizTitle: "Business",
+    audienceBizDesc: "Small & medium businesses.",
     step0Title: "What brings you here today?",
     step0Sub: "Pick a path and we'll show you the right packages.",
-    pathItTitle: "IT Services",
-    pathItDesc: "Repairs, networks, virus removal, ongoing support.",
+    pathHwTitle: "IT Hardware Service",
+    pathHwDesc: "Repairs, networks, device upgrades.",
+    pathSwTitle: "IT Software Service",
+    pathSwDesc: "Virus removal, optimization, support.",
     pathDynTitle: "Dynamics 365",
     pathDynDesc: "Consulting, workflows, and custom integrations.",
     step1Title: "Choose your package",
@@ -497,7 +549,7 @@ const I18N = {
 let lang = localStorage.getItem("zettly_lang") || "de";
 
 const state = { path: null, service: null, date: null, time: null };
-let SERVICES = { it: [], dynamics: [] };
+let SERVICES = { hardware: [], software: [], dynamics: [] };
 
 function t(key) { return I18N[lang][key]; }
 function fmtEuro(n) { return "€" + n; }
@@ -525,7 +577,7 @@ function setLang(newLang) {
   // re-render dynamic content in the current step, if any
   if (state.path) renderServiceList();
   if (state.date) renderSlots();
-  if (document.querySelector('.step[data-step="3"]').classList.contains("visible")) renderSummary("summary");
+  if (document.querySelector('.step[data-step="4"]').classList.contains("visible")) renderSummary("summary");
 }
 
 document.getElementById("lang-switch").addEventListener("click", (e) => {
@@ -533,7 +585,7 @@ document.getElementById("lang-switch").addEventListener("click", (e) => {
   if (btn) setLang(btn.dataset.lang);
 });
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 function showStep(n) {
   document.querySelectorAll(".step").forEach(el => {
@@ -550,9 +602,12 @@ async function loadServices() {
 }
 
 const SERVICE_ICONS = {
-  "it-quickfix": "🔧",
-  "it-homesetup": "📶",
-  "it-fullcare": "🛡️",
+  "hw-quickfix": "🔧",
+  "hw-networksetup": "📶",
+  "hw-fullcare": "🛡️",
+  "sw-quickfix": "💻",
+  "sw-virusremoval": "🦠",
+  "sw-fullcare": "🧹",
   "d365-consult": "🔍",
   "d365-workflow": "🔁",
   "d365-integration": "🔌",
@@ -583,7 +638,7 @@ function renderServiceList() {
     div.addEventListener("click", () => {
       state.service = svc;
       renderDateStrip();
-      showStep(2);
+      showStep(3);
     });
     container.appendChild(div);
   });
@@ -671,12 +726,19 @@ function renderSummary(targetId) {
   `;
 }
 
-document.querySelectorAll(".path-card").forEach(card => {
+document.querySelectorAll(".path-card[data-audience]").forEach(card => {
+  card.addEventListener("click", () => {
+    state.audience = card.dataset.audience;
+    showStep(1);
+  });
+});
+
+document.querySelectorAll(".path-card[data-path]").forEach(card => {
   card.addEventListener("click", async () => {
     state.path = card.dataset.path;
-    if (!SERVICES.it.length && !SERVICES.dynamics.length) await loadServices();
+    if (!SERVICES.hardware || !SERVICES.hardware.length) await loadServices();
     renderServiceList();
-    showStep(1);
+    showStep(2);
   });
 });
 
@@ -689,7 +751,7 @@ document.querySelectorAll('[data-action="back"]').forEach(btn => {
 
 document.getElementById("to-details").addEventListener("click", () => {
   renderSummary("summary");
-  showStep(3);
+  showStep(4);
 });
 
 document.getElementById("submit-booking").addEventListener("click", async () => {
@@ -720,6 +782,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         date: state.date,
         time: state.time,
         name, email, phone, notes, lang,
+        audience: state.audience,
       }),
     });
     const data = await res.json();
@@ -737,7 +800,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
       ? t("emailSentMsg")(email)
       : t("emailPendingMsg");
     renderSummary("success-summary");
-    showStep(4);
+    showStep(5);
   } catch (e) {
     errorEl.textContent = t("networkError");
     errorEl.style.display = "block";

@@ -1,6 +1,6 @@
 import services from "../services.json";
 
-const ALL_SERVICES = [...services.it, ...services.dynamics];
+const ALL_SERVICES = Object.values(services).flat();
 
 const OPEN_HOUR = 9;
 const CLOSE_HOUR = 17;
@@ -163,8 +163,10 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { serviceId, date, time, name, email, phone, notes, lang: rawLang } = body;
+  const { serviceId, date, time, name, email, phone, notes, lang: rawLang, audience } = body;
   const lang = rawLang === "en" ? "en" : "de";
+  const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
+  const notesWithAudience = audienceTag ? `${audienceTag}${notes || ""}`.trim() : notes;
 
   if (!serviceId || !date || !time || !name || !email) {
     return json({ error: "Missing required fields" }, 400);
@@ -219,7 +221,7 @@ async function handleBook(request, env) {
       name,
       email,
       phone || null,
-      notes || null
+      notesWithAudience || null
     )
     .run();
 
