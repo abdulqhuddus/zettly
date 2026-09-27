@@ -43,7 +43,7 @@
     margin-bottom: 2.5rem;
   }
 
-  .brand { display: flex; align-items: center; gap: 0.85rem; }
+  .brand { display: flex; align-items: center; gap: 0.85rem; text-decoration: none; }
   .brand-text {
     font-family: "Helvetica Neue", Arial, sans-serif;
     font-size: 2.2rem;
@@ -517,13 +517,14 @@
   .service-price .amount { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
   .service-price .duration { font-size: 0.73rem; color: var(--muted); margin-top: 0.1rem; }
 
-  .date-strip { display: flex; gap: 0.6rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1.6rem; }
-  .date-chip { flex: 0 0 auto; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.9rem; text-align: center; cursor: pointer; transition: all 0.2s; min-width: 64px; }
+  .date-strip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.6rem; }
+  .date-chip { flex: 1 1 64px; max-width: 80px; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.2s; }
   .date-chip .dow { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
   .date-chip .dnum { font-size: 1.1rem; font-weight: 700; margin-top: 0.15rem; }
-  .date-chip:hover { border-color: var(--accent); }
+  .date-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
   .date-chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .date-chip.selected .dow { color: #e6d9ff; }
+  @media (max-width: 480px) { .date-chip { flex: 1 1 52px; max-width: 64px; } }
 
   .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 0.6rem; }
   .slot { border: 1.5px solid var(--border); border-radius: 10px; padding: 0.55rem 0; text-align: center; font-size: 0.85rem; cursor: pointer; transition: all 0.18s; }
@@ -578,7 +579,7 @@
 </head>
 <body>
 <div class="topbar">
-  <div class="brand">
+  <a class="brand" href="/">
     <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <rect class="m1" x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
       <rect class="m2" x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
@@ -586,7 +587,7 @@
       <rect class="m4" x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
     </svg>
     <span class="brand-text">zett<span>ly</span></span>
-  </div>
+  </a>
   <div class="topbar-right">
     <div class="lang-switch" id="lang-switch">
       <button data-lang="de">DE</button>
