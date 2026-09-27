@@ -4,12 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title data-i18n-title>Zettly — Termin buchen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --accent: #7C3AED;
     --accent-light: #F3EEFF;
+    --pink: #EC4899;
+    --pink-light: #FDEEF7;
     --ink: #111114;
     --muted: #6b6b74;
     --border: #e9e7ef;
@@ -18,7 +23,7 @@
   body {
     background: #ffffff;
     color: var(--ink);
-    font-family: -apple-system, "Segoe UI", sans-serif;
+    font-family: "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -112,6 +117,7 @@
   .trust-pill:nth-child(1) { animation-delay: 0.05s; }
   .trust-pill:nth-child(2) { animation-delay: 0.2s; }
   .trust-pill:nth-child(3) { animation-delay: 0.35s; }
+  .trust-pill:nth-child(2):hover { border-color: #f8cfe6; box-shadow: 0 16px 30px rgba(236,72,153,0.18); }
   .trust-pill .dot {
     display: inline-flex; align-items: center; justify-content: center;
     width: 48px; height: 48px; border-radius: 14px;
@@ -119,7 +125,12 @@
     box-shadow: 0 8px 18px rgba(124,58,237,0.18), inset 0 0 0 1px rgba(124,58,237,0.12);
     animation: pillPulse 2.4s ease-in-out infinite;
   }
-  .trust-pill:nth-child(2) .dot { animation-delay: 0.4s; }
+  .trust-pill:nth-child(2) .dot {
+    animation-delay: 0.4s;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--pink-light));
+    box-shadow: 0 8px 18px rgba(236,72,153,0.18), inset 0 0 0 1px rgba(236,72,153,0.14);
+  }
+  .trust-pill:nth-child(2) .dot svg * { stroke: var(--pink) !important; }
   .trust-pill:nth-child(3) .dot { animation-delay: 0.8s; }
   .trust-pill .dot svg { width: 22px; height: 22px; }
   .trust-pill span:last-child { font-size: 1rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
@@ -143,19 +154,34 @@
     margin-bottom: 0.4rem;
     letter-spacing: -0.01em;
   }
-  .how-it-works .hiw-sub { text-align: center; color: var(--muted); font-size: 0.95rem; margin-bottom: 2.4rem; }
-  .hiw-track {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1.5rem 1rem;
+  .how-it-works .hiw-sub { text-align: center; color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+  .hiw-track-wrap { position: relative; }
+  .hiw-track-wrap::before, .hiw-track-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 12px; width: 32px; z-index: 2; pointer-events: none;
   }
+  .hiw-track-wrap::before { left: 0; background: linear-gradient(90deg, #fff, transparent); }
+  .hiw-track-wrap::after { right: 0; background: linear-gradient(270deg, #fff, transparent); }
+  .hiw-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.4rem 0.2rem 1rem;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .hiw-track::-webkit-scrollbar { display: none; }
   .hiw-step {
+    scroll-snap-align: start;
+    flex: 1 1 155px;
+    min-width: 130px;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 1.5rem 1rem;
+    padding: 1.6rem 0.9rem 1.3rem;
     border-radius: 20px;
     background: #fff;
     border: 1px solid var(--border);
@@ -174,8 +200,9 @@
   .hiw-step:nth-child(7) { animation-delay: 0.38s; }
   @keyframes hiwIn { to { opacity: 1; transform: translateY(0); } }
   .hiw-step:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(124,58,237,0.14); border-color: #e2d6fb; }
+  .hiw-step:nth-child(odd):hover { border-color: #f8cfe6; box-shadow: 0 16px 32px rgba(236,72,153,0.16); }
   .hiw-num {
-    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
     width: 26px; height: 26px; border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), #a78bfa);
     color: #fff;
@@ -183,18 +210,29 @@
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 4px 10px rgba(124,58,237,0.35);
   }
+  .hiw-step:nth-child(odd) .hiw-num {
+    background: linear-gradient(135deg, var(--pink), #f472b6);
+    box-shadow: 0 4px 10px rgba(236,72,153,0.35);
+  }
   .hiw-icon-wrap {
-    width: 64px; height: 64px; border-radius: 18px;
+    width: 60px; height: 60px; border-radius: 17px;
     background: radial-gradient(circle at 30% 30%, #fff, var(--accent-light));
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 8px 18px rgba(124,58,237,0.18), inset 0 0 0 1px rgba(124,58,237,0.12);
-    margin: 0.5rem 0 0.85rem;
+    margin: 0.6rem 0 0.9rem;
     transition: transform 0.3s cubic-bezier(.2,1.4,.4,1), box-shadow 0.3s;
   }
+  .hiw-step:nth-child(odd) .hiw-icon-wrap {
+    background: radial-gradient(circle at 30% 30%, #fff, var(--pink-light));
+    box-shadow: 0 8px 18px rgba(236,72,153,0.18), inset 0 0 0 1px rgba(236,72,153,0.14);
+  }
+  .hiw-step:nth-child(odd) .hiw-icon-wrap svg * { stroke: var(--pink) !important; }
   .hiw-step:hover .hiw-icon-wrap { transform: scale(1.1) rotate(-3deg); box-shadow: 0 12px 24px rgba(124,58,237,0.3), inset 0 0 0 1px rgba(124,58,237,0.2); }
-  .hiw-icon-wrap svg { width: 27px; height: 27px; }
-  .hiw-step h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem; }
-  .hiw-step p { font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+  .hiw-step:nth-child(odd):hover .hiw-icon-wrap { box-shadow: 0 12px 24px rgba(236,72,153,0.3), inset 0 0 0 1px rgba(236,72,153,0.2); }
+  .hiw-icon-wrap svg { width: 25px; height: 25px; }
+  .hiw-step h4 { font-size: 0.84rem; font-weight: 700; margin-bottom: 0.35rem; white-space: nowrap; }
+  .hiw-step p { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
+  @media (max-width: 900px) { .hiw-step h4 { white-space: normal; } }
 
   .site-footer {
     width: 100%;
@@ -491,6 +529,7 @@
 <div class="how-it-works" id="how-it-works">
   <h2 data-i18n="hiwTitle">So läuft Ihr Termin ab</h2>
   <p class="hiw-sub" data-i18n="hiwSub">Transparent von der Buchung bis zur Bezahlung.</p>
+  <div class="hiw-track-wrap">
   <div class="hiw-track">
     <div class="hiw-step">
       <span class="hiw-num">1</span>
@@ -534,6 +573,7 @@
       <h4 data-i18n="hiwStep7Title">Bezahlen</h4>
       <p data-i18n="hiwStep7Desc">Sie zahlen bequem online oder bar vor Ort.</p>
     </div>
+  </div>
   </div>
 </div>
 
