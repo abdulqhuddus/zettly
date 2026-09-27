@@ -211,8 +211,9 @@
     flex: 0 0 auto;
     width: 44px; height: 44px; border-radius: 13px;
     background: var(--accent-light);
-    display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    display: flex; align-items: center; justify-content: center;
   }
+  .service-icon svg { width: 22px; height: 22px; }
   .service-main { flex: 1; min-width: 0; }
   .service-top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.15rem; }
   .service-main h3 { font-size: 1.03rem; font-weight: 700; }
@@ -601,16 +602,17 @@ async function loadServices() {
   SERVICES = await res.json();
 }
 
+const ICON_STROKE = 'stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"';
 const SERVICE_ICONS = {
-  "hw-quickfix": "🔧",
-  "hw-networksetup": "📶",
-  "hw-fullcare": "🛡️",
-  "sw-quickfix": "💻",
-  "sw-virusremoval": "🦠",
-  "sw-fullcare": "🧹",
-  "d365-consult": "🔍",
-  "d365-workflow": "🔁",
-  "d365-integration": "🔌",
+  "hw-quickfix": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M14.7 6.3a4 4 0 00-5.4 4.9L4 16.5V20h3.5l5.3-5.3a4 4 0 004.9-5.4l-2.6 2.6-2.1-.6-.6-2.1 2.3-2.9z"/></svg>`,
+  "hw-networksetup": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M3 8.5a15 15 0 0118 0"/><path ${ICON_STROKE} d="M6.2 12a10 10 0 0111.6 0"/><path ${ICON_STROKE} d="M9.5 15.5a5 5 0 015 0"/><circle cx="12" cy="19" r="1" fill="#7C3AED"/></svg>`,
+  "hw-fullcare": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>`,
+  "sw-quickfix": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="3" y="5" width="18" height="12" rx="1.5"/><path ${ICON_STROKE} d="M8 20h8M12 17v3"/></svg>`,
+  "sw-virusremoval": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="12" r="4.5"/><path ${ICON_STROKE} d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/></svg>`,
+  "sw-fullcare": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 4l4 4M8 4L4 8"/><path ${ICON_STROKE} d="M12.5 6l1.4 3 3 1.4-3 1.4-1.4 3-1.4-3-3-1.4 3-1.4 1.4-3z"/><path ${ICON_STROKE} d="M17 15l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9.9-2z"/></svg>`,
+  "d365-consult": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="10.5" cy="10.5" r="6.5"/><path ${ICON_STROKE} d="M15.3 15.3L20 20"/></svg>`,
+  "d365-workflow": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path ${ICON_STROKE} d="M18 3v4h-4M6 21v-4h4"/></svg>`,
+  "d365-integration": `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M9 7V4M15 7V4M9 20v-3M15 20v-3"/><rect ${ICON_STROKE} x="7" y="7" width="10" height="10" rx="2"/></svg>`,
 };
 
 function renderServiceList() {
@@ -622,7 +624,7 @@ function renderServiceList() {
     div.className = "service-card";
     div.dataset.id = svc.id;
     div.innerHTML = `
-      <div class="service-icon">${SERVICE_ICONS[svc.id] || "✦"}</div>
+      <div class="service-icon">${SERVICE_ICONS[svc.id] || `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l1.8 4.9L19 9.7l-4 3.4 1.2 5.1L12 15.8 7.8 18.2 9 13.1l-4-3.4 5.2-1.8z"/></svg>`}</div>
       <div class="service-main">
         <div class="service-top-row">
           <h3>${svc.name[lang]}</h3>
