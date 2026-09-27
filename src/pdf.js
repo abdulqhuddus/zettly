@@ -341,7 +341,12 @@ export function generateBookingPdf(data) {
   drawLogoMark(content, LEFT_X / MM, logoTopMM, logoSizeMM);
   const logoCenterMM = logoTopMM + logoSizeMM / 2;
   const wordmarkSize = 17;
-  const wordmarkCharSpace = 0.3;
+  // The site's own letter-spacing is 0.01em (~0.17pt at this size) -- barely
+  // perceptible. The previous 0.3pt value was tuned to visually widen plain
+  // Helvetica's naturally tight advance widths; DejaVu Sans ExtraLight's own
+  // widths already read correctly at the site's real spacing, so a heavier
+  // value here just shows up as an obvious gap between every letter.
+  const wordmarkCharSpace = 0.15;
   const wordmarkBaselineMM = logoCenterMM + 2.6; // optical baseline offset for a centered look
   // "zett" and "ly" are drawn as two separate runs (different colors), so
   // "ly" must start exactly where "zett" ends: its glyph width PLUS the
