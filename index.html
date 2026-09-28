@@ -2314,7 +2314,10 @@ async function checkCommute(zip) {
     state.commuteFee = 0;
   }
   renderCommuteResult();
-  document.getElementById("to-details").disabled = state.commuteStatus !== "ok";
+  // A successful lookup that returned no place name (rare) leaves the city
+  // field for the customer to fill in themselves before continuing.
+  const cityFilled = document.getElementById("loc-city").value.trim().length > 0;
+  document.getElementById("to-details").disabled = !(state.commuteStatus === "ok" && cityFilled);
 }
 
 function renderCommuteResult() {
@@ -2362,11 +2365,14 @@ function onLocationInputChange() {
   state.city = city || null;
   document.getElementById("to-details").disabled = true;
   if (commuteDebounceHandle) clearTimeout(commuteDebounceHandle);
-  if (!/^\d{5}$/.test(zip) || !city) {
+  if (!/^\d{5}$/.test(zip)) {
     state.commuteStatus = null;
     renderCommuteResult();
     return;
   }
+  // Only the postal code is required to look up the commute fee — the city
+  // is filled in automatically from that lookup, so it must not be a
+  // precondition for triggering it.
   commuteDebounceHandle = setTimeout(() => checkCommute(zip), 500);
 }
 document.getElementById("loc-zip").addEventListener("input", onLocationInputChange);
