@@ -2520,6 +2520,27 @@ const GERMANY_BOUNDS = [
   [49.9, 13.6], // NE
 ];
 let serviceAreaPopup = null;
+
+// Approximates a circle of `radiusMeters` around `center` as a closed
+// polygon ring, so it can be combined with another ring in a single
+// L.polygon and cut out as a hole (evenodd fill) — used to draw each
+// commute zone as a true ring instead of a stack of overlapping solid
+// circles.
+function circleLatLngs(center, radiusMeters, steps = 72) {
+  const [lat, lon] = center;
+  const latRad = (lat * Math.PI) / 180;
+  const metersPerDegLat = 111320;
+  const metersPerDegLon = 111320 * Math.cos(latRad);
+  const points = [];
+  for (let i = 0; i < steps; i++) {
+    const angle = (i / steps) * 2 * Math.PI;
+    const dLat = (radiusMeters * Math.sin(angle)) / metersPerDegLat;
+    const dLon = (radiusMeters * Math.cos(angle)) / metersPerDegLon;
+    points.push([lat + dLat, lon + dLon]);
+  }
+  return points;
+}
+
 function initServiceAreaMap() {
   if (typeof L === "undefined" || !document.getElementById("service-area-map")) return;
   const map = L.map("service-area-map", {
@@ -2540,18 +2561,26 @@ function initServiceAreaMap() {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
 
-  // Drawn largest-first so each smaller, differently-colored circle sits on
-  // top and fully covers the larger one underneath it within its own
-  // radius — the standard trick for turning solid circles into rings.
-  [...COMMUTE_ZONES_UI].reverse().forEach((zone) => {
-    L.circle(MUNICH_LATLNG, {
-      radius: zone.km * 1000,
+  // Each zone is drawn as a true ring (an outer circle with an inner-circle
+  // "hole" cut out of it via an even-odd fill), not a stack of solid,
+  // semi-transparent circles — stacked circles compound their opacity where
+  // they overlap, so the map underneath got progressively darker toward the
+  // center. A ring only tints the map within its own band, however many
+  // zones surround it.
+  let prevRadiusKm = 0;
+  COMMUTE_ZONES_UI.forEach((zone) => {
+    const outer = circleLatLngs(MUNICH_LATLNG, zone.km * 1000);
+    const rings = prevRadiusKm > 0 ? [outer, circleLatLngs(MUNICH_LATLNG, prevRadiusKm * 1000)] : [outer];
+    L.polygon(rings, {
       color: zone.color,
       weight: 2,
       opacity: 0.85,
       fillColor: zone.color,
-      fillOpacity: 0.3,
+      fillOpacity: 0.16,
+      fillRule: "evenodd",
+      stroke: true,
     }).addTo(map);
+    prevRadiusKm = zone.km;
   });
 
   const marker = L.circleMarker(MUNICH_LATLNG, {
