@@ -119,7 +119,7 @@
   .tier-table thead th.tier-feature-col { background: #fff; }
   .tier-table thead th.tier-col-hl { background: linear-gradient(180deg, var(--accent-light), #fff); position: relative; }
   .tier-pop {
-    position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
+    display: inline-block; margin-bottom: 0.6rem;
     background: linear-gradient(120deg, var(--web-blue), var(--accent));
     color: #fff; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em;
     padding: 0.28rem 0.65rem; border-radius: 999px; white-space: nowrap;
@@ -228,43 +228,6 @@
   </div>
 </section>
 
-<section class="block">
-  <h2>Was jede Website bekommt</h2>
-  <p class="sub">Ein solides Fundament für jedes Paket &ndash; die Unterschiede liegen in Reichweite und Tiefe der Funktionen.</p>
-  <div class="service-grid">
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="4" width="19" height="16" rx="2.5" stroke-width="1.7"/><path d="M2.5 8.5h19" stroke-width="1.7"/></svg></div>
-      <h3>Individuelles Design</h3>
-      <p>Kein Baukasten-Look von der Stange &ndash; ein Design, das zu Ihrer Marke passt und auf jedem Gerät gut aussieht.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.7"/><path d="M3 9.5h18" stroke-width="1.7"/><path d="M7 14h4" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-      <h3>Terminbuchung &amp; CMS</h3>
-      <p>Eine integrierte Buchungsfunktion und ein CMS, mit dem Sie Inhalte und Termine selbst verwalten können.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-      <h3>Schnell &amp; sicher gehostet</h3>
-      <p>Moderne Hosting-Infrastruktur mit HTTPS, laufenden Updates und guten Ladezeiten als Standard.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12a9 9 0 0118 0 9 9 0 01-18 0z" stroke-width="1.7"/><path d="M3 12h18M12 3a13 13 0 010 18 13 13 0 010-18z" stroke-width="1.7"/></svg></div>
-      <h3>Grund-SEO</h3>
-      <p>Saubere Struktur, Meta-Angaben und Ladegeschwindigkeit, damit Ihre Website auch gefunden wird.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 9h8M8 13h5" stroke-width="1.7" stroke-linecap="round"/><path d="M21 15a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2h13a2 2 0 012 2v9z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-      <h3>Kontaktformular</h3>
-      <p>Anfragen landen direkt in Ihrem Postfach &ndash; keine verlorenen Nachrichten, kein Medienbruch.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.7" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Revisionen &amp; Feinschliff</h3>
-      <p>Nach dem ersten Entwurf besprechen wir Anpassungen, bis die Website wirklich passt.</p>
-    </div>
-  </div>
-</section>
-
 <section class="block" id="pakete">
   <h2>Pakete &amp; Preise</h2>
   <p class="sub">Vom soliden Einstieg bis zur vollständig eigenständig verwalteten Plattform &ndash; jedes Paket baut auf dem vorherigen auf.</p>
@@ -311,6 +274,45 @@
     </table>
   </div>
 </section>
+
+<section class="block">
+  <h2>Was jede Website bekommt</h2>
+  <p class="sub">Ein solides Fundament für jedes Paket &ndash; die Unterschiede liegen in Reichweite und Tiefe der Funktionen.</p>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="4" width="19" height="16" rx="2.5" stroke-width="1.7"/><path d="M2.5 8.5h19" stroke-width="1.7"/></svg></div>
+      <h3>Individuelles Design</h3>
+      <p>Kein Baukasten-Look von der Stange &ndash; ein Design, das zu Ihrer Marke passt und auf jedem Gerät gut aussieht.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.7"/><path d="M3 9.5h18" stroke-width="1.7"/><path d="M7 14h4" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+      <h3>Terminbuchung &amp; CMS</h3>
+      <p>Eine integrierte Buchungsfunktion und ein CMS, mit dem Sie Inhalte und Termine selbst verwalten können.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+      <h3>Schnell &amp; sicher gehostet</h3>
+      <p>Moderne Hosting-Infrastruktur mit HTTPS, laufenden Updates und guten Ladezeiten als Standard.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12a9 9 0 0118 0 9 9 0 01-18 0z" stroke-width="1.7"/><path d="M3 12h18M12 3a13 13 0 010 18 13 13 0 010-18z" stroke-width="1.7"/></svg></div>
+      <h3>Grund-SEO</h3>
+      <p>Saubere Struktur, Meta-Angaben und Ladegeschwindigkeit, damit Ihre Website auch gefunden wird.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 9h8M8 13h5" stroke-width="1.7" stroke-linecap="round"/><path d="M21 15a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2h13a2 2 0 012 2v9z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+      <h3>Kontaktformular</h3>
+      <p>Anfragen landen direkt in Ihrem Postfach &ndash; keine verlorenen Nachrichten, kein Medienbruch.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.7" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Revisionen &amp; Feinschliff</h3>
+      <p>Nach dem ersten Entwurf besprechen wir Anpassungen, bis die Website wirklich passt.</p>
+    </div>
+  </div>
+</section>
+
+
 
 <section class="block">
   <div class="why-wrap">
@@ -394,43 +396,6 @@
   </div>
 </section>
 
-<section class="block">
-  <h2>What every website gets</h2>
-  <p class="sub">A solid foundation on every package &ndash; the differences are in how far and how deep the features go.</p>
-  <div class="service-grid">
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="4" width="19" height="16" rx="2.5" stroke-width="1.7"/><path d="M2.5 8.5h19" stroke-width="1.7"/></svg></div>
-      <h3>Custom design</h3>
-      <p>No off-the-shelf template look &ndash; a design that fits your brand and looks good on every device.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.7"/><path d="M3 9.5h18" stroke-width="1.7"/><path d="M7 14h4" stroke-width="1.7" stroke-linecap="round"/></svg></div>
-      <h3>Booking &amp; CMS</h3>
-      <p>Built-in appointment booking and a CMS so you can manage content and bookings yourself.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-      <h3>Fast &amp; secure hosting</h3>
-      <p>Modern hosting with HTTPS, ongoing updates, and good load times as standard.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12a9 9 0 0118 0 9 9 0 01-18 0z" stroke-width="1.7"/><path d="M3 12h18M12 3a13 13 0 010 18 13 13 0 010-18z" stroke-width="1.7"/></svg></div>
-      <h3>Basic SEO</h3>
-      <p>Clean structure, meta tags, and page speed, so your site can actually be found.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 9h8M8 13h5" stroke-width="1.7" stroke-linecap="round"/><path d="M21 15a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2h13a2 2 0 012 2v9z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
-      <h3>Contact form</h3>
-      <p>Inquiries land straight in your inbox &ndash; no lost messages, no extra tools to check.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.7" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Revisions &amp; polish</h3>
-      <p>After the first draft, we refine it together until the site is exactly right.</p>
-    </div>
-  </div>
-</section>
-
 <section class="block" id="pakete">
   <h2>Packages &amp; Pricing</h2>
   <p class="sub">From a solid starting point to a fully self-managed platform &ndash; each package builds on the one before it.</p>
@@ -477,6 +442,45 @@
     </table>
   </div>
 </section>
+
+<section class="block">
+  <h2>What every website gets</h2>
+  <p class="sub">A solid foundation on every package &ndash; the differences are in how far and how deep the features go.</p>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="4" width="19" height="16" rx="2.5" stroke-width="1.7"/><path d="M2.5 8.5h19" stroke-width="1.7"/></svg></div>
+      <h3>Custom design</h3>
+      <p>No off-the-shelf template look &ndash; a design that fits your brand and looks good on every device.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.7"/><path d="M3 9.5h18" stroke-width="1.7"/><path d="M7 14h4" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+      <h3>Booking &amp; CMS</h3>
+      <p>Built-in appointment booking and a CMS so you can manage content and bookings yourself.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+      <h3>Fast &amp; secure hosting</h3>
+      <p>Modern hosting with HTTPS, ongoing updates, and good load times as standard.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12a9 9 0 0118 0 9 9 0 01-18 0z" stroke-width="1.7"/><path d="M3 12h18M12 3a13 13 0 010 18 13 13 0 010-18z" stroke-width="1.7"/></svg></div>
+      <h3>Basic SEO</h3>
+      <p>Clean structure, meta tags, and page speed, so your site can actually be found.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 9h8M8 13h5" stroke-width="1.7" stroke-linecap="round"/><path d="M21 15a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2h13a2 2 0 012 2v9z" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+      <h3>Contact form</h3>
+      <p>Inquiries land straight in your inbox &ndash; no lost messages, no extra tools to check.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.7" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Revisions &amp; polish</h3>
+      <p>After the first draft, we refine it together until the site is exactly right.</p>
+    </div>
+  </div>
+</section>
+
+
 
 <section class="block">
   <div class="why-wrap">
