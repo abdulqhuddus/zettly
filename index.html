@@ -457,15 +457,20 @@
      section instead of the columns just wrapping and losing their shared
      baseline — reads as one organized list instead of scattered blocks. */
   @media (max-width: 640px) {
-    .site-footer .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.4rem; padding: 2.4rem 1.5rem 0.5rem; }
-    .site-footer .footer-col { width: 100%; max-width: 280px; }
-    .site-footer .footer-col.footer-about { max-width: 100%; }
+    /* No flex `gap` here on purpose — each column's own padding does the
+       spacing (see below), so the border between two columns sits at the
+       midpoint of one consistent gap instead of being lost inside an extra,
+       separately-added gap on top of it. */
+    .site-footer .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 0; padding: 2.4rem 1.5rem 0.5rem; }
+    .site-footer .footer-col { width: 100%; max-width: 280px; padding: 1.3rem 0; }
+    .site-footer .footer-col.footer-about { max-width: 100%; padding-top: 0; }
+    .site-footer .footer-col:last-child { padding-bottom: 0; }
     .site-footer .footer-tagline { margin: 0 auto; }
-    /* A divider right after each section, including the intro paragraph,
-       instead of relying on the gap alone to separate them — the gap plus
-       an unbroken run of whitespace under the paragraph read as a layout
-       gap, not a boundary. The last column needs no trailing divider. */
-    .site-footer .footer-col:not(:last-child) { padding-bottom: 1.4rem; border-bottom: 1px dashed var(--border); }
+    /* A divider right after each section, including the intro paragraph.
+       var(--border) is nearly the same lightness as the footer's own
+       lavender background, so it disappeared entirely there — a solid,
+       darker-tinted line instead of that near-invisible dashed one. */
+    .site-footer .footer-col:not(:last-child) { border-bottom: 1px solid rgba(17,17,20,0.1); }
     .site-footer .footer-col h5 { text-align: center; }
     .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { justify-content: center; }
     .site-footer .service-item.highlight { margin-left: 0; justify-content: center; }
