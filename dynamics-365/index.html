@@ -211,7 +211,7 @@
   .tier-table tbody td:first-child, .tier-table thead th.tier-feature-col { background: #fff; }
   .chk { color: #16a34a; font-weight: 800; font-size: 1.05rem; }
   .chk.dash { color: #c9c7d1; font-weight: 400; }
-  @media (max-width: 600px) { .tier-table { min-width: 580px; } }
+  @media (max-width: 600px) { .tier-table { min-width: 480px; } }
 
   /* ---- Why us / experience ---- */
   .why-wrap {
@@ -261,6 +261,41 @@
   }
   .site-footer a { text-decoration: none; color: var(--muted); margin-right: 1.2rem; }
   .site-footer a:hover { color: var(--accent); }
+
+  /* ---- Mobile responsiveness ---- */
+  .tier-wrap { -webkit-overflow-scrolling: touch; }
+  @media (max-width: 640px) {
+    .topbar { padding: 1rem 1.1rem; gap: 0.6rem; flex-wrap: wrap; }
+    .brand-text { font-size: 1.55rem; }
+    .brand-mark { width: 36px; height: 36px; }
+    .topbar-right { gap: 0.7rem; }
+    .back-link { font-size: 0.76rem; }
+    .lang-switch button { padding: 0.3rem 0.55rem; font-size: 0.7rem; }
+    .announce-bar { font-size: 0.72rem; padding: 0.55rem 0.8rem; gap: 0.4rem; line-height: 1.3; }
+    section.block { padding: 2.2rem 1.1rem; }
+    .hero { padding: 1.5rem 1.1rem 0.5rem; gap: 1.8rem; }
+    .hero-card { padding: 1.3rem; }
+    .why-wrap { padding: 2rem 1.3rem; border-radius: 20px; gap: 1.4rem; }
+    .why-stats { gap: 0.7rem; }
+    .why-stat { padding: 1rem; }
+    .cta-banner { padding: 2.2rem 1.3rem; border-radius: 20px; }
+    .tier-table thead th { padding: 1.1rem 0.6rem 0.9rem; }
+    .tier-table tbody td { padding: 0.75rem 0.6rem; font-size: 0.78rem; }
+    .tier-name { font-size: 0.95rem; }
+    .tier-price { font-size: 1.3rem; }
+    .tier-table tbody td:first-child, .tier-table thead th.tier-feature-col {
+      white-space: normal; width: 150px; min-width: 150px; line-height: 1.3;
+    }
+    .faq-item summary { font-size: 0.88rem; }
+    .site-footer { justify-content: center; text-align: center; }
+    .site-footer a { margin-right: 0.9rem; }
+  }
+  @media (max-width: 420px) {
+    .brand-text { font-size: 1.3rem; }
+    .topbar-right { width: 100%; justify-content: space-between; }
+    .hero-eyebrow { font-size: 0.68rem; padding: 0.35rem 0.7rem; }
+    .btn { padding: 0.85rem 1.3rem; font-size: 0.88rem; }
+  }
 </style>
 </head>
 <body>
@@ -343,9 +378,18 @@
       </thead>
       <tbody>
         <tr><td>Beratung &amp; Bedarfsanalyse</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Standardprozesse (Entitäten, Formulare, Business Process Flow: Angebot&nbsp;&rarr;&nbsp;Rechnung)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Power Automate Workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Sicherheitsrollen-Review</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Individuelle Systemintegration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Individuelle Business Process Flows</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Rollenbasierte Zugriffskontrolle (RBAC) &amp; Sicherheitsrollen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Individuelle Formular-UI</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom Workflows &amp; Business Rules</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom Entitäten &amp; Felder</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom Formulare</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Individuelle Angebote, Aufträge &amp; Rechnungen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Splitrechnung (Teilrechnungsstellung)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>E-Rechnung (E-Invoicing)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Systemintegration mit Drittanbietern</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Dokumentation der Umsetzung</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>E-Mail-Support danach</td><td>&ndash;</td><td>7 Tage</td><td>30 Tage</td></tr>
       </tbody>
@@ -504,9 +548,18 @@
       </thead>
       <tbody>
         <tr><td>Consultation &amp; needs analysis</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Standard processes (entities, forms, business process flow: quote&nbsp;&rarr;&nbsp;invoice)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Power Automate workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Security role review</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom system integration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom business process flows</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Role-based access control (RBAC) &amp; security roles</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom form UI</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom workflows &amp; business rules</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom entities &amp; fields</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom forms</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom quotes, orders &amp; invoices</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Split invoicing</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>E-invoicing</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Third-party system integration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Documentation of the work</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Follow-up email support</td><td>&ndash;</td><td>7 days</td><td>30 days</td></tr>
       </tbody>
