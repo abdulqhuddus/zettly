@@ -457,10 +457,15 @@
      section instead of the columns just wrapping and losing their shared
      baseline — reads as one organized list instead of scattered blocks. */
   @media (max-width: 640px) {
-    .site-footer .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.7rem; padding: 2.4rem 1.5rem 0.5rem; }
+    .site-footer .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.4rem; padding: 2.4rem 1.5rem 0.5rem; }
+    .site-footer .footer-col { width: 100%; max-width: 280px; }
     .site-footer .footer-col.footer-about { max-width: 100%; }
     .site-footer .footer-tagline { margin: 0 auto; }
-    .site-footer .footer-col:not(.footer-about) { width: 100%; max-width: 280px; padding-top: 1.4rem; border-top: 1px dashed var(--border); }
+    /* A divider right after each section, including the intro paragraph,
+       instead of relying on the gap alone to separate them — the gap plus
+       an unbroken run of whitespace under the paragraph read as a layout
+       gap, not a boundary. The last column needs no trailing divider. */
+    .site-footer .footer-col:not(:last-child) { padding-bottom: 1.4rem; border-bottom: 1px dashed var(--border); }
     .site-footer .footer-col h5 { text-align: center; }
     .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { justify-content: center; }
     .site-footer .service-item.highlight { margin-left: 0; justify-content: center; }
@@ -718,6 +723,16 @@
   }
   .category-grid .path-card:nth-child(3n+2) .icon svg * { stroke: var(--violet) !important; }
   .category-grid .path-card:nth-child(3n+2):hover .icon { box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset, 0 0 20px rgba(139,92,246,0.55); }
+
+  /* The icon wrap's background flips to near-black on hover (see .path-card:hover
+     .icon above), but the icons themselves keep whatever accent color they were
+     drawn with inline — violet-on-white becomes violet-on-near-black, which is
+     low contrast and looks half-broken. Rather than special-casing every icon
+     set (audience cards, category cards, JS-generated CATEGORY_ICONS, the
+     violet nth-child variant), this flips every stroked/filled shape inside
+     any hovered card icon to white, regardless of which accent it started as. */
+  .path-card:hover .icon svg [stroke]:not([stroke="none"]) { stroke: #fff !important; }
+  .path-card:hover .icon svg [fill]:not([fill="none"]) { fill: #fff !important; }
 
   /* Stacked, full-width cards used for every tree step after the main category grid */
   .path-list { display: flex; flex-direction: column; gap: 0.9rem; }
@@ -1004,7 +1019,7 @@
     <span class="icon-flow">
       <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M14.6 8.3a4 4 0 100 7.4M8 11h5.2M8 13.2h4.4"/></svg></span>
       <span class="dot-track"><i></i><i></i><i></i></span>
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="7" cy="7" r="2.2" stroke="#7C3AED" stroke-width="1.7" fill="none"/><circle cx="17" cy="17" r="2.2" stroke="#7C3AED" stroke-width="1.7" fill="none"/><path stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" d="M6 18L18 6"/></svg></span>
+      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="1.7" stroke-linejoin="round" fill="none" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M9.3 12.2l1.9 1.9 3.5-3.8"/></svg></span>
     </span>
     <span class="trust-text"><b data-i18n="trustNoHiddenTitle">Faire Preise</b><small data-i18n="trustNoHiddenDesc">Keine versteckten Kosten</small></span>
   </span>
