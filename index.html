@@ -2527,13 +2527,15 @@ const COMMUTE_ZONES_UI = [
 // visitor can't drag/scroll their way to a wider, country-spanning view.
 const MAP_VIEW_CENTER = MUNICH_LATLNG;
 // A fractional zoom (via zoomSnap below) so the view can be tuned finer
-// than whole zoom levels: centered exactly on Munich, 9.4 keeps the frame's
-// southern edge safely north of the Austrian border (~47.9 latitude, well
-// north of Kufstein/Salzburg) without cropping the 100km ring's east-west
-// extent as harshly as a full zoom level up (10) would.
-const MAP_VIEW_ZOOM = 9.4;
+// than whole zoom levels: centered exactly on Munich, zoomed out enough
+// that the full 100km ring fits within the map card's width on both
+// sides (the previous 9.4 was cropping the outer two rings at the left
+// and right edges). Zooming out further south does bring the view a
+// little closer to the Austrian border again, so maxBounds is kept at
+// the border's latitude as a hard stop against panning into it.
+const MAP_VIEW_ZOOM = 8.9;
 const GERMANY_BOUNDS = [
-  [47.9, 8.5], // SW — kept north of the Austrian border near Munich
+  [47.75, 8.5], // SW — north of the Austrian border near Munich
   [49.9, 13.6], // NE
 ];
 let serviceAreaPopup = null;
