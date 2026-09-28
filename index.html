@@ -410,6 +410,19 @@
   }
   #service-area-map { width: 100%; height: 380px; background: var(--accent-light); }
   @media (max-width: 640px) { #service-area-map { height: 280px; } }
+  /* OpenStreetMap's attribution has to stay visible somewhere (it's
+     required by their usage policy), but it doesn't have to look like a
+     leftover technical label — restyled to a small, on-brand pill instead
+     of Leaflet's default plain text-on-white-box look. */
+  #service-area-map .leaflet-control-attribution {
+    background: rgba(17,17,20,0.72);
+    color: rgba(255,255,255,0.85);
+    font-size: 0.62rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    box-shadow: none;
+  }
+  #service-area-map .leaflet-control-attribution a { color: #fff; }
   /* Leaflet's own popup chrome, restyled to match the site instead of the
      library's default white-and-blue look. */
   .service-area .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 10px 24px rgba(17,17,20,0.14); }
@@ -2656,6 +2669,11 @@ function initServiceAreaMap() {
     subdomains: "abc",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
+  // OSM's own attribution has to stay (their usage policy requires it),
+  // but the "Leaflet" library credit Leaflet prepends to it by default
+  // doesn't — this drops just that prefix, leaving the OSM text alone,
+  // smaller and more subtle in the corner.
+  map.attributionControl.setPrefix(false);
 
   // Each zone is drawn as a true ring (an outer circle with an inner-circle
   // "hole" cut out of it via an even-odd fill), not a stack of solid,
