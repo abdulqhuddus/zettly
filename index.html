@@ -461,7 +461,12 @@
        spacing (see below), so the border between two columns sits at the
        midpoint of one consistent gap instead of being lost inside an extra,
        separately-added gap on top of it. */
-    .site-footer .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 0; padding: 2.4rem 1.5rem 0.5rem; }
+    /* The desktop rule above sets `justify-content: space-between` to spread
+       columns across one row; switching to a column direction here without
+       overriding it left `space-between` spreading the stacked columns
+       apart *vertically* instead — the real source of the big gap under the
+       paragraph, not the border color or the flex `gap`. */
+    .site-footer .footer-inner { flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; gap: 0; padding: 2.4rem 1.5rem 0.5rem; }
     .site-footer .footer-col { width: 100%; max-width: 280px; padding: 1.3rem 0; }
     .site-footer .footer-col.footer-about { max-width: 100%; padding-top: 0; }
     .site-footer .footer-col:last-child { padding-bottom: 0; }
