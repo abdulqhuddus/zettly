@@ -733,6 +733,12 @@
      any hovered card icon to white, regardless of which accent it started as. */
   .path-card:hover .icon svg [stroke]:not([stroke="none"]) { stroke: #fff !important; }
   .path-card:hover .icon svg [fill]:not([fill="none"]) { fill: #fff !important; }
+  /* The nth-child(3n+2) category variant is the one exception: its icon
+     background stays light on hover (only the glow intensifies, see above),
+     so forcing its icon white would wash it out against that light
+     background instead of against a dark one. Keep it on its own violet. */
+  .category-grid .path-card:nth-child(3n+2):hover .icon svg [stroke]:not([stroke="none"]) { stroke: var(--violet) !important; }
+  .category-grid .path-card:nth-child(3n+2):hover .icon svg [fill]:not([fill="none"]) { fill: var(--violet) !important; }
 
   /* Stacked, full-width cards used for every tree step after the main category grid */
   .path-list { display: flex; flex-direction: column; gap: 0.9rem; }
