@@ -765,6 +765,45 @@
   }
   .path-card:hover .go-btn { background: #fff; color: #000; transform: translateX(3px); }
 
+  /* Dynamics 365 card: called out as our specialty with a gradient border,
+     glow, a corner ribbon, and a small info link to its own detail page. */
+  .path-card.featured-card {
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(#fff, #fff) padding-box,
+      linear-gradient(135deg, #7C3AED, #a855f7 45%, #EC4899) border-box;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.16);
+  }
+  .path-card.featured-card:hover {
+    background:
+      linear-gradient(155deg, #232228, #0a0a0c) padding-box,
+      linear-gradient(135deg, #7C3AED, #a855f7 45%, #EC4899) border-box;
+    box-shadow: 0 18px 36px rgba(124,58,237,0.4);
+  }
+  .featured-ribbon {
+    position: relative; z-index: 2;
+    display: inline-block;
+    background: linear-gradient(120deg, #7C3AED, #a855f7 60%, #EC4899);
+    color: #fff;
+    font-size: 0.62rem; font-weight: 800; letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    box-shadow: 0 3px 10px rgba(124,58,237,0.35);
+    white-space: nowrap;
+    margin-bottom: 0.7rem;
+  }
+  .featured-info-link {
+    position: absolute; top: 0.7rem; right: 0.7rem; z-index: 2;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .featured-info-link svg { width: 16px; height: 16px; }
+  .featured-info-link:hover { background: var(--accent); color: #fff; transform: scale(1.1); }
+  .path-card.featured-card:hover .featured-info-link { background: rgba(255,255,255,0.12); color: #fff; }
+
   /* Category grid: vertical feature-card layout so titles never truncate, no arrow needed */
   .category-grid .path-card {
     flex-direction: column;
@@ -1429,7 +1468,7 @@
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
-      <span class="service-item highlight"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></span>
+      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
       <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
       <span class="service-item" data-i18n="footerServiceSmartHome">Smart Home &amp; Sicherheit</span>
       <span class="service-item" data-i18n="footerServiceBusiness">IT-Support für Unternehmen</span>
@@ -1483,6 +1522,8 @@ const I18N = {
     footerTagline: "Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
     footerServicesHeading: "Leistungen",
     footerSpecialtyBadge: "Schwerpunkt",
+    dynamicsFeaturedBadge: "Unser Schwerpunkt",
+    dynamicsLearnMore: "Mehr über unseren Dynamics 365 Service erfahren",
     footerServiceDynamics: "Dynamics 365",
     footerServiceComputers: "Computer & Netzwerke",
     footerServiceSmartHome: "Smart Home & Sicherheit",
@@ -1607,6 +1648,8 @@ const I18N = {
     footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
     footerServicesHeading: "Services",
     footerSpecialtyBadge: "Specialty",
+    dynamicsFeaturedBadge: "Our specialty",
+    dynamicsLearnMore: "Learn more about our Dynamics 365 service",
     footerServiceDynamics: "Dynamics 365",
     footerServiceComputers: "Computers & Networks",
     footerServiceSmartHome: "Smart Home & Security",
@@ -1812,6 +1855,11 @@ const CATEGORY_ICONS = {
   recovery: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path ${ICON_STROKE} d="M18 3v4h-4M6 21v-4h4"/></svg>`,
   server: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="3" width="16" height="7" rx="1.5"/><rect ${ICON_STROKE} x="4" y="14" width="16" height="7" rx="1.5"/><circle cx="7.5" cy="6.5" r="1" fill="#7C3AED"/><circle cx="7.5" cy="17.5" r="1" fill="#7C3AED"/></svg>`,
   mail: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="5" width="19" height="14" rx="2"/><path ${ICON_STROKE} d="M3 6.5l9 6.5 9-6.5"/></svg>`,
+  // Office 365's own brand colors (not a reproduction of the Microsoft
+  // logo mark itself) on a rounded document/cloud shape, so the card reads
+  // as "Office 365" at a glance the same way the Dynamics 365 card's own
+  // logo image does.
+  office365: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3.2l6.5 2.4v6.1c0 4.3-2.7 7.2-6.5 8.8-3.8-1.6-6.5-4.5-6.5-8.8V5.6L12 3.2z" fill="#EB3C00"/><path d="M12 3.2l6.5 2.4v6.1c0 4.3-2.7 7.2-6.5 8.8V3.2z" fill="#0078D4"/><path d="M9.3 9.2h5.4v1.7H9.3zM9.3 12.1h5.4v1.7H9.3zM9.3 15h3.6v1.7H9.3z" fill="#fff"/></svg>`,
   shield: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>`,
   phone: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z"/></svg>`,
   user: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="8" r="3.5"/><path ${ICON_STROKE} d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`,
@@ -2017,9 +2065,14 @@ function renderCategoryGrid() {
   grid.innerHTML = "";
   const cats = CATALOG[state.audience] || [];
   cats.forEach(cat => {
+    const isDynamics = cat.id === "dynamics";
     const div = document.createElement("div");
-    div.className = "path-card";
+    div.className = isDynamics ? "path-card featured-card" : "path-card";
     div.innerHTML = `
+      ${isDynamics ? `<span class="featured-ribbon">${t("dynamicsFeaturedBadge")}</span>
+      <a class="featured-info-link" href="/dynamics-365/" title="${t("dynamicsLearnMore")}" aria-label="${t("dynamicsLearnMore")}">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
+      </a>` : ""}
       <div class="icon">${CATEGORY_ICONS[cat.icon] || GENERIC_BRANCH_ICON}</div>
       <div class="body">
         <h3>${cat.name[lang]}</h3>
@@ -2027,6 +2080,9 @@ function renderCategoryGrid() {
       </div>
       <span class="go-btn">&rarr;</span>
     `;
+    if (isDynamics) {
+      div.querySelector(".featured-info-link").addEventListener("click", (e) => e.stopPropagation());
+    }
     div.addEventListener("click", () => {
       state.categoryId = cat.id;
       state.category = cat;
@@ -2619,6 +2675,26 @@ initServiceAreaMap();
 
 applyStaticTranslations();
 showStep(0);
+
+// Deep link from the Dynamics 365 detail page's "Book a consultation"
+// button (?book=dynamics): jump straight past the audience/category
+// picker into that category's own tree, as if the visitor had clicked
+// through Business -> Dynamics 365 themselves.
+(async function handleBookingDeepLink() {
+  const wanted = new URLSearchParams(location.search).get("book");
+  if (wanted !== "dynamics") return;
+  state.audience = "business";
+  if (!CATALOG.business || !CATALOG.business.length) await loadCatalog();
+  const cat = (CATALOG.business || []).find(c => c.id === "dynamics");
+  if (!cat) return;
+  state.categoryId = cat.id;
+  state.category = cat;
+  state.treePath = [];
+  state.currentNode = cat.root;
+  renderTreeStep();
+  showStep(2);
+  history.replaceState(null, "", location.pathname);
+})();
 </script>
 </body>
 </html>

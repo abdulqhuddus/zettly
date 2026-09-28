@@ -24650,10 +24650,10 @@
     },
     {
       "id": "m365",
-      "icon": "mail",
+      "icon": "office365",
       "name": {
-        "de": "Microsoft 365 & E-Mail-Einrichtung",
-        "en": "Microsoft 365 & Email Setup"
+        "de": "Office 365 & E-Mail-Einrichtung",
+        "en": "Office 365 & Email Setup"
       },
       "desc": {
         "de": "Neues Tenant, Migration, Zugriffsprobleme",
@@ -24714,6 +24714,90 @@
               },
               "price": 69,
               "duration": 30,
+              "quote": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dynamics",
+      "icon": "dynamics",
+      "name": {
+        "de": "Dynamics 365",
+        "en": "Dynamics 365"
+      },
+      "desc": {
+        "de": "Beratung, Workflows, individuelle Integrationen",
+        "en": "Consulting, workflows, custom integrations"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Paket auswählen",
+          "en": "Choose your package"
+        },
+        "options": [
+          {
+            "id": "consult",
+            "name": {
+              "de": "D365-Beratung",
+              "en": "D365 Consultation"
+            },
+            "desc": {
+              "de": "Klarheit vor dem Start",
+              "en": "Scope it out before you build"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "D365-Beratung",
+                "en": "D365 Consultation"
+              },
+              "price": 79,
+              "duration": 45,
+              "quote": false
+            }
+          },
+          {
+            "id": "workflow",
+            "name": {
+              "de": "Workflow-Erstellung",
+              "en": "Workflow Build"
+            },
+            "desc": {
+              "de": "Ein automatisierter Prozess, fertig",
+              "en": "One automated process, delivered"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Workflow-Erstellung",
+                "en": "Workflow Build"
+              },
+              "price": 249,
+              "duration": 90,
+              "quote": false
+            }
+          },
+          {
+            "id": "integration",
+            "name": {
+              "de": "Individuelle Integration",
+              "en": "Custom Integration"
+            },
+            "desc": {
+              "de": "D365 mit Ihren Tools verbinden",
+              "en": "Connect D365 to your other tools"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Individuelle Integration",
+                "en": "Custom Integration"
+              },
+              "price": 499,
+              "duration": 120,
               "quote": false
             }
           }
@@ -25938,90 +26022,6 @@
                   }
                 }
               ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "dynamics",
-      "icon": "dynamics",
-      "name": {
-        "de": "Dynamics 365",
-        "en": "Dynamics 365"
-      },
-      "desc": {
-        "de": "Beratung, Workflows, individuelle Integrationen",
-        "en": "Consulting, workflows, custom integrations"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Paket auswählen",
-          "en": "Choose your package"
-        },
-        "options": [
-          {
-            "id": "consult",
-            "name": {
-              "de": "D365-Beratung",
-              "en": "D365 Consultation"
-            },
-            "desc": {
-              "de": "Klarheit vor dem Start",
-              "en": "Scope it out before you build"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "D365-Beratung",
-                "en": "D365 Consultation"
-              },
-              "price": 79,
-              "duration": 45,
-              "quote": false
-            }
-          },
-          {
-            "id": "workflow",
-            "name": {
-              "de": "Workflow-Erstellung",
-              "en": "Workflow Build"
-            },
-            "desc": {
-              "de": "Ein automatisierter Prozess, fertig",
-              "en": "One automated process, delivered"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Workflow-Erstellung",
-                "en": "Workflow Build"
-              },
-              "price": 249,
-              "duration": 90,
-              "quote": false
-            }
-          },
-          {
-            "id": "integration",
-            "name": {
-              "de": "Individuelle Integration",
-              "en": "Custom Integration"
-            },
-            "desc": {
-              "de": "D365 mit Ihren Tools verbinden",
-              "en": "Connect D365 to your other tools"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Individuelle Integration",
-                "en": "Custom Integration"
-              },
-              "price": 499,
-              "duration": 120,
-              "quote": false
             }
           }
         ]

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title data-i18n-title>Zettly | Dynamics 365</title>
+<meta name="description" content="Microsoft Dynamics 365 Beratung, Workflow-Automatisierung und individuelle Integrationen aus München.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #7C3AED;
+    --accent-light: #F3EEFF;
+    --pink: #EC4899;
+    --pink-light: #FDEEF7;
+    --ink: #111114;
+    --muted: #6b6b74;
+    --border: #e9e7ef;
+    --d365-blue: #0078D4;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  a { color: inherit; }
+
+  .announce-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
+    background-size: 200% 200%;
+    animation: ctaShift 6s ease-in-out infinite;
+  }
+  .announce-bar .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #fff; flex: 0 0 auto;
+    animation: dotPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes dotPulse { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+  @keyframes ctaShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .topbar {
+    width: 100%;
+    max-width: 1180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem clamp(1.25rem, 4vw, 2rem);
+  }
+  .brand { display: flex; align-items: center; gap: 0.85rem; text-decoration: none; }
+  .brand-text {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 2.1rem;
+    font-weight: 200;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .brand-text span { color: var(--accent); }
+  .brand-mark { width: 48px; height: 48px; flex: 0 0 auto; }
+  .topbar-right { display: flex; align-items: center; gap: 1.2rem; }
+  .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .back-link:hover { color: var(--ink); }
+  .lang-switch {
+    display: flex; border: 1.5px solid var(--border); border-radius: 999px; overflow: hidden;
+    font-size: 0.75rem; font-weight: 600;
+  }
+  .lang-switch button { border: none; background: transparent; padding: 0.35rem 0.7rem; cursor: pointer; color: var(--muted); transition: background 0.2s, color 0.2s; }
+  .lang-switch button.active { background: var(--accent); color: #fff; }
+
+  /* ---- Hero ---- */
+  .hero {
+    width: 100%;
+    max-width: 1180px;
+    padding: 2rem clamp(1.25rem, 4vw, 2rem) 1rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (max-width: 860px) { .hero { flex-direction: column; text-align: center; padding-top: 0.5rem; } }
+  .hero-glow {
+    position: absolute; top: -120px; right: -140px; width: 480px; height: 480px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,120,212,0.18), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { flex: 1.15; position: relative; z-index: 1; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(120deg, var(--accent-light), #e6f2fc);
+    color: var(--d365-blue);
+    font-size: 0.75rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 0.4rem 0.85rem; border-radius: 999px; margin-bottom: 1.2rem;
+  }
+  .hero-eyebrow img { width: 16px; height: 16px; }
+  .hero h1 {
+    font-size: clamp(2rem, 4.2vw, 3.1rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin-bottom: 1.1rem;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(120deg, var(--d365-blue), var(--accent) 55%, var(--pink));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p.lead { font-size: 1.05rem; color: var(--muted); line-height: 1.65; max-width: 540px; margin-bottom: 1.8rem; }
+  @media (max-width: 860px) { .hero p.lead { margin-left: auto; margin-right: auto; } }
+  .hero-ctas { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  @media (max-width: 860px) { .hero-ctas { justify-content: center; } }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: none; border-radius: 12px; padding: 0.95rem 1.6rem;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer; text-decoration: none;
+    transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary {
+    background: linear-gradient(120deg, var(--d365-blue), var(--accent));
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(124,58,237,0.28);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(124,58,237,0.36); }
+  .btn-ghost { background: #fff; color: var(--ink); border: 1.5px solid var(--border); }
+  .btn-ghost:hover { border-color: var(--ink); }
+
+  .hero-visual { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+  .hero-card {
+    width: 100%; max-width: 340px; background: #fff; border: 1px solid var(--border);
+    border-radius: 22px; padding: 1.8rem; box-shadow: 0 24px 60px rgba(17,17,20,0.1);
+    position: relative;
+  }
+  .hero-card img { width: 72px; height: 72px; display: block; margin: 0 auto 1rem; }
+  .hero-card .stat-row { display: flex; justify-content: space-between; padding: 0.7rem 0; border-top: 1px dashed var(--border); font-size: 0.85rem; }
+  .hero-card .stat-row:first-of-type { border-top: none; }
+  .hero-card .stat-row b { color: var(--ink); }
+  .hero-card .stat-row span.label { color: var(--muted); }
+
+  /* ---- Sections ---- */
+  section.block { width: 100%; max-width: 1180px; padding: 3.2rem clamp(1.25rem, 4vw, 2rem); }
+  section.block h2 {
+    font-size: clamp(1.5rem, 2.8vw, 2rem); font-weight: 800; letter-spacing: -0.01em; margin-bottom: 0.6rem; text-align: center;
+  }
+  section.block p.sub { text-align: center; color: var(--muted); max-width: 640px; margin: 0 auto 2.4rem; line-height: 1.6; }
+
+  .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  @media (max-width: 900px) { .service-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .service-grid { grid-template-columns: 1fr; } }
+  .service-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(17,17,20,0.08); border-color: rgba(124,58,237,0.3); }
+  .service-card .ico {
+    width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #e6f2fc, var(--accent-light)); margin-bottom: 1rem;
+  }
+  .service-card .ico svg { width: 22px; height: 22px; stroke: var(--d365-blue); }
+  .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .service-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+
+  /* ---- Packages ---- */
+  .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  @media (max-width: 900px) { .pkg-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
+  .pkg-card {
+    position: relative;
+    background: #fff; border: 1.5px solid var(--border); border-radius: 20px; padding: 1.8rem 1.6rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  }
+  .pkg-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(17,17,20,0.1); }
+  .pkg-card.featured {
+    border: 1.5px solid transparent;
+    background: linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, var(--d365-blue), var(--accent) 60%, var(--pink)) border-box;
+    box-shadow: 0 10px 30px rgba(124,58,237,0.18);
+  }
+  .pkg-card .pkg-badge {
+    position: absolute; top: -12px; left: 1.6rem;
+    background: linear-gradient(120deg, var(--d365-blue), var(--accent));
+    color: #fff; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em;
+    padding: 0.3rem 0.7rem; border-radius: 999px;
+  }
+  .pkg-card h3 { font-size: 1.05rem; font-weight: 800; }
+  .pkg-card .price { font-size: 1.9rem; font-weight: 900; letter-spacing: -0.02em; }
+  .pkg-card .price small { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+  .pkg-card p.desc { font-size: 0.85rem; color: var(--muted); line-height: 1.55; flex: 1; }
+  .pkg-card .btn { justify-content: center; width: 100%; margin-top: 0.4rem; }
+
+  /* ---- Why us / experience ---- */
+  .why-wrap {
+    display: flex; align-items: center; gap: 3rem;
+    background: linear-gradient(155deg, #0d0d11, #1a1830);
+    border-radius: 28px; padding: 2.8rem clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+  }
+  @media (max-width: 860px) { .why-wrap { flex-direction: column; text-align: center; gap: 1.6rem; } }
+  .why-wrap .why-content { flex: 1.2; }
+  .why-wrap h2 { text-align: left; color: #fff; }
+  @media (max-width: 860px) { .why-wrap h2 { text-align: center; } }
+  .why-wrap p.lead2 { color: rgba(255,255,255,0.72); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.4rem; }
+  .why-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .why-list li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.9rem; color: rgba(255,255,255,0.9); }
+  .why-list li svg { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 1px; stroke: #a855f7; }
+  .why-stats { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .why-stat { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.3rem; text-align: center; }
+  .why-stat .num { font-size: 1.8rem; font-weight: 900; background: linear-gradient(120deg, #7dd3fc, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .why-stat .lbl { font-size: 0.72rem; color: rgba(255,255,255,0.65); margin-top: 0.3rem; line-height: 1.4; }
+
+  /* ---- FAQ ---- */
+  .faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+  .faq-item summary { cursor: pointer; font-weight: 700; font-size: 0.95rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary .chev { flex: 0 0 auto; transition: transform 0.2s; color: var(--muted); }
+  .faq-item[open] summary .chev { transform: rotate(180deg); }
+  .faq-item p { margin-top: 0.7rem; font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+  .faq-wrap { max-width: 760px; margin: 0 auto; }
+
+  /* ---- Final CTA ---- */
+  .cta-banner {
+    background: linear-gradient(120deg, var(--d365-blue), var(--accent) 55%, var(--pink));
+    border-radius: 28px; padding: 3rem clamp(1.5rem, 4vw, 3rem);
+    text-align: center; color: #fff;
+  }
+  .cta-banner h2 { color: #fff; margin-bottom: 0.6rem; }
+  .cta-banner p { color: rgba(255,255,255,0.85); max-width: 520px; margin: 0 auto 1.6rem; }
+  .cta-banner .btn-primary { background: #fff; color: var(--ink); box-shadow: 0 10px 24px rgba(0,0,0,0.18); }
+  .cta-banner .btn-primary:hover { box-shadow: 0 14px 30px rgba(0,0,0,0.24); }
+
+  /* ---- Footer ---- */
+  .site-footer {
+    width: 100%; max-width: 1180px; padding: 3rem clamp(1.25rem, 4vw, 2rem) 1.5rem;
+    margin-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.82rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  .site-footer a { text-decoration: none; color: var(--muted); margin-right: 1.2rem; }
+  .site-footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="announce-bar">
+  <span class="dot"></span>
+  <span id="announce-text">Wir befinden uns im Aufbau &middot; bald verfügbar &middot; Buchungen sind derzeit nicht möglich</span>
+</div>
+<div class="topbar">
+  <a class="brand" href="/">
+    <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
+      <rect x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
+      <rect x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+      <rect x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
+    </svg>
+    <span class="brand-text">zett<span>ly</span></span>
+  </a>
+  <div class="topbar-right">
+    <a class="back-link" href="/" data-i18n="backHome">&larr; Zur Startseite</a>
+    <div class="lang-switch" id="lang-switch">
+      <button data-lang="de">DE</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DE ============ -->
+<div id="page-de">
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
+    <h1>Dynamics 365, das <span class="grad">wirklich zu Ihrem Betrieb passt</span></h1>
+    <p class="lead">Beratung, Workflow-Automatisierung und individuelle Integrationen für Microsoft Dynamics 365 &ndash; aus der Praxis eines IT-Administrators, der Systeme täglich am Laufen hält, nicht nur konfiguriert und wieder verlässt.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="/?book=dynamics">Beratung buchen &rarr;</a>
+      <a class="btn btn-ghost" href="#pakete">Pakete ansehen</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
+      <div class="stat-row"><span class="label">Beratung</span><b>ab 79&nbsp;&euro;</b></div>
+      <div class="stat-row"><span class="label">Workflow-Erstellung</span><b>ab 249&nbsp;&euro;</b></div>
+      <div class="stat-row"><span class="label">Individuelle Integration</span><b>ab 499&nbsp;&euro;</b></div>
+      <div class="stat-row"><span class="label">Einsatzgebiet</span><b>München, 100&nbsp;km</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <h2>Was ich für Sie umsetze</h2>
+  <p class="sub">Von der ersten Bestandsaufnahme bis zur fertigen Automatisierung &ndash; als fester Ansprechpartner, nicht als anonymes Ticket-System.</p>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 8v4l2.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>D365-Beratung &amp; Bestandsaufnahme</h3>
+      <p>Gemeinsam klären wir, welche Module, Automatisierungen und Anpassungen für Ihren Betrieb wirklich Sinn ergeben &ndash; bevor ein einziger Klick konfiguriert wird.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.8" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Power Automate Workflows</h3>
+      <p>Wiederkehrende Abläufe &ndash; Genehmigungen, Benachrichtigungen, Datenabgleiche &ndash; als zuverlässige, automatisierte Prozesse statt manueller Handarbeit.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="2" stroke-width="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" stroke-width="1.8"/><path d="M11 7h4a2 2 0 012 2v4M13 17H9a2 2 0 01-2-2v-4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Individuelle Integrationen</h3>
+      <p>Dynamics 365 verbunden mit Ihren anderen Systemen &ndash; Buchhaltung, Kundenportale, Drittanbieter-APIs &ndash; sauber und wartbar aufgesetzt.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Sicherheitsrollen &amp; Zugriffskonzepte</h3>
+      <p>Wer darf was sehen und ändern? Saubere Rollen- und Berechtigungsstrukturen, damit sensible Daten dort bleiben, wo sie hingehören.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Datenmigration &amp; Reporting</h3>
+      <p>Bestehende Daten sauber übernehmen und mit Power BI-Dashboards sichtbar machen, statt sie in Tabellen verstauben zu lassen.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Laufende Betreuung</h3>
+      <p>Nach dem Go-Live nicht allein gelassen: kontinuierliche Anpassungen, Fehlerbehebung und Weiterentwicklung nach Bedarf.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="pakete">
+  <h2>Pakete &amp; Preise</h2>
+  <p class="sub">Transparent von Anfang an. Jedes Paket lässt sich direkt online buchen &ndash; größere Integrationen besprechen wir vorab im Detail.</p>
+  <div class="pkg-grid">
+    <div class="pkg-card">
+      <h3>D365-Beratung</h3>
+      <div class="price">79&nbsp;&euro; <small>/ 45 Min.</small></div>
+      <p class="desc">Klarheit vor dem Start: Wir besprechen Ihre Anforderungen und zeigen den sinnvollsten Weg zu Ihrem Ziel auf.</p>
+      <a class="btn btn-ghost" href="/?book=dynamics">Jetzt buchen</a>
+    </div>
+    <div class="pkg-card featured">
+      <span class="pkg-badge">Beliebt</span>
+      <h3>Workflow-Erstellung</h3>
+      <div class="price">249&nbsp;&euro; <small>/ 90 Min.</small></div>
+      <p class="desc">Ein automatisierter Prozess, fertig eingerichtet und getestet &ndash; von Genehmigungs-Workflows bis Benachrichtigungen.</p>
+      <a class="btn btn-primary" href="/?book=dynamics">Jetzt buchen</a>
+    </div>
+    <div class="pkg-card">
+      <h3>Individuelle Integration</h3>
+      <div class="price">499&nbsp;&euro; <small>/ 120 Min.</small></div>
+      <p class="desc">D365 mit Ihren anderen Tools verbunden &ndash; maßgeschneidert auf Ihre bestehende Systemlandschaft.</p>
+      <a class="btn btn-ghost" href="/?book=dynamics">Jetzt buchen</a>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="why-wrap">
+    <div class="why-content">
+      <h2>Warum Zettly für Dynamics 365?</h2>
+      <p class="lead2">Mein beruflicher Schwerpunkt liegt seit Jahren in der IT- und Netzwerkadministration &ndash; mit einem klaren Fokus auf Microsoft Dynamics 365: individuelle Entwicklung, Workflow-Automatisierung und Systemintegrationen. Diese Erfahrung bringe ich direkt zu Ihnen, ohne Umwege über ein großes Beraterteam.</p>
+      <ul class="why-list">
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Hands-on Erfahrung aus dem täglichen Betrieb echter Unternehmenssysteme &ndash; nicht nur aus Schulungen.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ein fester Ansprechpartner von der Beratung bis zur Umsetzung &ndash; keine wechselnden Kontakte.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transparente Festpreise für klar abgegrenzte Leistungen, individuelle Angebote für größere Projekte.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Vor Ort in München und im Umkreis von 100&nbsp;km, remote deutschlandweit möglich.</li>
+      </ul>
+    </div>
+    <div class="why-stats">
+      <div class="why-stat"><div class="num">3</div><div class="lbl">Leistungspakete zur Auswahl</div></div>
+      <div class="why-stat"><div class="num">100km</div><div class="lbl">Einsatzradius ab München</div></div>
+      <div class="why-stat"><div class="num">1:1</div><div class="lbl">Persönliche Betreuung</div></div>
+      <div class="why-stat"><div class="num">B1&rarr;B2</div><div class="lbl">Deutsch &amp; Englisch im Kundenkontakt</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <h2>Häufige Fragen</h2>
+  <div class="faq-wrap">
+    <details class="faq-item" open>
+      <summary>Brauche ich bereits eine Dynamics 365-Lizenz?</summary>
+      <p>Nein. In der Beratung klären wir gemeinsam, welche Lizenzform und welche Module zu Ihrem Betrieb passen, bevor Sie etwas kaufen.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Kann ein bestehendes System erweitert werden, statt neu aufzusetzen?</summary>
+      <p>In den meisten Fällen ja. Individuelle Integrationen und Workflows lassen sich in der Regel auf ein bestehendes D365-System aufsetzen, ohne bei null anzufangen.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Arbeiten Sie remote oder nur vor Ort?</summary>
+      <p>Beides. Beratung, Workflow-Erstellung und viele Integrationen lassen sich remote umsetzen; vor Ort bin ich im Umkreis von 100&nbsp;km um München verfügbar.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Was, wenn mein Projekt größer ist als die gelisteten Pakete?</summary>
+      <p>Die drei Pakete decken die häufigsten Anfragen ab. Für umfangreichere Projekte erstelle ich nach einem kurzen Beratungsgespräch ein individuelles Angebot.</p>
+    </details>
+  </div>
+</section>
+
+<section class="block">
+  <div class="cta-banner">
+    <h2>Bereit, Dynamics 365 wirklich für sich arbeiten zu lassen?</h2>
+    <p>Buchen Sie ein unverbindliches Beratungsgespräch &ndash; wir klären in 45 Minuten, wo der größte Hebel für Ihren Betrieb liegt.</p>
+    <a class="btn btn-primary" href="/?book=dynamics">Beratung jetzt buchen &rarr;</a>
+  </div>
+</section>
+
+</div>
+
+<!-- ============ EN ============ -->
+<div id="page-en" style="display:none;">
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
+    <h1>Dynamics 365 that <span class="grad">actually fits your business</span></h1>
+    <p class="lead">Consulting, workflow automation, and custom integrations for Microsoft Dynamics 365 &ndash; from an IT administrator who keeps systems running every day, not just configures them and moves on.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="/?book=dynamics">Book a consultation &rarr;</a>
+      <a class="btn btn-ghost" href="#pakete">View packages</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
+      <div class="stat-row"><span class="label">Consultation</span><b>from &euro;79</b></div>
+      <div class="stat-row"><span class="label">Workflow build</span><b>from &euro;249</b></div>
+      <div class="stat-row"><span class="label">Custom integration</span><b>from &euro;499</b></div>
+      <div class="stat-row"><span class="label">Coverage</span><b>Munich, 100&nbsp;km</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <h2>What I build for you</h2>
+  <p class="sub">From the first stock-take to a finished automation &ndash; as a single point of contact, not an anonymous ticket queue.</p>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 8v4l2.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>D365 Consulting &amp; Assessment</h3>
+      <p>Together we work out which modules, automations, and customizations actually make sense for your business &ndash; before a single thing gets configured.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.8" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Power Automate Workflows</h3>
+      <p>Recurring processes &ndash; approvals, notifications, data syncs &ndash; turned into reliable, automated flows instead of manual work.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="2" stroke-width="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" stroke-width="1.8"/><path d="M11 7h4a2 2 0 012 2v4M13 17H9a2 2 0 01-2-2v-4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Custom Integrations</h3>
+      <p>Dynamics 365 connected to your other systems &ndash; accounting, customer portals, third-party APIs &ndash; built clean and maintainable.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Security Roles &amp; Access</h3>
+      <p>Who can see and change what? Clean role and permission structures, so sensitive data stays exactly where it belongs.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Data Migration &amp; Reporting</h3>
+      <p>Bring existing data over cleanly and make it visible with Power BI dashboards, instead of letting it sit in spreadsheets.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Ongoing Support</h3>
+      <p>Not left alone after go-live: continued adjustments, troubleshooting, and further development as your needs evolve.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="pakete">
+  <h2>Packages &amp; Pricing</h2>
+  <p class="sub">Transparent from the start. Every package can be booked directly online &ndash; larger integrations we scope together beforehand.</p>
+  <div class="pkg-grid">
+    <div class="pkg-card">
+      <h3>D365 Consultation</h3>
+      <div class="price">&euro;79 <small>/ 45 min</small></div>
+      <p class="desc">Scope it out before you build: we discuss your requirements and map out the most sensible path to your goal.</p>
+      <a class="btn btn-ghost" href="/?book=dynamics">Book now</a>
+    </div>
+    <div class="pkg-card featured">
+      <span class="pkg-badge">Popular</span>
+      <h3>Workflow Build</h3>
+      <div class="price">&euro;249 <small>/ 90 min</small></div>
+      <p class="desc">One automated process, fully set up and tested &ndash; from approval workflows to notifications.</p>
+      <a class="btn btn-primary" href="/?book=dynamics">Book now</a>
+    </div>
+    <div class="pkg-card">
+      <h3>Custom Integration</h3>
+      <div class="price">&euro;499 <small>/ 120 min</small></div>
+      <p class="desc">D365 connected to your other tools &ndash; tailored to your existing system landscape.</p>
+      <a class="btn btn-ghost" href="/?book=dynamics">Book now</a>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="why-wrap">
+    <div class="why-content">
+      <h2>Why Zettly for Dynamics 365?</h2>
+      <p class="lead2">My professional focus for years has been IT and network administration &ndash; with a clear specialty in Microsoft Dynamics 365: custom development, workflow automation, and system integrations. I bring that experience directly to you, without routing it through a large consulting team.</p>
+      <ul class="why-list">
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Hands-on experience running real enterprise systems day to day &ndash; not just training courses.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>One point of contact from consulting through delivery &ndash; no rotating account managers.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transparent flat rates for clearly scoped work, custom quotes for larger projects.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>On-site in Munich and within 100&nbsp;km, remote available across Germany.</li>
+      </ul>
+    </div>
+    <div class="why-stats">
+      <div class="why-stat"><div class="num">3</div><div class="lbl">Service packages to choose from</div></div>
+      <div class="why-stat"><div class="num">100km</div><div class="lbl">On-site radius from Munich</div></div>
+      <div class="why-stat"><div class="num">1:1</div><div class="lbl">Direct, personal support</div></div>
+      <div class="why-stat"><div class="num">DE/EN</div><div class="lbl">Fluent in German &amp; English</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-wrap">
+    <details class="faq-item" open>
+      <summary>Do I already need a Dynamics 365 license?</summary>
+      <p>No. In the consultation we figure out together which license type and modules fit your business, before you buy anything.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can an existing system be extended instead of rebuilt?</summary>
+      <p>In most cases, yes. Custom integrations and workflows can usually be layered onto an existing D365 setup without starting from scratch.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do you work remotely or only on-site?</summary>
+      <p>Both. Consulting, workflow builds, and many integrations can be done remotely; on-site I'm available within 100&nbsp;km of Munich.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What if my project is bigger than the listed packages?</summary>
+      <p>The three packages cover the most common requests. For larger projects, I put together a custom quote after a short consultation call.</p>
+    </details>
+  </div>
+</section>
+
+<section class="block">
+  <div class="cta-banner">
+    <h2>Ready to make Dynamics 365 actually work for you?</h2>
+    <p>Book a no-obligation consultation &ndash; in 45 minutes we'll find where the biggest lever is for your business.</p>
+    <a class="btn btn-primary" href="/?book=dynamics">Book a consultation &rarr;</a>
+  </div>
+</section>
+
+</div>
+
+<footer class="site-footer">
+  <div>
+    <a href="/" data-i18n="footerHome">Startseite</a>
+    <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
+    <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+  </div>
+  <div>&copy; <span id="footer-year"></span> Zettly</div>
+</footer>
+
+<script>
+  const STRINGS = {
+    de: { title: "Zettly | Dynamics 365", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", announce: "Wir befinden uns im Aufbau · bald verfügbar · Buchungen sind derzeit nicht möglich" },
+    en: { title: "Zettly | Dynamics 365", back: "← Back to home", home: "Home", privacy: "Privacy", announce: "We're under construction · coming soon · bookings are currently not accepted" },
+  };
+
+  function setLang(lang) {
+    localStorage.setItem("zettly_lang", lang);
+    document.title = STRINGS[lang].title;
+    document.getElementById("page-de").style.display = lang === "de" ? "" : "none";
+    document.getElementById("page-en").style.display = lang === "en" ? "" : "none";
+    document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
+    document.querySelector('[data-i18n="footerHome"]').textContent = STRINGS[lang].home;
+    document.querySelector('[data-i18n="footerPrivacy"]').textContent = STRINGS[lang].privacy;
+    document.getElementById("announce-text").textContent = STRINGS[lang].announce;
+    document.querySelectorAll("#lang-switch button").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+  }
+
+  document.getElementById("lang-switch").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-lang]");
+    if (btn) setLang(btn.dataset.lang);
+  });
+
+  document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+  const saved = localStorage.getItem("zettly_lang");
+  setLang(saved === "en" ? "en" : "de");
+</script>
+</body>
+</html>
