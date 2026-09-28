@@ -181,32 +181,37 @@
   .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
   .service-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
 
-  /* ---- Packages ---- */
-  .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
-  @media (max-width: 900px) { .pkg-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
-  .pkg-card {
-    position: relative;
-    background: #fff; border: 1.5px solid var(--border); border-radius: 20px; padding: 1.8rem 1.6rem;
-    display: flex; flex-direction: column; gap: 0.9rem;
-    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  /* ---- Packages: a Fiverr-style tier comparison table ---- */
+  .tier-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 10px 30px rgba(17,17,20,0.06); }
+  .tier-table { width: 100%; min-width: 680px; border-collapse: collapse; }
+  .tier-table thead th {
+    background: #faf9fc; padding: 1.5rem 1.1rem 1.2rem; border-bottom: 2px solid var(--border);
+    vertical-align: top; text-align: center; font-weight: 400;
   }
-  .pkg-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(17,17,20,0.1); }
-  .pkg-card.featured {
-    border: 1.5px solid transparent;
-    background: linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, var(--d365-blue), var(--accent) 60%, var(--pink)) border-box;
-    box-shadow: 0 10px 30px rgba(124,58,237,0.18);
-  }
-  .pkg-card .pkg-badge {
-    position: absolute; top: -12px; left: 1.6rem;
+  .tier-table thead th.tier-feature-col { background: #fff; }
+  .tier-table thead th.tier-col-hl { background: linear-gradient(180deg, var(--accent-light), #fff); position: relative; }
+  .tier-pop {
+    position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
     background: linear-gradient(120deg, var(--d365-blue), var(--accent));
-    color: #fff; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em;
-    padding: 0.3rem 0.7rem; border-radius: 999px;
+    color: #fff; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em;
+    padding: 0.28rem 0.65rem; border-radius: 999px; white-space: nowrap;
   }
-  .pkg-card h3 { font-size: 1.05rem; font-weight: 800; }
-  .pkg-card .price { font-size: 1.9rem; font-weight: 900; letter-spacing: -0.02em; }
-  .pkg-card .price small { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
-  .pkg-card p.desc { font-size: 0.85rem; color: var(--muted); line-height: 1.55; flex: 1; }
-  .pkg-card .btn { justify-content: center; width: 100%; margin-top: 0.4rem; }
+  .tier-name { font-size: 1.05rem; font-weight: 800; color: var(--ink); margin-bottom: 0.35rem; }
+  .tier-price { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
+  .tier-price small { font-size: 0.7rem; font-weight: 600; color: var(--muted); }
+  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 1rem; }
+  .tier-btn { width: 100%; justify-content: center; padding: 0.7rem 0.9rem; font-size: 0.85rem; }
+  .tier-table tbody td {
+    padding: 0.95rem 1.1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem;
+    text-align: center; color: var(--ink);
+  }
+  .tier-table tbody tr:last-child td { border-bottom: none; }
+  .tier-table tbody td:first-child { text-align: left; font-weight: 600; white-space: nowrap; color: var(--ink); }
+  .tier-table tbody td:nth-child(3), .tier-table thead th.tier-col-hl { background: var(--accent-light); }
+  .tier-table tbody td:first-child, .tier-table thead th.tier-feature-col { background: #fff; }
+  .chk { color: #16a34a; font-weight: 800; font-size: 1.05rem; }
+  .chk.dash { color: #c9c7d1; font-weight: 400; }
+  @media (max-width: 600px) { .tier-table { min-width: 580px; } }
 
   /* ---- Why us / experience ---- */
   .why-wrap {
@@ -347,26 +352,41 @@
 <section class="block" id="pakete">
   <h2>Pakete &amp; Preise</h2>
   <p class="sub">Transparent von Anfang an. Jedes Paket lässt sich direkt online buchen &ndash; größere Integrationen besprechen wir vorab im Detail.</p>
-  <div class="pkg-grid">
-    <div class="pkg-card">
-      <h3>D365-Beratung</h3>
-      <div class="price">79&nbsp;&euro; <small>/ 45 Min.</small></div>
-      <p class="desc">Klarheit vor dem Start: Wir besprechen Ihre Anforderungen und zeigen den sinnvollsten Weg zu Ihrem Ziel auf.</p>
-      <a class="btn btn-ghost" href="/?book=dynamics">Jetzt buchen</a>
-    </div>
-    <div class="pkg-card featured">
-      <span class="pkg-badge">Beliebt</span>
-      <h3>Workflow-Erstellung</h3>
-      <div class="price">249&nbsp;&euro; <small>/ 90 Min.</small></div>
-      <p class="desc">Ein automatisierter Prozess, fertig eingerichtet und getestet &ndash; von Genehmigungs-Workflows bis Benachrichtigungen.</p>
-      <a class="btn btn-primary" href="/?book=dynamics">Jetzt buchen</a>
-    </div>
-    <div class="pkg-card">
-      <h3>Individuelle Integration</h3>
-      <div class="price">499&nbsp;&euro; <small>/ 120 Min.</small></div>
-      <p class="desc">D365 mit Ihren anderen Tools verbunden &ndash; maßgeschneidert auf Ihre bestehende Systemlandschaft.</p>
-      <a class="btn btn-ghost" href="/?book=dynamics">Jetzt buchen</a>
-    </div>
+  <div class="tier-wrap">
+    <table class="tier-table">
+      <thead>
+        <tr>
+          <th class="tier-feature-col"></th>
+          <th>
+            <div class="tier-name">Basic</div>
+            <div class="tier-price">79&nbsp;&euro;</div>
+            <div class="tier-duration">45 Min. Termin</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+          </th>
+          <th class="tier-col-hl">
+            <span class="tier-pop">Beliebt</span>
+            <div class="tier-name">Standard</div>
+            <div class="tier-price">249&nbsp;&euro;</div>
+            <div class="tier-duration">90 Min. Termin</div>
+            <a class="btn btn-primary tier-btn" href="/?book=dynamics">Buchen</a>
+          </th>
+          <th>
+            <div class="tier-name">Premium</div>
+            <div class="tier-price">499&nbsp;&euro;</div>
+            <div class="tier-duration">120 Min. Termin</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Beratung &amp; Bedarfsanalyse</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Power Automate Workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Sicherheitsrollen-Review</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Individuelle Systemintegration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Dokumentation der Umsetzung</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>E-Mail-Support danach</td><td>&ndash;</td><td>7 Tage</td><td>30 Tage</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -488,26 +508,41 @@
 <section class="block" id="pakete">
   <h2>Packages &amp; Pricing</h2>
   <p class="sub">Transparent from the start. Every package can be booked directly online &ndash; larger integrations we scope together beforehand.</p>
-  <div class="pkg-grid">
-    <div class="pkg-card">
-      <h3>D365 Consultation</h3>
-      <div class="price">&euro;79 <small>/ 45 min</small></div>
-      <p class="desc">Scope it out before you build: we discuss your requirements and map out the most sensible path to your goal.</p>
-      <a class="btn btn-ghost" href="/?book=dynamics">Book now</a>
-    </div>
-    <div class="pkg-card featured">
-      <span class="pkg-badge">Popular</span>
-      <h3>Workflow Build</h3>
-      <div class="price">&euro;249 <small>/ 90 min</small></div>
-      <p class="desc">One automated process, fully set up and tested &ndash; from approval workflows to notifications.</p>
-      <a class="btn btn-primary" href="/?book=dynamics">Book now</a>
-    </div>
-    <div class="pkg-card">
-      <h3>Custom Integration</h3>
-      <div class="price">&euro;499 <small>/ 120 min</small></div>
-      <p class="desc">D365 connected to your other tools &ndash; tailored to your existing system landscape.</p>
-      <a class="btn btn-ghost" href="/?book=dynamics">Book now</a>
-    </div>
+  <div class="tier-wrap">
+    <table class="tier-table">
+      <thead>
+        <tr>
+          <th class="tier-feature-col"></th>
+          <th>
+            <div class="tier-name">Basic</div>
+            <div class="tier-price">&euro;79</div>
+            <div class="tier-duration">45 min. session</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+          </th>
+          <th class="tier-col-hl">
+            <span class="tier-pop">Popular</span>
+            <div class="tier-name">Standard</div>
+            <div class="tier-price">&euro;249</div>
+            <div class="tier-duration">90 min. session</div>
+            <a class="btn btn-primary tier-btn" href="/?book=dynamics">Book</a>
+          </th>
+          <th>
+            <div class="tier-name">Premium</div>
+            <div class="tier-price">&euro;499</div>
+            <div class="tier-duration">120 min. session</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Consultation &amp; needs analysis</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Power Automate workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Security role review</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom system integration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Documentation of the work</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Follow-up email support</td><td>&ndash;</td><td>7 days</td><td>30 days</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 

@@ -24805,6 +24805,90 @@
       }
     },
     {
+      "id": "webbuilder",
+      "icon": "webbuilder",
+      "name": {
+        "de": "Website-Erstellung",
+        "en": "Website Builder"
+      },
+      "desc": {
+        "de": "Moderne Websites mit CMS, Shop & Integrationen",
+        "en": "Modern websites with CMS, shop & integrations"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Paket auswählen",
+          "en": "Choose your package"
+        },
+        "options": [
+          {
+            "id": "basic",
+            "name": {
+              "de": "Business Basic",
+              "en": "Business Basic"
+            },
+            "desc": {
+              "de": "Website mit Buchung & CMS",
+              "en": "Website with booking & CMS"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Business Basic",
+                "en": "Business Basic"
+              },
+              "price": 349,
+              "duration": 60,
+              "quote": false
+            }
+          },
+          {
+            "id": "advance",
+            "name": {
+              "de": "Advance (eCommerce)",
+              "en": "Advance (eCommerce)"
+            },
+            "desc": {
+              "de": "Shop, Kundenportal & Zahlungen",
+              "en": "Shop, customer portal & payments"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Advance (eCommerce)",
+                "en": "Advance (eCommerce)"
+              },
+              "price": 899,
+              "duration": 90,
+              "quote": false
+            }
+          },
+          {
+            "id": "enterprise",
+            "name": {
+              "de": "Enterprise",
+              "en": "Enterprise"
+            },
+            "desc": {
+              "de": "Individuelle Integrationen & Eigenverwaltung",
+              "en": "Custom integrations & full control"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Enterprise",
+                "en": "Enterprise"
+              },
+              "price": null,
+              "duration": 90,
+              "quote": true
+            }
+          }
+        ]
+      }
+    },
+    {
       "id": "security",
       "icon": "shield",
       "name": {

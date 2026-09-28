@@ -1469,6 +1469,7 @@
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
       <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
+      <a class="service-item" href="/website-builder/" data-i18n="footerServiceWebsite">Website-Erstellung</a>
       <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
       <span class="service-item" data-i18n="footerServiceSmartHome">Smart Home &amp; Sicherheit</span>
       <span class="service-item" data-i18n="footerServiceBusiness">IT-Support für Unternehmen</span>
@@ -1524,7 +1525,10 @@ const I18N = {
     footerSpecialtyBadge: "Schwerpunkt",
     dynamicsFeaturedBadge: "Unser Schwerpunkt",
     dynamicsLearnMore: "Mehr über unseren Dynamics 365 Service erfahren",
+    webbuilderFeaturedBadge: "Digitaler Auftritt",
+    webbuilderLearnMore: "Mehr über unseren Website-Service erfahren",
     footerServiceDynamics: "Dynamics 365",
+    footerServiceWebsite: "Website-Erstellung",
     footerServiceComputers: "Computer & Netzwerke",
     footerServiceSmartHome: "Smart Home & Sicherheit",
     footerServiceBusiness: "IT-Support für Unternehmen",
@@ -1650,7 +1654,10 @@ const I18N = {
     footerSpecialtyBadge: "Specialty",
     dynamicsFeaturedBadge: "Our specialty",
     dynamicsLearnMore: "Learn more about our Dynamics 365 service",
+    webbuilderFeaturedBadge: "Digital presence",
+    webbuilderLearnMore: "Learn more about our website service",
     footerServiceDynamics: "Dynamics 365",
+    footerServiceWebsite: "Website Builder",
     footerServiceComputers: "Computers & Networks",
     footerServiceSmartHome: "Smart Home & Security",
     footerServiceBusiness: "Business IT Support",
@@ -1864,6 +1871,10 @@ const CATEGORY_ICONS = {
   phone: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z"/></svg>`,
   user: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="8" r="3.5"/><path ${ICON_STROKE} d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`,
   dynamics: `<img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">`,
+  // A browser window with a code-bracket accent, in a blue/pink gradient so
+  // it reads as its own distinct "digital service" alongside Office 365 and
+  // Dynamics 365 rather than blending into the hardware/network icon set.
+  webbuilder: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="4" width="19" height="16" rx="2.5" stroke="url(#wbGrad)" stroke-width="1.7"/><path d="M2.5 8.5h19" stroke="url(#wbGrad)" stroke-width="1.7"/><circle cx="5.3" cy="6.2" r="0.55" fill="#7C3AED"/><circle cx="7.1" cy="6.2" r="0.55" fill="#a855f7"/><path d="M9 13l-2 2 2 2M15 13l2 2-2 2M13 12.5l-2 7" stroke="url(#wbGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="wbGrad" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#EC4899"/></linearGradient></defs></svg>`,
   handshake: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M2.5 12l4-4 4 3-2 2.5M21.5 12l-4-4-4 3 2 2.5"/><path ${ICON_STROKE} d="M8.5 13.5l3 2.5 3-2.5"/></svg>`,
 };
 
@@ -2059,18 +2070,27 @@ function nodeIsTerminal(node) {
   return node.options.every(o => o.next && o.next.type === "leaf");
 }
 
+// Categories with their own dedicated marketing page: shown with a
+// gradient border, a specialty ribbon, and a small info-link icon that
+// opens that page, instead of the plain grid card every other category
+// gets. Keyed by catalog category id.
+const FEATURED_CATEGORIES = {
+  dynamics: { url: "/dynamics-365/", badgeKey: "dynamicsFeaturedBadge", linkKey: "dynamicsLearnMore" },
+  webbuilder: { url: "/website-builder/", badgeKey: "webbuilderFeaturedBadge", linkKey: "webbuilderLearnMore" },
+};
+
 function renderCategoryGrid() {
   const grid = document.getElementById("category-grid");
   grid.className = "path-grid category-grid";
   grid.innerHTML = "";
   const cats = CATALOG[state.audience] || [];
   cats.forEach(cat => {
-    const isDynamics = cat.id === "dynamics";
+    const featured = FEATURED_CATEGORIES[cat.id];
     const div = document.createElement("div");
-    div.className = isDynamics ? "path-card featured-card" : "path-card";
+    div.className = featured ? "path-card featured-card" : "path-card";
     div.innerHTML = `
-      ${isDynamics ? `<span class="featured-ribbon">${t("dynamicsFeaturedBadge")}</span>
-      <a class="featured-info-link" href="/dynamics-365/" title="${t("dynamicsLearnMore")}" aria-label="${t("dynamicsLearnMore")}">
+      ${featured ? `<span class="featured-ribbon">${t(featured.badgeKey)}</span>
+      <a class="featured-info-link" href="${featured.url}" title="${t(featured.linkKey)}" aria-label="${t(featured.linkKey)}">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
       </a>` : ""}
       <div class="icon">${CATEGORY_ICONS[cat.icon] || GENERIC_BRANCH_ICON}</div>
@@ -2080,7 +2100,7 @@ function renderCategoryGrid() {
       </div>
       <span class="go-btn">&rarr;</span>
     `;
-    if (isDynamics) {
+    if (featured) {
       div.querySelector(".featured-info-link").addEventListener("click", (e) => e.stopPropagation());
     }
     div.addEventListener("click", () => {
@@ -2676,16 +2696,18 @@ initServiceAreaMap();
 applyStaticTranslations();
 showStep(0);
 
-// Deep link from the Dynamics 365 detail page's "Book a consultation"
-// button (?book=dynamics): jump straight past the audience/category
-// picker into that category's own tree, as if the visitor had clicked
-// through Business -> Dynamics 365 themselves.
+// Deep link from a featured category's detail page (e.g. the Dynamics 365
+// or Website Builder page's "Book" buttons, ?book=dynamics /
+// ?book=webbuilder): jump straight past the audience/category picker into
+// that category's own tree, as if the visitor had clicked through
+// Business -> that category themselves. Any id in FEATURED_CATEGORIES is
+// a valid deep-link target.
 (async function handleBookingDeepLink() {
   const wanted = new URLSearchParams(location.search).get("book");
-  if (wanted !== "dynamics") return;
+  if (!wanted || !FEATURED_CATEGORIES[wanted]) return;
   state.audience = "business";
   if (!CATALOG.business || !CATALOG.business.length) await loadCatalog();
-  const cat = (CATALOG.business || []).find(c => c.id === "dynamics");
+  const cat = (CATALOG.business || []).find(c => c.id === wanted);
   if (!cat) return;
   state.categoryId = cat.id;
   state.category = cat;
