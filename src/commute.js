@@ -46,6 +46,12 @@ export function zoneForDistance(km) {
   return null; // beyond the last band — outside the service area
 }
 
+// Postal codes placed in the free zone by name rather than by straight-line
+// distance, e.g. because the actual road access or an existing customer
+// relationship there justifies it even if the geocoded distance would put
+// it in a paid band. Germering (82110-82112) is one such exception.
+const FREE_ZONE_PLZ_OVERRIDE = new Set(["82110", "82111", "82112"]);
+
 // Nominatim (OpenStreetMap's free geocoder) is rate-limited and asks every
 // caller to identify itself with a real contact — hence the explicit
 // User-Agent rather than a generic fetch. addressdetails=1 also gets us the
@@ -89,6 +95,11 @@ export async function computeCommute(plz) {
   if (!point) return { ok: false, reason: "not_found" };
 
   const distanceKm = haversineKm(MUNICH.lat, MUNICH.lon, point.lat, point.lon);
+
+  if (FREE_ZONE_PLZ_OVERRIDE.has(clean)) {
+    return { ok: true, distanceKm, fee: 0, zoneIndex: 0, place: point.place };
+  }
+
   const zone = zoneForDistance(distanceKm);
   if (!zone) return { ok: false, reason: "out_of_area", distanceKm };
 

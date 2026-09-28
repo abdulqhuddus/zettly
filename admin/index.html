@@ -363,6 +363,7 @@
             <th id="th-service">Service</th>
             <th id="th-appointment">Appointment</th>
             <th id="th-price">Price</th>
+            <th id="th-callout">Call-out</th>
             <th id="th-status">Status</th>
           </tr>
         </thead>
@@ -388,6 +389,7 @@
       <div class="detail-row"><dt id="t-m-when">Appointment</dt><dd id="m-when"></dd></div>
       <div class="detail-row"><dt id="t-m-duration">Duration</dt><dd id="m-duration"></dd></div>
       <div class="detail-row"><dt id="t-m-price">Price</dt><dd id="m-price"></dd></div>
+      <div class="detail-row" id="m-callout-row"><dt id="t-m-callout">Call-out fee</dt><dd id="m-callout"></dd></div>
       <div class="detail-row"><dt id="t-m-email">Email</dt><dd id="m-email"></dd></div>
       <div class="detail-row"><dt id="t-m-phone">Phone</dt><dd id="m-phone"></dd></div>
       <div class="detail-row"><dt id="t-m-address">Address</dt><dd id="m-address"></dd></div>
@@ -446,6 +448,7 @@
       thService: "Service",
       thAppointment: "Appointment",
       thPrice: "Price",
+      thCallout: "Call-out",
       thStatus: "Status",
       empty: "No bookings found.",
       pagerInfo: (from, to, total) => `${from}–${to} of ${total}`,
@@ -453,11 +456,13 @@
       next: "Next →",
       onSite: "On-site",
       onSiteQuote: "Quoted on-site",
+      calloutFree: "Free",
       atTime: (time) => `${time}`,
       mStatus: "Status",
       mService: "Service",
       mWhen: "Appointment",
       mDuration: "Duration",
+      mCallout: "Call-out fee",
       mPrice: "Price",
       mEmail: "Email",
       mPhone: "Phone",
@@ -505,6 +510,7 @@
       thService: "Leistung",
       thAppointment: "Termin",
       thPrice: "Preis",
+      thCallout: "Anfahrt",
       thStatus: "Status",
       empty: "Keine Buchungen gefunden.",
       pagerInfo: (from, to, total) => `${from}–${to} von ${total}`,
@@ -512,12 +518,14 @@
       next: "Weiter →",
       onSite: "Vor Ort",
       onSiteQuote: "Vor Ort mitgeteilt",
+      calloutFree: "Kostenlos",
       atTime: (time) => `${time} Uhr`,
       mStatus: "Status",
       mService: "Leistung",
       mWhen: "Termin",
       mDuration: "Dauer",
       mPrice: "Preis",
+      mCallout: "Anfahrtspauschale",
       mEmail: "E-Mail",
       mPhone: "Telefon",
       mAddress: "Adresse",
@@ -587,6 +595,7 @@
     document.getElementById("th-service").textContent = s.thService;
     document.getElementById("th-appointment").textContent = s.thAppointment;
     document.getElementById("th-price").textContent = s.thPrice;
+    document.getElementById("th-callout").textContent = s.thCallout;
     document.getElementById("th-status").textContent = s.thStatus;
     document.getElementById("empty").textContent = s.empty;
     document.getElementById("t-m-status").textContent = s.mStatus;
@@ -594,6 +603,7 @@
     document.getElementById("t-m-when").textContent = s.mWhen;
     document.getElementById("t-m-duration").textContent = s.mDuration;
     document.getElementById("t-m-price").textContent = s.mPrice;
+    document.getElementById("t-m-callout").textContent = s.mCallout;
     document.getElementById("t-m-email").textContent = s.mEmail;
     document.getElementById("t-m-phone").textContent = s.mPhone;
     document.getElementById("t-m-address").textContent = s.mAddress;
@@ -736,6 +746,7 @@
         <td>${escapeHtml((lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › "))}</td>
         <td>${b.date}<div class="muted">${s.atTime(b.time)}</div></td>
         <td>${b.price ? "€" + b.price : s.onSite}</td>
+        <td>${b.commute_fee ? "€" + b.commute_fee : s.calloutFree}</td>
         <td><span class="badge badge-${b.status}">${statusLabel(b.status)}</span></td>
       `;
       tr.addEventListener("click", () => openDetail(b.id));
@@ -822,6 +833,9 @@
     document.getElementById("m-when").textContent = `${b.date}, ${s.atTime(b.time)}`;
     document.getElementById("m-duration").textContent = `${b.duration_minutes} ${s.minutes}`;
     document.getElementById("m-price").textContent = b.price ? "€" + b.price : s.onSiteQuote;
+    document.getElementById("m-callout").textContent = b.commute_fee
+      ? `€${b.commute_fee}${b.commute_distance_km != null ? ` (${Math.round(b.commute_distance_km)} km)` : ""}`
+      : s.calloutFree;
     document.getElementById("m-email").textContent = b.customer_email;
     document.getElementById("m-phone").textContent = b.customer_phone || "—";
     document.getElementById("m-address").textContent = b.customer_address || "—";

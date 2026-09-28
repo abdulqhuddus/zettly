@@ -109,8 +109,8 @@
 
   .topbar-right { display: flex; align-items: center; gap: 1rem; }
 
-  .back-link { display: inline-block; margin-top: 1.2rem; font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
-  .back-link:hover { color: var(--ink); }
+  .back-link { display: inline-block; margin-top: 1.2rem; padding: 0.85rem 1.7rem; border-radius: 10px; background: var(--accent); color: #fff; font-size: 0.95rem; font-weight: 600; text-decoration: none; white-space: nowrap; transition: transform 0.15s, background 0.2s; }
+  .back-link:hover { background: #6d2fe0; color: #fff; transform: translateY(-1px); }
 
   .lang-switch {
     display: flex;
@@ -1361,7 +1361,7 @@
     </div>
     <div class="field">
       <label data-i18n="notes">Was sollten wir wissen? (optional)</label>
-      <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens"></textarea>
+      <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens" required></textarea>
     </div>
     <label class="consent-check">
       <input type="checkbox" id="f-consent" />
@@ -1551,13 +1551,14 @@ const I18N = {
     addressZip: "PLZ",
     addressCity: "Ort",
     fillAddress: "Bitte geben Sie Ihre vollständige Adresse an.",
+    fillNotes: "Bitte beschreiben Sie kurz Ihr Anliegen.",
     summaryAddress: "Adresse",
     summaryCommute: "Anfahrt",
     summaryTotal: "Gesamt",
     commuteFreeShort: "Kostenlos",
     consentLabel: 'Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.',
     fillConsent: "Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.",
-    notes: "Was sollten wir wissen? (optional)",
+    notes: "Was sollten wir wissen?",
     notesPlaceholder: "Kurze Beschreibung des Anliegens",
     confirmBooking: "Buchung bestätigen",
     successTitle: "Sie sind gebucht!",
@@ -1674,13 +1675,14 @@ const I18N = {
     addressZip: "Postcode",
     addressCity: "City",
     fillAddress: "Please enter your full address.",
+    fillNotes: "Please briefly describe what you need.",
     summaryAddress: "Address",
     summaryCommute: "Call-out",
     summaryTotal: "Total",
     commuteFreeShort: "Free",
     consentLabel: 'I have read the <a href="/datenschutz/" target="_blank" rel="noopener">privacy policy</a> and agree that my details will be stored and processed to handle my booking.',
     fillConsent: "Please agree to the privacy policy to continue.",
-    notes: "Anything we should know? (optional)",
+    notes: "Anything we should know?",
     notesPlaceholder: "Briefly describe the issue or what you need",
     confirmBooking: "Confirm booking",
     successTitle: "You're booked!",
@@ -2439,6 +2441,11 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
   }
   if (!street || !zip || !city) {
     errorEl.textContent = t("fillAddress");
+    errorEl.style.display = "block";
+    return;
+  }
+  if (!notes) {
+    errorEl.textContent = t("fillNotes");
     errorEl.style.display = "block";
     return;
   }

@@ -265,7 +265,9 @@ function drawLogoMark(content, xMM, yTopMM, sizeMM) {
  * @param {string} data.dateDisplay - human readable date, already localized
  * @param {string} data.time
  * @param {number} data.duration - minutes
- * @param {string} data.priceText - already formatted ("€39" or "Preis nach Diagnose")
+ * @param {string} data.priceText - the total, already formatted ("€39" or "Preis nach Diagnose"); shown as the only price row when there's no call-out fee, or as the bold total row when there is one
+ * @param {string} [data.servicePriceText] - the service price alone, before any call-out fee; only used (and required) when data.commuteFee > 0
+ * @param {number} [data.commuteFee] - the distance-based call-out fee in whole euros; > 0 splits the price into Price / Call-out fee / Total rows
  * @param {"de"|"en"} data.lang
  * @returns {Uint8Array}
  */
@@ -283,6 +285,8 @@ export function generateBookingPdf(data) {
         time: "Time",
         duration: "Duration",
         price: "Price",
+        callout: "Call-out fee",
+        total: "Total",
         email: "Email",
         minutes: "min",
         cancelHeading: "Cancellation policy",
@@ -316,6 +320,8 @@ export function generateBookingPdf(data) {
         time: "Uhrzeit",
         duration: "Dauer",
         price: "Preis",
+        callout: "Anfahrtspauschale",
+        total: "Gesamt",
         email: "E-Mail",
         minutes: "Min.",
         cancelHeading: "Stornierungsbedingungen",
@@ -454,8 +460,18 @@ export function generateBookingPdf(data) {
     { label: L.date, value: data.dateDisplay, size: 9.5 },
     { label: L.time, value: data.time, size: 9.5 },
     { label: L.duration, value: `${data.duration} ${L.minutes}`, size: 9.5 },
-    { label: L.price, value: data.priceText, size: 9.5 },
   ];
+  // The service price and the distance-based call-out fee are shown as
+  // separate line items with a bold total underneath, rather than a single
+  // merged figure, so the customer can see exactly what they're being
+  // charged for.
+  if (data.commuteFee > 0) {
+    boxRows.push({ label: L.price, value: data.servicePriceText, size: 9.5 });
+    boxRows.push({ label: L.callout, value: `+ €${data.commuteFee}`, size: 9.5 });
+    boxRows.push({ label: L.total, value: data.priceText, size: 9.5, bold: true });
+  } else {
+    boxRows.push({ label: L.price, value: data.priceText, size: 9.5 });
+  }
   if (data.cancelled && data.cancellationReason) {
     const reasonSize = 9;
     const reasonLines = wrapToWidthPt(data.cancellationReason, reasonSize, boxInnerPt, true).slice(0, 4);
@@ -498,8 +514,12 @@ export function generateBookingPdf(data) {
         content.push(text(boxX + boxPad, fromTop(rowCursor + 9.6 + li * stackedLineH), row.size, ln, { bold: true, color: INK }));
       });
     } else {
-      content.push(text(boxX + boxPad, fromTop(rowCursor + 5.3), 7.5, row.label.toUpperCase(), { color: MUTED }));
-      content.push(textRight(boxX + boxW - boxPad, fromTop(rowCursor + 5.3), row.size, row.value, { bold: true, color: INK }));
+      // The total row (when a call-out fee splits the price into line
+      // items) is picked out in the brand color so it reads as the bottom
+      // line, not just another row.
+      const emphasisColor = row.bold ? PURPLE : INK;
+      content.push(text(boxX + boxPad, fromTop(rowCursor + 5.3), 7.5, row.label.toUpperCase(), { color: row.bold ? PURPLE : MUTED }));
+      content.push(textRight(boxX + boxW - boxPad, fromTop(rowCursor + 5.3), row.size, row.value, { bold: true, color: emphasisColor }));
     }
     rowCursor += h;
   });

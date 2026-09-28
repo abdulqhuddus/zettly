@@ -147,8 +147,11 @@ async function sendConfirmationEmail(env, booking, service, lang) {
   const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const commuteFee = booking.commuteFee || 0;
-  // The PDF/email total always includes the commute fee — it's part of
-  // what's actually charged, not an optional add-on shown separately.
+  // servicePriceText is the service price alone; priceText is the total
+  // including the call-out fee. The PDF shows both as separate line items
+  // (plus the total) rather than one merged figure, so the customer can see
+  // exactly what they're being charged for.
+  const servicePriceText = service.quote ? t.priceOnRequest : `€${service.price}`;
   const priceText = service.quote
     ? commuteFee > 0
       ? `${t.priceOnRequest} (+ €${commuteFee} ${t.commuteFeeSuffix})`
@@ -235,6 +238,8 @@ async function sendConfirmationEmail(env, booking, service, lang) {
       time: booking.time,
       duration: service.duration,
       priceText,
+      servicePriceText,
+      commuteFee,
       lang: "de",
     });
     const pdfBytesEn = generateBookingPdf({
@@ -248,6 +253,8 @@ async function sendConfirmationEmail(env, booking, service, lang) {
       time: booking.time,
       duration: service.duration,
       priceText,
+      servicePriceText,
+      commuteFee,
       lang: "en",
     });
     attachments = [
@@ -357,7 +364,7 @@ async function handleBook(request, env) {
   const lang = rawLang === "en" ? "en" : "de";
   const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
 
-  if (!audience || !categoryId || !date || !time || !name || !email || !address || !zip) {
+  if (!audience || !categoryId || !date || !time || !name || !email || !address || !zip || !(notes || "").trim()) {
     return json({ error: "Missing required fields" }, 400);
   }
 
