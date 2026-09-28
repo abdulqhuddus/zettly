@@ -118,7 +118,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason
+            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
      LIMIT ? OFFSET ?`
@@ -158,7 +158,7 @@ export async function handleAdminListBookings(url, env) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason
+            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation
      FROM bookings WHERE id = ?`
   )
     .bind(id)

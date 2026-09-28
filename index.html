@@ -1396,6 +1396,10 @@
       <label data-i18n="phone">Telefon (optional)</label>
       <input type="tel" id="f-phone" placeholder="+49 ..." />
     </div>
+    <label class="consent-check" id="phone-consultation-field" style="display:none;">
+      <input type="checkbox" id="f-phone-consultation" />
+      <span data-i18n="phoneConsultationLabel">Ich möchte diese Beratung lieber telefonisch statt vor Ort.</span>
+    </label>
     <div class="address-section">
       <div class="address-section-head">
         <span class="address-section-icon">
@@ -1618,6 +1622,7 @@ const I18N = {
     fillConsent: "Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.",
     notes: "Was sollten wir wissen?",
     notesPlaceholder: "Kurze Beschreibung des Anliegens",
+    phoneConsultationLabel: "Ich möchte diese Beratung lieber telefonisch statt vor Ort.",
     confirmBooking: "Buchung bestätigen",
     successTitle: "Sie sind gebucht!",
     bookingRefLabel: "Buchungsnummer",
@@ -1747,6 +1752,7 @@ const I18N = {
     fillConsent: "Please agree to the privacy policy to continue.",
     notes: "Anything we should know?",
     notesPlaceholder: "Briefly describe the issue or what you need",
+    phoneConsultationLabel: "I'd prefer this consultation to be held over the phone instead of in person.",
     confirmBooking: "Confirm booking",
     successTitle: "You're booked!",
     bookingRefLabel: "Booking reference",
@@ -1781,6 +1787,7 @@ const state = {
   // /api/commute last returned: null (not checked yet), "checking",
   // "ok", or "error".
   zip: null, city: null, commuteFee: 0, commuteDistanceKm: null, commuteStatus: null, commuteErrorReason: null,
+  phoneConsultation: false,
 };
 let CATALOG = { home: [], business: [] };
 
@@ -2198,8 +2205,10 @@ function finalizeLeaf(leaf) {
     price: leaf.quote ? null : leaf.price,
     duration: leaf.duration || 30,
     quote: !!leaf.quote,
+    phoneOptional: !!leaf.phoneOptional,
     path: state.treePath.map(e => e.choiceId),
   };
+  state.phoneConsultation = false;
   renderDateStrip();
   showStep(3);
 }
@@ -2472,6 +2481,18 @@ document.getElementById("loc-city").addEventListener("input", onLocationInputCha
 // Once the location step is done, the details step shows the resolved
 // PLZ/city as a read-only line instead of asking for it again, with a link
 // back to the location step if it needs correcting.
+function updatePhoneConsultationField() {
+  const field = document.getElementById("phone-consultation-field");
+  const checkbox = document.getElementById("f-phone-consultation");
+  if (!field || !checkbox) return;
+  const show = !!(state.service && state.service.phoneOptional);
+  field.style.display = show ? "" : "none";
+  if (!show) {
+    checkbox.checked = false;
+    state.phoneConsultation = false;
+  }
+}
+
 function updateAddressKnownLine() {
   const el = document.getElementById("address-section-sub-known");
   if (!el || !state.zip || !state.city) return;
@@ -2505,8 +2526,13 @@ document.getElementById("to-location").addEventListener("click", () => {
 
 document.getElementById("to-details").addEventListener("click", () => {
   updateAddressKnownLine();
+  updatePhoneConsultationField();
   renderSummary("summary");
   showStep(5);
+});
+
+document.getElementById("f-phone-consultation").addEventListener("change", (e) => {
+  state.phoneConsultation = e.target.checked;
 });
 
 document.getElementById("submit-booking").addEventListener("click", async () => {
@@ -2560,6 +2586,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         date: state.date,
         time: state.time,
         name, email, phone, address, zip: state.zip, notes, lang,
+        phoneConsultation: !!state.phoneConsultation,
       }),
     });
     const data = await res.json();

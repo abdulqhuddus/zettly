@@ -390,6 +390,7 @@
       <div class="detail-row"><dt id="t-m-duration">Duration</dt><dd id="m-duration"></dd></div>
       <div class="detail-row"><dt id="t-m-price">Price</dt><dd id="m-price"></dd></div>
       <div class="detail-row" id="m-callout-row"><dt id="t-m-callout">Call-out fee</dt><dd id="m-callout"></dd></div>
+      <div class="detail-row" id="m-phone-consultation-row"><dt id="t-m-consultation-type">Consultation type</dt><dd id="m-consultation-type"></dd></div>
       <div class="detail-row"><dt id="t-m-email">Email</dt><dd id="m-email"></dd></div>
       <div class="detail-row"><dt id="t-m-phone">Phone</dt><dd id="m-phone"></dd></div>
       <div class="detail-row"><dt id="t-m-address">Address</dt><dd id="m-address"></dd></div>
@@ -464,6 +465,8 @@
       mDuration: "Duration",
       mCallout: "Call-out fee",
       mPrice: "Price",
+      mConsultationType: "Consultation type",
+      mPhoneConsultation: "Phone call",
       mEmail: "Email",
       mPhone: "Phone",
       mAddress: "Address",
@@ -526,6 +529,8 @@
       mDuration: "Dauer",
       mPrice: "Preis",
       mCallout: "Anfahrtspauschale",
+      mConsultationType: "Beratungsart",
+      mPhoneConsultation: "Telefonisch",
       mEmail: "E-Mail",
       mPhone: "Telefon",
       mAddress: "Adresse",
@@ -604,6 +609,7 @@
     document.getElementById("t-m-duration").textContent = s.mDuration;
     document.getElementById("t-m-price").textContent = s.mPrice;
     document.getElementById("t-m-callout").textContent = s.mCallout;
+    document.getElementById("t-m-consultation-type").textContent = s.mConsultationType;
     document.getElementById("t-m-email").textContent = s.mEmail;
     document.getElementById("t-m-phone").textContent = s.mPhone;
     document.getElementById("t-m-address").textContent = s.mAddress;
@@ -836,6 +842,13 @@
     document.getElementById("m-callout").textContent = b.commute_fee
       ? `€${b.commute_fee}${b.commute_distance_km != null ? ` (${Math.round(b.commute_distance_km)} km)` : ""}`
       : s.calloutFree;
+    const phoneConsultationRow = document.getElementById("m-phone-consultation-row");
+    if (b.phone_consultation) {
+      phoneConsultationRow.style.display = "flex";
+      document.getElementById("m-consultation-type").textContent = s.mPhoneConsultation;
+    } else {
+      phoneConsultationRow.style.display = "none";
+    }
     document.getElementById("m-email").textContent = b.customer_email;
     document.getElementById("m-phone").textContent = b.customer_phone || "—";
     document.getElementById("m-address").textContent = b.customer_address || "—";

@@ -268,6 +268,7 @@ function drawLogoMark(content, xMM, yTopMM, sizeMM) {
  * @param {string} data.priceText - the total, already formatted ("€39" or "Preis nach Diagnose"); shown as the only price row when there's no call-out fee, or as the bold total row when there is one
  * @param {string} [data.servicePriceText] - the service price alone, before any call-out fee; only used (and required) when data.commuteFee > 0
  * @param {number} [data.commuteFee] - the distance-based call-out fee in whole euros; > 0 splits the price into Price / Call-out fee / Total rows
+ * @param {boolean} [data.phoneConsultation] - true if the customer opted for this consultation to be held by phone instead of in person; adds a "Consultation type" row when set
  * @param {"de"|"en"} data.lang
  * @returns {Uint8Array}
  */
@@ -287,6 +288,8 @@ export function generateBookingPdf(data) {
         price: "Price",
         callout: "Call-out fee",
         total: "Total",
+        consultationType: "Consultation type",
+        phoneConsultationValue: "Phone call",
         email: "Email",
         minutes: "min",
         cancelHeading: "Cancellation policy",
@@ -322,6 +325,8 @@ export function generateBookingPdf(data) {
         price: "Preis",
         callout: "Anfahrtspauschale",
         total: "Gesamt",
+        consultationType: "Beratungsart",
+        phoneConsultationValue: "Telefonisch",
         email: "E-Mail",
         minutes: "Min.",
         cancelHeading: "Stornierungsbedingungen",
@@ -461,6 +466,12 @@ export function generateBookingPdf(data) {
     { label: L.time, value: data.time, size: 9.5 },
     { label: L.duration, value: `${data.duration} ${L.minutes}`, size: 9.5 },
   ];
+  // Only shown when the customer opted into a phone consultation on a
+  // leaf that actually offers it (e.g. the Dynamics 365 consultation) -
+  // otherwise this row is simply omitted rather than showing "in person".
+  if (data.phoneConsultation) {
+    boxRows.push({ label: L.consultationType, value: L.phoneConsultationValue, size: 9.5 });
+  }
   // The service price and the distance-based call-out fee are shown as
   // separate line items with a bold total underneath, rather than a single
   // merged figure, so the customer can see exactly what they're being

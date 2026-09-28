@@ -240,6 +240,7 @@ async function sendConfirmationEmail(env, booking, service, lang) {
       priceText,
       servicePriceText,
       commuteFee,
+      phoneConsultation: booking.phoneConsultation,
       lang: "de",
     });
     const pdfBytesEn = generateBookingPdf({
@@ -255,6 +256,7 @@ async function sendConfirmationEmail(env, booking, service, lang) {
       priceText,
       servicePriceText,
       commuteFee,
+      phoneConsultation: booking.phoneConsultation,
       lang: "en",
     });
     attachments = [
@@ -329,6 +331,7 @@ async function sendAdminNotification(env, booking, service, lang) {
           <tr><td style="padding:4px 0; color:#6b6b74;">Date</td><td style="padding:4px 0; text-align:right;">${dateDisplay}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Time</td><td style="padding:4px 0; text-align:right;">${booking.time}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}${commuteFee > 0 ? ` (incl. €${commuteFee} call-out)` : ""}</td></tr>
+          ${booking.phoneConsultation ? `<tr><td style="padding:4px 0; color:#6b6b74;">Consultation type</td><td style="padding:4px 0; text-align:right; font-weight:700;">Phone call</td></tr>` : ""}
           <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Email</td><td style="padding:4px 0; text-align:right;">${booking.customer_email}</td></tr>
           ${booking.customer_phone ? `<tr><td style="padding:4px 0; color:#6b6b74;">Phone</td><td style="padding:4px 0; text-align:right;">${booking.customer_phone}</td></tr>` : ""}
@@ -360,7 +363,7 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, lang: rawLang } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, lang: rawLang } = body;
   const lang = rawLang === "en" ? "en" : "de";
   const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
 
@@ -390,6 +393,10 @@ async function handleBook(request, env) {
   const service = { duration: leaf.duration, price: leaf.price, quote: leaf.quote };
   const quoteTag = leaf.quote ? "[Kostenvoranschlag vor Ort] " : "";
   const notesWithAudience = `${audienceTag}${quoteTag}${notes || ""}`.trim() || null;
+  // Only honored when the catalog actually offers a phone option for this
+  // leaf (currently just the Dynamics 365 consultation) - a client can't
+  // flip this on for a service that never showed the checkbox.
+  const wantsPhoneConsultation = !!(leaf.phoneOptional && phoneConsultation);
 
   if (!isValidEmail(email)) {
     return json({ error: "Invalid email" }, 400);
@@ -432,8 +439,8 @@ async function handleBook(request, env) {
   const serviceIdStr = `${audience}:${categoryId}:${(path || []).join(":")}`;
 
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
       id,
@@ -449,11 +456,12 @@ async function handleBook(request, env) {
       address,
       notesWithAudience,
       commuteFee,
-      Math.round(commute.distanceKm * 10) / 10
+      Math.round(commute.distanceKm * 10) / 10,
+      wantsPhoneConsultation ? 1 : 0
     )
     .run();
 
-  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_address: address, notes: notesWithAudience, serviceName, commuteFee };
+  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, phoneConsultation: wantsPhoneConsultation };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
   // Best-effort: the owner's own heads-up email should never affect the
   // customer-facing response, so its failure is swallowed here.
