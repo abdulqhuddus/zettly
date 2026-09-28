@@ -2521,12 +2521,11 @@ const COMMUTE_ZONES_UI = [
 ];
 // Munich sits only ~60-90km from the Austrian border, so fitting the whole
 // 100km ring on screen (fitBounds) always pulled in Austria — and, on this
-// wide/short map card, a good deal of the Czech Republic too. Instead: a
-// fixed, deliberately zoomed-in view centered a little north of Munich (so
-// the ring's southern half — the part nearest Austria — mostly falls below
-// the frame), with zooming out disabled so a visitor can't drag/scroll
-// their way to a wider, country-spanning view either.
-const MAP_VIEW_CENTER = [48.28, 11.4];
+// wide/short map card, a good deal of the Czech Republic too. A fixed,
+// deliberately zoomed-in view keeps that from happening; it's centered on
+// Munich itself (not shifted off-center) with zooming out disabled so a
+// visitor can't drag/scroll their way to a wider, country-spanning view.
+const MAP_VIEW_CENTER = MUNICH_LATLNG;
 const MAP_VIEW_ZOOM = 9;
 const GERMANY_BOUNDS = [
   [47.75, 8.5], // SW — north of the Austrian border near Munich
