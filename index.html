@@ -2455,13 +2455,14 @@ function initServiceAreaMap() {
     maxBoundsViscosity: 1.0,
     minZoom: 6,
   });
-  // CartoDB Voyager: a clean, modern "roadmap" style (like Google/Apple
-  // Maps) rather than the busier default OpenStreetMap rendering or any
-  // satellite imagery.
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-    maxZoom: 18,
-    subdomains: "abcd",
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  // Plain OpenStreetMap tiles: a "roadmap" style (streets/labels, no
+  // satellite imagery) that needs no API key. CartoDB's Voyager tiles
+  // looked cleaner but now require a Carto account/API key to serve, which
+  // showed as a watermarked "API KEY REQUIRED" placeholder instead of a map.
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    subdomains: "abc",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
 
   // Drawn largest-first so each smaller, differently-colored circle sits on
