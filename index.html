@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -379,6 +380,40 @@
   .hiw-step h4 { font-size: 0.84rem; font-weight: 700; margin-bottom: 0.35rem; white-space: nowrap; }
   .hiw-step p { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
   @media (max-width: 900px) { .hiw-step h4 { white-space: normal; } }
+
+  /* "Where we cover" section: a Munich-centered map with a 100km service
+     radius, shown after the booking flow and before the footer. */
+  .service-area {
+    width: 100%;
+    max-width: 1180px;
+    padding: 1.5rem 1.25rem 0.5rem;
+    margin: 0.5rem 0 0.5rem;
+  }
+  .service-area h2 {
+    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .service-area .hiw-sub { text-align: center; color: var(--muted); font-size: 0.95rem; margin-bottom: 1.6rem; }
+  .service-area-map-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgba(17,17,20,0.08);
+  }
+  #service-area-map { width: 100%; height: 380px; background: var(--accent-light); }
+  @media (max-width: 640px) { #service-area-map { height: 280px; } }
+  /* Leaflet's own popup chrome, restyled to match the site instead of the
+     library's default white-and-blue look. */
+  .service-area .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 10px 24px rgba(17,17,20,0.14); }
+  .service-area .leaflet-popup-content { margin: 0.7rem 0.9rem; font-family: "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif; }
+  .service-area .leaflet-popup-content b { color: var(--ink); }
+  .service-area .leaflet-popup-content span { display: block; color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
+  .service-area .leaflet-popup-tip { box-shadow: none; }
 
   .site-footer {
     position: relative;
@@ -1278,6 +1313,14 @@
 
 </div>
 
+<div class="service-area" id="service-area">
+  <h2 data-i18n="serviceAreaTitle">Wo sind wir für Sie im Einsatz?</h2>
+  <p class="hiw-sub" data-i18n="serviceAreaSub">Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km.</p>
+  <div class="service-area-map-wrap">
+    <div id="service-area-map"></div>
+  </div>
+</div>
+
 <footer class="site-footer">
   <svg class="footer-watermark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <rect x="0" y="0" width="28" height="28" rx="6" fill="#111114"/>
@@ -1316,6 +1359,7 @@
   <div class="step-label" id="progress-label"><b>1</b> / 5</div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 const I18N = {
   de: {
@@ -1351,6 +1395,9 @@ const I18N = {
     footerServiceBusiness: "IT-Support für Unternehmen",
     footerLinksHeading: "Links",
     footerContactHeading: "Kontakt",
+    serviceAreaTitle: "Wo sind wir für Sie im Einsatz?",
+    serviceAreaSub: "Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km.",
+    serviceAreaPopup: "<b>Zettly</b><span>München &amp; Umgebung, bis 100 km</span>",
     ctaBannerTitle: "Jetzt Termin buchen",
     ctaBannerSub: "In nur 2 Minuten online: schnell & unkompliziert.",
     hiwTitle: "So läuft Ihr Termin ab",
@@ -1442,6 +1489,9 @@ const I18N = {
     footerServiceBusiness: "Business IT Support",
     footerLinksHeading: "Links",
     footerContactHeading: "Contact",
+    serviceAreaTitle: "Where are we available?",
+    serviceAreaSub: "From Munich, we cover the whole surrounding region – within a 100 km radius.",
+    serviceAreaPopup: "<b>Zettly</b><span>Munich &amp; surroundings, up to 100 km</span>",
     ctaBannerTitle: "Book an appointment now",
     ctaBannerSub: "Online in just 2 minutes: fast & simple.",
     hiwTitle: "How your appointment works",
@@ -1541,6 +1591,7 @@ function setLang(newLang) {
   if (document.querySelector('.step[data-step="2"]').classList.contains("visible")) renderTreeStep();
   if (state.date) renderSlots();
   if (document.querySelector('.step[data-step="4"]').classList.contains("visible")) renderSummary("summary");
+  if (typeof updateServiceAreaPopup === "function") updateServiceAreaPopup();
 }
 
 document.getElementById("lang-switch").addEventListener("click", (e) => {
@@ -2141,6 +2192,46 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
 });
 
 document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+// Munich-centered coverage map: a plain OpenStreetMap tile layer (no API
+// key needed) with a 100km circle around the city, shown just above the
+// footer. Built once; only the popup text needs to follow language changes.
+const MUNICH_LATLNG = [48.1351, 11.582];
+let serviceAreaPopup = null;
+function initServiceAreaMap() {
+  if (typeof L === "undefined" || !document.getElementById("service-area-map")) return;
+  const map = L.map("service-area-map", {
+    scrollWheelZoom: false,
+    center: MUNICH_LATLNG,
+    zoom: 7,
+  });
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  const circle = L.circle(MUNICH_LATLNG, {
+    radius: 100000, // meters
+    color: "#7C3AED",
+    weight: 2,
+    fillColor: "#7C3AED",
+    fillOpacity: 0.08,
+  }).addTo(map);
+  map.fitBounds(circle.getBounds(), { padding: [8, 8] });
+
+  const marker = L.circleMarker(MUNICH_LATLNG, {
+    radius: 8,
+    color: "#fff",
+    weight: 2,
+    fillColor: "#7C3AED",
+    fillOpacity: 1,
+  }).addTo(map);
+  serviceAreaPopup = marker.bindPopup(t("serviceAreaPopup")).getPopup();
+}
+let updateServiceAreaPopup = function () {
+  if (serviceAreaPopup) serviceAreaPopup.setContent(t("serviceAreaPopup"));
+};
+initServiceAreaMap();
 
 applyStaticTranslations();
 showStep(0);
