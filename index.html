@@ -112,40 +112,59 @@
     width: 100%;
     max-width: 980px;
     padding: 0 1.25rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     margin-bottom: 2.2rem;
     transition: max-width 0.3s ease;
   }
   .trust-strip.wide { max-width: 1180px; }
+  @media (max-width: 720px) { .trust-strip { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 400px) { .trust-strip { grid-template-columns: 1fr; } }
+  /* Each card gets its own soft gradient backdrop (an "image" without an
+     actual photo to source/license) so the row reads as four distinct
+     tiles rather than four identical white boxes, plus a short bold
+     headline with a one-line explanation underneath instead of a single
+     cramped label. */
   .trust-pill {
-    flex: 1 1 160px;
-    max-width: 220px;
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.7rem;
-    background: #fff;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.65rem;
+    background: linear-gradient(155deg, #ffffff 35%, var(--accent-light) 160%);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 1.4rem 1.1rem;
+    padding: 1.3rem 1.15rem;
+    overflow: hidden;
     box-shadow: 0 4px 18px rgba(17,17,20,0.05);
     opacity: 0;
     transform: translateY(14px);
     animation: pillIn 0.5s cubic-bezier(.2,.9,.3,1) forwards;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   }
+  /* A soft glowing orb bleeding off the top-right corner: the "background
+     image" treatment, done as a decorative gradient blob instead of a
+     photo. */
+  .trust-pill::after {
+    content: "";
+    position: absolute; top: -30px; right: -30px;
+    width: 90px; height: 90px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.16), transparent 70%);
+    pointer-events: none;
+  }
   .trust-pill:hover { transform: translateY(-5px); box-shadow: 0 16px 30px rgba(124,58,237,0.16); border-color: #e2d6fb; }
   .trust-pill:nth-child(1) { animation-delay: 0.05s; }
   .trust-pill:nth-child(2) { animation-delay: 0.2s; }
   .trust-pill:nth-child(3) { animation-delay: 0.35s; }
-  .trust-pill:nth-child(2):hover { border-color: #ddd0fb; box-shadow: 0 16px 30px rgba(139,92,246,0.18); }
+  .trust-pill:nth-child(2), .trust-pill:nth-child(4) { background: linear-gradient(155deg, #ffffff 35%, var(--violet-light) 160%); }
+  .trust-pill:nth-child(2):hover, .trust-pill:nth-child(4):hover { border-color: #ddd0fb; box-shadow: 0 16px 30px rgba(139,92,246,0.18); }
+  .trust-pill:nth-child(2)::after, .trust-pill:nth-child(4)::after { background: radial-gradient(circle, rgba(139,92,246,0.18), transparent 70%); }
   .trust-pill .dot {
+    position: relative; z-index: 1;
     display: inline-flex; align-items: center; justify-content: center;
-    width: 48px; height: 48px; border-radius: 14px;
+    width: 46px; height: 46px; border-radius: 14px;
     background: radial-gradient(circle at 30% 30%, #fff, var(--accent-light));
     box-shadow: 0 8px 18px rgba(124,58,237,0.18), inset 0 0 0 1px rgba(124,58,237,0.12);
     animation: pillPulse 2.4s ease-in-out infinite;
@@ -155,12 +174,17 @@
     background: radial-gradient(circle at 30% 30%, #fff, var(--violet-light));
     box-shadow: 0 8px 18px rgba(139,92,246,0.18), inset 0 0 0 1px rgba(139,92,246,0.14);
   }
-  .trust-pill:nth-child(2) .dot svg * { stroke: var(--violet) !important; }
+  .trust-pill:nth-child(2) .dot svg *, .trust-pill:nth-child(4) .dot svg * { stroke: var(--violet) !important; }
   .trust-pill:nth-child(3) .dot { animation-delay: 0.8s; }
-  .trust-pill:nth-child(4) { animation-delay: 0.5s; }
-  .trust-pill:nth-child(4) .dot { animation-delay: 1.2s; }
+  .trust-pill:nth-child(4) .dot {
+    animation-delay: 1.2s;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--violet-light));
+    box-shadow: 0 8px 18px rgba(139,92,246,0.18), inset 0 0 0 1px rgba(139,92,246,0.14);
+  }
   .trust-pill .dot svg { width: 22px; height: 22px; }
-  .trust-pill span:last-child { font-size: 1rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .trust-pill .trust-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.2rem; }
+  .trust-pill .trust-text b { font-size: 1rem; font-weight: 800; color: var(--ink); line-height: 1.25; }
+  .trust-pill .trust-text small { font-size: 0.76rem; font-weight: 500; color: var(--muted); line-height: 1.35; }
   @keyframes pillIn { to { opacity: 1; transform: translateY(0); } }
   @keyframes pillPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
@@ -364,7 +388,27 @@
     text-align: center;
   }
 
-  body { padding-bottom: 5rem; }
+  /* Mobile footer: centered, single column, with a divider between each
+     section instead of the columns just wrapping and losing their shared
+     baseline — reads as one organized list instead of scattered blocks. */
+  @media (max-width: 640px) {
+    .site-footer .footer-inner { flex-direction: column; align-items: center; text-align: center; gap: 1.7rem; padding: 2.4rem 1.5rem 0.5rem; }
+    .site-footer .footer-col.footer-about { max-width: 100%; }
+    .site-footer .footer-tagline { margin: 0 auto; }
+    .site-footer .footer-col:not(.footer-about) { width: 100%; max-width: 280px; padding-top: 1.4rem; border-top: 1px dashed var(--border); }
+    .site-footer .footer-col h5 { text-align: center; }
+    .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { justify-content: center; }
+    .site-footer .service-item.highlight { margin-left: 0; justify-content: center; }
+  }
+
+  /* Reserve exactly the fixed progress bar's own footprint (see .progress-bar
+     below) so the page's true bottom edge lines up with the bar instead of
+     leaving a mismatched gap of blank body background underneath it. The
+     bar itself is hidden on step 0 (see showStep()), where this reserved
+     space is removed entirely so the footer just sits at the true bottom
+     of the page. */
+  body { padding-bottom: 4.15rem; }
+  body.no-progress { padding-bottom: 0; }
 
   .progress-bar {
     position: fixed;
@@ -378,7 +422,17 @@
     gap: 1.1rem;
     z-index: 20;
     box-shadow: 0 -8px 24px rgba(17,17,20,0.05);
+    box-sizing: border-box;
+    min-height: 4.15rem;
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.25s ease, opacity 0.25s ease;
   }
+  /* Hidden on step 0 (audience selection): the wizard hasn't really begun
+     yet there, so a "1/6" progress readout is premature, and hiding it
+     lets the footer sit at the page's natural bottom with no reserved gap
+     underneath it (see body.no-progress above). */
+  .progress-bar.hidden { transform: translateY(100%); opacity: 0; pointer-events: none; }
   .progress-bar .track {
     flex: 1;
     height: 8px;
@@ -449,6 +503,33 @@
 
   .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .path-grid.audience-grid { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 560px) { .path-grid.audience-grid { grid-template-columns: 1fr; gap: 0.9rem; } }
+  /* Audience cards (Zuhause / Unternehmen): vertical layout with the tap
+     affordance as its own row at the bottom instead of a small arrow icon,
+     so the card reads clearly at any width instead of cramming icon, title,
+     description and arrow into one truncated line. */
+  .audience-grid .path-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 1.5rem 1.4rem 1.3rem;
+  }
+  .audience-grid .path-card .icon { width: 54px; height: 54px; border-radius: 16px; margin-bottom: 1rem; }
+  .audience-grid .path-card .icon svg { width: 26px; height: 26px; }
+  .audience-grid .path-card .body { width: 100%; margin-bottom: 1.1rem; }
+  .audience-grid .path-card h3 { font-size: 1.15rem; -webkit-line-clamp: unset; white-space: normal; margin-bottom: 0.3rem; }
+  .audience-grid .path-card p { -webkit-line-clamp: unset; white-space: normal; font-size: 0.86rem; }
+  .audience-grid .path-card .tap-hint {
+    position: relative; z-index: 1; width: 100%;
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.78rem; font-weight: 700; color: var(--accent);
+    padding-top: 0.85rem;
+    border-top: 1px dashed #ddd3f7;
+  }
+  .audience-grid .path-card .tap-hint svg { width: 18px; height: 18px; flex: 0 0 auto; animation: tapPulse 2s ease-in-out infinite; }
+  .audience-grid .path-card:hover .tap-hint { color: #6d2fe0; }
+  .audience-grid .path-card:hover .tap-hint svg circle:first-child { fill: #6d2fe0; }
+  @keyframes tapPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
   .path-grid.category-grid { grid-template-columns: repeat(5, 1fr); }
   @media (max-width: 1000px) { .path-grid.category-grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 760px) { .path-grid { grid-template-columns: 1fr 1fr; } }
@@ -730,8 +811,22 @@
   .btn-primary { background: var(--accent); color: #fff; flex: 1; }
   .btn-primary:hover { background: #6d2fe0; transform: translateY(-1px); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
-  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+  /* `button.btn` (element+class) otherwise beats a plain `.btn-ghost` class
+     selector on specificity and its `border: none` wins, leaving the back
+     button with no visible border at all — hence the "barely looks like a
+     button" complaint. Matching the element in the selector here fixes
+     that, and the button gets a real card-like treatment on top: filled
+     background, visible border, shadow, and a leading arrow. */
+  button.btn-ghost {
+    background: #fff;
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+    box-shadow: 0 2px 10px rgba(17,17,20,0.06);
+  }
+  button.btn-ghost::before { content: "←"; margin-right: 0.45rem; font-weight: 700; display: inline-block; transition: transform 0.2s; }
+  button.btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); box-shadow: 0 6px 16px rgba(124,58,237,0.14); }
+  button.btn-ghost:hover::before { transform: translateX(-3px); }
+  button.btn-ghost:active { transform: scale(0.97); }
 
   .error-msg { color: #d64545; font-size: 0.85rem; margin-top: 0.6rem; display: none; }
 
@@ -780,7 +875,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
-<body>
+<body class="no-progress">
 <div class="announce-bar">
   <span class="dot"></span>
   <span data-i18n="announceBar">Wir befinden uns im Aufbau &middot; bald verfügbar &middot; Buchungen sind derzeit nicht möglich</span>
@@ -804,10 +899,22 @@
 </div>
 
 <div class="trust-strip">
-  <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span><span data-i18n="trustFast">Schnelle Termine</span></span>
-  <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M14.6 8.3a4 4 0 100 7.4M8 11h5.2M8 13.2h4.4"/></svg></span><span data-i18n="trustNoHidden">Keine versteckten Kosten</span></span>
-  <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M8 12.5l2.5 2.5L16 9"/></svg></span><span data-i18n="trustOnline">Direkt online buchen</span></span>
-  <span class="trust-pill"><span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M4 11.5L12 4l8 7.5M6 10v8a1 1 0 001 1h3v-5h4v5h3a1 1 0 001-1v-8"/></svg></span><span data-i18n="trustDoorstep">Service direkt bei Ihnen vor Ort</span></span>
+  <span class="trust-pill">
+    <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
+    <span class="trust-text"><b data-i18n="trustFastTitle">Schnelle Termine</b><small data-i18n="trustFastDesc">Kurzfristig verfügbar</small></span>
+  </span>
+  <span class="trust-pill">
+    <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M14.6 8.3a4 4 0 100 7.4M8 11h5.2M8 13.2h4.4"/></svg></span>
+    <span class="trust-text"><b data-i18n="trustNoHiddenTitle">Faire Preise</b><small data-i18n="trustNoHiddenDesc">Keine versteckten Kosten</small></span>
+  </span>
+  <span class="trust-pill">
+    <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M8 12.5l2.5 2.5L16 9"/></svg></span>
+    <span class="trust-text"><b data-i18n="trustOnlineTitle">Online buchen</b><small data-i18n="trustOnlineDesc">In wenigen Klicks</small></span>
+  </span>
+  <span class="trust-pill">
+    <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M4 11.5L12 4l8 7.5M6 10v8a1 1 0 001 1h3v-5h4v5h3a1 1 0 001-1v-8"/></svg></span>
+    <span class="trust-text"><b data-i18n="trustDoorstepTitle">Vor Ort</b><small data-i18n="trustDoorstepDesc">Service direkt bei Ihnen</small></span>
+  </span>
 </div>
 
 <div class="how-it-works" id="how-it-works">
@@ -886,7 +993,10 @@
           <h3 data-i18n="audienceHomeTitle">Zuhause</h3>
           <p data-i18n="audienceHomeDesc">Privatpersonen & Homeoffice.</p>
         </div>
-        <span class="go-btn">&rarr;</span>
+        <span class="tap-hint">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" fill="#7C3AED"/><circle cx="12" cy="12" r="7" stroke="#7C3AED" stroke-width="1.4" fill="none" opacity="0.55"/><circle cx="12" cy="12" r="10.5" stroke="#7C3AED" stroke-width="1.2" fill="none" opacity="0.28"/></svg>
+          <span data-i18n="tapToSelect">Antippen zum Auswählen</span>
+        </span>
       </div>
       <div class="path-card" data-audience="business">
         <div class="icon">
@@ -900,7 +1010,10 @@
           <h3 data-i18n="audienceBizTitle">Unternehmen</h3>
           <p data-i18n="audienceBizDesc">Kleine & mittlere Unternehmen.</p>
         </div>
-        <span class="go-btn">&rarr;</span>
+        <span class="tap-hint">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" fill="#7C3AED"/><circle cx="12" cy="12" r="7" stroke="#7C3AED" stroke-width="1.4" fill="none" opacity="0.55"/><circle cx="12" cy="12" r="10.5" stroke="#7C3AED" stroke-width="1.2" fill="none" opacity="0.28"/></svg>
+          <span data-i18n="tapToSelect">Antippen zum Auswählen</span>
+        </span>
       </div>
     </div>
   </div>
@@ -1052,7 +1165,7 @@
   <div class="footer-bottom-bar">&copy; <span id="footer-year"></span> Zettly</div>
 </footer>
 
-<div class="progress-bar" id="progress">
+<div class="progress-bar hidden" id="progress">
   <div class="track"><div class="fill" id="progress-fill"></div></div>
   <div class="step-label" id="progress-label"><b>1</b> / 5</div>
 </div>
@@ -1068,14 +1181,19 @@ const I18N = {
     audienceHomeDesc: "Privatpersonen & Homeoffice.",
     audienceBizTitle: "Unternehmen",
     audienceBizDesc: "Kleine & mittlere Unternehmen.",
+    tapToSelect: "Antippen zum Auswählen",
     step0Title: "Wobei können wir helfen?",
     step0Sub: "Wählen Sie einen Bereich: wir zeigen Ihnen die passenden Pakete.",
     back: "Zurück",
     priceOnRequest: "Preis nach Diagnose",
-    trustFast: "Schnelle Termine",
-    trustNoHidden: "Keine versteckten Kosten",
-    trustOnline: "Direkt online buchen",
-    trustDoorstep: "Service direkt bei Ihnen vor Ort",
+    trustFastTitle: "Schnelle Termine",
+    trustFastDesc: "Kurzfristig verfügbar",
+    trustNoHiddenTitle: "Faire Preise",
+    trustNoHiddenDesc: "Keine versteckten Kosten",
+    trustOnlineTitle: "Online buchen",
+    trustOnlineDesc: "In wenigen Klicks",
+    trustDoorstepTitle: "Vor Ort",
+    trustDoorstepDesc: "Service direkt bei Ihnen",
     footerPrivacy: "Datenschutz",
     footerHome: "Startseite",
     footerTagline: "Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
@@ -1154,14 +1272,19 @@ const I18N = {
     audienceHomeDesc: "Individuals & home offices.",
     audienceBizTitle: "Business",
     audienceBizDesc: "Small & medium businesses.",
+    tapToSelect: "Tap to select",
     step0Title: "What brings you here today?",
     step0Sub: "Pick a path and we'll show you the right packages.",
     back: "Back",
     priceOnRequest: "Price after diagnosis",
-    trustFast: "Fast appointments",
-    trustNoHidden: "No hidden charges",
-    trustOnline: "Book directly online",
-    trustDoorstep: "Service at your doorstep",
+    trustFastTitle: "Fast Slots",
+    trustFastDesc: "Available at short notice",
+    trustNoHiddenTitle: "Fair Pricing",
+    trustNoHiddenDesc: "No hidden charges, ever",
+    trustOnlineTitle: "Book Online",
+    trustOnlineDesc: "In just a few clicks",
+    trustDoorstepTitle: "At Your Door",
+    trustDoorstepDesc: "We come to you",
     footerPrivacy: "Privacy Policy",
     footerHome: "Home",
     footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
@@ -1292,6 +1415,8 @@ function showStep(n) {
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
+  document.getElementById("progress").classList.toggle("hidden", n === 0);
+  document.body.classList.toggle("no-progress", n === 0);
 }
 
 async function loadCatalog() {

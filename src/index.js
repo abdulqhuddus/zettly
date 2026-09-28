@@ -34,6 +34,17 @@ const SLOT_STEP_MIN = 30;
 
 const BOOKING_LEAD_MINUTES = 120;
 
+// Buffer kept around every existing booking so the technician always has
+// travel/prep time on both sides: nothing else can start less than 2 hours
+// before it, or less than 3 hours after it starts. A noon booking blocks
+// 10:00–14:59, so the next slot anyone can take is 15:00.
+const BOOKING_BUFFER_BEFORE_MIN = 120;
+const BOOKING_BUFFER_AFTER_MIN = 180;
+
+function bookingBlocksSlot(candidateStart, candidateEnd, bookingStart) {
+  return candidateStart < bookingStart + BOOKING_BUFFER_AFTER_MIN && candidateEnd > bookingStart - BOOKING_BUFFER_BEFORE_MIN;
+}
+
 const EMAIL_STRINGS = {
   de: {
     heading: "Ihr Termin ist bestätigt",
@@ -115,11 +126,7 @@ async function handleAvailability(url, env) {
     const time = `${hh}:${mm}`;
     const slotEnd = t + duration;
 
-    const conflicts = existing.some((b) => {
-      const bStart = toMinutes(b.time);
-      const bEnd = bStart + b.duration_minutes;
-      return t < bEnd && slotEnd > bStart;
-    });
+    const conflicts = existing.some((b) => bookingBlocksSlot(t, slotEnd, toMinutes(b.time)));
 
     slots.push({ time, available: !conflicts });
   }
@@ -320,11 +327,7 @@ async function handleBook(request, env) {
 
   const start = toMinutes(time);
   const end = start + service.duration;
-  const clash = conflicts.some((b) => {
-    const bStart = toMinutes(b.time);
-    const bEnd = bStart + b.duration_minutes;
-    return start < bEnd && end > bStart;
-  });
+  const clash = conflicts.some((b) => bookingBlocksSlot(start, end, toMinutes(b.time)));
 
   if (clash) {
     return json({ error: "Slot just got booked, please pick another" }, 409);
