@@ -7,7 +7,7 @@ import catalog from "../catalog.json";
 import { verifyCancelToken } from "./auth.js";
 import { json, minutesUntil, localizedDate } from "./utils.js";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
-import { sendCancellationEmail } from "./notify.js";
+import { sendCancellationEmail, sendAdminCancellationNotification } from "./notify.js";
 
 const CANCEL_CUTOFF_MINUTES = 24 * 60;
 
@@ -85,7 +85,15 @@ export async function handleCancelSubmit(request, env) {
     .run();
 
   const lang = body.lang === "de" ? "de" : "en";
-  const emailResult = await sendCancellationEmail(env, { ...row, cancellation_reason: reason }, lang, { cancelledBy: "customer" });
+  const cancelledRow = { ...row, cancellation_reason: reason };
+  const emailResult = await sendCancellationEmail(env, cancelledRow, lang, { cancelledBy: "customer" });
+  // Best-effort heads-up to the owner; must never affect the response the
+  // customer sees, so its own failure is swallowed here.
+  try {
+    await sendAdminCancellationNotification(env, cancelledRow);
+  } catch {
+    // ignore — admin notification is not on the customer-facing critical path
+  }
 
   return json({ ok: true, emailSent: emailResult.sent });
 }

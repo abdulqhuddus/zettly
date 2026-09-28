@@ -122,3 +122,59 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
   });
   return { sent: res.ok, status: res.status };
 }
+
+// The address that gets a heads-up whenever a customer cancels their own
+// booking. Fixed here rather than in env config, same as the new-booking
+// admin notification in src/index.js — it's the owner's own inbox, not
+// something that should vary per-deployment.
+const ADMIN_NOTIFY_EMAIL = "mohammed.qhuddus@gmail.com";
+
+/**
+ * A short, internal-only notice to the site owner that a customer cancelled
+ * their own booking (self-service, via the link in their confirmation
+ * email) — not sent when the admin panel itself performs the cancellation,
+ * since the admin already knows in that case. Best-effort: failing to send
+ * this must never affect the customer-facing cancellation flow.
+ */
+export async function sendAdminCancellationNotification(env, booking) {
+  if (!env.RESEND_API_KEY) return { sent: false, reason: "no_api_key" };
+  const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
+  const bookingRef = `ZTL-${booking.id.split("-")[0].toUpperCase()}`;
+  const dateDisplay = localizedDate(booking.date, "de");
+  const priceText = booking.price ? `€${booking.price}` : "Vor Ort mitgeteilt";
+
+  const html = `
+  <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
+    <div style="max-width:480px; margin:0 auto; background:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #e9e7ef;">
+      <div style="background:#ffffff; padding:22px 26px 16px; border-bottom:1px solid #e9e7ef;">
+        <div style="font-family:'Helvetica Neue', Arial, sans-serif; font-size:20px; font-weight:200; letter-spacing:0.01em;"><span style="color:#111114;">zett</span><span style="color:#7C3AED;">ly</span></div>
+        <div style="color:#6b6b74; font-size:13px; margin-top:6px;">A customer cancelled their booking</div>
+      </div>
+      <div style="padding:24px 26px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse; font-size:13.5px; color:#111114;">
+          <tr><td style="padding:4px 0; color:#6b6b74;">Reference</td><td style="padding:4px 0; text-align:right; font-weight:700;">${bookingRef}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Service</td><td style="padding:4px 0; text-align:right;">${booking.service_name}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Date</td><td style="padding:4px 0; text-align:right;">${dateDisplay}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Time</td><td style="padding:4px 0; text-align:right;">${booking.time}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}</td></tr>
+          <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Email</td><td style="padding:4px 0; text-align:right;">${booking.customer_email}</td></tr>
+          ${booking.customer_phone ? `<tr><td style="padding:4px 0; color:#6b6b74;">Phone</td><td style="padding:4px 0; text-align:right;">${booking.customer_phone}</td></tr>` : ""}
+          <tr><td style="padding:12px 0 4px; color:#6b6b74; vertical-align:top;">Reason given</td><td style="padding:12px 0 4px; text-align:right;">${booking.cancellation_reason || "—"}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      from,
+      to: ADMIN_NOTIFY_EMAIL,
+      subject: `Booking ${bookingRef} cancelled by customer`,
+      html,
+    }),
+  });
+  return { sent: res.ok, status: res.status };
+}
