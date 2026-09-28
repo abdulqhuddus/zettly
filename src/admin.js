@@ -117,7 +117,7 @@ export async function handleAdminListBookings(url, env) {
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
   const { results } = await env.DB.prepare(
-    `SELECT id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email,
+    `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
             customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -136,7 +136,7 @@ export async function handleAdminListBookings(url, env) {
   // vs. still-pending revenue alongside the grand total.
   const baseWhereSql = baseWhere.length ? `WHERE ${baseWhere.join(" AND ")}` : "";
   const { results: statusRows } = await env.DB.prepare(
-    `SELECT status, COUNT(*) AS n, COALESCE(SUM(price), 0) AS sum
+    `SELECT status, COUNT(*) AS n, COALESCE(SUM(price + commute_fee), 0) AS sum
      FROM bookings ${baseWhereSql}
      GROUP BY status`
   )
@@ -157,7 +157,7 @@ export async function handleAdminListBookings(url, env) {
 
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
-    `SELECT id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email,
+    `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
             customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason
      FROM bookings WHERE id = ?`
   )

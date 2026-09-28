@@ -22,7 +22,9 @@ CREATE TABLE IF NOT EXISTS bookings (
   status TEXT NOT NULL DEFAULT 'confirmed', -- confirmed | cancelled | completed
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   cancelled_at TEXT,            -- set when status becomes 'cancelled'
-  cancellation_reason TEXT      -- required whenever status becomes 'cancelled'
+  cancellation_reason TEXT,     -- required whenever status becomes 'cancelled'
+  commute_fee INTEGER NOT NULL DEFAULT 0,  -- distance-based call-out fee (separate from `price`, the service fee)
+  commute_distance_km REAL      -- straight-line km from Munich the fee was computed from
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);

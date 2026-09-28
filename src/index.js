@@ -13,6 +13,7 @@ import {
   handleAdminUpdateStatus,
 } from "./admin.js";
 import { handleCancelInfo, handleCancelSubmit } from "./cancel.js";
+import { computeCommute } from "./commute.js";
 
 // How long a "cancel my booking" link in the confirmation email stays valid.
 // Generous on purpose (appointments can be booked weeks out) — the 24-hour
@@ -59,6 +60,8 @@ const EMAIL_STRINGS = {
     price: "Preis",
     address: "Adresse",
     priceOnRequest: "Wird nach Diagnose vor Ort mitgeteilt",
+    commuteFeeNote: (fee) => `Im Gesamtpreis ist eine Anfahrtspauschale von €${fee} für Ihren Standort enthalten.`,
+    commuteFeeSuffix: "Anfahrt",
     minutes: "Min.",
     reschedule: "Sie können Ihren Termin kostenlos stornieren – bis zu 24 Stunden vorher.",
     cancelButton: "Termin stornieren",
@@ -80,6 +83,8 @@ const EMAIL_STRINGS = {
     price: "Price",
     address: "Address",
     priceOnRequest: "Quoted after on-site diagnosis",
+    commuteFeeNote: (fee) => `The total includes a €${fee} call-out fee for your location.`,
+    commuteFeeSuffix: "call-out",
     minutes: "min",
     reschedule: "You can cancel free of charge – up to 24 hours before your appointment.",
     cancelButton: "Cancel appointment",
@@ -141,7 +146,16 @@ async function sendConfirmationEmail(env, booking, service, lang) {
 
   const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
-  const priceText = service.quote ? t.priceOnRequest : `€${service.price}`;
+  const commuteFee = booking.commuteFee || 0;
+  // The PDF/email total always includes the commute fee — it's part of
+  // what's actually charged, not an optional add-on shown separately.
+  const priceText = service.quote
+    ? commuteFee > 0
+      ? `${t.priceOnRequest} (+ €${commuteFee} ${t.commuteFeeSuffix})`
+      : t.priceOnRequest
+    : `€${service.price + commuteFee}`;
+  const commuteNote =
+    commuteFee > 0 ? t.commuteFeeNote(commuteFee) : null;
 
   let cancelUrl = null;
   if (env.SESSION_SECRET) {
@@ -169,7 +183,8 @@ async function sendConfirmationEmail(env, booking, service, lang) {
       <div style="height:4px; background:linear-gradient(90deg,#7C3AED,#a855f7 60%,#EC4899);"></div>
       <div style="padding:28px;">
         <p style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
-        <p style="margin:0 0 22px; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro}</p>
+        <p style="margin:0 0 ${commuteNote ? "6px" : "22px"}; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro}</p>
+        ${commuteNote ? `<p style="margin:0 0 22px; font-size:12.5px; color:#8a8a92; line-height:1.5;">${commuteNote}</p>` : ""}
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse; background:#f8f7fb; border:1px solid #e9e7ef; border-radius:12px;">
           <tr>
             <td style="padding:16px 18px; vertical-align:middle; width:44px;">
@@ -289,7 +304,8 @@ const ADMIN_NOTIFY_EMAIL = "mohammed.qhuddus@gmail.com";
 async function sendAdminNotification(env, booking, service, lang) {
   if (!env.RESEND_API_KEY) return { sent: false, reason: "no_api_key" };
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
-  const priceText = service.quote ? "Vor Ort mitgeteilt" : `€${service.price}`;
+  const commuteFee = booking.commuteFee || 0;
+  const priceText = service.quote ? "Vor Ort mitgeteilt" : `€${service.price + commuteFee}`;
   const dateDisplay = localizedDate(booking.date, lang);
 
   const html = `
@@ -305,7 +321,7 @@ async function sendAdminNotification(env, booking, service, lang) {
           <tr><td style="padding:4px 0; color:#6b6b74;">Service</td><td style="padding:4px 0; text-align:right;">${booking.serviceName}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Date</td><td style="padding:4px 0; text-align:right;">${dateDisplay}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Time</td><td style="padding:4px 0; text-align:right;">${booking.time}</td></tr>
-          <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}${commuteFee > 0 ? ` (incl. €${commuteFee} call-out)` : ""}</td></tr>
           <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Email</td><td style="padding:4px 0; text-align:right;">${booking.customer_email}</td></tr>
           ${booking.customer_phone ? `<tr><td style="padding:4px 0; color:#6b6b74;">Phone</td><td style="padding:4px 0; text-align:right;">${booking.customer_phone}</td></tr>` : ""}
@@ -337,13 +353,26 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, address, notes, lang: rawLang } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, lang: rawLang } = body;
   const lang = rawLang === "en" ? "en" : "de";
   const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
 
-  if (!audience || !categoryId || !date || !time || !name || !email || !address) {
+  if (!audience || !categoryId || !date || !time || !name || !email || !address || !zip) {
     return json({ error: "Missing required fields" }, 400);
   }
+
+  // The postal code drives the call-out (Anfahrt) fee the customer already
+  // saw quoted on the location step; it's recomputed here rather than
+  // trusted from the client, so nobody can tamper with the fee in transit.
+  const commute = await computeCommute(zip);
+  if (!commute.ok) {
+    const msg =
+      commute.reason === "out_of_area"
+        ? "This address is outside our 100 km service area"
+        : "We couldn't find that postal code, please check it";
+    return json({ error: msg }, 400);
+  }
+  const commuteFee = commute.fee;
 
   const resolved = resolveLeaf(audience, categoryId, path);
   if (!resolved) {
@@ -396,8 +425,8 @@ async function handleBook(request, env) {
   const serviceIdStr = `${audience}:${categoryId}:${(path || []).join(":")}`;
 
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
       id,
@@ -411,11 +440,13 @@ async function handleBook(request, env) {
       email,
       phone || null,
       address,
-      notesWithAudience
+      notesWithAudience,
+      commuteFee,
+      Math.round(commute.distanceKm * 10) / 10
     )
     .run();
 
-  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_address: address, notes: notesWithAudience, serviceName };
+  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_address: address, notes: notesWithAudience, serviceName, commuteFee };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
   // Best-effort: the owner's own heads-up email should never affect the
   // customer-facing response, so its failure is swallowed here.
@@ -433,8 +464,15 @@ async function handleBook(request, env) {
     time,
     price: leaf.quote ? null : leaf.price,
     quote: !!leaf.quote,
+    commuteFee,
     emailSent: emailResult.sent,
   });
+}
+
+async function handleCommuteCheck(url, env) {
+  const plz = url.searchParams.get("plz") || "";
+  const result = await computeCommute(plz);
+  return json(result);
 }
 
 export default {
@@ -449,6 +487,9 @@ export default {
     }
     if (url.pathname === "/api/book" && request.method === "POST") {
       return handleBook(request, env);
+    }
+    if (url.pathname === "/api/commute" && request.method === "GET") {
+      return handleCommuteCheck(url, env);
     }
     if (url.pathname === "/api/cancel-info" && request.method === "GET") {
       return handleCancelInfo(url, env);

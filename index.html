@@ -414,6 +414,30 @@
   .service-area .leaflet-popup-content b { color: var(--ink); }
   .service-area .leaflet-popup-content span { display: block; color: var(--muted); font-size: 0.8rem; margin-top: 0.15rem; }
   .service-area .leaflet-popup-tip { box-shadow: none; }
+  .commute-legend {
+    max-width: 900px;
+    margin: 1.1rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem 1rem;
+  }
+  .commute-zone {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-size: 0.82rem; color: var(--ink);
+    background: #fff; border: 1px solid var(--border); border-radius: 999px;
+    padding: 0.4rem 0.85rem 0.4rem 0.6rem;
+  }
+  .commute-zone i {
+    width: 11px; height: 11px; border-radius: 50%; flex: 0 0 auto;
+    background: var(--zone-color);
+  }
+  .commute-zone b { font-weight: 700; }
+  .commute-zone span { color: var(--muted); }
+  .commute-explainer {
+    max-width: 700px; margin: 1rem auto 0; text-align: center;
+    color: var(--muted); font-size: 0.85rem; line-height: 1.6;
+  }
 
   .site-footer {
     position: relative;
@@ -881,6 +905,23 @@
   .address-section-title { font-weight: 700; font-size: 0.95rem; color: var(--ink); }
   .address-section-sub { font-size: 0.82rem; color: var(--muted); margin-top: 0.1rem; }
   .address-section .field label { color: var(--ink); }
+  .address-section-sub-edit { color: var(--accent); font-weight: 600; text-decoration: none; margin-left: 0.35rem; }
+  .address-section-sub-edit:hover { text-decoration: underline; }
+
+  /* Location step's live commute-fee readout */
+  .commute-result {
+    margin-top: 0.9rem; border-radius: 14px; padding: 0.95rem 1.1rem;
+    font-size: 0.86rem; line-height: 1.5; display: none;
+  }
+  .commute-result.visible { display: block; }
+  .commute-result.state-checking { background: #f8f7fb; color: var(--muted); border: 1px solid var(--border); }
+  .commute-result.state-ok { background: var(--accent-light); border: 1px solid #e4d9ff; }
+  .commute-result.state-error { background: #fdeef2; border: 1px solid #f6cddb; color: #b0304f; }
+  .commute-result .cr-row { display: flex; justify-content: space-between; align-items: center; }
+  .commute-result .cr-row + .cr-row { margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px dashed rgba(17,17,20,0.1); font-weight: 700; }
+  .commute-result .cr-label { color: var(--muted); }
+  .commute-result.state-ok .cr-row + .cr-row .cr-label { color: var(--ink); }
+  .commute-result .cr-value { font-weight: 700; color: var(--ink); }
 
   .consent-check {
     display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 1rem;
@@ -951,6 +992,12 @@
   .summary-item .label { display: block; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .summary-item .value { display: block; font-size: 0.92rem; font-weight: 700; color: var(--ink); overflow-wrap: break-word; }
   .summary-item.price .value { color: var(--accent); font-size: 1.05rem; }
+  .summary-total {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px dashed var(--border);
+    font-size: 0.9rem; font-weight: 700; color: var(--ink);
+  }
+  .summary-total .value { color: var(--accent); font-size: 1.05rem; }
   .summary-address {
     display: flex; align-items: flex-start; gap: 0.55rem; margin-top: 0.9rem; padding-top: 0.9rem;
     border-top: 1px dashed var(--border);
@@ -1221,12 +1268,34 @@
     <div class="slot-grid" id="slot-grid"></div>
     <div class="actions">
       <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
+      <button class="btn btn-primary" id="to-location" disabled data-i18n="continue">Weiter</button>
+    </div>
+  </div>
+
+  <!-- Step 4: location (postal code) — resolved up front so the commute fee
+       is known and shown before the customer gets to the final review. -->
+  <div class="step" data-step="4">
+    <h1 data-i18n="locStepTitle">Ihr Standort</h1>
+    <p class="subtitle" data-i18n="locStepSub">Anhand Ihrer Postleitzahl berechnen wir die Anfahrtspauschale, falls eine anfällt.</p>
+    <div class="field-row">
+      <div class="field" style="flex: 0 0 130px;">
+        <label data-i18n="addressZip">PLZ</label>
+        <input type="text" id="loc-zip" inputmode="numeric" maxlength="5" placeholder="80331" />
+      </div>
+      <div class="field">
+        <label data-i18n="addressCity">Ort</label>
+        <input type="text" id="loc-city" placeholder="München" />
+      </div>
+    </div>
+    <div class="commute-result" id="commute-result"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
       <button class="btn btn-primary" id="to-details" disabled data-i18n="continue">Weiter</button>
     </div>
   </div>
 
-  <!-- Step 4: details -->
-  <div class="step" data-step="4">
+  <!-- Step 5: details -->
+  <div class="step" data-step="5">
     <h1 data-i18n="step3Title">Ihre Angaben</h1>
     <p class="subtitle" data-i18n="step3Sub">Die Bestätigung senden wir an diese Adresse.</p>
     <div class="summary" id="summary"></div>
@@ -1255,22 +1324,12 @@
         </span>
         <div>
           <div class="address-section-title" data-i18n="addressTitle">Adresse für den Vor-Ort-Termin</div>
-          <div class="address-section-sub" data-i18n="addressSub">Damit wir Sie finden: hier kommen wir zum Termin vorbei.</div>
+          <div class="address-section-sub" id="address-section-sub-known"></div>
         </div>
       </div>
       <div class="field">
         <label data-i18n="addressStreet">Straße &amp; Hausnummer</label>
         <input type="text" id="f-street" placeholder="Musterstraße 12" />
-      </div>
-      <div class="field-row">
-        <div class="field" style="flex: 0 0 130px;">
-          <label data-i18n="addressZip">PLZ</label>
-          <input type="text" id="f-zip" inputmode="numeric" placeholder="80331" />
-        </div>
-        <div class="field">
-          <label data-i18n="addressCity">Ort</label>
-          <input type="text" id="f-city" placeholder="München" />
-        </div>
       </div>
     </div>
     <div class="field">
@@ -1288,8 +1347,8 @@
     </div>
   </div>
 
-  <!-- Step 5: success -->
-  <div class="step" data-step="5">
+  <!-- Step 6: success -->
+  <div class="step" data-step="6">
     <div class="success-wrap">
       <div class="success-ring">
         <svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg>
@@ -1319,6 +1378,13 @@
   <div class="service-area-map-wrap">
     <div id="service-area-map"></div>
   </div>
+  <div class="commute-legend" id="commute-legend">
+    <span class="commute-zone" style="--zone-color:#22c55e;"><i></i><b data-i18n="commuteZone1Label">0–25 km</b><span data-i18n="commuteZone1Fee">Kostenlos</span></span>
+    <span class="commute-zone" style="--zone-color:#eab308;"><i></i><b data-i18n="commuteZone2Label">25–50 km</b><span data-i18n="commuteZone2Fee">+ 10 €</span></span>
+    <span class="commute-zone" style="--zone-color:#f97316;"><i></i><b data-i18n="commuteZone3Label">50–75 km</b><span data-i18n="commuteZone3Fee">+ 20 €</span></span>
+    <span class="commute-zone" style="--zone-color:#ef4444;"><i></i><b data-i18n="commuteZone4Label">75–100 km</b><span data-i18n="commuteZone4Fee">+ 30 €</span></span>
+  </div>
+  <p class="commute-explainer" data-i18n="commuteExplainer">Der Servicepreis gilt für Einsätze innerhalb von 25 km rund um München. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.</p>
 </div>
 
 <footer class="site-footer">
@@ -1398,6 +1464,15 @@ const I18N = {
     serviceAreaTitle: "Wo sind wir für Sie im Einsatz?",
     serviceAreaSub: "Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km.",
     serviceAreaPopup: "<b>Zettly</b><span>München &amp; Umgebung, bis 100 km</span>",
+    commuteZone1Label: "0–25 km",
+    commuteZone1Fee: "Kostenlos",
+    commuteZone2Label: "25–50 km",
+    commuteZone2Fee: "+ 10 €",
+    commuteZone3Label: "50–75 km",
+    commuteZone3Fee: "+ 20 €",
+    commuteZone4Label: "75–100 km",
+    commuteZone4Fee: "+ 30 €",
+    commuteExplainer: "Der Servicepreis gilt für Einsätze innerhalb von 25 km rund um München. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.",
     ctaBannerTitle: "Jetzt Termin buchen",
     ctaBannerSub: "In nur 2 Minuten online: schnell & unkompliziert.",
     hiwTitle: "So läuft Ihr Termin ab",
@@ -1419,6 +1494,16 @@ const I18N = {
     step2Title: "Datum & Uhrzeit wählen",
     step2Sub: "Geöffnet täglich, auch am Wochenende, 9:00–17:00 Uhr.",
     continue: "Weiter",
+    locStepTitle: "Ihr Standort",
+    locStepSub: "Anhand Ihrer Postleitzahl berechnen wir die Anfahrtspauschale, falls eine anfällt.",
+    locChecking: "Wir prüfen die Entfernung …",
+    locFillZip: "Bitte geben Sie eine gültige 5-stellige Postleitzahl ein.",
+    locFillCity: "Bitte geben Sie Ihren Ort an.",
+    locNotFound: "Diese Postleitzahl konnten wir leider nicht finden. Bitte prüfen Sie Ihre Eingabe.",
+    locOutOfArea: (km) => `Diese Adresse liegt ${Math.round(km)} km von München entfernt – außerhalb unseres 100-km-Einsatzgebiets.`,
+    locDistanceLine: (km) => `Entfernung ab München: ca. ${Math.round(km)} km`,
+    locFeeFree: "Kostenlos: innerhalb von 25 km",
+    locFeeCharged: (fee) => `Anfahrtspauschale: +${fee} €`,
     step3Title: "Ihre Angaben",
     step3Sub: "Die Bestätigung senden wir an diese Adresse.",
     firstName: "Vorname",
@@ -1427,11 +1512,16 @@ const I18N = {
     phone: "Telefon (optional)",
     addressTitle: "Adresse für den Vor-Ort-Termin",
     addressSub: "Damit wir Sie finden: hier kommen wir zum Termin vorbei.",
+    addressKnownSub: (zip, city) => `${zip} ${city} · Termin vor Ort`,
+    addressEdit: "ändern",
     addressStreet: "Straße & Hausnummer",
     addressZip: "PLZ",
     addressCity: "Ort",
     fillAddress: "Bitte geben Sie Ihre vollständige Adresse an.",
     summaryAddress: "Adresse",
+    summaryCommute: "Anfahrt",
+    summaryTotal: "Gesamt",
+    commuteFreeShort: "Kostenlos",
     consentLabel: 'Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.',
     fillConsent: "Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.",
     notes: "Was sollten wir wissen? (optional)",
@@ -1492,6 +1582,15 @@ const I18N = {
     serviceAreaTitle: "Where are we available?",
     serviceAreaSub: "From Munich, we cover the whole surrounding region – within a 100 km radius.",
     serviceAreaPopup: "<b>Zettly</b><span>Munich &amp; surroundings, up to 100 km</span>",
+    commuteZone1Label: "0–25 km",
+    commuteZone1Fee: "Free",
+    commuteZone2Label: "25–50 km",
+    commuteZone2Fee: "+ €10",
+    commuteZone3Label: "50–75 km",
+    commuteZone3Fee: "+ €20",
+    commuteZone4Label: "75–100 km",
+    commuteZone4Fee: "+ €30",
+    commuteExplainer: "The service price applies to visits within 25 km of Munich. Further addresses get a tiered call-out fee based on distance – you'll see the exact surcharge as soon as you enter your postal code during booking.",
     ctaBannerTitle: "Book an appointment now",
     ctaBannerSub: "Online in just 2 minutes: fast & simple.",
     hiwTitle: "How your appointment works",
@@ -1513,6 +1612,16 @@ const I18N = {
     step2Title: "Pick a date & time",
     step2Sub: "Open every day, including weekends, 9:00–17:00.",
     continue: "Continue",
+    locStepTitle: "Your location",
+    locStepSub: "We use your postal code to work out the call-out fee, if any applies.",
+    locChecking: "Checking the distance …",
+    locFillZip: "Please enter a valid 5-digit postal code.",
+    locFillCity: "Please enter your city.",
+    locNotFound: "We couldn't find that postal code. Please double-check it.",
+    locOutOfArea: (km) => `This address is ${Math.round(km)} km from Munich – outside our 100 km service area.`,
+    locDistanceLine: (km) => `Distance from Munich: approx. ${Math.round(km)} km`,
+    locFeeFree: "Free: within 25 km",
+    locFeeCharged: (fee) => `Call-out fee: +€${fee}`,
     step3Title: "Your details",
     step3Sub: "We'll send your confirmation here.",
     firstName: "First name",
@@ -1521,11 +1630,16 @@ const I18N = {
     phone: "Phone (optional)",
     addressTitle: "Address for the on-site visit",
     addressSub: "So we can find you: this is where we'll come for the appointment.",
+    addressKnownSub: (zip, city) => `${zip} ${city} · on-site appointment`,
+    addressEdit: "edit",
     addressStreet: "Street & house number",
     addressZip: "Postcode",
     addressCity: "City",
     fillAddress: "Please enter your full address.",
     summaryAddress: "Address",
+    summaryCommute: "Call-out",
+    summaryTotal: "Total",
+    commuteFreeShort: "Free",
     consentLabel: 'I have read the <a href="/datenschutz/" target="_blank" rel="noopener">privacy policy</a> and agree that my details will be stored and processed to handle my booking.',
     fillConsent: "Please agree to the privacy policy to continue.",
     notes: "Anything we should know? (optional)",
@@ -1556,7 +1670,15 @@ let lang = localStorage.getItem("zettly_lang") || "de";
 
 // state.treePath: [{ node, choiceId, choiceLabel }] | the branch nodes and
 // choices made from the category root down to (but not including) the leaf.
-const state = { audience: null, categoryId: null, category: null, currentNode: null, treePath: [], service: null, date: null, time: null };
+const state = {
+  audience: null, categoryId: null, category: null, currentNode: null, treePath: [], service: null, date: null, time: null,
+  // Location/commute: zip+city are resolved on their own step (before the
+  // final details form) so the customer sees the Anfahrt fee, if any,
+  // before they get to the last screen. commuteStatus mirrors what
+  // /api/commute last returned: null (not checked yet), "checking",
+  // "ok", or "error".
+  zip: null, city: null, commuteFee: 0, commuteDistanceKm: null, commuteStatus: null, commuteErrorReason: null,
+};
 let CATALOG = { home: [], business: [] };
 
 function t(key) { return I18N[lang][key]; }
@@ -1590,7 +1712,8 @@ function setLang(newLang) {
   if (document.querySelector('.step[data-step="1"]').classList.contains("visible")) renderCategoryGrid();
   if (document.querySelector('.step[data-step="2"]').classList.contains("visible")) renderTreeStep();
   if (state.date) renderSlots();
-  if (document.querySelector('.step[data-step="4"]').classList.contains("visible")) renderSummary("summary");
+  if (document.querySelector('.step[data-step="4"]').classList.contains("visible")) renderCommuteResult();
+  if (document.querySelector('.step[data-step="5"]').classList.contains("visible")) { updateAddressKnownLine(); renderSummary("summary"); }
   if (typeof updateServiceAreaPopup === "function") updateServiceAreaPopup();
 }
 
@@ -1599,7 +1722,7 @@ document.getElementById("lang-switch").addEventListener("click", (e) => {
   if (btn) setLang(btn.dataset.lang);
 });
 
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 7;
 
 function showStep(n) {
   document.querySelectorAll(".step").forEach(el => {
@@ -2014,7 +2137,7 @@ async function selectDate(chip) {
   chip.classList.add("selected");
   state.date = chip.dataset.date;
   state.time = null;
-  document.getElementById("to-details").disabled = true;
+  document.getElementById("to-location").disabled = true;
   await renderSlots();
 }
 
@@ -2038,7 +2161,7 @@ async function renderSlots() {
           document.querySelectorAll(".slot").forEach(x => x.classList.remove("selected"));
           el.classList.add("selected");
           state.time = s.time;
-          document.getElementById("to-details").disabled = false;
+          document.getElementById("to-location").disabled = false;
         });
       }
       grid.appendChild(el);
@@ -2086,13 +2209,115 @@ function renderSummary(targetId) {
         <span class="ico">${SUMMARY_ICONS.price}</span>
         <span class="meta"><span class="label">${t("summaryPrice")}</span><span class="value">${fmtPrice(state.service)}</span></span>
       </div>
+      ${state.commuteStatus === "ok" ? `
+      <div class="summary-item price">
+        <span class="ico">${SUMMARY_ICONS.location}</span>
+        <span class="meta"><span class="label">${t("summaryCommute")}</span><span class="value">${state.commuteFee > 0 ? fmtEuro(state.commuteFee) : t("commuteFreeShort")}</span></span>
+      </div>` : ""}
     </div>
+    ${state.commuteStatus === "ok" && !state.service.quote ? `
+    <div class="summary-total">
+      <span class="label">${t("summaryTotal")}</span>
+      <span class="value">${fmtEuro(state.service.price + state.commuteFee)}</span>
+    </div>` : ""}
     ${state.address ? `
     <div class="summary-address">
       <span class="ico">${SUMMARY_ICONS.location}</span>
       <span class="meta"><span class="label">${t("summaryAddress")}</span><span class="value">${state.address}</span></span>
     </div>` : ""}
   `;
+}
+
+// ---- Location step: postal code -> commute (Anfahrt) fee ------------------
+let commuteCheckToken = 0;
+async function checkCommute(zip) {
+  const myToken = ++commuteCheckToken;
+  state.commuteStatus = "checking";
+  state.commuteErrorReason = null;
+  renderCommuteResult();
+  try {
+    const res = await fetch(`/api/commute?plz=${encodeURIComponent(zip)}`);
+    const data = await res.json();
+    if (myToken !== commuteCheckToken) return; // a newer check superseded this one
+    if (data.ok) {
+      state.commuteStatus = "ok";
+      state.commuteFee = data.fee;
+      state.commuteDistanceKm = data.distanceKm;
+    } else {
+      state.commuteStatus = "error";
+      state.commuteErrorReason = data.reason;
+      state.commuteDistanceKm = data.distanceKm ?? null;
+      state.commuteFee = 0;
+    }
+  } catch {
+    if (myToken !== commuteCheckToken) return;
+    state.commuteStatus = "error";
+    state.commuteErrorReason = "network";
+    state.commuteFee = 0;
+  }
+  renderCommuteResult();
+  document.getElementById("to-details").disabled = state.commuteStatus !== "ok";
+}
+
+function renderCommuteResult() {
+  const el = document.getElementById("commute-result");
+  if (!el) return;
+  if (!state.commuteStatus) {
+    el.className = "commute-result";
+    el.innerHTML = "";
+    return;
+  }
+  if (state.commuteStatus === "checking") {
+    el.className = "commute-result visible state-checking";
+    el.innerHTML = `<div class="cr-row"><span>${t("locChecking")}</span></div>`;
+    return;
+  }
+  if (state.commuteStatus === "error") {
+    const msg =
+      state.commuteErrorReason === "out_of_area" && state.commuteDistanceKm != null
+        ? t("locOutOfArea")(state.commuteDistanceKm)
+        : t("locNotFound");
+    el.className = "commute-result visible state-error";
+    el.innerHTML = `<div class="cr-row"><span>${msg}</span></div>`;
+    return;
+  }
+  // ok
+  el.className = "commute-result visible state-ok";
+  el.innerHTML = `
+    <div class="cr-row"><span class="cr-label">${t("locDistanceLine")(state.commuteDistanceKm)}</span></div>
+    <div class="cr-row"><span class="cr-label">${state.commuteFee > 0 ? t("locFeeCharged")(state.commuteFee) : t("locFeeFree")}</span></div>
+  `;
+}
+
+let commuteDebounceHandle = null;
+function onLocationInputChange() {
+  const zip = document.getElementById("loc-zip").value.trim();
+  const city = document.getElementById("loc-city").value.trim();
+  state.zip = zip || null;
+  state.city = city || null;
+  document.getElementById("to-details").disabled = true;
+  if (commuteDebounceHandle) clearTimeout(commuteDebounceHandle);
+  if (!/^\d{5}$/.test(zip) || !city) {
+    state.commuteStatus = null;
+    renderCommuteResult();
+    return;
+  }
+  commuteDebounceHandle = setTimeout(() => checkCommute(zip), 500);
+}
+document.getElementById("loc-zip").addEventListener("input", onLocationInputChange);
+document.getElementById("loc-city").addEventListener("input", onLocationInputChange);
+
+// Once the location step is done, the details step shows the resolved
+// PLZ/city as a read-only line instead of asking for it again, with a link
+// back to the location step if it needs correcting.
+function updateAddressKnownLine() {
+  const el = document.getElementById("address-section-sub-known");
+  if (!el || !state.zip || !state.city) return;
+  el.innerHTML = `${t("addressKnownSub")(state.zip, state.city)} <a href="#" class="address-section-sub-edit" id="address-edit-link">${t("addressEdit")}</a>`;
+  document.getElementById("address-edit-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    showStep(4);
+  });
 }
 
 document.querySelectorAll(".path-card[data-audience]").forEach(card => {
@@ -2112,9 +2337,14 @@ document.querySelectorAll('[data-action="back"]').forEach(btn => {
   });
 });
 
-document.getElementById("to-details").addEventListener("click", () => {
-  renderSummary("summary");
+document.getElementById("to-location").addEventListener("click", () => {
   showStep(4);
+});
+
+document.getElementById("to-details").addEventListener("click", () => {
+  updateAddressKnownLine();
+  renderSummary("summary");
+  showStep(5);
 });
 
 document.getElementById("submit-booking").addEventListener("click", async () => {
@@ -2124,8 +2354,8 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
   const email = document.getElementById("f-email").value.trim();
   const phone = document.getElementById("f-phone").value.trim();
   const street = document.getElementById("f-street").value.trim();
-  const zip = document.getElementById("f-zip").value.trim();
-  const city = document.getElementById("f-city").value.trim();
+  const zip = state.zip;
+  const city = state.city;
   const address = [street, [zip, city].filter(Boolean).join(" ")].filter(Boolean).join(", ");
   const notes = document.getElementById("f-notes").value.trim();
   const errorEl = document.getElementById("form-error");
@@ -2162,7 +2392,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         path: state.service.path,
         date: state.date,
         time: state.time,
-        name, email, phone, address, notes, lang,
+        name, email, phone, address, zip: state.zip, notes, lang,
       }),
     });
     const data = await res.json();
@@ -2182,7 +2412,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
     document.getElementById("booking-ref-value").textContent = data.bookingRef || "";
     state.address = address;
     renderSummary("success-summary");
-    showStep(5);
+    showStep(6);
   } catch (e) {
     errorEl.textContent = t("networkError");
     errorEl.style.display = "block";
@@ -2193,10 +2423,27 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
 
 document.getElementById("footer-year").textContent = new Date().getFullYear();
 
-// Munich-centered coverage map: a plain OpenStreetMap tile layer (no API
-// key needed) with a 100km circle around the city, shown just above the
-// footer. Built once; only the popup text needs to follow language changes.
+// Munich-centered coverage map: a clean "roadmap"-style tile layer (no API
+// key needed) with four priced distance rings (25/50/75/100km) around the
+// city, shown just above the footer. Panning is boxed to Germany so the
+// map doesn't wander into Austria, right across the border from Munich.
+// Built once; only the popup text needs to follow language changes.
 const MUNICH_LATLNG = [48.1351, 11.582];
+// A commute zone's outer radius (km) and the ring color used on the map —
+// kept in one place alongside COMMUTE_ZONES-equivalent pricing so the map
+// and the legend/explainer text below it never drift out of sync.
+const COMMUTE_ZONES_UI = [
+  { km: 25, color: "#22c55e" }, // free
+  { km: 50, color: "#eab308" }, // +10€
+  { km: 75, color: "#f97316" }, // +20€
+  { km: 100, color: "#ef4444" }, // +30€
+];
+// Roughly Germany's own footprint, trimmed on the south-east edge so the
+// view stops at the Bavarian border instead of continuing into Austria.
+const GERMANY_BOUNDS = [
+  [47.65, 7.3], // SW, pulled north of the Austrian border near Munich
+  [55.1, 15.2], // NE
+];
 let serviceAreaPopup = null;
 function initServiceAreaMap() {
   if (typeof L === "undefined" || !document.getElementById("service-area-map")) return;
@@ -2204,26 +2451,41 @@ function initServiceAreaMap() {
     scrollWheelZoom: false,
     center: MUNICH_LATLNG,
     zoom: 7,
+    maxBounds: GERMANY_BOUNDS,
+    maxBoundsViscosity: 1.0,
+    minZoom: 6,
   });
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  // CartoDB Voyager: a clean, modern "roadmap" style (like Google/Apple
+  // Maps) rather than the busier default OpenStreetMap rendering or any
+  // satellite imagery.
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
     maxZoom: 18,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: "abcd",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
   }).addTo(map);
 
-  const circle = L.circle(MUNICH_LATLNG, {
-    radius: 100000, // meters
-    color: "#7C3AED",
-    weight: 2,
-    fillColor: "#7C3AED",
-    fillOpacity: 0.08,
-  }).addTo(map);
-  map.fitBounds(circle.getBounds(), { padding: [8, 8] });
+  // Drawn largest-first so each smaller, differently-colored circle sits on
+  // top and fully covers the larger one underneath it within its own
+  // radius — the standard trick for turning solid circles into rings.
+  let outerBounds = null;
+  [...COMMUTE_ZONES_UI].reverse().forEach((zone) => {
+    const circle = L.circle(MUNICH_LATLNG, {
+      radius: zone.km * 1000,
+      color: zone.color,
+      weight: 1.5,
+      opacity: 0.7,
+      fillColor: zone.color,
+      fillOpacity: 0.22,
+    }).addTo(map);
+    if (!outerBounds) outerBounds = circle.getBounds();
+  });
+  map.fitBounds(outerBounds, { padding: [8, 8] });
 
   const marker = L.circleMarker(MUNICH_LATLNG, {
     radius: 8,
     color: "#fff",
     weight: 2,
-    fillColor: "#7C3AED",
+    fillColor: "#111114",
     fillOpacity: 1,
   }).addTo(map);
   serviceAreaPopup = marker.bindPopup(t("serviceAreaPopup")).getPopup();
