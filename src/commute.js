@@ -1,5 +1,5 @@
 // On-site visits are priced with a distance-based "Anfahrt" (call-out) fee,
-// banded into four zones radiating from the Munich office. This module
+// banded into five zones radiating from the Munich office. This module
 // turns a customer-entered German postal code into that fee: geocode the
 // postal code (via Nominatim, no API key needed), measure the straight-line
 // distance from Munich, and look up which band it falls in.
@@ -15,9 +15,10 @@ export const MUNICH = { lat: 48.1351, lon: 11.582 };
 // service price. A postal code further than the last band's bound is
 // outside the service area entirely.
 export const COMMUTE_ZONES = [
-  { maxKm: 25, fee: 0 },
-  { maxKm: 50, fee: 10 },
-  { maxKm: 75, fee: 20 },
+  { maxKm: 15, fee: 0 },
+  { maxKm: 25, fee: 10 },
+  { maxKm: 50, fee: 20 },
+  { maxKm: 75, fee: 25 },
   { maxKm: 100, fee: 30 },
 ];
 
@@ -47,20 +48,24 @@ export function zoneForDistance(km) {
 
 // Nominatim (OpenStreetMap's free geocoder) is rate-limited and asks every
 // caller to identify itself with a real contact — hence the explicit
-// User-Agent rather than a generic fetch.
+// User-Agent rather than a generic fetch. addressdetails=1 also gets us the
+// place name (city/town/village), so the booking form can fill that field
+// in for the customer instead of asking them to type it separately.
 async function geocodePostalCode(plz) {
-  const url = `https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(plz)}&country=Germany&format=json&limit=1`;
+  const url = `https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(plz)}&country=Germany&format=json&addressdetails=1&limit=1`;
   const res = await fetch(url, {
     headers: { "User-Agent": "ZettlyBooking/1.0 (kontakt@zettly.de)" },
   });
   if (!res.ok) return null;
   const results = await res.json();
   if (!Array.isArray(results) || !results.length) return null;
-  const { lat, lon } = results[0];
+  const { lat, lon, address } = results[0];
   const latNum = parseFloat(lat);
   const lonNum = parseFloat(lon);
   if (!Number.isFinite(latNum) || !Number.isFinite(lonNum)) return null;
-  return { lat: latNum, lon: lonNum };
+  const place =
+    (address && (address.city || address.town || address.village || address.municipality || address.county)) || null;
+  return { lat: latNum, lon: lonNum, place };
 }
 
 const PLZ_RE = /^\d{5}$/;
@@ -68,7 +73,7 @@ const PLZ_RE = /^\d{5}$/;
 /**
  * Resolve a German postal code to a distance from Munich and its commute
  * fee. Returns one of:
- *   { ok: true, distanceKm, fee, zoneIndex }
+ *   { ok: true, distanceKm, fee, zoneIndex, place }
  *   { ok: false, reason: "invalid_plz" | "not_found" | "out_of_area", distanceKm? }
  */
 export async function computeCommute(plz) {
@@ -87,5 +92,5 @@ export async function computeCommute(plz) {
   const zone = zoneForDistance(distanceKm);
   if (!zone) return { ok: false, reason: "out_of_area", distanceKm };
 
-  return { ok: true, distanceKm, fee: zone.fee, zoneIndex: zone.index };
+  return { ok: true, distanceKm, fee: zone.fee, zoneIndex: zone.index, place: point.place };
 }

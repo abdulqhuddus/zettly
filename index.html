@@ -388,7 +388,10 @@
     max-width: 1180px;
     padding: 1.5rem 1.25rem 0.5rem;
     margin: 0.5rem 0 0.5rem;
+    transition: opacity 0.25s ease, max-height 0.3s ease;
+    overflow: hidden;
   }
+  .service-area.collapsed { display: none; }
   .service-area h2 {
     text-align: center;
     font-size: clamp(1.5rem, 3vw, 1.9rem);
@@ -910,18 +913,29 @@
 
   /* Location step's live commute-fee readout */
   .commute-result {
-    margin-top: 0.9rem; border-radius: 14px; padding: 0.95rem 1.1rem;
+    margin-top: 0.9rem; border-radius: 14px; padding: 1rem 1.1rem;
     font-size: 0.86rem; line-height: 1.5; display: none;
   }
   .commute-result.visible { display: block; }
   .commute-result.state-checking { background: #f8f7fb; color: var(--muted); border: 1px solid var(--border); }
   .commute-result.state-ok { background: var(--accent-light); border: 1px solid #e4d9ff; }
   .commute-result.state-error { background: #fdeef2; border: 1px solid #f6cddb; color: #b0304f; }
-  .commute-result .cr-row { display: flex; justify-content: space-between; align-items: center; }
-  .commute-result .cr-row + .cr-row { margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px dashed rgba(17,17,20,0.1); font-weight: 700; }
-  .commute-result .cr-label { color: var(--muted); }
-  .commute-result.state-ok .cr-row + .cr-row .cr-label { color: var(--ink); }
+  /* The out-of-area state is deliberately warm/celebratory rather than
+     red — see renderCommuteResult()'s comment on why. */
+  .commute-result.state-milestone { background: #fff7ed; border: 1px solid #fde3c4; color: #9a5b12; }
+  .commute-result .cr-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-weight: 800; color: var(--ink); font-size: 0.9rem; margin-bottom: 0.7rem;
+  }
+  .commute-result .cr-header-ico { display: inline-flex; width: 20px; height: 20px; color: var(--accent); flex: 0 0 auto; }
+  .commute-result .cr-header-ico svg { width: 100%; height: 100%; }
+  .commute-result .cr-row { display: flex; justify-content: space-between; align-items: center; padding: 0.2rem 0; }
+  .commute-result .cr-row.cr-fee { margin-top: 0.25rem; padding-top: 0.5rem; border-top: 1px dashed rgba(17,17,20,0.1); }
+  .commute-result .cr-label { color: var(--muted); font-weight: 600; }
+  .commute-result .cr-row.cr-fee .cr-label { color: var(--ink); font-weight: 800; }
   .commute-result .cr-value { font-weight: 700; color: var(--ink); }
+  .commute-result .cr-row.cr-fee .cr-value { font-size: 1.05rem; color: var(--accent); }
+  .commute-result .cr-value.cr-free { color: #16a34a; }
 
   .consent-check {
     display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 1rem;
@@ -992,12 +1006,25 @@
   .summary-item .label { display: block; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .summary-item .value { display: block; font-size: 0.92rem; font-weight: 700; color: var(--ink); overflow-wrap: break-word; }
   .summary-item.price .value { color: var(--accent); font-size: 1.05rem; }
-  .summary-total {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px dashed var(--border);
-    font-size: 0.9rem; font-weight: 700; color: var(--ink);
+  /* Price breakdown: service price, call-out fee, total — as a clean,
+     receipt-like stack of rows rather than squeezed in among the icon
+     grid above, which made the price and the commute fee hard to relate
+     to each other at a glance. */
+  .price-breakdown {
+    margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 14px;
+    background: #f8f7fb; border: 1px solid var(--border);
   }
-  .summary-total .value { color: var(--accent); font-size: 1.05rem; }
+  .pb-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; padding: 0.3rem 0; }
+  .pb-label { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-weight: 600; }
+  .pb-ico { display: inline-flex; width: 18px; height: 18px; color: var(--accent); flex: 0 0 auto; }
+  .pb-ico svg { width: 100%; height: 100%; }
+  .pb-value { font-weight: 700; color: var(--ink); }
+  .pb-value.pb-free { color: #16a34a; }
+  .pb-row.pb-total {
+    margin-top: 0.3rem; padding-top: 0.65rem; border-top: 1px dashed var(--border);
+  }
+  .pb-row.pb-total .pb-label { color: var(--ink); font-weight: 800; }
+  .pb-row.pb-total .pb-value { color: var(--accent); font-size: 1.1rem; }
   .summary-address {
     display: flex; align-items: flex-start; gap: 0.55rem; margin-top: 0.9rem; padding-top: 0.9rem;
     border-top: 1px dashed var(--border);
@@ -1379,10 +1406,11 @@
     <div id="service-area-map"></div>
   </div>
   <div class="commute-legend" id="commute-legend">
-    <span class="commute-zone" style="--zone-color:#22c55e;"><i></i><b data-i18n="commuteZone1Label">0–25 km</b><span data-i18n="commuteZone1Fee">Kostenlos</span></span>
-    <span class="commute-zone" style="--zone-color:#eab308;"><i></i><b data-i18n="commuteZone2Label">25–50 km</b><span data-i18n="commuteZone2Fee">+ 10 €</span></span>
-    <span class="commute-zone" style="--zone-color:#f97316;"><i></i><b data-i18n="commuteZone3Label">50–75 km</b><span data-i18n="commuteZone3Fee">+ 20 €</span></span>
-    <span class="commute-zone" style="--zone-color:#ef4444;"><i></i><b data-i18n="commuteZone4Label">75–100 km</b><span data-i18n="commuteZone4Fee">+ 30 €</span></span>
+    <span class="commute-zone" style="--zone-color:#16a34a;"><i></i><b data-i18n="commuteZone1Label">0–15 km</b><span data-i18n="commuteZone1Fee">Kostenlos</span></span>
+    <span class="commute-zone" style="--zone-color:#2563eb;"><i></i><b data-i18n="commuteZone2Label">15–25 km</b><span data-i18n="commuteZone2Fee">+ 10 €</span></span>
+    <span class="commute-zone" style="--zone-color:#f59e0b;"><i></i><b data-i18n="commuteZone3Label">25–50 km</b><span data-i18n="commuteZone3Fee">+ 20 €</span></span>
+    <span class="commute-zone" style="--zone-color:#f97316;"><i></i><b data-i18n="commuteZone4Label">50–75 km</b><span data-i18n="commuteZone4Fee">+ 25 €</span></span>
+    <span class="commute-zone" style="--zone-color:#dc2626;"><i></i><b data-i18n="commuteZone5Label">75–100 km</b><span data-i18n="commuteZone5Fee">+ 30 €</span></span>
   </div>
   <p class="commute-explainer" data-i18n="commuteExplainer">Der Servicepreis gilt für Einsätze innerhalb von 25 km rund um München. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.</p>
 </div>
@@ -1464,15 +1492,17 @@ const I18N = {
     serviceAreaTitle: "Wo sind wir für Sie im Einsatz?",
     serviceAreaSub: "Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km.",
     serviceAreaPopup: "<b>Zettly</b><span>München &amp; Umgebung, bis 100 km</span>",
-    commuteZone1Label: "0–25 km",
+    commuteZone1Label: "0–15 km",
     commuteZone1Fee: "Kostenlos",
-    commuteZone2Label: "25–50 km",
+    commuteZone2Label: "15–25 km",
     commuteZone2Fee: "+ 10 €",
-    commuteZone3Label: "50–75 km",
+    commuteZone3Label: "25–50 km",
     commuteZone3Fee: "+ 20 €",
-    commuteZone4Label: "75–100 km",
-    commuteZone4Fee: "+ 30 €",
-    commuteExplainer: "Der Servicepreis gilt für Einsätze innerhalb von 25 km rund um München. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.",
+    commuteZone4Label: "50–75 km",
+    commuteZone4Fee: "+ 25 €",
+    commuteZone5Label: "75–100 km",
+    commuteZone5Fee: "+ 30 €",
+    commuteExplainer: "Der Servicepreis gilt für Einsätze innerhalb von 15 km rund um München. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.",
     ctaBannerTitle: "Jetzt Termin buchen",
     ctaBannerSub: "In nur 2 Minuten online: schnell & unkompliziert.",
     hiwTitle: "So läuft Ihr Termin ab",
@@ -1497,13 +1527,16 @@ const I18N = {
     locStepTitle: "Ihr Standort",
     locStepSub: "Anhand Ihrer Postleitzahl berechnen wir die Anfahrtspauschale, falls eine anfällt.",
     locChecking: "Wir prüfen die Entfernung …",
+    locResultTitle: "Anfahrt",
+    locOutOfAreaTitle: "Ein kleiner Meilenstein!",
+    locOutOfAreaGeneric: "Sie sind die/der Erste, die/der versucht, von so weit weg bei uns zu buchen – wir freuen uns riesig über Ihr Interesse! Dieses Gebiet gehört noch nicht zu unserem Einsatzbereich, aber wir wachsen stetig und decken schon bald hoffentlich auch Ihre Region ab.",
     locFillZip: "Bitte geben Sie eine gültige 5-stellige Postleitzahl ein.",
     locFillCity: "Bitte geben Sie Ihren Ort an.",
     locNotFound: "Diese Postleitzahl konnten wir leider nicht finden. Bitte prüfen Sie Ihre Eingabe.",
-    locOutOfArea: (km) => `Diese Adresse liegt ${Math.round(km)} km von München entfernt – außerhalb unseres 100-km-Einsatzgebiets.`,
-    locDistanceLine: (km) => `Entfernung ab München: ca. ${Math.round(km)} km`,
-    locFeeFree: "Kostenlos: innerhalb von 25 km",
-    locFeeCharged: (fee) => `Anfahrtspauschale: +${fee} €`,
+    locOutOfArea: (km) => `Sie sind sage und schreibe ${Math.round(km)} km von München entfernt – und damit die/der Erste in dieser Gegend, die/der versucht, bei uns zu buchen! Das ist für uns ein kleiner Meilenstein. Dieses Gebiet liegt aktuell noch außerhalb unseres 100-km-Einsatzbereichs, aber wir wachsen stetig und hoffen, schon bald auch Sie erreichen zu können.`,
+    locDistanceLine: "Entfernung ab München",
+    locFeeLabel: "Anfahrtspauschale",
+    locFeeFree: "Kostenlos",
     step3Title: "Ihre Angaben",
     step3Sub: "Die Bestätigung senden wir an diese Adresse.",
     firstName: "Vorname",
@@ -1582,15 +1615,17 @@ const I18N = {
     serviceAreaTitle: "Where are we available?",
     serviceAreaSub: "From Munich, we cover the whole surrounding region – within a 100 km radius.",
     serviceAreaPopup: "<b>Zettly</b><span>Munich &amp; surroundings, up to 100 km</span>",
-    commuteZone1Label: "0–25 km",
+    commuteZone1Label: "0–15 km",
     commuteZone1Fee: "Free",
-    commuteZone2Label: "25–50 km",
+    commuteZone2Label: "15–25 km",
     commuteZone2Fee: "+ €10",
-    commuteZone3Label: "50–75 km",
+    commuteZone3Label: "25–50 km",
     commuteZone3Fee: "+ €20",
-    commuteZone4Label: "75–100 km",
-    commuteZone4Fee: "+ €30",
-    commuteExplainer: "The service price applies to visits within 25 km of Munich. Further addresses get a tiered call-out fee based on distance – you'll see the exact surcharge as soon as you enter your postal code during booking.",
+    commuteZone4Label: "50–75 km",
+    commuteZone4Fee: "+ €25",
+    commuteZone5Label: "75–100 km",
+    commuteZone5Fee: "+ €30",
+    commuteExplainer: "The service price applies to visits within 15 km of Munich. Further addresses get a tiered call-out fee based on distance – you'll see the exact surcharge as soon as you enter your postal code during booking.",
     ctaBannerTitle: "Book an appointment now",
     ctaBannerSub: "Online in just 2 minutes: fast & simple.",
     hiwTitle: "How your appointment works",
@@ -1615,13 +1650,16 @@ const I18N = {
     locStepTitle: "Your location",
     locStepSub: "We use your postal code to work out the call-out fee, if any applies.",
     locChecking: "Checking the distance …",
+    locResultTitle: "Call-out",
+    locOutOfAreaTitle: "A little milestone!",
+    locOutOfAreaGeneric: "You're the first to try booking with us from this far away – we're genuinely thrilled about your interest! This area isn't part of our service area just yet, but we're growing steadily and hope to cover your region soon too.",
     locFillZip: "Please enter a valid 5-digit postal code.",
     locFillCity: "Please enter your city.",
     locNotFound: "We couldn't find that postal code. Please double-check it.",
-    locOutOfArea: (km) => `This address is ${Math.round(km)} km from Munich – outside our 100 km service area.`,
-    locDistanceLine: (km) => `Distance from Munich: approx. ${Math.round(km)} km`,
-    locFeeFree: "Free: within 25 km",
-    locFeeCharged: (fee) => `Call-out fee: +€${fee}`,
+    locOutOfArea: (km) => `You're a whopping ${Math.round(km)} km from Munich – making you the first person in that area to try booking with us! That's a little milestone for us. It's outside our 100 km service area for now, but we're growing steadily and hope to reach you soon too.`,
+    locDistanceLine: "Distance from Munich",
+    locFeeLabel: "Call-out fee",
+    locFeeFree: "Free",
     step3Title: "Your details",
     step3Sub: "We'll send your confirmation here.",
     firstName: "First name",
@@ -1732,6 +1770,10 @@ function showStep(n) {
   document.querySelector(".trust-strip").classList.toggle("wide", n === 1);
   document.getElementById("how-it-works").classList.toggle("collapsed", n !== 0);
   document.getElementById("cta-banner").classList.toggle("collapsed", n !== 0);
+  // The coverage map is a lot of scrolling to carry through every step of
+  // an in-progress booking; only show it on the home screen and again on
+  // the location step, where it actually explains what's being asked.
+  document.getElementById("service-area").classList.toggle("collapsed", n !== 0 && n !== 4);
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
@@ -2177,6 +2219,7 @@ const SUMMARY_ICONS = {
   price: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M9.5 15s.8 1 2.5 1 2.5-.8 2.5-1.8-1-1.5-2.5-1.7-2.5-.7-2.5-1.7S10.5 9 12 9s2 .5 2.3 1" ${ICON_STROKE}/><path d="M12 7.3v1M12 15.7v1" ${ICON_STROKE}/></svg>`,
   duration: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" ${ICON_STROKE}/><path d="M12 8v4l2.5 1.5" ${ICON_STROKE}/></svg>`,
   location: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z" ${ICON_STROKE}/><circle cx="12" cy="9.5" r="2.4" ${ICON_STROKE}/></svg>`,
+  car: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 11.5l1.3-4A2 2 0 0 1 8.2 6h7.6a2 2 0 0 1 1.9 1.5l1.3 4" ${ICON_STROKE}/><rect x="3" y="11.5" width="18" height="5.5" rx="2" ${ICON_STROKE}/><circle cx="7.5" cy="17" r="1.4" fill="#7C3AED"/><circle cx="16.5" cy="17" r="1.4" fill="#7C3AED"/></svg>`,
 };
 
 function renderSummary(targetId) {
@@ -2205,21 +2248,23 @@ function renderSummary(targetId) {
         <span class="ico">${SUMMARY_ICONS.clock}</span>
         <span class="meta"><span class="label">${t("summaryTime")}</span><span class="value">${state.time}</span></span>
       </div>
-      <div class="summary-item price">
-        <span class="ico">${SUMMARY_ICONS.price}</span>
-        <span class="meta"><span class="label">${t("summaryPrice")}</span><span class="value">${fmtPrice(state.service)}</span></span>
+    </div>
+    <div class="price-breakdown">
+      <div class="pb-row">
+        <span class="pb-label"><span class="pb-ico">${SUMMARY_ICONS.price}</span>${t("summaryPrice")}</span>
+        <span class="pb-value">${fmtPrice(state.service)}</span>
       </div>
       ${state.commuteStatus === "ok" ? `
-      <div class="summary-item price">
-        <span class="ico">${SUMMARY_ICONS.location}</span>
-        <span class="meta"><span class="label">${t("summaryCommute")}</span><span class="value">${state.commuteFee > 0 ? fmtEuro(state.commuteFee) : t("commuteFreeShort")}</span></span>
+      <div class="pb-row">
+        <span class="pb-label"><span class="pb-ico">${SUMMARY_ICONS.car}</span>${t("summaryCommute")}</span>
+        <span class="pb-value${state.commuteFee > 0 ? "" : " pb-free"}">${state.commuteFee > 0 ? "+" + fmtEuro(state.commuteFee) : t("commuteFreeShort")}</span>
+      </div>` : ""}
+      ${state.commuteStatus === "ok" && !state.service.quote ? `
+      <div class="pb-row pb-total">
+        <span class="pb-label">${t("summaryTotal")}</span>
+        <span class="pb-value">${fmtEuro(state.service.price + state.commuteFee)}</span>
       </div>` : ""}
     </div>
-    ${state.commuteStatus === "ok" && !state.service.quote ? `
-    <div class="summary-total">
-      <span class="label">${t("summaryTotal")}</span>
-      <span class="value">${fmtEuro(state.service.price + state.commuteFee)}</span>
-    </div>` : ""}
     ${state.address ? `
     <div class="summary-address">
       <span class="ico">${SUMMARY_ICONS.location}</span>
@@ -2243,10 +2288,23 @@ async function checkCommute(zip) {
       state.commuteStatus = "ok";
       state.commuteFee = data.fee;
       state.commuteDistanceKm = data.distanceKm;
+      // Auto-fill the city from the postal code so the customer doesn't
+      // have to type it too; leave it alone if they've already typed
+      // something themselves that the lookup didn't just produce.
+      const cityInput = document.getElementById("loc-city");
+      if (data.place && (!cityInput.value.trim() || cityInput.dataset.autofilled === "1")) {
+        cityInput.value = data.place;
+        cityInput.dataset.autofilled = "1";
+        state.city = data.place;
+      }
+    } else if (data.reason === "out_of_area") {
+      state.commuteStatus = "outOfArea";
+      state.commuteDistanceKm = data.distanceKm ?? null;
+      state.commuteFee = 0;
     } else {
       state.commuteStatus = "error";
       state.commuteErrorReason = data.reason;
-      state.commuteDistanceKm = data.distanceKm ?? null;
+      state.commuteDistanceKm = null;
       state.commuteFee = 0;
     }
   } catch {
@@ -2272,20 +2330,27 @@ function renderCommuteResult() {
     el.innerHTML = `<div class="cr-row"><span>${t("locChecking")}</span></div>`;
     return;
   }
+  if (state.commuteStatus === "outOfArea") {
+    // Deliberately warm, not an error red: the person just found the edge
+    // of where we operate today, not something they got wrong.
+    el.className = "commute-result visible state-milestone";
+    el.innerHTML = `
+      <div class="cr-header"><span class="cr-header-ico">🎉</span>${t("locOutOfAreaTitle")}</div>
+      <div class="cr-row"><span>${state.commuteDistanceKm != null ? t("locOutOfArea")(state.commuteDistanceKm) : t("locOutOfAreaGeneric")}</span></div>
+    `;
+    return;
+  }
   if (state.commuteStatus === "error") {
-    const msg =
-      state.commuteErrorReason === "out_of_area" && state.commuteDistanceKm != null
-        ? t("locOutOfArea")(state.commuteDistanceKm)
-        : t("locNotFound");
     el.className = "commute-result visible state-error";
-    el.innerHTML = `<div class="cr-row"><span>${msg}</span></div>`;
+    el.innerHTML = `<div class="cr-row"><span>${t("locNotFound")}</span></div>`;
     return;
   }
   // ok
   el.className = "commute-result visible state-ok";
   el.innerHTML = `
-    <div class="cr-row"><span class="cr-label">${t("locDistanceLine")(state.commuteDistanceKm)}</span></div>
-    <div class="cr-row"><span class="cr-label">${state.commuteFee > 0 ? t("locFeeCharged")(state.commuteFee) : t("locFeeFree")}</span></div>
+    <div class="cr-header"><span class="cr-header-ico">${SUMMARY_ICONS.car}</span>${t("locResultTitle")}</div>
+    <div class="cr-row"><span class="cr-label">${t("locDistanceLine")}</span><span class="cr-value">${Math.round(state.commuteDistanceKm)} km</span></div>
+    <div class="cr-row cr-fee"><span class="cr-label">${t("locFeeLabel")}</span><span class="cr-value${state.commuteFee > 0 ? "" : " cr-free"}">${state.commuteFee > 0 ? "+" + fmtEuro(state.commuteFee) : t("locFeeFree")}</span></div>
   `;
 }
 
@@ -2424,36 +2489,46 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
 document.getElementById("footer-year").textContent = new Date().getFullYear();
 
 // Munich-centered coverage map: a clean "roadmap"-style tile layer (no API
-// key needed) with four priced distance rings (25/50/75/100km) around the
-// city, shown just above the footer. Panning is boxed to Germany so the
-// map doesn't wander into Austria, right across the border from Munich.
-// Built once; only the popup text needs to follow language changes.
+// key needed) with five priced distance rings around the city, shown just
+// above the footer. Built once; only the popup text needs to follow
+// language changes.
 const MUNICH_LATLNG = [48.1351, 11.582];
 // A commute zone's outer radius (km) and the ring color used on the map —
-// kept in one place alongside COMMUTE_ZONES-equivalent pricing so the map
-// and the legend/explainer text below it never drift out of sync.
+// kept in one place alongside src/commute.js's COMMUTE_ZONES pricing so the
+// map, legend, and explainer text never drift out of sync. Colors are
+// spaced deliberately (green/blue/amber/orange/red) rather than a smooth
+// gradient — a soft yellow band here used to disappear entirely against
+// the basemap's own pale terrain color.
 const COMMUTE_ZONES_UI = [
-  { km: 25, color: "#22c55e" }, // free
-  { km: 50, color: "#eab308" }, // +10€
-  { km: 75, color: "#f97316" }, // +20€
-  { km: 100, color: "#ef4444" }, // +30€
+  { km: 15, color: "#16a34a" }, // free
+  { km: 25, color: "#2563eb" }, // +10€
+  { km: 50, color: "#f59e0b" }, // +20€
+  { km: 75, color: "#f97316" }, // +25€
+  { km: 100, color: "#dc2626" }, // +30€
 ];
-// Roughly Germany's own footprint, trimmed on the south-east edge so the
-// view stops at the Bavarian border instead of continuing into Austria.
+// Munich sits only ~60-90km from the Austrian border, so fitting the whole
+// 100km ring on screen (fitBounds) always pulled in Austria — and, on this
+// wide/short map card, a good deal of the Czech Republic too. Instead: a
+// fixed, deliberately zoomed-in view centered a little north of Munich (so
+// the ring's southern half — the part nearest Austria — mostly falls below
+// the frame), with zooming out disabled so a visitor can't drag/scroll
+// their way to a wider, country-spanning view either.
+const MAP_VIEW_CENTER = [48.28, 11.4];
+const MAP_VIEW_ZOOM = 9;
 const GERMANY_BOUNDS = [
-  [47.65, 7.3], // SW, pulled north of the Austrian border near Munich
-  [55.1, 15.2], // NE
+  [47.75, 8.5], // SW — north of the Austrian border near Munich
+  [49.9, 13.6], // NE
 ];
 let serviceAreaPopup = null;
 function initServiceAreaMap() {
   if (typeof L === "undefined" || !document.getElementById("service-area-map")) return;
   const map = L.map("service-area-map", {
     scrollWheelZoom: false,
-    center: MUNICH_LATLNG,
-    zoom: 7,
+    center: MAP_VIEW_CENTER,
+    zoom: MAP_VIEW_ZOOM,
+    minZoom: MAP_VIEW_ZOOM,
     maxBounds: GERMANY_BOUNDS,
     maxBoundsViscosity: 1.0,
-    minZoom: 6,
   });
   // Plain OpenStreetMap tiles: a "roadmap" style (streets/labels, no
   // satellite imagery) that needs no API key. CartoDB's Voyager tiles
@@ -2468,19 +2543,16 @@ function initServiceAreaMap() {
   // Drawn largest-first so each smaller, differently-colored circle sits on
   // top and fully covers the larger one underneath it within its own
   // radius — the standard trick for turning solid circles into rings.
-  let outerBounds = null;
   [...COMMUTE_ZONES_UI].reverse().forEach((zone) => {
-    const circle = L.circle(MUNICH_LATLNG, {
+    L.circle(MUNICH_LATLNG, {
       radius: zone.km * 1000,
       color: zone.color,
-      weight: 1.5,
-      opacity: 0.7,
+      weight: 2,
+      opacity: 0.85,
       fillColor: zone.color,
-      fillOpacity: 0.22,
+      fillOpacity: 0.3,
     }).addTo(map);
-    if (!outerBounds) outerBounds = circle.getBounds();
   });
-  map.fitBounds(outerBounds, { padding: [8, 8] });
 
   const marker = L.circleMarker(MUNICH_LATLNG, {
     radius: 8,
