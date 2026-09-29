@@ -7,10 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title data-i18n-title>Zettly | Termin buchen</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="/assets/fonts/plus-jakarta-sans.css">
+<link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1721,7 +1719,7 @@
   <div class="step-label" id="progress-label"><b>1</b> / 5</div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script type="module" src="/assets/vendor/leaflet/leaflet-esm-entry.js"></script>
 <script>
 const I18N = {
   de: {
@@ -3013,7 +3011,11 @@ function initServiceAreaMap() {
 let updateServiceAreaPopup = function () {
   if (serviceAreaPopup) serviceAreaPopup.setContent(t("serviceAreaPopup"));
 };
-initServiceAreaMap();
+if (typeof L !== "undefined") {
+  initServiceAreaMap();
+} else {
+  window.addEventListener("leaflet:ready", initServiceAreaMap, { once: true });
+}
 
 // "How it works" auto-play: highlights step 1, then 2, ... 7, then loops
 // back to 1 — a guided walkthrough instead of relying on the visitor to
