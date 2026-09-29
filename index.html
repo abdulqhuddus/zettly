@@ -333,6 +333,16 @@
        would make the track overflow past its wrapper and risk a page
        scrollbar). */
     padding: 2.2rem 2.75rem 4.5rem;
+    /* Without this, scroll-snap-align: start on the steps snaps the first
+       step's content edge flush against the scrollport's edge, which
+       silently scrolls PAST the left padding above on load (native
+       snapping ignores the track's own padding, only scroll-padding) —
+       eating exactly the padding-box space that padding was added for and
+       clipping the first card's shadow again, even though the CSS
+       padding itself is correct. Matching scroll-padding to that padding
+       keeps position 0 (and the equivalent end position) a valid, padded
+       snap point. */
+    scroll-padding-inline: 2.75rem;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
