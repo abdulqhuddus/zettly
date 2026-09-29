@@ -39,12 +39,15 @@
   #page-de, #page-en { width: 100%; display: flex; flex-direction: column; align-items: center; }
 
   .announce-bar {
-    width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    width: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.6rem;
     padding: 0.6rem 1rem; text-align: center; color: #fff; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.01em;
     background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
     background-size: 200% 200%; animation: ctaShift 6s ease-in-out infinite;
   }
   .announce-bar .announce-icon { width: 15px; height: 15px; flex: 0 0 auto; animation: dotPulse 1.6s ease-in-out infinite; }
+  @media (max-width: 640px) {
+    .announce-bar .announce-tail { flex-basis: 100%; }
+  }
   @keyframes dotPulse { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
   @keyframes ctaShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
@@ -295,7 +298,8 @@
     <rect x="8.4" y="12.8" width="7.2" height="1.9" rx="0.4" fill="rgba(124,58,237,0.6)"/>
     <rect x="3.5" y="19" width="17" height="2.3" rx="1.15" fill="#fff"/>
   </svg>
-  <span id="announce-text">Wir befinden uns im Aufbau &middot; Buchungen sind derzeit nicht möglich</span>
+  <span id="announce-text-head">Wir befinden uns im Aufbau &middot;</span>
+  <span id="announce-text-tail" class="announce-tail">Buchungen sind derzeit nicht möglich</span>
 </div>
 <div class="topbar">
   <a class="brand" href="/">
@@ -700,7 +704,8 @@
       footerServiceBusiness: "IT-Support für Unternehmen",
       footerLinksHeading: "Links",
       footerContactHeading: "Kontakt",
-      announce: "Wir befinden uns im Aufbau · Buchungen sind derzeit nicht möglich" },
+      announceHead: "Wir befinden uns im Aufbau ·",
+      announceTail: "Buchungen sind derzeit nicht möglich" },
     en: { title: "Zettly | Website Builder", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerPrivacy: "Privacy", footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
       footerServicesHeading: "Services",
       footerSpecialtyBadge: "Specialty",
@@ -711,7 +716,8 @@
       footerServiceBusiness: "Business IT Support",
       footerLinksHeading: "Links",
       footerContactHeading: "Contact",
-      announce: "We're under construction · bookings are currently not accepted" },
+      announceHead: "We're under construction ·",
+      announceTail: "bookings are currently not accepted" },
   };
 
   function setLang(lang) {
@@ -724,7 +730,8 @@
       const key = el.dataset.i18n;
       if (STRINGS[lang][key]) el.textContent = STRINGS[lang][key];
     });
-    document.getElementById("announce-text").textContent = STRINGS[lang].announce;
+    document.getElementById("announce-text-head").textContent = STRINGS[lang].announceHead;
+    document.getElementById("announce-text-tail").textContent = STRINGS[lang].announceTail;
     document.querySelectorAll("#lang-switch button").forEach(b => {
       b.classList.toggle("active", b.dataset.lang === lang);
     });

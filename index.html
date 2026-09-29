@@ -63,6 +63,7 @@
   .announce-bar {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
@@ -79,6 +80,9 @@
   .announce-bar .announce-icon {
     width: 15px; height: 15px; flex: 0 0 auto;
     animation: dotPulse 1.6s ease-in-out infinite;
+  }
+  @media (max-width: 640px) {
+    .announce-bar .announce-tail { flex-basis: 100%; }
   }
   @keyframes dotPulse { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
 
@@ -1173,7 +1177,8 @@
     <rect x="8.4" y="12.8" width="7.2" height="1.9" rx="0.4" fill="rgba(124,58,237,0.6)"/>
     <rect x="3.5" y="19" width="17" height="2.3" rx="1.15" fill="#fff"/>
   </svg>
-  <span data-i18n="announceBar">Wir befinden uns im Aufbau &middot; Buchungen sind derzeit nicht möglich</span>
+  <span data-i18n="announceBarHead">Wir befinden uns im Aufbau &middot;</span>
+  <span class="announce-tail" data-i18n="announceBarTail">Buchungen sind derzeit nicht möglich</span>
 </div>
 <div class="topbar">
   <a class="brand" href="/">
@@ -1637,7 +1642,8 @@ const I18N = {
     successTitle: "Sie sind gebucht!",
     bookingRefLabel: "Buchungsnummer",
     cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
-    announceBar: "Wir befinden uns im Aufbau · Buchungen sind derzeit nicht möglich",
+    announceBarHead: "Wir befinden uns im Aufbau ·",
+    announceBarTail: "Buchungen sind derzeit nicht möglich",
     loadingTimes: "Lade Termine…",
     noSlots: "Keine Termine an diesem Tag: bitte anderes Datum wählen.",
     slotLoadError: "Termine konnten nicht geladen werden. Bitte erneut versuchen.",
@@ -1767,7 +1773,8 @@ const I18N = {
     successTitle: "You're booked!",
     bookingRefLabel: "Booking reference",
     cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
-    announceBar: "We're under construction · bookings are currently not accepted",
+    announceBarHead: "We're under construction ·",
+    announceBarTail: "bookings are currently not accepted",
     loadingTimes: "Loading times…",
     noSlots: "No slots this day: try another date.",
     slotLoadError: "Couldn't load availability. Try again.",
