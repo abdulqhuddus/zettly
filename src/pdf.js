@@ -235,6 +235,14 @@ export const DANGER_BG = [0.992, 0.933, 0.949]; // #fdeef2
 export const GRAY_DARK = [0.29, 0.29, 0.32]; // letterhead accent / header bar
 export const GRAY_MID = [0.55, 0.55, 0.58]; // secondary accent
 
+// Formats a euro amount for the invoice PDF, always with exactly two
+// decimal digits (e.g. 45 -> "€45.00"), matching the "€<amount>" prefix
+// style already used everywhere else in the app but forcing the decimals
+// that plain `€${amount}` interpolation (used elsewhere) doesn't guarantee.
+export function formatEUR(amount) {
+  return `€${Number(amount).toFixed(2)}`;
+}
+
 // millimetres -> PDF points (1mm = 2.834645669pt)
 export const MM = 2.834645669;
 export function fromTop(mm) { return PAGE_H - mm * MM; }
@@ -937,7 +945,7 @@ export function generateInvoicePdf(data) {
   const lineItems = [];
   if (data.commuteFee > 0) {
     lineItems.push({ label: L.service, value: data.servicePriceText });
-    lineItems.push({ label: L.callout, value: `+ €${data.commuteFee}` });
+    lineItems.push({ label: L.callout, value: `+ ${formatEUR(data.commuteFee)}` });
   } else {
     lineItems.push({ label: L.service, value: data.priceText });
   }

@@ -3,7 +3,7 @@
 // exact same notice with the same PDF attached rather than drifting apart.
 
 import catalog from "../catalog.json";
-import { generateBookingPdf, generateInvoicePdf, toBase64 } from "./pdf.js";
+import { generateBookingPdf, generateInvoicePdf, toBase64, formatEUR } from "./pdf.js";
 import { LOGO_PNG_BASE64 } from "./logo.js";
 import { localizedDate } from "./utils.js";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
@@ -222,8 +222,8 @@ export async function sendInvoiceEmail(env, booking, lang = "de") {
   const invoiceNumber = invoiceNumberFor(bookingRef);
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const commuteFee = booking.commute_fee || 0;
-  const servicePriceText = booking.price ? `€${booking.price}` : lang === "en" ? "Quoted on-site" : "Vor Ort mitgeteilt";
-  const priceText = booking.price ? `€${booking.price + commuteFee}` : servicePriceText;
+  const servicePriceText = booking.price ? formatEUR(booking.price) : lang === "en" ? "Quoted on-site" : "Vor Ort mitgeteilt";
+  const priceText = booking.price ? formatEUR(booking.price + commuteFee) : servicePriceText;
   const paymentStatus = lang === "en" ? "Paid" : "Bezahlt";
 
   const html = `
