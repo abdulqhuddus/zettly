@@ -349,6 +349,20 @@
   @keyframes hiwIn { to { opacity: 1; transform: translateY(0); } }
   .hiw-step:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(124,58,237,0.14); border-color: #e2d6fb; }
   .hiw-step:nth-child(odd):hover { border-color: #ddd0fb; box-shadow: 0 16px 32px rgba(139,92,246,0.16); }
+  /* Auto-playing "spotlight" that steps through 1→7 and loops, walking the
+     visitor through the flow without them having to hover each card. */
+  .hiw-step.active {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: 0 16px 34px rgba(124,58,237,0.24);
+  }
+  .hiw-step.active .hiw-icon-wrap {
+    transform: scale(1.12);
+    box-shadow: 0 12px 26px rgba(124,58,237,0.38), inset 0 0 0 1px rgba(124,58,237,0.3);
+  }
+  .hiw-step.active .hiw-num {
+    box-shadow: 0 0 0 5px rgba(124,58,237,0.22), 0 4px 10px rgba(124,58,237,0.4);
+  }
   /* Step counter reads lighter -> darker purple left to right, matching
      progress rather than an arbitrary two-tone alternation. */
   .hiw-num {
@@ -2798,6 +2812,37 @@ let updateServiceAreaPopup = function () {
   if (serviceAreaPopup) serviceAreaPopup.setContent(t("serviceAreaPopup"));
 };
 initServiceAreaMap();
+
+// "How it works" auto-play: highlights step 1, then 2, ... 7, then loops
+// back to 1 — a guided walkthrough instead of relying on the visitor to
+// hover each card themselves. On narrow screens, where the steps scroll
+// horizontally, the track auto-scrolls so the highlighted step stays in
+// view without the visitor swiping.
+function initHiwAutoplay() {
+  const track = document.querySelector("#how-it-works .hiw-track");
+  if (!track) return;
+  const steps = Array.from(track.querySelectorAll(".hiw-step"));
+  if (!steps.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  let i = 0;
+  function highlight(index) {
+    steps.forEach((s, n) => s.classList.toggle("active", n === index));
+    const el = steps[index];
+    // Only the mobile layout scrolls horizontally; on desktop the track
+    // fits fully and scrollWidth === clientWidth, so this is a no-op there.
+    if (track.scrollWidth > track.clientWidth + 1) {
+      const target = el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
+      track.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+    }
+  }
+  highlight(i);
+  setInterval(() => {
+    i = (i + 1) % steps.length;
+    highlight(i);
+  }, 1600);
+}
+initHiwAutoplay();
 
 applyStaticTranslations();
 showStep(0);
