@@ -179,7 +179,14 @@
     background: linear-gradient(120deg, var(--brand-blue), var(--accent) 55%, var(--pink));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  @media (max-width: 400px) { .site-tagline { font-size: 1.2rem; margin-bottom: 1.1rem; } }
+  @media (max-width: 400px) {
+    .site-tagline { font-size: 0.9rem; margin-bottom: 1.1rem; padding: 0 0.6rem; white-space: nowrap; letter-spacing: 0; }
+    .site-tagline .grad { letter-spacing: 0; }
+  }
+  @media (min-width: 401px) and (max-width: 480px) {
+    .site-tagline { font-size: 1.05rem; padding: 0 0.75rem; white-space: nowrap; letter-spacing: 0; }
+    .site-tagline .grad { letter-spacing: 0; }
+  }
   /* Stay 2x2 even on the narrowest phones — four full-width stacked cards
      made this section feel endless, and each card is compact enough with
      the two-icon layout to sit comfortably at half width. */
