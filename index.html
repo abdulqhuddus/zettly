@@ -630,7 +630,7 @@
     gap: 2.2rem;
     justify-content: space-between;
   }
-  .site-footer .footer-col { min-width: 150px; }
+  .site-footer .footer-col { min-width: 150px; display: flex; flex-direction: column; gap: 0.65rem; }
   .site-footer .footer-col.footer-about { flex: 1 1 260px; max-width: 320px; }
   .site-footer .footer-brand { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 200; font-size: 1.4rem; color: var(--ink); margin-bottom: 0.6rem; }
   .site-footer .footer-brand span { color: var(--accent); }
@@ -638,16 +638,17 @@
   .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.9rem; font-weight: 700; }
   .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item {
     display: flex; align-items: center; color: var(--ink); text-decoration: none; font-size: 0.85rem;
-    margin-bottom: 0.65rem; line-height: 1.3;
+    line-height: 1.3;
   }
   .site-footer .footer-col a:hover { color: var(--accent); }
   /* A small dot in front of each plain service line, so the highlighted
      (badged) line and the plain ones share the same left edge and read as
      one tidy list instead of the badge line looking like it belongs to a
      different component. */
+  .site-footer .service-item:not(.highlight) { position: relative; }
   .site-footer .service-item:not(.highlight)::before {
-    content: ""; width: 5px; height: 5px; border-radius: 50%;
-    background: var(--border); margin-right: 0.55rem; flex: 0 0 auto;
+    content: ""; position: absolute; left: -0.75rem; top: 50%; transform: translateY(-50%);
+    width: 5px; height: 5px; border-radius: 50%; background: var(--border);
   }
   .site-footer .service-item.highlight {
     color: var(--accent); font-weight: 700; gap: 0.5rem;
@@ -702,6 +703,10 @@
     .site-footer .footer-col h5 { text-align: center; }
     .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { justify-content: center; }
     .site-footer .service-item.highlight { margin-left: 0; justify-content: center; }
+    .site-footer .service-item:not(.highlight) { position: static; }
+    .site-footer .service-item:not(.highlight)::before {
+      position: static; transform: none; margin-right: 0.55rem; flex: 0 0 auto;
+    }
   }
 
   /* Tighten the vertical rhythm between the marketing sections on phones —
@@ -1348,7 +1353,7 @@
   </div>
 </div>
 
-<p class="site-tagline" data-i18n="heroTagline"><span class="zettly-word">Zett<span>ly</span></span> &ndash; <span class="grad">Ihr One-Stop-Partner f&uuml;r alles rund um IT</span></p>
+<p class="site-tagline" data-i18n="heroTagline"><span class="zettly-word">Zett<span>ly</span></span>, <span class="grad">Ihr One-Stop-Partner f&uuml;r alles rund um IT</span></p>
 <div class="trust-strip">
   <span class="trust-pill">
     <span class="icon-flow">
@@ -1684,7 +1689,7 @@
 const I18N = {
   de: {
     title: "Termin buchen | Zettly",
-    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> – <span class=\"grad\">Ihr One-Stop-Partner für alles rund um IT</span>",
+    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span>, <span class=\"grad\">Ihr One-Stop-Partner für alles rund um IT</span>",
     bookAnother: "Weiteren Termin buchen",
     step00Title: "Für Zuhause oder Ihr Unternehmen?",
     step00Sub: "So können wir Ihnen gleich die passenden Pakete zeigen.",
@@ -1817,7 +1822,7 @@ const I18N = {
   },
   en: {
     title: "Book an Appointment | Zettly",
-    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> – <span class=\"grad\">your one-stop partner for everything IT</span>",
+    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span>, <span class=\"grad\">your one-stop partner for everything IT</span>",
     bookAnother: "Book another appointment",
     step00Title: "For your home or your business?",
     step00Sub: "So we can show you the right packages right away.",
