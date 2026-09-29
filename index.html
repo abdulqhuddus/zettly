@@ -313,7 +313,11 @@
     display: flex;
     gap: 1rem;
     overflow-x: auto;
-    padding: 0.4rem 0.2rem 1rem;
+    /* Extra top/bottom padding, not just the horizontal gutter: setting
+       overflow-x alone makes the browser implicitly treat overflow-y as
+       "auto" too, so without this room the active card's lift and glow
+       shadow gets clipped flush against the track's own box. */
+    padding: 2.2rem 0.2rem 2.4rem;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -360,12 +364,16 @@
   }
   .hiw-step.active h4 { color: #fff; }
   .hiw-step.active p { color: rgba(255,255,255,0.72); }
-  .hiw-step.active .hiw-icon-wrap {
+  /* #how-it-works prefix (not just repeating .hiw-step.active) so this
+     reliably outranks the nth-child(odd) icon-wrap recolor below,
+     regardless of source order — without it, odd-numbered steps kept
+     reverting to their static violet icon background while active. */
+  #how-it-works .hiw-step.active .hiw-icon-wrap {
     transform: scale(1.12);
     background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), rgba(255,255,255,0.04));
     box-shadow: 0 10px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.18);
   }
-  .hiw-step.active .hiw-icon-wrap svg * { stroke: #fff !important; }
+  #how-it-works .hiw-step.active .hiw-icon-wrap svg * { stroke: #fff !important; }
   .hiw-step.active .hiw-num {
     background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
     background-size: 200% 200%;
@@ -378,13 +386,16 @@
   .hiw-check-badge {
     position: absolute; top: -7px; right: -7px;
     width: 22px; height: 22px; border-radius: 50%;
-    background: linear-gradient(135deg, #22c55e, #16a34a);
+    background: #c7c5d1;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 10px rgba(22,163,74,0.45);
+    box-shadow: 0 3px 8px rgba(17,17,20,0.18);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
   }
   .hiw-check-badge svg { width: 12px; height: 12px; }
   .hiw-step:last-child.active .hiw-icon-wrap { transform: scale(1.2); }
   .hiw-step:last-child.active .hiw-check-badge {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 4px 10px rgba(22,163,74,0.45);
     animation: hiwCheckPulse 1.6s ease-in-out infinite;
   }
   @keyframes hiwCheckPulse {
