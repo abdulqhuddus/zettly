@@ -596,7 +596,11 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 940px;
+    /* Match the max-width the rest of the page's sections use for their
+       widest state (see `.stage.wide`), so the footer's columns line up
+       with the content above instead of sitting in a narrower, visibly
+       off-center block with a big empty gutter on one side. */
+    max-width: 1180px;
     margin: 0 auto;
     padding: 2.8rem 1.25rem 1.5rem;
     display: flex;
@@ -641,7 +645,7 @@
     flex: 0 0 auto;
   }
   .site-footer .footer-bottom-bar {
-    max-width: 940px;
+    max-width: 1180px;
     margin: 0 auto;
     padding: 1.1rem 1.25rem;
     border-top: 1px solid var(--border);
