@@ -99,8 +99,8 @@
   .hero-browser { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 1.4rem; }
   .hero-browser .bar { display: flex; gap: 0.35rem; padding: 0.6rem 0.7rem; background: #f4f3f7; }
   .hero-browser .bar span { width: 8px; height: 8px; border-radius: 50%; background: #d8d6df; }
-  .hero-browser .screen { height: 130px; background: linear-gradient(135deg, var(--accent-light), #e7edfd); display: flex; align-items: center; justify-content: center; }
-  .hero-browser .screen svg { width: 46px; height: 46px; }
+  .hero-browser .screen { height: 130px; background: linear-gradient(135deg, var(--accent-light), #e7edfd); overflow: hidden; }
+  .hero-browser .screen svg { width: 100%; height: 100%; display: block; }
   .hero-card .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 1.2rem; padding: 0.85rem 0; border-top: 1px dashed var(--border); font-size: 0.95rem; }
   .hero-card .stat-row:first-of-type { border-top: none; }
   .hero-card .stat-row b { color: var(--ink); }
@@ -339,7 +339,28 @@
       <div class="hero-browser">
         <div class="bar"><span></span><span></span><span></span></div>
         <div class="screen">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#2563EB" stroke-width="1.6"/><path d="M3 8.5h18" stroke="#2563EB" stroke-width="1.6"/><path d="M7 13l4 4 6-8" stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 380 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="wbHeroBtn" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#0078D4"/>
+                <stop offset="1" stop-color="#7C3AED"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="380" height="22" fill="#fff" fill-opacity="0.55"/>
+            <circle cx="16" cy="11" r="4.5" fill="#0078D4"/>
+            <rect x="26" y="8.5" width="34" height="5" rx="2.5" fill="#111114" fill-opacity="0.5"/>
+            <rect x="260" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
+            <rect x="294" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
+            <rect x="328" y="8" width="34" height="6" rx="3" fill="#0078D4" fill-opacity="0.35"/>
+            <rect x="22" y="38" width="58" height="6" rx="3" fill="#0078D4" fill-opacity="0.55"/>
+            <rect x="22" y="52" width="150" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
+            <rect x="22" y="68" width="112" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
+            <rect x="22" y="88" width="128" height="6" rx="3" fill="#6b6b74" fill-opacity="0.55"/>
+            <rect x="22" y="102" width="76" height="18" rx="9" fill="url(#wbHeroBtn)"/>
+            <rect x="222" y="38" width="136" height="82" rx="10" fill="#F3EEFF" stroke="#e9e7ef"/>
+            <path d="M236 96l24-24 18 18 14-16 26 22" stroke="#0078D4" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="328" cy="56" r="8" fill="#EC4899" fill-opacity="0.7"/>
+          </svg>
         </div>
       </div>
       <div class="stat-row"><span class="label">Business Basic</span><b>ab 349&nbsp;&euro;</b></div>
@@ -508,7 +529,28 @@
       <div class="hero-browser">
         <div class="bar"><span></span><span></span><span></span></div>
         <div class="screen">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#2563EB" stroke-width="1.6"/><path d="M3 8.5h18" stroke="#2563EB" stroke-width="1.6"/><path d="M7 13l4 4 6-8" stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 380 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="wbHeroBtn" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#0078D4"/>
+                <stop offset="1" stop-color="#7C3AED"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="380" height="22" fill="#fff" fill-opacity="0.55"/>
+            <circle cx="16" cy="11" r="4.5" fill="#0078D4"/>
+            <rect x="26" y="8.5" width="34" height="5" rx="2.5" fill="#111114" fill-opacity="0.5"/>
+            <rect x="260" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
+            <rect x="294" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
+            <rect x="328" y="8" width="34" height="6" rx="3" fill="#0078D4" fill-opacity="0.35"/>
+            <rect x="22" y="38" width="58" height="6" rx="3" fill="#0078D4" fill-opacity="0.55"/>
+            <rect x="22" y="52" width="150" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
+            <rect x="22" y="68" width="112" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
+            <rect x="22" y="88" width="128" height="6" rx="3" fill="#6b6b74" fill-opacity="0.55"/>
+            <rect x="22" y="102" width="76" height="18" rx="9" fill="url(#wbHeroBtn)"/>
+            <rect x="222" y="38" width="136" height="82" rx="10" fill="#F3EEFF" stroke="#e9e7ef"/>
+            <path d="M236 96l24-24 18 18 14-16 26 22" stroke="#0078D4" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="328" cy="56" r="8" fill="#EC4899" fill-opacity="0.7"/>
+          </svg>
         </div>
       </div>
       <div class="stat-row"><span class="label">Business Basic</span><b>from &euro;349</b></div>
