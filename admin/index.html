@@ -654,6 +654,14 @@
       paymentLinkSendFailed: "Failed to send payment link",
       confirmCancelTitle: "Cancel booking",
       confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email.",
+      confirmCompleteTitle: "Mark as completed",
+      confirmCompleteMessage: "Mark this booking as completed?",
+      confirmReconfirmTitle: "Re-confirm booking",
+      confirmReconfirmMessage: "Re-send confirmation email to the customer?",
+      confirmSendInvoiceTitle: "Send invoice",
+      confirmSendInvoiceMessage: "Send invoice to the customer now?",
+      confirmSendPaymentLinkTitle: "Send payment link",
+      confirmSendPaymentLinkMessage: "Send payment link to the customer?",
       confirmReasonLabel: "Reason for cancellation (required)",
       confirmReasonPlaceholder: "Please enter a reason…",
       confirmReasonError: "Please enter a reason.",
@@ -752,6 +760,14 @@
       paymentLinkSendFailed: "Zahlungslink konnte nicht gesendet werden",
       confirmCancelTitle: "Buchung stornieren",
       confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt.",
+      confirmCompleteTitle: "Als abgeschlossen markieren",
+      confirmCompleteMessage: "Buchung als abgeschlossen markieren?",
+      confirmReconfirmTitle: "Buchung wieder bestätigen",
+      confirmReconfirmMessage: "Bestätigungs-E-Mail erneut an den Kunden senden?",
+      confirmSendInvoiceTitle: "Rechnung senden",
+      confirmSendInvoiceMessage: "Rechnung jetzt an den Kunden senden?",
+      confirmSendPaymentLinkTitle: "Zahlungslink senden",
+      confirmSendPaymentLinkMessage: "Zahlungslink an den Kunden senden?",
       confirmReasonLabel: "Grund der Stornierung (erforderlich)",
       confirmReasonPlaceholder: "Bitte Grund angeben…",
       confirmReasonError: "Bitte geben Sie einen Grund an.",
@@ -1342,6 +1358,18 @@
       });
       if (!result.confirmed) return;
       reason = result.reason;
+    } else if (status === "completed") {
+      const result = await showConfirm({
+        title: s.confirmCompleteTitle,
+        message: s.confirmCompleteMessage,
+      });
+      if (!result.confirmed) return;
+    } else if (status === "confirmed") {
+      const result = await showConfirm({
+        title: s.confirmReconfirmTitle,
+        message: s.confirmReconfirmMessage,
+      });
+      if (!result.confirmed) return;
     }
     try {
       await api(`/api/admin/bookings/${encodeURIComponent(id)}/status`, {
@@ -1358,6 +1386,11 @@
 
   async function sendInvoice(id) {
     const s = t();
+    const result = await showConfirm({
+      title: s.confirmSendInvoiceTitle,
+      message: s.confirmSendInvoiceMessage,
+    });
+    if (!result.confirmed) return;
     try {
       await api(`/api/admin/bookings/${encodeURIComponent(id)}/send-invoice`, {
         method: "POST",
@@ -1371,6 +1404,11 @@
 
   async function sendPaymentLink(id) {
     const s = t();
+    const result = await showConfirm({
+      title: s.confirmSendPaymentLinkTitle,
+      message: s.confirmSendPaymentLinkMessage,
+    });
+    if (!result.confirmed) return;
     try {
       await api(`/api/admin/bookings/${encodeURIComponent(id)}/send-payment-link`, {
         method: "POST",
