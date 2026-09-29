@@ -463,9 +463,8 @@
   .hiw-step:hover .hiw-icon-wrap { transform: scale(1.1) rotate(-3deg); box-shadow: 0 12px 24px rgba(124,58,237,0.3), inset 0 0 0 1px rgba(124,58,237,0.2); }
   .hiw-step:nth-child(odd):hover .hiw-icon-wrap { box-shadow: 0 12px 24px rgba(139,92,246,0.3), inset 0 0 0 1px rgba(139,92,246,0.2); }
   .hiw-icon-wrap svg { width: 25px; height: 25px; }
-  .hiw-step h4 { font-size: 0.84rem; font-weight: 700; margin-bottom: 0.35rem; white-space: nowrap; }
+  .hiw-step h4 { font-size: 0.84rem; font-weight: 700; margin-bottom: 0.35rem; white-space: normal; overflow-wrap: break-word; }
   .hiw-step p { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
-  @media (max-width: 900px) { .hiw-step h4 { white-space: normal; } }
 
   /* "Where we cover" section: a Munich-centered map with a 100km service
      radius, shown after the booking flow and before the footer. */
