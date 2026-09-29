@@ -429,6 +429,36 @@
     box-shadow: none;
   }
   #service-area-map .leaflet-control-attribution a { color: #fff; }
+  /* Coverage-zone animation: each ring's tint pulses outward from Munich in
+     sequence (green → blue → amber → orange → red), like a slow ripple —
+     it reads as "coverage radiating out from here", not just decoration,
+     and reinforces that price rises with distance from the city center. */
+  #service-area-map .zone-ring {
+    animation: zoneRingPulse 4.5s ease-in-out infinite;
+  }
+  #service-area-map .zone-ring-0 { animation-delay: 0s; }
+  #service-area-map .zone-ring-1 { animation-delay: 0.3s; }
+  #service-area-map .zone-ring-2 { animation-delay: 0.6s; }
+  #service-area-map .zone-ring-3 { animation-delay: 0.9s; }
+  #service-area-map .zone-ring-4 { animation-delay: 1.2s; }
+  @keyframes zoneRingPulse {
+    0%, 100% { stroke-opacity: 0.85; fill-opacity: 0.16; }
+    35% { stroke-opacity: 0.35; fill-opacity: 0.34; }
+  }
+  /* The Munich marker gets its own slow "home base" pulse, plus an
+     expanding, fading halo ring that visually kicks off the ripple above. */
+  #service-area-map .hq-marker { animation: hqDotPulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes hqDotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+  #service-area-map .hq-ping { animation: hqPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes hqPing {
+    0% { transform: scale(0.6); stroke-opacity: 0.7; fill-opacity: 0.35; }
+    100% { transform: scale(3.2); stroke-opacity: 0; fill-opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #service-area-map .zone-ring,
+    #service-area-map .hq-marker,
+    #service-area-map .hq-ping { animation: none; }
+  }
   /* Leaflet's own popup chrome, restyled to match the site instead of the
      library's default white-and-blue look. */
   .service-area .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 10px 24px rgba(17,17,20,0.14); }
@@ -2726,7 +2756,7 @@ function initServiceAreaMap() {
   // center. A ring only tints the map within its own band, however many
   // zones surround it.
   let prevRadiusKm = 0;
-  COMMUTE_ZONES_UI.forEach((zone) => {
+  COMMUTE_ZONES_UI.forEach((zone, i) => {
     const outer = circleLatLngs(MUNICH_LATLNG, zone.km * 1000);
     const rings = prevRadiusKm > 0 ? [outer, circleLatLngs(MUNICH_LATLNG, prevRadiusKm * 1000)] : [outer];
     L.polygon(rings, {
@@ -2737,9 +2767,22 @@ function initServiceAreaMap() {
       fillOpacity: 0.16,
       fillRule: "evenodd",
       stroke: true,
+      className: `zone-ring zone-ring-${i}`,
     }).addTo(map);
     prevRadiusKm = zone.km;
   });
+
+  // A fading, expanding halo behind the HQ dot — a "ping" that visually
+  // kicks off the ripple animating outward through the zone rings above.
+  L.circleMarker(MUNICH_LATLNG, {
+    radius: 8,
+    color: "#111114",
+    weight: 1,
+    fillColor: "#111114",
+    fillOpacity: 0.35,
+    className: "hq-ping",
+    interactive: false,
+  }).addTo(map);
 
   const marker = L.circleMarker(MUNICH_LATLNG, {
     radius: 8,
@@ -2747,6 +2790,7 @@ function initServiceAreaMap() {
     weight: 2,
     fillColor: "#111114",
     fillOpacity: 1,
+    className: "hq-marker",
   }).addTo(map);
   serviceAreaPopup = marker.bindPopup(t("serviceAreaPopup")).getPopup();
 }
