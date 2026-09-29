@@ -627,6 +627,13 @@
     color: var(--accent); font-weight: 700; gap: 0.5rem;
     background: var(--accent-light); border-radius: 10px;
     padding: 0.4rem 0.6rem; margin-left: -0.6rem; margin-bottom: 0.8rem;
+    /* Keep the badge and the specialty label on one row: the shared
+       `.footer-col a` rule above already sets `display: flex`, but flex
+       items wrap their own text by default, and at tablet widths the
+       column can get narrow enough (see `.footer-col { min-width: 150px }`)
+       that "Website-Erstellung"/"Website Builder" no longer fits next to
+       the badge pill and drops to a second line. */
+    flex-wrap: nowrap; white-space: nowrap;
   }
   .site-footer .service-item .badge {
     font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
