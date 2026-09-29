@@ -222,13 +222,15 @@ export async function sendInvoiceEmail(env, booking, lang = "de") {
   const invoiceNumber = invoiceNumberFor(bookingRef);
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const commuteFee = booking.commute_fee || 0;
-  // Computed per-language (not once, reused for both PDFs) since the amount
-  // formatting itself differs by language: German uses comma-decimal/
-  // period-thousands with a trailing "€", English keeps the "€"-prefix style.
-  const servicePriceTextDe = booking.price ? formatEUR(booking.price, "de") : "Vor Ort mitgeteilt";
-  const servicePriceTextEn = booking.price ? formatEUR(booking.price, "en") : "Quoted on-site";
-  const priceTextDe = booking.price ? formatEUR(booking.price + commuteFee, "de") : servicePriceTextDe;
-  const priceTextEn = booking.price ? formatEUR(booking.price + commuteFee, "en") : servicePriceTextEn;
+  // The invoice always uses German-standard number formatting (comma
+  // decimal separator, period thousands separator, trailing "€"), even on
+  // the English invoice -- only the surrounding labels differ by language.
+  // Both the DE and EN PDFs get their own fallback text when there is no
+  // price yet, but the same (German-style) number formatting otherwise.
+  const servicePriceTextDe = booking.price ? formatEUR(booking.price) : "Vor Ort mitgeteilt";
+  const servicePriceTextEn = booking.price ? formatEUR(booking.price) : "Quoted on-site";
+  const priceTextDe = booking.price ? formatEUR(booking.price + commuteFee) : servicePriceTextDe;
+  const priceTextEn = booking.price ? formatEUR(booking.price + commuteFee) : servicePriceTextEn;
   const servicePriceText = lang === "en" ? servicePriceTextEn : servicePriceTextDe;
   const priceText = lang === "en" ? priceTextEn : priceTextDe;
   const paymentStatus = lang === "en" ? "Paid" : "Bezahlt";

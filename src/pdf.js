@@ -236,20 +236,17 @@ export const GRAY_DARK = [0.29, 0.29, 0.32]; // letterhead accent / header bar
 export const GRAY_MID = [0.55, 0.55, 0.58]; // secondary accent
 
 // Formats a euro amount for the invoice PDF, always with exactly two decimal
-// digits. English keeps the "€<amount>" prefix style already used everywhere
-// else in the app (e.g. "€45.00"), matching generateBookingPdf's English
-// price rows. German uses the actual German convention: comma as decimal
-// separator, period as thousands separator (for amounts >= 1000), and the €
-// symbol AFTER the number with a space (e.g. "1.234,56 €") -- "€45.00" is not
-// how amounts are written in German.
-export function formatEUR(amount, lang = "en") {
+// digits, using the German number convention regardless of the invoice's
+// language: comma as decimal separator, period as thousands separator (for
+// amounts >= 1000), and the € symbol AFTER the number with a space (e.g.
+// "1.234,56 €"). The business operates in Germany, so German invoicing
+// number conventions apply to both the DE and EN invoice PDFs -- only the
+// surrounding labels/text differ by language, not the number format.
+export function formatEUR(amount) {
   const n = Number(amount);
-  if (lang === "de") {
-    const [intPart, decPart] = n.toFixed(2).split(".");
-    const withThousands = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return `${withThousands},${decPart} €`;
-  }
-  return `€${n.toFixed(2)}`;
+  const [intPart, decPart] = n.toFixed(2).split(".");
+  const withThousands = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return `${withThousands},${decPart} €`;
 }
 
 // millimetres -> PDF points (1mm = 2.834645669pt)
@@ -956,7 +953,7 @@ export function generateInvoicePdf(data) {
   const lineItems = [];
   if (data.commuteFee > 0) {
     lineItems.push({ label: L.service, value: data.servicePriceText });
-    lineItems.push({ label: L.callout, value: `+ ${formatEUR(data.commuteFee, data.lang)}` });
+    lineItems.push({ label: L.callout, value: `+ ${formatEUR(data.commuteFee)}` });
   } else {
     lineItems.push({ label: L.service, value: data.priceText });
   }
