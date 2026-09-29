@@ -310,8 +310,13 @@
   .hiw-track-wrap::before, .hiw-track-wrap::after {
     content: ''; position: absolute; top: 0; bottom: 12px; width: 32px; z-index: 2; pointer-events: none;
   }
-  .hiw-track-wrap::before { left: 0; background: linear-gradient(90deg, #fff, transparent); }
-  .hiw-track-wrap::after { right: 0; background: linear-gradient(270deg, #fff, transparent); }
+  .hiw-track-wrap::before { left: 0; background: linear-gradient(90deg, #fff, transparent); transition: opacity 0.2s ease; }
+  .hiw-track-wrap::after { right: 0; background: linear-gradient(270deg, #fff, transparent); transition: opacity 0.2s ease; }
+  /* Only show each edge fade while there's actually more content to scroll
+     to in that direction — toggled by JS based on the track's scroll
+     position (see initHiwAutoplay/updateHiwEdgeFades). */
+  .hiw-track-wrap.at-start::before { opacity: 0; }
+  .hiw-track-wrap.at-end::after { opacity: 0; }
   .hiw-track {
     display: flex;
     gap: 1rem;
@@ -2905,10 +2910,25 @@ initServiceAreaMap();
 // horizontally, the track auto-scrolls so the highlighted step stays in
 // view without the visitor swiping.
 function initHiwAutoplay() {
+  const wrap = document.querySelector("#how-it-works .hiw-track-wrap");
   const track = document.querySelector("#how-it-works .hiw-track");
   if (!track) return;
   const steps = Array.from(track.querySelectorAll(".hiw-step"));
   if (!steps.length) return;
+
+  // Edge fades should only appear on a side where there's more of the
+  // track to scroll to — hide the left fade at the very start and the
+  // right fade at the very end (and hide both when nothing scrolls at all).
+  function updateEdgeFades() {
+    if (!wrap) return;
+    const max = track.scrollWidth - track.clientWidth;
+    wrap.classList.toggle("at-start", track.scrollLeft <= 1);
+    wrap.classList.toggle("at-end", max <= 1 || track.scrollLeft >= max - 1);
+  }
+  updateEdgeFades();
+  track.addEventListener("scroll", updateEdgeFades, { passive: true });
+  window.addEventListener("resize", updateEdgeFades);
+
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   let i = 0;
