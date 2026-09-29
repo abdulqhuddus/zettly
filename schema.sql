@@ -38,3 +38,16 @@ CREATE TABLE IF NOT EXISTS admin_login_attempts (
   locked_until TEXT,          -- ISO datetime; NULL/past = not locked
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Admin-managed calendar blocks: one row per blocked date (a multi-day block
+-- is exploded into one row per day at creation time), each carrying whether
+-- the whole day, just the morning, or just the afternoon is blocked.
+CREATE TABLE IF NOT EXISTS calendar_blocks (
+  id TEXT PRIMARY KEY,
+  date TEXT NOT NULL, -- YYYY-MM-DD
+  period TEXT NOT NULL CHECK (period IN ('full', 'am', 'pm')),
+  reason TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_calendar_blocks_date ON calendar_blocks(date);

@@ -14,7 +14,7 @@ import {
   recordFailedLogin,
   clearFailedLogins,
 } from "./auth.js";
-import { json } from "./utils.js";
+import { json, berlinNow } from "./utils.js";
 import { sendCancellationEmail } from "./notify.js";
 import catalog from "../catalog.json";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
@@ -216,4 +216,91 @@ export async function handleAdminUpdateStatus(request, env, id) {
   }
 
   return json({ ok: true, id, status: body.status, emailSent });
+}
+
+// ---- Calendar blocks (admin-only "block myself out" days/half-days) -----
+
+const VALID_BLOCK_PERIODS = ["full", "am", "pm"];
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+// A generous cap on how many days a single block request can cover, just to
+// stop a typo'd end date (or a malicious request) from writing thousands of
+// rows in one go.
+const MAX_BLOCK_RANGE_DAYS = 92;
+
+function addDays(dateStr, n) {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + n);
+  return dt.toISOString().slice(0, 10);
+}
+
+export async function handleAdminListBlocks(url, env) {
+  const from = url.searchParams.get("from") || berlinNow().date;
+  const { results } = await env.DB.prepare(
+    `SELECT id, date, period, reason, created_at FROM calendar_blocks WHERE date >= ? ORDER BY date ASC, period ASC`
+  )
+    .bind(from)
+    .all();
+  return json({ blocks: results });
+}
+
+export async function handleAdminCreateBlock(request, env) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+
+  const { startDate, endDate, period } = body || {};
+  const reason = typeof body?.reason === "string" ? body.reason.trim().slice(0, 120) : null;
+
+  if (!DATE_RE.test(startDate) || !DATE_RE.test(endDate || startDate)) {
+    return json({ error: "Invalid date" }, 400);
+  }
+  if (!VALID_BLOCK_PERIODS.includes(period)) {
+    return json({ error: "Invalid period" }, 400);
+  }
+  const end = endDate || startDate;
+  if (end < startDate) {
+    return json({ error: "End date must be on or after the start date" }, 400);
+  }
+
+  const dates = [];
+  for (let d = startDate; d <= end; d = addDays(d, 1)) {
+    dates.push(d);
+    if (dates.length > MAX_BLOCK_RANGE_DAYS) {
+      return json({ error: `Please block at most ${MAX_BLOCK_RANGE_DAYS} days at a time` }, 400);
+    }
+  }
+
+  for (const date of dates) {
+    const existing = await env.DB.prepare(`SELECT id, period FROM calendar_blocks WHERE date = ?`).bind(date).all();
+    // A day already blocked in full stays that way — adding a half-day block
+    // on top of it would be a no-op, so it's skipped rather than duplicated.
+    if (existing.results.some((r) => r.period === "full")) continue;
+    if (period === "full") {
+      // A full-day block supersedes any half-day blocks already on that date.
+      for (const r of existing.results) {
+        await env.DB.prepare(`DELETE FROM calendar_blocks WHERE id = ?`).bind(r.id).run();
+      }
+    } else {
+      const dup = existing.results.find((r) => r.period === period);
+      if (dup) {
+        await env.DB.prepare(`DELETE FROM calendar_blocks WHERE id = ?`).bind(dup.id).run();
+      }
+    }
+    await env.DB.prepare(`INSERT INTO calendar_blocks (id, date, period, reason) VALUES (?, ?, ?, ?)`)
+      .bind(crypto.randomUUID(), date, period, reason || null)
+      .run();
+  }
+
+  return json({ ok: true, blockedDates: dates.length });
+}
+
+export async function handleAdminDeleteBlock(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  await env.DB.prepare(`DELETE FROM calendar_blocks WHERE id = ?`).bind(id).run();
+  return json({ ok: true });
 }

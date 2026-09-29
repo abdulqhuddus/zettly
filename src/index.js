@@ -11,6 +11,9 @@ import {
   handleAdminListBookings,
   handleAdminBookingDetail,
   handleAdminUpdateStatus,
+  handleAdminListBlocks,
+  handleAdminCreateBlock,
+  handleAdminDeleteBlock,
 } from "./admin.js";
 import { handleCancelInfo, handleCancelSubmit } from "./cancel.js";
 import { computeCommute } from "./commute.js";
@@ -44,6 +47,29 @@ const BOOKING_BUFFER_AFTER_MIN = 180;
 
 function bookingBlocksSlot(candidateStart, candidateEnd, bookingStart) {
   return candidateStart < bookingStart + BOOKING_BUFFER_AFTER_MIN && candidateEnd > bookingStart - BOOKING_BUFFER_BEFORE_MIN;
+}
+
+// Where the admin's "morning"/"afternoon" calendar-block split falls: a slot
+// starting before 13:00 is a morning slot, 13:00 and later is an afternoon
+// slot. Kept as one constant so the admin UI's labels and this check can
+// never drift apart.
+const HALF_DAY_SPLIT_MIN = 13 * 60;
+
+// Looks up which parts of `date` the admin has blocked off (calendar_blocks),
+// and returns a function that says whether a given slot start time (minutes
+// since midnight) falls inside a blocked period — used by both the public
+// availability endpoint and the booking endpoint itself, so a slot that's
+// hidden as unavailable can never be booked by hitting the API directly.
+async function loadBlockedChecker(env, date) {
+  if (!env.DB) return () => false;
+  const { results } = await env.DB.prepare(`SELECT period FROM calendar_blocks WHERE date = ?`).bind(date).all();
+  const periods = new Set(results.map((r) => r.period));
+  if (!periods.size) return () => false;
+  return (startMinutes) => {
+    if (periods.has("full")) return true;
+    if (startMinutes < HALF_DAY_SPLIT_MIN) return periods.has("am");
+    return periods.has("pm");
+  };
 }
 
 const EMAIL_STRINGS = {
@@ -122,6 +148,7 @@ async function handleAvailability(url, env) {
       .all();
     existing = results;
   }
+  const isBlocked = await loadBlockedChecker(env, date);
 
   const slots = [];
   for (let t = OPEN_HOUR * 60; t + duration <= CLOSE_HOUR * 60; t += SLOT_STEP_MIN) {
@@ -133,7 +160,7 @@ async function handleAvailability(url, env) {
 
     const conflicts = existing.some((b) => bookingBlocksSlot(t, slotEnd, toMinutes(b.time)));
 
-    slots.push({ time, available: !conflicts });
+    slots.push({ time, available: !conflicts && !isBlocked(t) });
   }
 
   return json({ date, slots });
@@ -428,6 +455,11 @@ async function handleBook(request, env) {
     return json({ error: "Slot just got booked, please pick another" }, 409);
   }
 
+  const isBlocked = await loadBlockedChecker(env, date);
+  if (isBlocked(start)) {
+    return json({ error: "This time is no longer available, please pick a later slot" }, 409);
+  }
+
   const id = crypto.randomUUID();
   const bookingRef = `ZTL-${id.split("-")[0].toUpperCase()}`;
   const breadcrumb = fullBreadcrumb(resolved, audience, lang);
@@ -543,6 +575,16 @@ export default {
       }
       if (bookingMatch && url.pathname.endsWith("/status") && request.method === "POST") {
         return handleAdminUpdateStatus(request, env, bookingMatch[1]);
+      }
+      if (url.pathname === "/api/admin/blocks" && request.method === "GET") {
+        return handleAdminListBlocks(url, env);
+      }
+      if (url.pathname === "/api/admin/blocks" && request.method === "POST") {
+        return handleAdminCreateBlock(request, env);
+      }
+      const blockMatch = url.pathname.match(/^\/api\/admin\/blocks\/([^/]+)$/);
+      if (blockMatch && request.method === "DELETE") {
+        return handleAdminDeleteBlock(request, env, blockMatch[1]);
       }
       return new Response(JSON.stringify({ error: "Not found" }), {
         status: 404,

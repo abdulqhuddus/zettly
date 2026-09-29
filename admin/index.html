@@ -143,6 +143,48 @@
     .stats-row { grid-template-columns: repeat(2, 1fr); }
   }
 
+  .block-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem 1.3rem;
+    margin-bottom: 1.3rem;
+  }
+  .block-panel h2 { font-size: 1rem; font-weight: 700; margin: 0 0 0.15rem; }
+  .block-sub { font-size: 0.82rem; color: var(--muted); margin: 0 0 1rem; }
+  .block-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.8rem;
+  }
+  .block-form .field { margin-bottom: 0; }
+  .block-form .field.grow { flex: 1 1 160px; }
+  .block-form input, .block-form select {
+    padding: 0.55rem 0.7rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    width: 100%;
+  }
+  #block-add-btn { padding: 0.6rem 1.2rem; white-space: nowrap; }
+  .block-panel .field-error { margin: 0.6rem 0 0; color: var(--danger); font-size: 0.78rem; min-height: 1.05em; }
+  .block-list { margin-top: 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .block-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.65rem 0.9rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .block-item-range { font-size: 0.85rem; font-weight: 700; color: var(--ink); }
+  .block-item-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+  .block-remove-btn { flex: 0 0 auto; }
+
   .filters {
     display: flex;
     flex-wrap: wrap;
@@ -342,6 +384,35 @@
         <div class="stat-value" id="stat-pending">–</div>
       </div>
     </div>
+    <div class="block-panel">
+      <h2 id="t-block-title">Block calendar</h2>
+      <p class="block-sub" id="t-block-sub">Stop customers from booking a day, or just its morning/afternoon.</p>
+      <div class="block-form">
+        <div class="field grow">
+          <label for="block-start" id="t-block-start">Start date</label>
+          <input type="date" id="block-start">
+        </div>
+        <div class="field grow">
+          <label for="block-end" id="t-block-end">End date</label>
+          <input type="date" id="block-end">
+        </div>
+        <div class="field grow">
+          <label for="block-period" id="t-block-period">Block</label>
+          <select id="block-period">
+            <option value="full" id="opt-period-full">Full day</option>
+            <option value="am" id="opt-period-am">Morning (before 13:00)</option>
+            <option value="pm" id="opt-period-pm">Afternoon (13:00 onward)</option>
+          </select>
+        </div>
+        <div class="field grow">
+          <label for="block-reason" id="t-block-reason">Reason (optional)</label>
+          <input type="text" id="block-reason" maxlength="80">
+        </div>
+        <button class="btn btn-primary" id="block-add-btn" type="button" style="width:auto;">Add block</button>
+      </div>
+      <p class="field-error" id="block-error"></p>
+      <div class="block-list" id="block-list"></div>
+    </div>
     <div class="filters">
       <input type="search" id="f-q" placeholder="Search: name, email, booking ID …">
       <select id="f-status">
@@ -436,6 +507,21 @@
       statTotal: "Total Bookings Amount",
       statCompleted: "Completed Amount",
       statPending: "Pending Amount",
+      blockTitle: "Block calendar",
+      blockSub: "Stop customers from booking a day, or just its morning/afternoon.",
+      blockStart: "Start date",
+      blockEnd: "End date",
+      blockPeriod: "Block",
+      periodFull: "Full day",
+      periodAm: "Morning (before 13:00)",
+      periodPm: "Afternoon (13:00 onward)",
+      blockReason: "Reason (optional)",
+      blockAddBtn: "Add block",
+      blockEmpty: "No calendar blocks yet.",
+      blockDatesRequired: "Please pick a start date.",
+      blockAdded: "Calendar block added",
+      blockRemoved: "Calendar block removed",
+      remove: "Remove",
       searchPlaceholder: "Search: name, email, booking ID …",
       statusAll: "All statuses",
       statusConfirmed: "Confirmed",
@@ -500,6 +586,21 @@
       statTotal: "Gesamtbetrag Buchungen",
       statCompleted: "Betrag abgeschlossen",
       statPending: "Betrag ausstehend",
+      blockTitle: "Kalender blockieren",
+      blockSub: "Verhindert Buchungen an einem Tag oder nur vormittags/nachmittags.",
+      blockStart: "Startdatum",
+      blockEnd: "Enddatum",
+      blockPeriod: "Blockieren",
+      periodFull: "Ganzer Tag",
+      periodAm: "Vormittag (bis 13:00)",
+      periodPm: "Nachmittag (ab 13:00)",
+      blockReason: "Grund (optional)",
+      blockAddBtn: "Block hinzufügen",
+      blockEmpty: "Noch keine Kalenderblöcke.",
+      blockDatesRequired: "Bitte ein Startdatum wählen.",
+      blockAdded: "Kalenderblock hinzugefügt",
+      blockRemoved: "Kalenderblock entfernt",
+      remove: "Entfernen",
       searchPlaceholder: "Suche: Name, E-Mail, Buchungs-ID …",
       statusAll: "Alle Status",
       statusConfirmed: "Bestätigt",
@@ -587,6 +688,17 @@
     document.getElementById("t-stat-total").textContent = s.statTotal;
     document.getElementById("t-stat-completed").textContent = s.statCompleted;
     document.getElementById("t-stat-pending").textContent = s.statPending;
+    document.getElementById("t-block-title").textContent = s.blockTitle;
+    document.getElementById("t-block-sub").textContent = s.blockSub;
+    document.getElementById("t-block-start").textContent = s.blockStart;
+    document.getElementById("t-block-end").textContent = s.blockEnd;
+    document.getElementById("t-block-period").textContent = s.blockPeriod;
+    document.getElementById("opt-period-full").textContent = s.periodFull;
+    document.getElementById("opt-period-am").textContent = s.periodAm;
+    document.getElementById("opt-period-pm").textContent = s.periodPm;
+    document.getElementById("t-block-reason").textContent = s.blockReason;
+    document.getElementById("block-add-btn").textContent = s.blockAddBtn;
+    if (state.lastBlocks) renderBlocks(state.lastBlocks);
     document.getElementById("f-q").placeholder = s.searchPlaceholder;
     document.getElementById("opt-status-all").textContent = s.statusAll;
     document.getElementById("opt-status-confirmed").textContent = s.statusConfirmed;
@@ -667,6 +779,7 @@
     loginScreen.style.display = "none";
     dashboard.style.display = "block";
     loadBookings();
+    loadBlocks();
   }
 
   loginForm.addEventListener("submit", async (e) => {
@@ -824,6 +937,104 @@
   function escapeHtml(s) {
     return String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
+
+  // ---- Calendar blocks ----
+
+  function periodLabel(period) {
+    const s = t();
+    return { full: s.periodFull, am: s.periodAm, pm: s.periodPm }[period] || period;
+  }
+
+  // The API stores one row per blocked date; grouped here into visual
+  // ranges (consecutive dates, same period, same reason) so a multi-day
+  // block reads as one item with one "Remove" button, not one row per day.
+  function groupBlocks(blocks) {
+    const sorted = [...blocks].sort((a, b) => a.date.localeCompare(b.date) || a.period.localeCompare(b.period));
+    const groups = [];
+    for (const b of sorted) {
+      const last = groups[groups.length - 1];
+      const isConsecutive =
+        last &&
+        last.period === b.period &&
+        (last.reason || "") === (b.reason || "") &&
+        new Date(b.date + "T00:00:00Z") - new Date(last.endDate + "T00:00:00Z") === 86400000;
+      if (isConsecutive) {
+        last.endDate = b.date;
+        last.ids.push(b.id);
+      } else {
+        groups.push({ startDate: b.date, endDate: b.date, period: b.period, reason: b.reason, ids: [b.id] });
+      }
+    }
+    return groups;
+  }
+
+  function renderBlocks(blocks) {
+    state.lastBlocks = blocks;
+    const s = t();
+    const list = document.getElementById("block-list");
+    const groups = groupBlocks(blocks);
+    if (!groups.length) {
+      list.innerHTML = `<p class="muted" style="font-size:0.85rem;">${s.blockEmpty}</p>`;
+      return;
+    }
+    list.innerHTML = "";
+    groups.forEach((g) => {
+      const row = document.createElement("div");
+      row.className = "block-item";
+      const rangeText = g.startDate === g.endDate ? g.startDate : `${g.startDate} – ${g.endDate}`;
+      row.innerHTML = `
+        <div>
+          <div class="block-item-range">${rangeText}</div>
+          <div class="block-item-meta">${periodLabel(g.period)}${g.reason ? " · " + escapeHtml(g.reason) : ""}</div>
+        </div>
+        <button class="btn btn-ghost block-remove-btn" type="button">${s.remove}</button>
+      `;
+      row.querySelector(".block-remove-btn").addEventListener("click", async () => {
+        try {
+          for (const id of g.ids) {
+            await api(`/api/admin/blocks/${encodeURIComponent(id)}`, { method: "DELETE" });
+          }
+          toast(s.blockRemoved);
+          loadBlocks();
+        } catch (err) {
+          toast(err.message || s.updateFailed);
+        }
+      });
+      list.appendChild(row);
+    });
+  }
+
+  async function loadBlocks() {
+    const data = await api("/api/admin/blocks");
+    renderBlocks(data.blocks || []);
+  }
+
+  document.getElementById("block-add-btn").addEventListener("click", async () => {
+    const s = t();
+    const errorEl = document.getElementById("block-error");
+    errorEl.textContent = "";
+    const startDate = document.getElementById("block-start").value;
+    const endDate = document.getElementById("block-end").value || startDate;
+    const period = document.getElementById("block-period").value;
+    const reason = document.getElementById("block-reason").value.trim();
+    if (!startDate) {
+      errorEl.textContent = s.blockDatesRequired;
+      return;
+    }
+    try {
+      await api("/api/admin/blocks", {
+        method: "POST",
+        body: JSON.stringify({ startDate, endDate, period, reason: reason || undefined }),
+      });
+      document.getElementById("block-start").value = "";
+      document.getElementById("block-end").value = "";
+      document.getElementById("block-reason").value = "";
+      toast(s.blockAdded);
+      loadBlocks();
+    } catch (err) {
+      errorEl.textContent = err.message || s.genericError;
+    }
+  });
 
   let currentDetail = null;
 
