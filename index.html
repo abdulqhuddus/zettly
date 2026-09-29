@@ -292,9 +292,12 @@
     padding: 1.5rem 1.25rem 0.5rem;
     margin-bottom: 0.5rem;
     transition: max-width 0.3s ease, opacity 0.25s ease, max-height 0.3s ease;
-    overflow: hidden;
   }
-  .how-it-works.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; pointer-events: none; }
+  /* overflow:hidden only while collapsing/collapsed (needed so the
+     content doesn't spill out as max-height shrinks to 0) — applying it
+     unconditionally clipped the active step card's lift/glow shadow
+     against this section's own box even when fully expanded. */
+  .how-it-works.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; pointer-events: none; overflow: hidden; }
   .how-it-works h2 {
     text-align: center;
     font-size: clamp(1.5rem, 3vw, 1.9rem);
@@ -317,7 +320,7 @@
        overflow-x alone makes the browser implicitly treat overflow-y as
        "auto" too, so without this room the active card's lift and glow
        shadow gets clipped flush against the track's own box. */
-    padding: 2.2rem 0.2rem 2.4rem;
+    padding: 2.2rem 0.2rem 3.5rem;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
