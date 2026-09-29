@@ -1241,7 +1241,7 @@
     if (b.status !== "completed" && b.status !== "cancelled") {
       actions.appendChild(makeActionBtn(s.actionComplete, "btn-ok", () => updateStatus(b.id, "completed")));
     }
-    if (b.status !== "confirmed") {
+    if (b.status !== "confirmed" && isFutureBooking(b)) {
       actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", () => updateStatus(b.id, "confirmed")));
     }
     if (b.status !== "cancelled") {
@@ -1249,6 +1249,16 @@
       actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", () => sendPaymentLink(b.id)));
     }
     document.getElementById("modal").classList.add("open");
+  }
+
+  // Re-confirming only makes sense for a booking whose appointment is still
+  // ahead of us -- compares the booking's actual date+time, not just the
+  // date, against the current moment.
+  function isFutureBooking(b) {
+    if (!b.date) return true;
+    const dt = new Date(`${b.date}T${(b.time || "00:00").length === 5 ? b.time : "00:00"}:00`);
+    if (isNaN(dt.getTime())) return true;
+    return dt.getTime() > Date.now();
   }
 
   function makeActionBtn(label, cls, onClick) {

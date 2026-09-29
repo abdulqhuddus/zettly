@@ -782,6 +782,8 @@ export function generateInvoicePdf(data) {
         price: "Price",
         callout: "Call-out fee",
         total: "Total",
+        description: "Description",
+        amount: "Amount",
         email: "Email",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
@@ -804,6 +806,8 @@ export function generateInvoicePdf(data) {
         price: "Preis",
         callout: "Anfahrtspauschale",
         total: "Gesamt",
+        description: "Beschreibung",
+        amount: "Betrag",
         email: "E-Mail",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
@@ -927,22 +931,51 @@ export function generateInvoicePdf(data) {
   y -= 20;
 
   // ---- Line items table: service price, optional call-out fee, bold total ----
+  // Laid out as an actual table -- header row, ruled-off rows, right-aligned
+  // amount column, boxed/ruled bold total row -- rather than plain label/
+  // value lines, per the invoice's table-layout requirement.
   const lineItems = [];
   if (data.commuteFee > 0) {
-    lineItems.push({ label: L.price, value: data.servicePriceText });
+    lineItems.push({ label: L.service, value: data.servicePriceText });
     lineItems.push({ label: L.callout, value: `+ €${data.commuteFee}` });
-    lineItems.push({ label: L.total, value: data.priceText, bold: true });
   } else {
-    lineItems.push({ label: L.total, value: data.priceText, bold: true });
+    lineItems.push({ label: L.service, value: data.priceText });
   }
-  lineItems.forEach((item) => {
-    const size = item.bold ? 11 : 10;
-    content.push(text(LEFT_X, y, size, item.label, { bold: item.bold, color: item.bold ? INK : MUTED }));
-    content.push(textRight(RIGHT_X, y, size, item.value, { bold: true, color: INK }));
-    y -= item.bold ? 18 : 15;
-    if (item.bold) content.push(line(LEFT_X, y + 8, RIGHT_X, y + 8, BORDER, 0.6));
+
+  const tableHeaderH = 20;
+  const tableRowH = 18;
+  const tableTotalH = 24;
+  const tableH = tableHeaderH + lineItems.length * tableRowH + tableTotalH;
+  const tableTop = y;
+  const tableBottom = tableTop - tableH;
+
+  // Outer border around the whole table.
+  content.push(strokeRect(LEFT_X, tableBottom, RIGHT_X - LEFT_X, tableH, BORDER, 1));
+
+  // Header row: column labels, ruled off from the body beneath it.
+  let ty = tableTop - tableHeaderH / 2 - 3.5;
+  content.push(text(LEFT_X + 8, ty, 8.5, L.description.toUpperCase(), { bold: true, color: MUTED }));
+  content.push(textRight(RIGHT_X - 8, ty, 8.5, L.amount.toUpperCase(), { bold: true, color: MUTED }));
+  content.push(line(LEFT_X, tableTop - tableHeaderH, RIGHT_X, tableTop - tableHeaderH, BORDER, 1));
+
+  // Body rows: one per line item, each ruled off from the next.
+  let rowTop = tableTop - tableHeaderH;
+  lineItems.forEach((item, i) => {
+    const rowMidY = rowTop - tableRowH / 2 - 3.5;
+    content.push(text(LEFT_X + 8, rowMidY, 10, item.label, { color: INK }));
+    content.push(textRight(RIGHT_X - 8, rowMidY, 10, item.value, { color: INK }));
+    rowTop -= tableRowH;
+    if (i < lineItems.length - 1) content.push(line(LEFT_X, rowTop, RIGHT_X, rowTop, BORDER, 0.6));
   });
-  y -= 4;
+
+  // Total row: ruled off above with a heavier line, bold, boxed off by the
+  // table's own outer border on the other three sides.
+  content.push(line(LEFT_X, rowTop, RIGHT_X, rowTop, INK, 1));
+  const totalMidY = rowTop - tableTotalH / 2 - 4;
+  content.push(text(LEFT_X + 8, totalMidY, 11.5, L.total, { bold: true, color: INK }));
+  content.push(textRight(RIGHT_X - 8, totalMidY, 11.5, data.priceText, { bold: true, color: INK }));
+
+  y = tableBottom - 20;
 
   // ---- Mandatory Kleinunternehmer (§19 UStG) VAT-exemption note. Required
   // on every invoice, in German, verbatim -- even on the English-language
