@@ -107,6 +107,10 @@
     line-height: 1;
   }
   .brand-text span { color: var(--accent); }
+  /* Reusable brand wordmark treatment for "Zettly" wherever it appears in
+     running text (tagline, footer copy, popups) — mirrors .brand-text's
+     ink/accent split without overriding the surrounding font. */
+  .zettly-word span { color: var(--accent); }
   .brand-mark { width: 52px; height: 52px; flex: 0 0 auto; }
   .brand-mark .m1 { animation: markPulse 3s ease-in-out infinite 0s; }
   .brand-mark .m2 { animation: markPulse 3s ease-in-out infinite 0.35s; }
@@ -1344,7 +1348,7 @@
   </div>
 </div>
 
-<p class="site-tagline"><span class="grad" data-i18n="heroTagline">Zettly &ndash; Ihr One-Stop-Partner f&uuml;r alles rund um IT</span></p>
+<p class="site-tagline" data-i18n="heroTagline"><span class="zettly-word">Zett<span>ly</span></span> &ndash; <span class="grad">Ihr One-Stop-Partner f&uuml;r alles rund um IT</span></p>
 <div class="trust-strip">
   <span class="trust-pill">
     <span class="icon-flow">
@@ -1667,7 +1671,7 @@
       <span class="addr">München, Deutschland</span>
     </div>
   </div>
-  <div class="footer-bottom-bar">&copy; <span id="footer-year"></span> Zettly</div>
+  <div class="footer-bottom-bar">&copy; <span id="footer-year"></span> <span class="zettly-word">Zett<span>ly</span></span></div>
 </footer>
 
 <div class="progress-bar hidden" id="progress">
@@ -1680,7 +1684,7 @@
 const I18N = {
   de: {
     title: "Termin buchen | Zettly",
-    heroTagline: "Zettly – Ihr One-Stop-Partner für alles rund um IT",
+    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> – <span class=\"grad\">Ihr One-Stop-Partner für alles rund um IT</span>",
     bookAnother: "Weiteren Termin buchen",
     step00Title: "Für Zuhause oder Ihr Unternehmen?",
     step00Sub: "So können wir Ihnen gleich die passenden Pakete zeigen.",
@@ -1704,7 +1708,7 @@ const I18N = {
     trustDoorstepDesc: "Service direkt bei Ihnen",
     footerPrivacy: "Datenschutz",
     footerHome: "Startseite",
-    footerTagline: "Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+    footerTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
     footerServicesHeading: "Leistungen",
     footerSpecialtyBadge: "Schwerpunkt",
     dynamicsFeaturedBadge: "Unser Schwerpunkt",
@@ -1720,7 +1724,7 @@ const I18N = {
     footerContactHeading: "Kontakt",
     serviceAreaTitle: "Wo sind wir für Sie im Einsatz?",
     serviceAreaSub: "Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km, ausschließlich innerhalb Deutschlands.",
-    serviceAreaPopup: "<b>Zettly</b><span>München &amp; Umgebung, bis 100 km</span>",
+    serviceAreaPopup: "<b class=\"zettly-word\">Zett<span>ly</span></b><span>München &amp; Umgebung, bis 100 km</span>",
     commuteZone1Label: "0–15 km",
     commuteZone1Fee: "Kostenlos",
     commuteZone2Label: "15–25 km",
@@ -1793,7 +1797,7 @@ const I18N = {
     confirmBooking: "Buchung bestätigen",
     successTitle: "Sie sind gebucht!",
     bookingRefLabel: "Buchungsnummer",
-    cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
+    cancelNote: "Bitte beachten Sie: <span class=\"zettly-word\">Zett<span>ly</span></span> behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
     announceBarHead: "Wir befinden uns im Aufbau ·",
     announceBarTail: "Buchungen sind derzeit nicht möglich",
     loadingTimes: "Lade Termine…",
@@ -1813,7 +1817,7 @@ const I18N = {
   },
   en: {
     title: "Book an Appointment | Zettly",
-    heroTagline: "Zettly – your one-stop partner for everything IT",
+    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> – <span class=\"grad\">your one-stop partner for everything IT</span>",
     bookAnother: "Book another appointment",
     step00Title: "For your home or your business?",
     step00Sub: "So we can show you the right packages right away.",
@@ -1837,7 +1841,7 @@ const I18N = {
     trustDoorstepDesc: "We come to you",
     footerPrivacy: "Privacy Policy",
     footerHome: "Home",
-    footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+    footerTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
     footerServicesHeading: "Services",
     footerSpecialtyBadge: "Specialty",
     dynamicsFeaturedBadge: "Our specialty",
@@ -1853,7 +1857,7 @@ const I18N = {
     footerContactHeading: "Contact",
     serviceAreaTitle: "Where are we available?",
     serviceAreaSub: "From Munich, we cover the whole surrounding region – within a 100 km radius, Germany only.",
-    serviceAreaPopup: "<b>Zettly</b><span>Munich &amp; surroundings, up to 100 km</span>",
+    serviceAreaPopup: "<b class=\"zettly-word\">Zett<span>ly</span></b><span>Munich &amp; surroundings, up to 100 km</span>",
     commuteZone1Label: "0–15 km",
     commuteZone1Fee: "Free",
     commuteZone2Label: "15–25 km",
@@ -1926,7 +1930,7 @@ const I18N = {
     confirmBooking: "Confirm booking",
     successTitle: "You're booked!",
     bookingRefLabel: "Booking reference",
-    cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
+    cancelNote: "Please note: <span class=\"zettly-word\">Zett<span>ly</span></span> reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
     announceBarHead: "We're under construction ·",
     announceBarTail: "bookings are currently not accepted",
     loadingTimes: "Loading times…",
@@ -1969,7 +1973,7 @@ function fmtPrice(svc) { return svc.quote ? t("priceOnRequest") : fmtEuro(svc.pr
 function applyStaticTranslations() {
   document.documentElement.lang = lang;
   document.title = t("title");
-  const HTML_I18N_KEYS = new Set(["consentLabel"]);
+  const HTML_I18N_KEYS = new Set(["consentLabel", "heroTagline", "footerTagline", "cancelNote"]);
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     if (!I18N[lang][key]) return;

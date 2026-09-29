@@ -58,6 +58,7 @@
   .brand { display: flex; align-items: center; gap: 0.85rem; text-decoration: none; }
   .brand-text { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 2.1rem; font-weight: 200; letter-spacing: 0.01em; color: var(--ink); line-height: 1; }
   .brand-text span { color: var(--accent); }
+  .zettly-word span { color: var(--accent); }
   .brand-mark { width: 48px; height: 48px; flex: 0 0 auto; }
   .topbar-right { display: flex; align-items: center; gap: 1.2rem; }
   .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
@@ -461,7 +462,7 @@
 <section class="block">
   <div class="why-wrap">
     <div class="why-content">
-      <h2>Warum Zettly für Ihre Website?</h2>
+      <h2>Warum <span class="zettly-word">Zett<span>ly</span></span> für Ihre Website?</h2>
       <p class="lead2">Als IT-Administrator sehe ich Websites nicht nur als Design-Projekt, sondern als System, das zuverlässig laufen muss &ndash; genau wie die Netzwerke und Systeme, die ich täglich betreue. Das fließt direkt in jede Website ein, die ich baue.</p>
       <ul class="why-list">
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ein fester Ansprechpartner von der Planung bis zum laufenden Betrieb.</li>
@@ -651,7 +652,7 @@
 <section class="block">
   <div class="why-wrap">
     <div class="why-content">
-      <h2>Why Zettly for your website?</h2>
+      <h2>Why <span class="zettly-word">Zett<span>ly</span></span> for your website?</h2>
       <p class="lead2">As an IT administrator, I see a website not just as a design project but as a system that has to run reliably &ndash; the same way I look at the networks and systems I manage every day. That mindset goes directly into every website I build.</p>
       <ul class="why-list">
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>One point of contact from planning through ongoing operation.</li>
@@ -737,7 +738,7 @@
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly | Website-Erstellung", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerPrivacy: "Datenschutz", footerTagline: "Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+    de: { title: "Zettly | Website-Erstellung", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerPrivacy: "Datenschutz", footerTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
       footerServicesHeading: "Leistungen",
       footerSpecialtyBadge: "Schwerpunkt",
       footerServiceDynamics: "Dynamics 365",
@@ -749,7 +750,7 @@
       footerContactHeading: "Kontakt",
       announceHead: "Wir befinden uns im Aufbau ·",
       announceTail: "Buchungen sind derzeit nicht möglich" },
-    en: { title: "Zettly | Website Builder", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerPrivacy: "Privacy", footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+    en: { title: "Zettly | Website Builder", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerPrivacy: "Privacy", footerTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
       footerServicesHeading: "Services",
       footerSpecialtyBadge: "Specialty",
       footerServiceDynamics: "Dynamics 365",
@@ -771,7 +772,7 @@
     document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
     document.querySelectorAll(".site-footer [data-i18n]").forEach(el => {
       const key = el.dataset.i18n;
-      if (STRINGS[lang][key]) el.textContent = STRINGS[lang][key];
+      if (STRINGS[lang][key]) { if (key === "footerTagline") el.innerHTML = STRINGS[lang][key]; else el.textContent = STRINGS[lang][key]; }
     });
     document.getElementById("announce-text-head").textContent = STRINGS[lang].announceHead;
     document.getElementById("announce-text-tail").textContent = STRINGS[lang].announceTail;
