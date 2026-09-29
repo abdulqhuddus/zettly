@@ -148,6 +148,24 @@
     transition: max-width 0.3s ease;
   }
   .trust-strip.wide { max-width: 1180px; }
+  /* One-line intro tagline sitting above the trust-pill row: plain
+     background (no colored banner box), the punch comes entirely from the
+     gradient-text treatment reused from the Dynamics 365 hero heading. */
+  .site-tagline {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 1.4rem;
+    padding: 0 1rem;
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .site-tagline .grad {
+    background: linear-gradient(120deg, var(--brand-blue), var(--accent) 55%, var(--pink));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  @media (max-width: 400px) { .site-tagline { font-size: 1.05rem; margin-bottom: 1.1rem; } }
   /* Stay 2x2 even on the narrowest phones — four full-width stacked cards
      made this section feel endless, and each card is compact enough with
      the two-icon layout to sit comfortably at half width. */
@@ -1326,6 +1344,7 @@
   </div>
 </div>
 
+<p class="site-tagline"><span class="grad" data-i18n="heroTagline">Zettly &ndash; Ihr One-Stop-Partner f&uuml;r alles rund um IT</span></p>
 <div class="trust-strip">
   <span class="trust-pill">
     <span class="icon-flow">
@@ -1661,6 +1680,7 @@
 const I18N = {
   de: {
     title: "Termin buchen | Zettly",
+    heroTagline: "Zettly – Ihr One-Stop-Partner für alles rund um IT",
     bookAnother: "Weiteren Termin buchen",
     step00Title: "Für Zuhause oder Ihr Unternehmen?",
     step00Sub: "So können wir Ihnen gleich die passenden Pakete zeigen.",
@@ -1793,6 +1813,7 @@ const I18N = {
   },
   en: {
     title: "Book an Appointment | Zettly",
+    heroTagline: "Zettly – your one-stop partner for everything IT",
     bookAnother: "Book another appointment",
     step00Title: "For your home or your business?",
     step00Sub: "So we can show you the right packages right away.",
