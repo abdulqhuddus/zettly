@@ -171,9 +171,83 @@
   .cta-banner .btn-primary:hover { box-shadow: 0 14px 30px rgba(0,0,0,0.24); }
 
   /* ---- Footer ---- */
-  .site-footer { width: 100%; max-width: 1180px; padding: 3rem clamp(1.25rem, 4vw, 2rem) 1.5rem; margin-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-  .site-footer a { text-decoration: none; color: var(--muted); margin-right: 1.2rem; }
-  .site-footer a:hover { color: var(--accent); }
+  .site-footer {
+    position: relative;
+    width: 100%;
+    background: var(--accent-light);
+    border-top: 1px solid var(--border);
+    margin-top: 2.5rem;
+    overflow: hidden;
+  }
+  .footer-watermark {
+    position: absolute;
+    top: 50%; right: -6%;
+    width: 380px; height: 380px;
+    transform: translateY(-50%) rotate(-8deg);
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @media (max-width: 640px) {
+    .footer-watermark { width: 280px; height: 280px; right: -18%; top: 12%; transform: rotate(-8deg); opacity: 0.05; }
+  }
+  .site-footer .footer-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 2.8rem 1.25rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.2rem;
+    justify-content: space-between;
+  }
+  .site-footer .footer-col { min-width: 150px; }
+  .site-footer .footer-col.footer-about { flex: 1 1 260px; max-width: 320px; }
+  .site-footer .footer-brand { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 200; font-size: 1.4rem; color: var(--ink); margin-bottom: 0.6rem; }
+  .site-footer .footer-brand span { color: var(--accent); }
+  .site-footer .footer-tagline { color: var(--muted); font-size: 0.85rem; line-height: 1.65; max-width: 300px; }
+  .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.9rem; font-weight: 700; }
+  .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item {
+    display: flex; align-items: center; color: var(--ink); text-decoration: none; font-size: 0.85rem;
+    margin-bottom: 0.65rem; line-height: 1.3;
+  }
+  .site-footer .footer-col a:hover { color: var(--accent); }
+  .site-footer .service-item:not(.highlight)::before {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--border); margin-right: 0.55rem; flex: 0 0 auto;
+  }
+  .site-footer .service-item.highlight {
+    color: var(--accent); font-weight: 700; gap: 0.5rem;
+    background: var(--accent-light); border-radius: 10px;
+    padding: 0.4rem 0.6rem; margin-left: -0.6rem; margin-bottom: 0.8rem;
+  }
+  .site-footer .service-item .badge {
+    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+    background: var(--accent); color: #fff; padding: 0.2rem 0.5rem; border-radius: 999px;
+    flex: 0 0 auto;
+  }
+  .site-footer .footer-bottom-bar {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 1.1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    color: #918f9c;
+    font-size: 0.78rem;
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    .site-footer .footer-inner { flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; gap: 0; padding: 2.4rem 1.5rem 0.5rem; }
+    .site-footer .footer-col { width: 100%; max-width: 280px; padding: 1.3rem 0; }
+    .site-footer .footer-col.footer-about { max-width: 100%; padding-top: 0; }
+    .site-footer .footer-col:last-child { padding-bottom: 0; }
+    .site-footer .footer-tagline { margin: 0 auto; }
+    .site-footer .footer-col:not(:last-child) { border-bottom: 1px solid rgba(17,17,20,0.1); }
+    .site-footer .footer-col h5 { text-align: center; }
+    .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { justify-content: center; }
+    .site-footer .service-item.highlight { margin-left: 0; justify-content: center; }
+  }
 
   /* ---- Mobile responsiveness ---- */
   .tier-wrap { -webkit-overflow-scrolling: touch; }
@@ -200,8 +274,6 @@
       white-space: normal; width: 150px; min-width: 150px; line-height: 1.3;
     }
     .faq-item summary { font-size: 0.88rem; }
-    .site-footer { justify-content: center; text-align: center; }
-    .site-footer a { margin-right: 0.9rem; }
   }
   @media (max-width: 420px) {
     .brand-text { font-size: 1.3rem; }
@@ -574,18 +646,63 @@
 </div>
 
 <footer class="site-footer">
-  <div>
-    <a href="/" data-i18n="footerHome">Startseite</a>
-    <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
-    <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+  <svg class="footer-watermark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="0" y="0" width="28" height="28" rx="6" fill="#111114"/>
+    <rect x="36" y="0" width="64" height="64" rx="14" fill="#111114"/>
+    <rect x="0" y="36" width="64" height="64" rx="14" fill="#111114"/>
+    <rect x="72" y="72" width="28" height="28" rx="6" fill="#111114"/>
+  </svg>
+  <div class="footer-inner">
+    <div class="footer-col footer-about">
+      <div class="footer-brand">zett<span>ly</span></div>
+      <p class="footer-tagline" data-i18n="footerTagline">Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerServicesHeading">Leistungen</h5>
+      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
+      <a class="service-item" href="/website-builder/" data-i18n="footerServiceWebsite">Website-Erstellung</a>
+      <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
+      <span class="service-item" data-i18n="footerServiceSmartHome">Smart Home &amp; Sicherheit</span>
+      <span class="service-item" data-i18n="footerServiceBusiness">IT-Support für Unternehmen</span>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerLinksHeading">Links</h5>
+      <a href="/" data-i18n="footerHome">Startseite</a>
+      <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerContactHeading">Kontakt</h5>
+      <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+      <span class="addr">München, Deutschland</span>
+    </div>
   </div>
-  <div>&copy; <span id="footer-year"></span> Zettly</div>
+  <div class="footer-bottom-bar">&copy; <span id="footer-year"></span> Zettly</div>
 </footer>
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly | Website-Erstellung", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", announce: "Wir befinden uns im Aufbau · bald verfügbar · Buchungen sind derzeit nicht möglich" },
-    en: { title: "Zettly | Website Builder", back: "← Back to home", home: "Home", privacy: "Privacy", announce: "We're under construction · coming soon · bookings are currently not accepted" },
+    de: { title: "Zettly | Website-Erstellung", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerPrivacy: "Datenschutz", footerTagline: "Zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+      footerServicesHeading: "Leistungen",
+      footerSpecialtyBadge: "Schwerpunkt",
+      footerServiceDynamics: "Dynamics 365",
+      footerServiceWebsite: "Website-Erstellung",
+      footerServiceComputers: "Computer & Netzwerke",
+      footerServiceSmartHome: "Smart Home & Sicherheit",
+      footerServiceBusiness: "IT-Support für Unternehmen",
+      footerLinksHeading: "Links",
+      footerContactHeading: "Kontakt",
+      announce: "Wir befinden uns im Aufbau · bald verfügbar · Buchungen sind derzeit nicht möglich" },
+    en: { title: "Zettly | Website Builder", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerPrivacy: "Privacy", footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+      footerServicesHeading: "Services",
+      footerSpecialtyBadge: "Specialty",
+      footerServiceDynamics: "Dynamics 365",
+      footerServiceWebsite: "Website Builder",
+      footerServiceComputers: "Computers & Networks",
+      footerServiceSmartHome: "Smart Home & Security",
+      footerServiceBusiness: "Business IT Support",
+      footerLinksHeading: "Links",
+      footerContactHeading: "Contact",
+      announce: "We're under construction · coming soon · bookings are currently not accepted" },
   };
 
   function setLang(lang) {
@@ -594,8 +711,10 @@
     document.getElementById("page-de").style.display = lang === "de" ? "" : "none";
     document.getElementById("page-en").style.display = lang === "en" ? "" : "none";
     document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
-    document.querySelector('[data-i18n="footerHome"]').textContent = STRINGS[lang].home;
-    document.querySelector('[data-i18n="footerPrivacy"]').textContent = STRINGS[lang].privacy;
+    document.querySelectorAll(".site-footer [data-i18n]").forEach(el => {
+      const key = el.dataset.i18n;
+      if (STRINGS[lang][key]) el.textContent = STRINGS[lang][key];
+    });
     document.getElementById("announce-text").textContent = STRINGS[lang].announce;
     document.querySelectorAll("#lang-switch button").forEach(b => {
       b.classList.toggle("active", b.dataset.lang === lang);
