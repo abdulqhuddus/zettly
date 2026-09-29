@@ -235,12 +235,21 @@ export const DANGER_BG = [0.992, 0.933, 0.949]; // #fdeef2
 export const GRAY_DARK = [0.29, 0.29, 0.32]; // letterhead accent / header bar
 export const GRAY_MID = [0.55, 0.55, 0.58]; // secondary accent
 
-// Formats a euro amount for the invoice PDF, always with exactly two
-// decimal digits (e.g. 45 -> "€45.00"), matching the "€<amount>" prefix
-// style already used everywhere else in the app but forcing the decimals
-// that plain `€${amount}` interpolation (used elsewhere) doesn't guarantee.
-export function formatEUR(amount) {
-  return `€${Number(amount).toFixed(2)}`;
+// Formats a euro amount for the invoice PDF, always with exactly two decimal
+// digits. English keeps the "€<amount>" prefix style already used everywhere
+// else in the app (e.g. "€45.00"), matching generateBookingPdf's English
+// price rows. German uses the actual German convention: comma as decimal
+// separator, period as thousands separator (for amounts >= 1000), and the €
+// symbol AFTER the number with a space (e.g. "1.234,56 €") -- "€45.00" is not
+// how amounts are written in German.
+export function formatEUR(amount, lang = "en") {
+  const n = Number(amount);
+  if (lang === "de") {
+    const [intPart, decPart] = n.toFixed(2).split(".");
+    const withThousands = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return `${withThousands},${decPart} €`;
+  }
+  return `€${n.toFixed(2)}`;
 }
 
 // millimetres -> PDF points (1mm = 2.834645669pt)
@@ -827,17 +836,19 @@ export function generateInvoicePdf(data) {
 
   const content = [];
 
-  // ---- Letterhead: logo mark (grayscale accent) + wordmark, sender contact ----
+  // ---- Letterhead: logo mark + wordmark in their normal brand colors, same
+  // as generateBookingPdf's letterhead -- only the rest of the invoice body
+  // (table, borders, text) stays colorless/grayscale.
   const logoSizeMM = 9;
   const logoTopMM = 9;
-  drawLogoMark(content, LEFT_X / MM, logoTopMM, logoSizeMM, GRAY_DARK);
+  drawLogoMark(content, LEFT_X / MM, logoTopMM, logoSizeMM);
   const logoCenterMM = logoTopMM + logoSizeMM / 2;
   const wordmarkSize = 17;
   const wordmarkCharSpace = 0.15;
   const wordmarkBaselineMM = logoCenterMM + 2.6;
   const zettWidth = estWordmarkWidth("zett", wordmarkSize) + 4 * wordmarkCharSpace;
   content.push(text(LEFT_X + 11.5 * MM, fromTop(wordmarkBaselineMM), wordmarkSize, "zett", { color: INK, charSpace: wordmarkCharSpace, wordmarkFont: true }));
-  content.push(text(LEFT_X + 11.5 * MM + zettWidth, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: GRAY_DARK, charSpace: wordmarkCharSpace, wordmarkFont: true }));
+  content.push(text(LEFT_X + 11.5 * MM + zettWidth, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: PURPLE, charSpace: wordmarkCharSpace, wordmarkFont: true }));
 
   const headerLines = data.lang === "en"
     ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
@@ -945,7 +956,7 @@ export function generateInvoicePdf(data) {
   const lineItems = [];
   if (data.commuteFee > 0) {
     lineItems.push({ label: L.service, value: data.servicePriceText });
-    lineItems.push({ label: L.callout, value: `+ ${formatEUR(data.commuteFee)}` });
+    lineItems.push({ label: L.callout, value: `+ ${formatEUR(data.commuteFee, data.lang)}` });
   } else {
     lineItems.push({ label: L.service, value: data.priceText });
   }

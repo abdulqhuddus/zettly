@@ -222,8 +222,15 @@ export async function sendInvoiceEmail(env, booking, lang = "de") {
   const invoiceNumber = invoiceNumberFor(bookingRef);
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const commuteFee = booking.commute_fee || 0;
-  const servicePriceText = booking.price ? formatEUR(booking.price) : lang === "en" ? "Quoted on-site" : "Vor Ort mitgeteilt";
-  const priceText = booking.price ? formatEUR(booking.price + commuteFee) : servicePriceText;
+  // Computed per-language (not once, reused for both PDFs) since the amount
+  // formatting itself differs by language: German uses comma-decimal/
+  // period-thousands with a trailing "€", English keeps the "€"-prefix style.
+  const servicePriceTextDe = booking.price ? formatEUR(booking.price, "de") : "Vor Ort mitgeteilt";
+  const servicePriceTextEn = booking.price ? formatEUR(booking.price, "en") : "Quoted on-site";
+  const priceTextDe = booking.price ? formatEUR(booking.price + commuteFee, "de") : servicePriceTextDe;
+  const priceTextEn = booking.price ? formatEUR(booking.price + commuteFee, "en") : servicePriceTextEn;
+  const servicePriceText = lang === "en" ? servicePriceTextEn : servicePriceTextDe;
+  const priceText = lang === "en" ? priceTextEn : priceTextDe;
   const paymentStatus = lang === "en" ? "Paid" : "Bezahlt";
 
   const html = `
@@ -279,16 +286,13 @@ export async function sendInvoiceEmail(env, booking, lang = "de") {
       customerEmail: booking.customer_email,
       customerAddress: booking.customer_address,
       time: booking.time,
-      servicePriceText,
-      priceText,
       commuteFee,
-      paymentStatus: paymentStatus,
     };
     const pdfBytesDe = generateInvoicePdf({
-      ...baseData, breadcrumb: breadcrumbDe, dateDisplay: dateDisplayDe, invoiceDate: invoiceDateDe, paymentStatus: "Bezahlt", lang: "de",
+      ...baseData, servicePriceText: servicePriceTextDe, priceText: priceTextDe, breadcrumb: breadcrumbDe, dateDisplay: dateDisplayDe, invoiceDate: invoiceDateDe, paymentStatus: "Bezahlt", lang: "de",
     });
     const pdfBytesEn = generateInvoicePdf({
-      ...baseData, breadcrumb: breadcrumbEn, dateDisplay: dateDisplayEn, invoiceDate: invoiceDateEn, paymentStatus: "Paid", lang: "en",
+      ...baseData, servicePriceText: servicePriceTextEn, priceText: priceTextEn, breadcrumb: breadcrumbEn, dateDisplay: dateDisplayEn, invoiceDate: invoiceDateEn, paymentStatus: "Paid", lang: "en",
     });
     attachments = [
       { filename: `zettly-rechnung-${invoiceNumber}-de.pdf`, content: toBase64(pdfBytesDe) },
