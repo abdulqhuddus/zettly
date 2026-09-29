@@ -15,7 +15,7 @@ import {
   clearFailedLogins,
 } from "./auth.js";
 import { json, berlinNow } from "./utils.js";
-import { isBookingEnabled, setBookingEnabled } from "./settings.js";
+import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { sendCancellationEmail } from "./notify.js";
 import catalog from "../catalog.json";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
@@ -306,10 +306,11 @@ export async function handleAdminDeleteBlock(request, env, id) {
   return json({ ok: true });
 }
 
-// ---- Global "bookings enabled" switch (no date range — just on/off) -----
+// ---- Per-audience "bookings enabled" switches (no date range — just on/off,
+// one for home customers and one for business customers) -----------------
 
 export async function handleAdminGetBookingStatus(env) {
-  return json({ enabled: await isBookingEnabled(env) });
+  return json(await getBookingStatuses(env));
 }
 
 export async function handleAdminSetBookingStatus(request, env) {
@@ -320,9 +321,9 @@ export async function handleAdminSetBookingStatus(request, env) {
   } catch {
     return json({ error: "Invalid request" }, 400);
   }
-  if (typeof body?.enabled !== "boolean") {
+  if (!BOOKING_AUDIENCES.includes(body?.audience) || typeof body?.enabled !== "boolean") {
     return json({ error: "Invalid request" }, 400);
   }
-  await setBookingEnabled(env, body.enabled);
-  return json({ ok: true, enabled: body.enabled });
+  await setBookingEnabled(env, body.audience, body.enabled);
+  return json({ ok: true, ...(await getBookingStatuses(env)) });
 }

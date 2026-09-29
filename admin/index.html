@@ -185,13 +185,22 @@
   .block-item-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
   .block-remove-btn { flex: 0 0 auto; }
 
-  /* Global on/off switch: no date range, just "closed until turned back on". */
+  /* Per-audience on/off switches: no date range, just "closed until turned
+     back on" — one for home customers, one for business customers. */
+  .booking-toggle-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem;
+    margin-bottom: 1.3rem;
+  }
+  @media (max-width: 640px) {
+    .booking-toggle-group { grid-template-columns: 1fr; }
+  }
   .booking-toggle-panel {
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1rem 1.2rem;
-    margin-bottom: 1.3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -417,17 +426,32 @@
         <div class="stat-value" id="stat-pending">–</div>
       </div>
     </div>
-    <div class="booking-toggle-panel" id="booking-toggle-panel">
-      <div class="booking-toggle-text">
-        <h2 id="t-booking-toggle-title">Bookings</h2>
-        <p id="t-booking-toggle-sub">Turn all new bookings off completely, with no end date — flip it back on whenever you're ready.</p>
+    <div class="booking-toggle-group">
+      <div class="booking-toggle-panel" id="booking-toggle-panel-home">
+        <div class="booking-toggle-text">
+          <h2 id="t-booking-toggle-title-home">Home bookings</h2>
+          <p id="t-booking-toggle-sub-home">Turn off bookings from home customers, with no end date.</p>
+        </div>
+        <div class="booking-toggle-row">
+          <span class="booking-toggle-status" id="booking-toggle-status-home">–</span>
+          <label class="switch">
+            <input type="checkbox" id="booking-toggle-input-home" data-audience="home">
+            <span class="switch-track"></span>
+          </label>
+        </div>
       </div>
-      <div class="booking-toggle-row">
-        <span class="booking-toggle-status" id="booking-toggle-status">–</span>
-        <label class="switch">
-          <input type="checkbox" id="booking-toggle-input">
-          <span class="switch-track"></span>
-        </label>
+      <div class="booking-toggle-panel" id="booking-toggle-panel-business">
+        <div class="booking-toggle-text">
+          <h2 id="t-booking-toggle-title-business">Business bookings</h2>
+          <p id="t-booking-toggle-sub-business">Turn off bookings from business customers, with no end date.</p>
+        </div>
+        <div class="booking-toggle-row">
+          <span class="booking-toggle-status" id="booking-toggle-status-business">–</span>
+          <label class="switch">
+            <input type="checkbox" id="booking-toggle-input-business" data-audience="business">
+            <span class="switch-track"></span>
+          </label>
+        </div>
       </div>
     </div>
     <div class="block-panel">
@@ -553,15 +577,18 @@
       statTotal: "Total Bookings Amount",
       statCompleted: "Completed Amount",
       statPending: "Pending Amount",
-      bookingToggleTitle: "Bookings",
-      bookingToggleSub: "Turn all new bookings off completely, with no end date — flip it back on whenever you're ready.",
+      bookingToggleTitleHome: "Home bookings",
+      bookingToggleSubHome: "Turn off bookings from home customers, with no end date.",
+      bookingToggleTitleBusiness: "Business bookings",
+      bookingToggleSubBusiness: "Turn off bookings from business customers, with no end date.",
       bookingToggleOn: "Accepting bookings",
       bookingToggleOff: "Bookings paused",
-      confirmDisableBookingTitle: "Pause all bookings?",
-      confirmDisableBookingMessage: "No one will be able to book any service until you turn this back on. This has no end date.",
-      confirmEnableBookingTitle: "Resume bookings?",
-      confirmEnableBookingMessage: "Customers will be able to book appointments again right away.",
-      confirmYes: "Yes, continue",
+      confirmDisableBookingTitle: (audience) => `Pause ${audience} bookings?`,
+      confirmDisableBookingMessage: (audience) => `No ${audience} customer will be able to book anything until you turn this back on. This has no end date.`,
+      confirmEnableBookingTitle: (audience) => `Resume ${audience} bookings?`,
+      confirmEnableBookingMessage: (audience) => `${audience[0].toUpperCase()}${audience.slice(1)} customers will be able to book appointments again right away.`,
+      audienceHome: "home",
+      audienceBusiness: "business",
       bookingStatusUpdated: "Booking status updated",
       blockTitle: "Block calendar",
       blockSub: "Stop customers from booking a day, or just its morning/afternoon.",
@@ -642,15 +669,18 @@
       statTotal: "Gesamtbetrag Buchungen",
       statCompleted: "Betrag abgeschlossen",
       statPending: "Betrag ausstehend",
-      bookingToggleTitle: "Buchungen",
-      bookingToggleSub: "Alle neuen Buchungen komplett deaktivieren, ohne Enddatum — jederzeit wieder einschaltbar.",
+      bookingToggleTitleHome: "Buchungen (Zuhause)",
+      bookingToggleSubHome: "Buchungen von Privatkunden deaktivieren, ohne Enddatum.",
+      bookingToggleTitleBusiness: "Buchungen (Unternehmen)",
+      bookingToggleSubBusiness: "Buchungen von Geschäftskunden deaktivieren, ohne Enddatum.",
       bookingToggleOn: "Buchungen aktiv",
       bookingToggleOff: "Buchungen pausiert",
-      confirmDisableBookingTitle: "Alle Buchungen pausieren?",
-      confirmDisableBookingMessage: "Niemand kann mehr einen Termin buchen, bis Sie dies wieder einschalten. Es gibt kein Enddatum.",
-      confirmEnableBookingTitle: "Buchungen wieder aktivieren?",
-      confirmEnableBookingMessage: "Kunden können ab sofort wieder Termine buchen.",
-      confirmYes: "Ja, fortfahren",
+      confirmDisableBookingTitle: (audience) => `Buchungen (${audience}) pausieren?`,
+      confirmDisableBookingMessage: () => `Niemand kann mehr einen Termin in diesem Bereich buchen, bis Sie dies wieder einschalten. Es gibt kein Enddatum.`,
+      confirmEnableBookingTitle: (audience) => `Buchungen (${audience}) wieder aktivieren?`,
+      confirmEnableBookingMessage: () => `Kunden können in diesem Bereich ab sofort wieder Termine buchen.`,
+      audienceHome: "Zuhause",
+      audienceBusiness: "Unternehmen",
       bookingStatusUpdated: "Buchungsstatus aktualisiert",
       blockTitle: "Kalender blockieren",
       blockSub: "Verhindert Buchungen an einem Tag oder nur vormittags/nachmittags.",
@@ -754,9 +784,11 @@
     document.getElementById("t-stat-total").textContent = s.statTotal;
     document.getElementById("t-stat-completed").textContent = s.statCompleted;
     document.getElementById("t-stat-pending").textContent = s.statPending;
-    document.getElementById("t-booking-toggle-title").textContent = s.bookingToggleTitle;
-    document.getElementById("t-booking-toggle-sub").textContent = s.bookingToggleSub;
-    if (typeof state !== "undefined" && typeof state.bookingEnabled === "boolean") renderBookingToggle(state.bookingEnabled);
+    document.getElementById("t-booking-toggle-title-home").textContent = s.bookingToggleTitleHome;
+    document.getElementById("t-booking-toggle-sub-home").textContent = s.bookingToggleSubHome;
+    document.getElementById("t-booking-toggle-title-business").textContent = s.bookingToggleTitleBusiness;
+    document.getElementById("t-booking-toggle-sub-business").textContent = s.bookingToggleSubBusiness;
+    if (state.bookingStatuses) renderBookingToggles(state.bookingStatuses);
     document.getElementById("t-block-title").textContent = s.blockTitle;
     document.getElementById("t-block-sub").textContent = s.blockSub;
     document.getElementById("t-block-start").textContent = s.blockStart;
@@ -1079,45 +1111,52 @@
     renderBlocks(data.blocks || []);
   }
 
-  // ---- Global bookings on/off switch ----
+  // ---- Per-audience (home / business) bookings on/off switches ----
 
-  function renderBookingToggle(enabled) {
-    state.bookingEnabled = enabled;
+  function renderBookingToggles(statuses) {
+    state.bookingStatuses = statuses;
     const s = t();
-    document.getElementById("booking-toggle-input").checked = enabled;
-    const statusEl = document.getElementById("booking-toggle-status");
-    statusEl.textContent = enabled ? s.bookingToggleOn : s.bookingToggleOff;
-    statusEl.className = "booking-toggle-status " + (enabled ? "on" : "off");
-    document.getElementById("booking-toggle-panel").classList.toggle("disabled", !enabled);
+    ["home", "business"].forEach((audience) => {
+      const enabled = statuses[audience] !== false;
+      document.getElementById(`booking-toggle-input-${audience}`).checked = enabled;
+      const statusEl = document.getElementById(`booking-toggle-status-${audience}`);
+      statusEl.textContent = enabled ? s.bookingToggleOn : s.bookingToggleOff;
+      statusEl.className = "booking-toggle-status " + (enabled ? "on" : "off");
+      document.getElementById(`booking-toggle-panel-${audience}`).classList.toggle("disabled", !enabled);
+    });
   }
 
   async function loadBookingStatus() {
     const data = await api("/api/admin/booking-status");
-    renderBookingToggle(!!data.enabled);
+    renderBookingToggles(data);
   }
 
-  document.getElementById("booking-toggle-input").addEventListener("change", async (e) => {
-    const s = t();
-    const wantEnabled = e.target.checked;
-    // Revert the visible switch immediately; it's set again by
-    // renderBookingToggle once the change is actually confirmed and saved.
-    e.target.checked = !wantEnabled;
-    const result = await showConfirm({
-      title: wantEnabled ? s.confirmEnableBookingTitle : s.confirmDisableBookingTitle,
-      message: wantEnabled ? s.confirmEnableBookingMessage : s.confirmDisableBookingMessage,
-      requireReason: false,
-    });
-    if (!result.confirmed) return;
-    try {
-      const data = await api("/api/admin/booking-status", {
-        method: "POST",
-        body: JSON.stringify({ enabled: wantEnabled }),
+  document.querySelectorAll("#booking-toggle-input-home, #booking-toggle-input-business").forEach((input) => {
+    input.addEventListener("change", async (e) => {
+      const s = t();
+      const audience = e.target.dataset.audience;
+      const audienceLabel = audience === "home" ? s.audienceHome : s.audienceBusiness;
+      const wantEnabled = e.target.checked;
+      // Revert the visible switch immediately; it's set again by
+      // renderBookingToggles once the change is actually confirmed and saved.
+      e.target.checked = !wantEnabled;
+      const result = await showConfirm({
+        title: (wantEnabled ? s.confirmEnableBookingTitle : s.confirmDisableBookingTitle)(audienceLabel),
+        message: (wantEnabled ? s.confirmEnableBookingMessage : s.confirmDisableBookingMessage)(audienceLabel),
+        requireReason: false,
       });
-      renderBookingToggle(!!data.enabled);
-      toast(s.bookingStatusUpdated);
-    } catch (err) {
-      toast(err.message || s.updateFailed);
-    }
+      if (!result.confirmed) return;
+      try {
+        const data = await api("/api/admin/booking-status", {
+          method: "POST",
+          body: JSON.stringify({ audience, enabled: wantEnabled }),
+        });
+        renderBookingToggles(data);
+        toast(s.bookingStatusUpdated);
+      } catch (err) {
+        toast(err.message || s.updateFailed);
+      }
+    });
   });
 
   document.getElementById("block-add-btn").addEventListener("click", async () => {

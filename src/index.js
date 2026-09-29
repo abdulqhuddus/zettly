@@ -17,7 +17,7 @@ import {
   handleAdminGetBookingStatus,
   handleAdminSetBookingStatus,
 } from "./admin.js";
-import { isBookingEnabled } from "./settings.js";
+import { isBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { handleCancelInfo, handleCancelSubmit } from "./cancel.js";
 import { computeCommute } from "./commute.js";
 
@@ -131,6 +131,7 @@ async function handleServices() {
 async function handleAvailability(url, env) {
   const date = url.searchParams.get("date");
   const duration = parseInt(url.searchParams.get("duration") || "60", 10);
+  const audience = url.searchParams.get("audience");
 
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return json({ error: "Invalid or missing date" }, 400);
@@ -140,7 +141,10 @@ async function handleAvailability(url, env) {
   if (date < now.date) {
     return json({ date, slots: [] });
   }
-  if (!(await isBookingEnabled(env))) {
+  // audience is only sent once the visitor has picked home/business; before
+  // that (or if it's missing/invalid for any other reason) this fails open
+  // rather than blocking a slot based on a switch that doesn't apply yet.
+  if (BOOKING_AUDIENCES.includes(audience) && !(await isBookingEnabled(env, audience))) {
     return json({ date, slots: [], bookingsPaused: true });
   }
   const cutoffMinutes = date === now.date ? now.minutes + BOOKING_LEAD_MINUTES : -Infinity;
@@ -447,7 +451,7 @@ async function handleBook(request, env) {
     return json({ error: "Booking database not configured yet" }, 503);
   }
 
-  if (!(await isBookingEnabled(env))) {
+  if (!(await isBookingEnabled(env, audience))) {
     return json({ error: "We are not accepting new bookings right now, please check back later" }, 503);
   }
 
@@ -548,11 +552,15 @@ export default {
     if (url.pathname === "/api/commute" && request.method === "GET") {
       return handleCommuteCheck(url, env);
     }
-    // Public, unauthenticated: the booking page checks this before letting
-    // anyone step through the wizard, so a paused shop shows a clear notice
-    // instead of an empty-looking calendar.
+    // Public, unauthenticated: the booking page checks this right after the
+    // visitor picks home/business, so a paused audience shows a clear notice
+    // instead of an empty-looking calendar. Returns both switches; ?audience=
+    // is accepted as a convenience and just echoes back { enabled } for that
+    // one audience on top of the full breakdown.
     if (url.pathname === "/api/booking-status" && request.method === "GET") {
-      return json({ enabled: await isBookingEnabled(env) });
+      const statuses = await getBookingStatuses(env);
+      const audience = url.searchParams.get("audience");
+      return json(BOOKING_AUDIENCES.includes(audience) ? { ...statuses, enabled: statuses[audience] } : statuses);
     }
     if (url.pathname === "/api/cancel-info" && request.method === "GET") {
       return handleCancelInfo(url, env);

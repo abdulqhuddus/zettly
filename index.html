@@ -822,6 +822,14 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
+  /* Shown when the admin has paused bookings for this audience (home or
+     business) — dims the card, drops its hover lift, and adds a note
+     instead of the usual "tap to select" hint. */
+  .path-card.audience-paused { cursor: not-allowed; opacity: 0.55; }
+  .path-card.audience-paused:hover { transform: none; box-shadow: 0 2px 10px rgba(17,17,20,0.04); background: #fff; border-color: var(--border); }
+  .path-card.audience-paused:hover h3 { color: var(--ink); }
+  .path-card.audience-paused:hover p { color: var(--muted); }
+  .audience-paused-note { margin-top: 0.35rem; font-size: 0.78rem; font-weight: 700; color: var(--pink); }
   /* Highlighted state goes full black — the same black as the logo mark —
      instead of a light purple tint, for a bolder, more premium selection
      state than a thin colored border. */
@@ -1628,6 +1636,7 @@ const I18N = {
     audienceBizTitle: "Unternehmen",
     audienceBizDesc: "Kleine & mittlere Unternehmen.",
     tapToSelect: "Antippen zum Auswählen",
+    audiencePausedNote: "Aktuell keine Buchungen möglich",
     step0Title: "Wobei können wir helfen?",
     step0Sub: "Wählen Sie einen Bereich: wir zeigen Ihnen die passenden Pakete.",
     back: "Zurück",
@@ -1759,6 +1768,7 @@ const I18N = {
     audienceBizTitle: "Business",
     audienceBizDesc: "Small & medium businesses.",
     tapToSelect: "Tap to select",
+    audiencePausedNote: "Not accepting bookings right now",
     step0Title: "What brings you here today?",
     step0Sub: "Pick a path and we'll show you the right packages.",
     back: "Back",
@@ -2394,7 +2404,7 @@ async function renderSlots() {
   const grid = document.getElementById("slot-grid");
   grid.innerHTML = `<div class="slot-empty">${t("loadingTimes")}</div>`;
   try {
-    const res = await fetch(`/api/availability?date=${state.date}&duration=${state.service.duration}`);
+    const res = await fetch(`/api/availability?date=${state.date}&duration=${state.service.duration}&audience=${state.audience}`);
     const data = await res.json();
     grid.innerHTML = "";
     if (!data.slots || data.slots.length === 0) {
@@ -2612,12 +2622,42 @@ function updateAddressKnownLine() {
 
 document.querySelectorAll(".path-card[data-audience]").forEach(card => {
   card.addEventListener("click", async () => {
+    if (card.classList.contains("audience-paused")) return;
     state.audience = card.dataset.audience;
     if (!CATALOG[state.audience] || !CATALOG[state.audience].length) await loadCatalog();
     renderCategoryGrid();
     showStep(1);
   });
 });
+
+// The admin can pause bookings for "home" and "business" independently
+// (no date range, just on/off) — checked once on load so a paused audience
+// shows as visibly disabled here, before the visitor picks it, rather than
+// only failing later once they reach the date/time step. The server still
+// enforces this on /api/availability and /api/book regardless of what this
+// check finds (or if it fails to run at all).
+async function applyAudienceBookingAvailability() {
+  try {
+    const res = await fetch("/api/booking-status");
+    const data = await res.json();
+    document.querySelectorAll(".path-card[data-audience]").forEach((card) => {
+      const enabled = data[card.dataset.audience] !== false;
+      card.classList.toggle("audience-paused", !enabled);
+      let note = card.querySelector(".audience-paused-note");
+      if (!enabled && !note) {
+        note = document.createElement("p");
+        note.className = "audience-paused-note";
+        note.textContent = t("audiencePausedNote");
+        card.querySelector(".body").appendChild(note);
+      } else if (enabled && note) {
+        note.remove();
+      }
+    });
+  } catch {
+    // Fail open: leave the cards as-is if the check itself can't run.
+  }
+}
+applyAudienceBookingAvailability();
 
 document.querySelectorAll('[data-action="back"]').forEach(btn => {
   btn.addEventListener("click", () => {
