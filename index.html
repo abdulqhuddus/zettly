@@ -572,13 +572,23 @@
     35% { stroke-opacity: 0.35; fill-opacity: 0.34; }
   }
   /* The Munich marker gets its own slow "home base" pulse, plus an
-     expanding, fading halo ring that visually kicks off the ripple above. */
-  #service-area-map .hq-marker { animation: hqDotPulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-  @keyframes hqDotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
-  #service-area-map .hq-ping { animation: hqPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; transform-box: fill-box; transform-origin: center; }
+     expanding, fading halo ring that visually kicks off the ripple above.
+     Leaflet renders a circleMarker as a plain SVG <circle> (cx/cy/r
+     attributes), so the "grow from the middle" effect is done by
+     animating `r` directly instead of `transform: scale()` with
+     `transform-box: fill-box` — the previous approach. fill-box's
+     bounding-box math for an element nested inside Leaflet's own
+     CSS-transformed panning <g> is inconsistently supported across mobile
+     browser engines, which was silently dropping the animation (no error,
+     it just never visibly grew) on phones while desktop browsers rendered
+     it fine. Animating `r`/opacity needs no bounding-box computation at
+     all, so it's not exposed to that gap. */
+  #service-area-map .hq-marker { animation: hqDotPulse 2.4s ease-in-out infinite; }
+  @keyframes hqDotPulse { 0%, 100% { r: 8; } 50% { r: 10; } }
+  #service-area-map .hq-ping { animation: hqPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; }
   @keyframes hqPing {
-    0% { transform: scale(0.6); stroke-opacity: 0.7; fill-opacity: 0.35; }
-    100% { transform: scale(3.2); stroke-opacity: 0; fill-opacity: 0; }
+    0% { r: 4.8; stroke-opacity: 0.7; fill-opacity: 0.35; }
+    100% { r: 25.6; stroke-opacity: 0; fill-opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     #service-area-map .zone-ring,
