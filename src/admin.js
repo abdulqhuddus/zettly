@@ -16,7 +16,7 @@ import {
 } from "./auth.js";
 import { json, berlinNow } from "./utils.js";
 import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
-import { sendCancellationEmail } from "./notify.js";
+import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
 import catalog from "../catalog.json";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
 
@@ -217,6 +217,42 @@ export async function handleAdminUpdateStatus(request, env, id) {
   }
 
   return json({ ok: true, id, status: body.status, emailSent });
+}
+
+// ---- Invoice / payment link (manual admin actions on a booking) ---------
+
+export async function handleAdminSendInvoice(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    // A body is optional here (defaults to German); only reject genuinely
+    // malformed JSON when one was actually sent.
+    if ((request.headers.get("content-length") || "0") !== "0") return json({ error: "Invalid request" }, 400);
+  }
+  const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+
+  const lang = body?.lang === "en" ? "en" : "de";
+  const result = await sendInvoiceEmail(env, existing, lang);
+  return json({ ok: true, emailSent: result.sent, reason: result.reason });
+}
+
+export async function handleAdminSendPaymentLink(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    if ((request.headers.get("content-length") || "0") !== "0") return json({ error: "Invalid request" }, 400);
+  }
+  const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+
+  const lang = body?.lang === "en" ? "en" : "de";
+  const result = await sendPaymentLinkEmail(env, existing, lang);
+  return json({ ok: true, emailSent: result.sent, reason: result.reason, paymentLink: result.paymentLink });
 }
 
 // ---- Calendar blocks (admin-only "block myself out" days/half-days) -----

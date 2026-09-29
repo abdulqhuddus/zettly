@@ -16,6 +16,8 @@ import {
   handleAdminDeleteBlock,
   handleAdminGetBookingStatus,
   handleAdminSetBookingStatus,
+  handleAdminSendInvoice,
+  handleAdminSendPaymentLink,
 } from "./admin.js";
 import { isBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { handleCancelInfo, handleCancelSubmit } from "./cancel.js";
@@ -599,6 +601,14 @@ export default {
       }
       if (bookingMatch && url.pathname.endsWith("/status") && request.method === "POST") {
         return handleAdminUpdateStatus(request, env, bookingMatch[1]);
+      }
+      const invoiceMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/send-invoice$/);
+      if (invoiceMatch && request.method === "POST") {
+        return handleAdminSendInvoice(request, env, invoiceMatch[1]);
+      }
+      const paymentLinkMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/send-payment-link$/);
+      if (paymentLinkMatch && request.method === "POST") {
+        return handleAdminSendPaymentLink(request, env, paymentLinkMatch[1]);
       }
       if (url.pathname === "/api/admin/blocks" && request.method === "GET") {
         return handleAdminListBlocks(url, env);

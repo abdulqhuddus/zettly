@@ -646,6 +646,12 @@
       actionCancel: "Cancel booking",
       actionComplete: "Mark as completed",
       actionReconfirm: "Re-confirm",
+      actionSendInvoice: "Send invoice",
+      actionSendPaymentLink: "Send payment link",
+      invoiceSent: "Invoice sent",
+      invoiceSendFailed: "Failed to send invoice",
+      paymentLinkSent: "Payment link sent",
+      paymentLinkSendFailed: "Failed to send payment link",
       confirmCancelTitle: "Cancel booking",
       confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email.",
       confirmReasonLabel: "Reason for cancellation (required)",
@@ -738,6 +744,12 @@
       actionCancel: "Stornieren",
       actionComplete: "Als abgeschlossen markieren",
       actionReconfirm: "Wieder bestätigen",
+      actionSendInvoice: "Rechnung senden",
+      actionSendPaymentLink: "Zahlungslink senden",
+      invoiceSent: "Rechnung gesendet",
+      invoiceSendFailed: "Rechnung konnte nicht gesendet werden",
+      paymentLinkSent: "Zahlungslink gesendet",
+      paymentLinkSendFailed: "Zahlungslink konnte nicht gesendet werden",
       confirmCancelTitle: "Buchung stornieren",
       confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt.",
       confirmReasonLabel: "Grund der Stornierung (erforderlich)",
@@ -1232,6 +1244,10 @@
     if (b.status !== "confirmed") {
       actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", () => updateStatus(b.id, "confirmed")));
     }
+    if (b.status !== "cancelled") {
+      actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", () => sendInvoice(b.id)));
+      actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", () => sendPaymentLink(b.id)));
+    }
     document.getElementById("modal").classList.add("open");
   }
 
@@ -1327,6 +1343,32 @@
       loadBookings();
     } catch (err) {
       toast(err.message || s.updateFailed);
+    }
+  }
+
+  async function sendInvoice(id) {
+    const s = t();
+    try {
+      await api(`/api/admin/bookings/${encodeURIComponent(id)}/send-invoice`, {
+        method: "POST",
+        body: JSON.stringify({ lang }),
+      });
+      toast(s.invoiceSent);
+    } catch (err) {
+      toast(err.message || s.invoiceSendFailed);
+    }
+  }
+
+  async function sendPaymentLink(id) {
+    const s = t();
+    try {
+      await api(`/api/admin/bookings/${encodeURIComponent(id)}/send-payment-link`, {
+        method: "POST",
+        body: JSON.stringify({ lang }),
+      });
+      toast(s.paymentLinkSent);
+    } catch (err) {
+      toast(err.message || s.paymentLinkSendFailed);
     }
   }
 

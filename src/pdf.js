@@ -33,15 +33,15 @@ function base64ToBytes(b64) {
 
 // Each parsed once per isolate and reused across every PDF generated in it.
 let _regularFont = null, _boldFont = null, _wordmarkFont = null;
-function regularFont() {
+export function regularFont() {
   if (!_regularFont) _regularFont = parseTTF(base64ToBytes(LIBERATION_REGULAR_BASE64));
   return _regularFont;
 }
-function boldFont() {
+export function boldFont() {
   if (!_boldFont) _boldFont = parseTTF(base64ToBytes(LIBERATION_BOLD_BASE64));
   return _boldFont;
 }
-function wordmarkFont() {
+export function wordmarkFont() {
   if (!_wordmarkFont) _wordmarkFont = parseTTF(base64ToBytes(DEJAVU_EXTRALIGHT_BASE64));
   return _wordmarkFont;
 }
@@ -119,7 +119,7 @@ function pdfString(str) {
 // Rough Helvetica average character width fractions (of font size) for
 // word-wrapping. Not metrically exact, just good enough to avoid running
 // text off the page.
-function wrapText(str, maxCharsPerLine) {
+export function wrapText(str, maxCharsPerLine) {
   const words = str.split(" ");
   const lines = [];
   let line = "";
@@ -136,7 +136,7 @@ function wrapText(str, maxCharsPerLine) {
   return lines;
 }
 
-function text(x, y, size, str, opts = {}) {
+export function text(x, y, size, str, opts = {}) {
   const font = opts.wordmarkFont ? "F3" : opts.bold ? "F2" : "F1";
   const color = opts.color || [0, 0, 0];
   const parts = [];
@@ -163,7 +163,7 @@ function charWidthUnits(ch, bold) {
   const w = font.widthForChar(unicode);
   return w == null ? (bold ? 611 : 556) : w; // fallback: roughly average glyph width
 }
-function estWidth(str, size, bold) {
+export function estWidth(str, size, bold) {
   let units = 0;
   for (const ch of str) units += charWidthUnits(ch, bold);
   return (units / 1000) * size;
@@ -172,7 +172,7 @@ function estWidth(str, size, bold) {
 // Width of a string set in the embedded wordmark font (DejaVu Sans
 // ExtraLight), reading real advance widths out of its own hmtx table
 // instead of the Helvetica AFM tables above.
-function estWordmarkWidth(str, size) {
+export function estWordmarkWidth(str, size) {
   const font = wordmarkFont();
   let units = 0;
   for (const ch of str) {
@@ -181,31 +181,31 @@ function estWordmarkWidth(str, size) {
   }
   return (units / 1000) * size;
 }
-function textRight(xRight, y, size, str, opts = {}) {
+export function textRight(xRight, y, size, str, opts = {}) {
   const x = xRight - estWidth(str, size, opts.bold);
   return text(x, y, size, str, opts);
 }
-function textCenter(xCenter, y, size, str, opts = {}) {
+export function textCenter(xCenter, y, size, str, opts = {}) {
   const x = xCenter - estWidth(str, size, opts.bold) / 2;
   return text(x, y, size, str, opts);
 }
 
-function rect(x, y, w, h, color) {
+export function rect(x, y, w, h, color) {
   return te(`${color[0]} ${color[1]} ${color[2]} rg\n${x} ${y} ${w} ${h} re f\n`);
 }
 
-function strokeRect(x, y, w, h, color, width) {
+export function strokeRect(x, y, w, h, color, width) {
   return te(`${color[0]} ${color[1]} ${color[2]} RG\n${width} w\n${x} ${y} ${w} ${h} re S\n`);
 }
 
-function line(x1, y1, x2, y2, color, width) {
+export function line(x1, y1, x2, y2, color, width) {
   return te(`${color[0]} ${color[1]} ${color[2]} RG\n${width} w\n${x1} ${y1} m ${x2} ${y2} l S\n`);
 }
 
 // A filled rectangle with rounded corners, drawn as a vector path (4 straight
 // edges + 4 cubic-bezier corners), used for the letterhead logo mark so it
 // matches the site's actual rounded-square brand mark instead of plain rects.
-function roundedRect(x, y, w, h, r, color) {
+export function roundedRect(x, y, w, h, r, color) {
   r = Math.min(r, w / 2, h / 2);
   const k = 0.5522847498 * r; // bezier magic number for a quarter circle
   const parts = [];
@@ -223,24 +223,31 @@ function roundedRect(x, y, w, h, r, color) {
   return concat(parts);
 }
 
-const PURPLE = [0.486, 0.227, 0.929]; // #7C3AED
-const PINK = [0.925, 0.286, 0.6]; // #EC4899-ish
-const INK = [0.067, 0.067, 0.078]; // #111114
-const MUTED = [0.42, 0.42, 0.455]; // #6b6b74
-const BORDER = [0.914, 0.906, 0.937]; // #e9e7ef
-const DANGER = [0.761, 0.094, 0.357]; // #c2185b, matches the site's cancel/danger accent
-const DANGER_BG = [0.992, 0.933, 0.949]; // #fdeef2
+export const PURPLE = [0.486, 0.227, 0.929]; // #7C3AED
+export const PINK = [0.925, 0.286, 0.6]; // #EC4899-ish
+export const INK = [0.067, 0.067, 0.078]; // #111114
+export const MUTED = [0.42, 0.42, 0.455]; // #6b6b74
+export const BORDER = [0.914, 0.906, 0.937]; // #e9e7ef
+export const DANGER = [0.761, 0.094, 0.357]; // #c2185b, matches the site's cancel/danger accent
+export const DANGER_BG = [0.992, 0.933, 0.949]; // #fdeef2
+// Grayscale tones for the colorless invoice PDF -- no PURPLE/PINK/DANGER
+// anywhere on that document, per the invoice's colorless requirement.
+export const GRAY_DARK = [0.29, 0.29, 0.32]; // letterhead accent / header bar
+export const GRAY_MID = [0.55, 0.55, 0.58]; // secondary accent
 
 // millimetres -> PDF points (1mm = 2.834645669pt)
-const MM = 2.834645669;
-function fromTop(mm) { return PAGE_H - mm * MM; }
-const LEFT_X = 20 * MM; // DIN 5008 left margin
-const RIGHT_X = 190 * MM; // DIN 5008 right content edge (20mm from right on A4)
+export const MM = 2.834645669;
+export function fromTop(mm) { return PAGE_H - mm * MM; }
+export const LEFT_X = 20 * MM; // DIN 5008 left margin
+export const RIGHT_X = 190 * MM; // DIN 5008 right content edge (20mm from right on A4)
 
 // The 4-square brand mark used in the site header (m1..m4), drawn to scale
 // at (xMM, yTopMM) with a given size in mm, so the letterhead carries an
-// actual logo mark rather than just the wordmark.
-function drawLogoMark(content, xMM, yTopMM, sizeMM) {
+// actual logo mark rather than just the wordmark. `accentColor` defaults to
+// the brand purple (the booking-confirmation letterhead); the invoice
+// letterhead passes a grayscale tone instead, per the colorless-invoice
+// requirement, while reusing this exact same mark geometry.
+export function drawLogoMark(content, xMM, yTopMM, sizeMM, accentColor = PURPLE) {
   const s = (sizeMM * MM) / 100; // scale factor: 100 SVG units -> sizeMM
   const x0 = xMM * MM;
   const yTop = fromTop(yTopMM);
@@ -249,9 +256,9 @@ function drawLogoMark(content, xMM, yTopMM, sizeMM) {
     const py = yTop - svgY * s - svgH * s;
     content.push(roundedRect(px, py, svgW * s, svgH * s, r * s, color));
   };
-  sq(0, 0, 28, 28, 6, PURPLE);
+  sq(0, 0, 28, 28, 6, accentColor);
   sq(36, 0, 64, 64, 14, INK);
-  sq(0, 36, 64, 64, 14, PURPLE);
+  sq(0, 36, 64, 64, 14, accentColor);
   sq(72, 72, 28, 28, 6, INK);
 }
 
@@ -630,13 +637,18 @@ export function generateBookingPdf(data) {
   content.push(textCenter((LEFT_X + RIGHT_X) / 2, fromTop(278), 7.5, L.footerBar, { color: MUTED }));
 
   const contentStream = concat(content);
+  return buildPdfDocument(contentStream);
+}
 
-  // ---- Assemble the PDF object graph ----
-  // Every font is embedded (see the file-header comment for why), so each
-  // needs its own raw-file stream + FontDescriptor behind its Font dict.
-  // Object numbers are fixed in this order: 1 Catalog, 2 Pages, 3 Page,
-  // 4 Font F1 (regular), 5 Font F2 (bold), 6 content stream, 7/8 F1's
-  // FontFile2+FontDescriptor, 9/10 F2's, 11/12 F3 (wordmark)'s, 13 Font F3.
+// ---- Assemble a one-page PDF's object graph around a content stream ----
+// Every font is embedded (see the file-header comment for why), so each
+// needs its own raw-file stream + FontDescriptor behind its Font dict.
+// Object numbers are fixed in this order: 1 Catalog, 2 Pages, 3 Page,
+// 4 Font F1 (regular), 5 Font F2 (bold), 6 content stream, 7/8 F1's
+// FontFile2+FontDescriptor, 9/10 F2's, 11/12 F3 (wordmark)'s, 13 Font F3.
+// Shared by every generator in this file (generateBookingPdf and
+// generateInvoicePdf) so the low-level PDF/font plumbing lives in one place.
+export function buildPdfDocument(contentStream) {
   function widthsArray(font, firstChar, lastChar) {
     const widths = [];
     for (let c = firstChar; c <= lastChar; c++) {
@@ -730,6 +742,224 @@ export function generateBookingPdf(data) {
 
   chunks.push(xref, trailer);
   return concat(chunks);
+}
+
+/**
+ * Build a one-page, colorless (grayscale-only) invoice PDF.
+ * Deliberately avoids PURPLE/PINK/DANGER anywhere -- only INK/MUTED/BORDER
+ * and the grayscale GRAY_DARK/GRAY_MID tones are used, per the invoice's
+ * "must not look like the branded booking confirmation" requirement.
+ * @param {object} data
+ * @param {string} data.invoiceNumber
+ * @param {string} data.invoiceDate - human readable, already localized
+ * @param {string} data.bookingRef
+ * @param {string} data.customerName
+ * @param {string} [data.customerAddress]
+ * @param {string} [data.customerEmail]
+ * @param {string[]} data.breadcrumb - ordered list of selection labels
+ * @param {string} data.dateDisplay - appointment date, human readable
+ * @param {string} data.time - appointment time
+ * @param {string} data.priceText - the total, already formatted
+ * @param {string} [data.servicePriceText] - service price alone, before commute fee
+ * @param {number} [data.commuteFee] - call-out fee in whole euros; > 0 splits price/fee/total
+ * @param {string} data.paymentStatus - already-localized status label ("Bezahlt" / "Paid")
+ * @param {"de"|"en"} data.lang
+ * @returns {Uint8Array}
+ */
+export function generateInvoicePdf(data) {
+  const L = data.lang === "en"
+    ? {
+        title: "Invoice",
+        boxTitle: "INVOICE",
+        subject: (n) => `Subject: Invoice ${n}`,
+        hi: (n) => `Dear ${n},`,
+        intro: "thank you for choosing Zettly. Please find your invoice for the service below:",
+        invoiceNumber: "Invoice no.",
+        invoiceDate: "Invoice date",
+        ref: "Booking ref.",
+        paymentStatus: "Payment status",
+        service: "Service",
+        price: "Price",
+        callout: "Call-out fee",
+        total: "Total",
+        email: "Email",
+        closing1: "Kind regards,",
+        closing2: "The Zettly Team",
+        addrTo: (n) => n,
+        footerBar: "Zettly | IT support for home & business | Munich, Germany | kontakt@zettly.de | www.zettly.de",
+        place: (d) => `Munich, ${d}`,
+        footerNote: "This invoice was issued electronically and is valid without a signature.",
+      }
+    : {
+        title: "Rechnung",
+        boxTitle: "RECHNUNG",
+        subject: (n) => `Betreff: Rechnung ${n}`,
+        hi: (n) => `Sehr geehrte(r) ${n},`,
+        intro: "vielen Dank, dass Sie sich für Zettly entschieden haben. Nachfolgend finden Sie Ihre Rechnung für die erbrachte Leistung:",
+        invoiceNumber: "Rechnungsnr.",
+        invoiceDate: "Rechnungsdatum",
+        ref: "Buchungsnr.",
+        paymentStatus: "Zahlungsstatus",
+        service: "Leistung",
+        price: "Preis",
+        callout: "Anfahrtspauschale",
+        total: "Gesamt",
+        email: "E-Mail",
+        closing1: "Mit freundlichen Grüßen",
+        closing2: "Ihr Zettly-Team",
+        addrTo: (n) => n,
+        footerBar: "Zettly | IT-Support für Zuhause & Unternehmen | München, Deutschland | kontakt@zettly.de | www.zettly.de",
+        place: (d) => `München, ${d}`,
+        footerNote: "Diese Rechnung wurde elektronisch erstellt und ist auch ohne Unterschrift gültig.",
+      };
+
+  const content = [];
+
+  // ---- Letterhead: logo mark (grayscale accent) + wordmark, sender contact ----
+  const logoSizeMM = 9;
+  const logoTopMM = 9;
+  drawLogoMark(content, LEFT_X / MM, logoTopMM, logoSizeMM, GRAY_DARK);
+  const logoCenterMM = logoTopMM + logoSizeMM / 2;
+  const wordmarkSize = 17;
+  const wordmarkCharSpace = 0.15;
+  const wordmarkBaselineMM = logoCenterMM + 2.6;
+  const zettWidth = estWordmarkWidth("zett", wordmarkSize) + 4 * wordmarkCharSpace;
+  content.push(text(LEFT_X + 11.5 * MM, fromTop(wordmarkBaselineMM), wordmarkSize, "zett", { color: INK, charSpace: wordmarkCharSpace, wordmarkFont: true }));
+  content.push(text(LEFT_X + 11.5 * MM + zettWidth, fromTop(wordmarkBaselineMM), wordmarkSize, "ly", { color: GRAY_DARK, charSpace: wordmarkCharSpace, wordmarkFont: true }));
+
+  const headerLines = data.lang === "en"
+    ? ["Zettly GmbH", "Musterstrasse 12, 80331 Munich", "kontakt@zettly.de | www.zettly.de"]
+    : ["Zettly GmbH", "Musterstraße 12, 80331 München", "kontakt@zettly.de | www.zettly.de"];
+  const headerLineGap = 4;
+  const headerBlockStartMM = logoCenterMM - headerLineGap + 1.5;
+  headerLines.forEach((l, i) => {
+    content.push(textRight(RIGHT_X, fromTop(headerBlockStartMM + i * headerLineGap), 8.5, l, { color: MUTED }));
+  });
+
+  content.push(line(LEFT_X, fromTop(23), RIGHT_X, fromTop(23), BORDER, 1));
+
+  // ---- DIN 5008 window-envelope address field (left column) ----
+  content.push(text(LEFT_X, fromTop(48), 7.5, data.lang === "en"
+    ? "Zettly GmbH · Musterstrasse 12 · 80331 Munich"
+    : "Zettly GmbH · Musterstraße 12 · 80331 München", { color: MUTED, charSpace: 0.2 }));
+  content.push(line(LEFT_X, fromTop(49.6), LEFT_X + 78 * MM, fromTop(49.6), BORDER, 0.6));
+
+  content.push(text(LEFT_X, fromTop(59), 11.5, L.addrTo(data.customerName), { bold: true, color: INK }));
+  const addressLines = data.customerAddress ? wrapText(data.customerAddress, 46).slice(0, 2) : [];
+  let addrY = 64.5;
+  for (const al of addressLines) {
+    content.push(text(LEFT_X, fromTop(addrY), 10, al, { color: INK }));
+    addrY += 5;
+  }
+
+  // ---- Bordered invoice-info box (right column) ----
+  const boxX = 112 * MM;
+  const boxW = RIGHT_X - boxX;
+  const boxTop = 26;
+  const boxPad = 6;
+  const boxInnerPt = boxW - boxPad * 2;
+  const rowH = 8;
+
+  function fitFontSize(value, startSize, maxWidthPt) {
+    let size = startSize;
+    while (size > 6 && estWidth(value, size, true) > maxWidthPt) size -= 0.5;
+    return size;
+  }
+
+  const boxRows = [
+    { label: L.invoiceNumber, value: data.invoiceNumber, size: 9.5 },
+    { label: L.invoiceDate, value: data.invoiceDate, size: 9.5 },
+    { label: L.ref, value: data.bookingRef, size: 9.5 },
+    { label: L.paymentStatus, value: data.paymentStatus, size: 9.5, bold: true },
+  ];
+  boxRows.forEach((row) => {
+    row.size = fitFontSize(row.value, row.size, boxInnerPt * 0.62);
+  });
+
+  const headerH = 8;
+  const boxH = headerH + boxRows.length * rowH;
+  content.push(strokeRect(boxX, fromTop(boxTop + boxH), boxW, boxH * MM, BORDER, 1));
+  content.push(rect(boxX, fromTop(boxTop + headerH), boxW, headerH * MM, GRAY_DARK));
+  const headerTitleSize = 8.5;
+  const headerCapHeightMM = (headerTitleSize * 0.7) / MM;
+  const headerBaselineMM = boxTop + headerH / 2 + headerCapHeightMM / 2;
+  content.push(textCenter(boxX + boxW / 2, fromTop(headerBaselineMM), headerTitleSize, L.boxTitle, { bold: true, color: [1, 1, 1] }));
+  let rowCursor = boxTop + headerH;
+  boxRows.forEach((row, i) => {
+    if (i > 0) content.push(line(boxX, fromTop(rowCursor), boxX + boxW, fromTop(rowCursor), BORDER, 0.6));
+    const emphasisColor = row.bold ? GRAY_DARK : INK;
+    content.push(text(boxX + boxPad, fromTop(rowCursor + 5.3), 7.5, row.label.toUpperCase(), { color: row.bold ? GRAY_DARK : MUTED }));
+    content.push(textRight(boxX + boxW - boxPad, fromTop(rowCursor + 5.3), row.size, row.value, { bold: true, color: emphasisColor }));
+    rowCursor += rowH;
+  });
+
+  // ---- Place/date, right-aligned above the subject line ----
+  const belowBlockY = Math.max(70, boxTop + boxH + 8, addrY + 6);
+  content.push(textRight(RIGHT_X, fromTop(belowBlockY), 9.5, L.place(data.invoiceDate), { color: MUTED }));
+
+  // ---- Subject line ----
+  content.push(rect(LEFT_X, fromTop(belowBlockY + 11.8), 3, 11, GRAY_MID));
+  content.push(text(LEFT_X + 8, fromTop(belowBlockY + 11), 11.5, L.subject(data.invoiceNumber), { bold: true, color: INK }));
+
+  // ---- Body ----
+  let y = fromTop(belowBlockY + 25);
+  content.push(text(LEFT_X, y, 10.5, L.hi(data.customerName), { color: INK }));
+  y -= 16;
+  const introLines = wrapText(L.intro, 92);
+  for (const il of introLines) {
+    content.push(text(LEFT_X, y, 10.5, il, { color: INK }));
+    y -= 14;
+  }
+  y -= 10;
+
+  // Breadcrumb of selections
+  content.push(text(LEFT_X, y, 8.5, L.service.toUpperCase(), { color: MUTED }));
+  y -= 14;
+  const crumbStr = data.breadcrumb.join("  ›  ");
+  const crumbLines = wrapText(crumbStr, 100);
+  for (const cl of crumbLines) {
+    content.push(text(LEFT_X, y, 9, cl, { bold: true, color: INK }));
+    y -= 13;
+  }
+  y -= 8;
+
+  content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
+  y -= 20;
+
+  // ---- Line items table: service price, optional call-out fee, bold total ----
+  const lineItems = [];
+  if (data.commuteFee > 0) {
+    lineItems.push({ label: L.price, value: data.servicePriceText });
+    lineItems.push({ label: L.callout, value: `+ €${data.commuteFee}` });
+    lineItems.push({ label: L.total, value: data.priceText, bold: true });
+  } else {
+    lineItems.push({ label: L.total, value: data.priceText, bold: true });
+  }
+  lineItems.forEach((item) => {
+    const size = item.bold ? 11 : 10;
+    content.push(text(LEFT_X, y, size, item.label, { bold: item.bold, color: item.bold ? INK : MUTED }));
+    content.push(textRight(RIGHT_X, y, size, item.value, { bold: true, color: INK }));
+    y -= item.bold ? 18 : 15;
+    if (item.bold) content.push(line(LEFT_X, y + 8, RIGHT_X, y + 8, BORDER, 0.6));
+  });
+  y -= 10;
+
+  content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
+  y -= 20;
+
+  content.push(text(LEFT_X, y, 10, L.closing1, { color: INK }));
+  y -= 15;
+  content.push(text(LEFT_X, y, 10, L.closing2, { bold: true, color: INK }));
+
+  // ---- Letter footer bar ----
+  content.push(line(LEFT_X, fromTop(266), RIGHT_X, fromTop(266), BORDER, 1));
+  content.push(text(LEFT_X, fromTop(271), 7.5, L.footerNote, { color: MUTED }));
+  content.push(line(LEFT_X, fromTop(272), RIGHT_X, fromTop(272), BORDER, 1));
+  content.push(rect(LEFT_X, fromTop(276.5), 22, 1.6, GRAY_MID));
+  content.push(textCenter((LEFT_X + RIGHT_X) / 2, fromTop(278), 7.5, L.footerBar, { color: MUTED }));
+
+  const contentStream = concat(content);
+  return buildPdfDocument(contentStream);
 }
 
 export function toBase64(bytes) {
