@@ -19,6 +19,8 @@
     --accent-light: #F3EEFF;
     --violet: #8B5CF6;
     --violet-light: #F1EAFE;
+    --pink: #EC4899;
+    --brand-blue: #0078D4;
     --ink: #111114;
     --muted: #6b6b74;
     --border: #e9e7ef;
@@ -70,7 +72,7 @@
     font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.01em;
-    background: linear-gradient(120deg, #a78bfa, var(--accent) 45%, #4c1d95);
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
     background-size: 200% 200%;
     animation: ctaShift 6s ease-in-out infinite;
   }
@@ -245,7 +247,7 @@
     gap: 0.7rem;
     flex-wrap: wrap;
     text-align: center;
-    background: linear-gradient(120deg, #a78bfa, var(--accent) 45%, #4c1d95);
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
     background-size: 200% 200%;
     animation: ctaShift 6s ease-in-out infinite;
     border-radius: 22px;
@@ -1092,9 +1094,13 @@
 
   .actions { display: flex; gap: 0.8rem; margin-top: 1.8rem; }
   button.btn { border: none; border-radius: 10px; padding: 0.85rem 1.5rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: transform 0.15s, background 0.2s, opacity 0.2s; }
-  .btn-primary { background: var(--accent); color: #fff; flex: 1; }
-  .btn-primary:hover { background: #6d2fe0; transform: translateY(-1px); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-primary {
+    background: linear-gradient(120deg, var(--brand-blue), var(--accent));
+    color: #fff; flex: 1;
+    box-shadow: 0 10px 24px rgba(124,58,237,0.28);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(124,58,237,0.36); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
   /* `button.btn` (element+class) otherwise beats a plain `.btn-ghost` class
      selector on specificity and its `border: none` wins, leaving the back
      button with no visible border at all — hence the "barely looks like a
@@ -1139,7 +1145,7 @@
   .booking-ref-card {
     display: inline-flex; align-items: center; gap: 0.7rem; margin: 0.4rem auto 1.6rem;
     padding: 0.85rem 1.3rem; border-radius: 14px; color: #fff;
-    background: linear-gradient(120deg, #a78bfa, var(--accent) 45%, #4c1d95);
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
     background-size: 200% 200%; animation: ctaShift 6s ease-in-out infinite, fadeUp 0.5s 0.35s both;
     box-shadow: 0 10px 24px rgba(124,58,237,0.28);
   }

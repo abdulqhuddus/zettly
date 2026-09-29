@@ -22,7 +22,7 @@
     --ink: #111114;
     --muted: #6b6b74;
     --border: #e9e7ef;
-    --web-blue: #2563EB;
+    --web-blue: #0078D4;
   }
 
   body {
@@ -64,8 +64,13 @@
   .lang-switch button.active { background: var(--accent); color: #fff; }
 
   /* ---- Hero ---- */
-  .hero { width: 100%; max-width: 1180px; padding: 2rem clamp(1.25rem, 4vw, 2rem) 1rem; display: flex; align-items: center; gap: 3rem; position: relative; overflow: hidden; }
+  .hero { width: 100%; max-width: 1180px; padding: 2rem clamp(1.25rem, 4vw, 2rem) 1rem; display: flex; align-items: center; gap: 3rem; position: relative; }
   @media (max-width: 860px) { .hero { flex-direction: column; text-align: center; padding-top: 0.5rem; } }
+  /* The glow is clipped to its own wrapper, sized to the hero, rather than
+     the hero itself having overflow:hidden - that used to also clip any
+     button's hover box-shadow that reached close to the hero's edge,
+     cutting it off instead of letting it render smoothly. */
+  .hero-glow-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
   .hero-glow { position: absolute; top: -120px; right: -140px; width: 480px; height: 480px; border-radius: 50%; background: radial-gradient(circle, rgba(37,99,235,0.16), transparent 70%); pointer-events: none; }
   .hero-content { flex: 1.15; position: relative; z-index: 1; }
   .hero-eyebrow {
@@ -311,7 +316,7 @@
 <div id="page-de">
 
 <section class="hero">
-  <div class="hero-glow"></div>
+  <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
     <span class="hero-eyebrow">Website-Erstellung</span>
     <h1>Eine Website, <span class="grad">die für Sie arbeitet</span></h1>
@@ -480,7 +485,7 @@
 <div id="page-en" style="display:none;">
 
 <section class="hero">
-  <div class="hero-glow"></div>
+  <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
     <span class="hero-eyebrow">Website Builder</span>
     <h1>A website <span class="grad">that works for you</span></h1>

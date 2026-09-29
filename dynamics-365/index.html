@@ -100,9 +100,16 @@
     align-items: center;
     gap: 3rem;
     position: relative;
-    overflow: hidden;
   }
   @media (max-width: 860px) { .hero { flex-direction: column; text-align: center; padding-top: 0.5rem; } }
+  /* The glow is clipped to its own wrapper, sized to the hero, rather than
+     the hero itself having overflow:hidden - that used to also clip any
+     button's hover box-shadow that reached close to the hero's edge (e.g.
+     the low bottom padding here), cutting it off instead of letting it
+     render smoothly. */
+  .hero-glow-clip {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+  }
   .hero-glow {
     position: absolute; top: -120px; right: -140px; width: 480px; height: 480px; border-radius: 50%;
     background: radial-gradient(circle, rgba(0,120,212,0.18), transparent 70%);
@@ -417,7 +424,7 @@
 <div id="page-de">
 
 <section class="hero">
-  <div class="hero-glow"></div>
+  <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
     <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
     <h1>Dynamics 365, das <span class="grad">wirklich zu Ihrem Betrieb passt</span></h1>
@@ -587,7 +594,7 @@
 <div id="page-en" style="display:none;">
 
 <section class="hero">
-  <div class="hero-glow"></div>
+  <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
     <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
     <h1>Dynamics 365 that <span class="grad">actually fits your business</span></h1>
