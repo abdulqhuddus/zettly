@@ -51,3 +51,12 @@ CREATE TABLE IF NOT EXISTS calendar_blocks (
 );
 
 CREATE INDEX IF NOT EXISTS idx_calendar_blocks_date ON calendar_blocks(date);
+
+-- Generic key/value settings. Currently just "bookings_enabled" ('0'/'1'),
+-- a single global switch to pause all new bookings with no end date,
+-- separate from the date-scoped calendar_blocks above.
+CREATE TABLE IF NOT EXISTS settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);

@@ -185,6 +185,39 @@
   .block-item-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
   .block-remove-btn { flex: 0 0 auto; }
 
+  /* Global on/off switch: no date range, just "closed until turned back on". */
+  .booking-toggle-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .booking-toggle-panel.disabled { border-color: var(--danger); background: var(--danger-bg); }
+  .booking-toggle-text h2 { font-size: 1rem; font-weight: 700; margin: 0 0 0.15rem; }
+  .booking-toggle-text p { font-size: 0.82rem; color: var(--muted); margin: 0; }
+  .booking-toggle-row { display: flex; align-items: center; gap: 0.7rem; flex: 0 0 auto; }
+  .booking-toggle-status { font-size: 0.82rem; font-weight: 700; }
+  .booking-toggle-status.on { color: var(--ok); }
+  .booking-toggle-status.off { color: var(--danger); }
+  .switch { position: relative; display: inline-block; width: 46px; height: 26px; flex: 0 0 auto; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch-track {
+    position: absolute; cursor: pointer; inset: 0;
+    background: #cfcdd7; border-radius: 999px; transition: background 0.2s ease;
+  }
+  .switch-track::before {
+    content: ""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px;
+    background: #fff; border-radius: 50%; transition: transform 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  }
+  .switch input:checked + .switch-track { background: var(--ok); }
+  .switch input:checked + .switch-track::before { transform: translateX(20px); }
+
   .filters {
     display: flex;
     flex-wrap: wrap;
@@ -384,6 +417,19 @@
         <div class="stat-value" id="stat-pending">–</div>
       </div>
     </div>
+    <div class="booking-toggle-panel" id="booking-toggle-panel">
+      <div class="booking-toggle-text">
+        <h2 id="t-booking-toggle-title">Bookings</h2>
+        <p id="t-booking-toggle-sub">Turn all new bookings off completely, with no end date — flip it back on whenever you're ready.</p>
+      </div>
+      <div class="booking-toggle-row">
+        <span class="booking-toggle-status" id="booking-toggle-status">–</span>
+        <label class="switch">
+          <input type="checkbox" id="booking-toggle-input">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+    </div>
     <div class="block-panel">
       <h2 id="t-block-title">Block calendar</h2>
       <p class="block-sub" id="t-block-sub">Stop customers from booking a day, or just its morning/afternoon.</p>
@@ -507,6 +553,16 @@
       statTotal: "Total Bookings Amount",
       statCompleted: "Completed Amount",
       statPending: "Pending Amount",
+      bookingToggleTitle: "Bookings",
+      bookingToggleSub: "Turn all new bookings off completely, with no end date — flip it back on whenever you're ready.",
+      bookingToggleOn: "Accepting bookings",
+      bookingToggleOff: "Bookings paused",
+      confirmDisableBookingTitle: "Pause all bookings?",
+      confirmDisableBookingMessage: "No one will be able to book any service until you turn this back on. This has no end date.",
+      confirmEnableBookingTitle: "Resume bookings?",
+      confirmEnableBookingMessage: "Customers will be able to book appointments again right away.",
+      confirmYes: "Yes, continue",
+      bookingStatusUpdated: "Booking status updated",
       blockTitle: "Block calendar",
       blockSub: "Stop customers from booking a day, or just its morning/afternoon.",
       blockStart: "Start date",
@@ -586,6 +642,16 @@
       statTotal: "Gesamtbetrag Buchungen",
       statCompleted: "Betrag abgeschlossen",
       statPending: "Betrag ausstehend",
+      bookingToggleTitle: "Buchungen",
+      bookingToggleSub: "Alle neuen Buchungen komplett deaktivieren, ohne Enddatum — jederzeit wieder einschaltbar.",
+      bookingToggleOn: "Buchungen aktiv",
+      bookingToggleOff: "Buchungen pausiert",
+      confirmDisableBookingTitle: "Alle Buchungen pausieren?",
+      confirmDisableBookingMessage: "Niemand kann mehr einen Termin buchen, bis Sie dies wieder einschalten. Es gibt kein Enddatum.",
+      confirmEnableBookingTitle: "Buchungen wieder aktivieren?",
+      confirmEnableBookingMessage: "Kunden können ab sofort wieder Termine buchen.",
+      confirmYes: "Ja, fortfahren",
+      bookingStatusUpdated: "Buchungsstatus aktualisiert",
       blockTitle: "Kalender blockieren",
       blockSub: "Verhindert Buchungen an einem Tag oder nur vormittags/nachmittags.",
       blockStart: "Startdatum",
@@ -688,6 +754,9 @@
     document.getElementById("t-stat-total").textContent = s.statTotal;
     document.getElementById("t-stat-completed").textContent = s.statCompleted;
     document.getElementById("t-stat-pending").textContent = s.statPending;
+    document.getElementById("t-booking-toggle-title").textContent = s.bookingToggleTitle;
+    document.getElementById("t-booking-toggle-sub").textContent = s.bookingToggleSub;
+    if (typeof state !== "undefined" && typeof state.bookingEnabled === "boolean") renderBookingToggle(state.bookingEnabled);
     document.getElementById("t-block-title").textContent = s.blockTitle;
     document.getElementById("t-block-sub").textContent = s.blockSub;
     document.getElementById("t-block-start").textContent = s.blockStart;
@@ -780,6 +849,7 @@
     dashboard.style.display = "block";
     loadBookings();
     loadBlocks();
+    loadBookingStatus();
   }
 
   loginForm.addEventListener("submit", async (e) => {
@@ -1008,6 +1078,47 @@
     const data = await api("/api/admin/blocks");
     renderBlocks(data.blocks || []);
   }
+
+  // ---- Global bookings on/off switch ----
+
+  function renderBookingToggle(enabled) {
+    state.bookingEnabled = enabled;
+    const s = t();
+    document.getElementById("booking-toggle-input").checked = enabled;
+    const statusEl = document.getElementById("booking-toggle-status");
+    statusEl.textContent = enabled ? s.bookingToggleOn : s.bookingToggleOff;
+    statusEl.className = "booking-toggle-status " + (enabled ? "on" : "off");
+    document.getElementById("booking-toggle-panel").classList.toggle("disabled", !enabled);
+  }
+
+  async function loadBookingStatus() {
+    const data = await api("/api/admin/booking-status");
+    renderBookingToggle(!!data.enabled);
+  }
+
+  document.getElementById("booking-toggle-input").addEventListener("change", async (e) => {
+    const s = t();
+    const wantEnabled = e.target.checked;
+    // Revert the visible switch immediately; it's set again by
+    // renderBookingToggle once the change is actually confirmed and saved.
+    e.target.checked = !wantEnabled;
+    const result = await showConfirm({
+      title: wantEnabled ? s.confirmEnableBookingTitle : s.confirmDisableBookingTitle,
+      message: wantEnabled ? s.confirmEnableBookingMessage : s.confirmDisableBookingMessage,
+      requireReason: false,
+    });
+    if (!result.confirmed) return;
+    try {
+      const data = await api("/api/admin/booking-status", {
+        method: "POST",
+        body: JSON.stringify({ enabled: wantEnabled }),
+      });
+      renderBookingToggle(!!data.enabled);
+      toast(s.bookingStatusUpdated);
+    } catch (err) {
+      toast(err.message || s.updateFailed);
+    }
+  });
 
   document.getElementById("block-add-btn").addEventListener("click", async () => {
     const s = t();

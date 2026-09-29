@@ -14,7 +14,10 @@ import {
   handleAdminListBlocks,
   handleAdminCreateBlock,
   handleAdminDeleteBlock,
+  handleAdminGetBookingStatus,
+  handleAdminSetBookingStatus,
 } from "./admin.js";
+import { isBookingEnabled } from "./settings.js";
 import { handleCancelInfo, handleCancelSubmit } from "./cancel.js";
 import { computeCommute } from "./commute.js";
 
@@ -136,6 +139,9 @@ async function handleAvailability(url, env) {
   const now = berlinNow();
   if (date < now.date) {
     return json({ date, slots: [] });
+  }
+  if (!(await isBookingEnabled(env))) {
+    return json({ date, slots: [], bookingsPaused: true });
   }
   const cutoffMinutes = date === now.date ? now.minutes + BOOKING_LEAD_MINUTES : -Infinity;
 
@@ -441,6 +447,10 @@ async function handleBook(request, env) {
     return json({ error: "Booking database not configured yet" }, 503);
   }
 
+  if (!(await isBookingEnabled(env))) {
+    return json({ error: "We are not accepting new bookings right now, please check back later" }, 503);
+  }
+
   const { results: conflicts } = await env.DB.prepare(
     `SELECT time, duration_minutes FROM bookings WHERE date = ? AND status = 'confirmed'`
   )
@@ -538,6 +548,12 @@ export default {
     if (url.pathname === "/api/commute" && request.method === "GET") {
       return handleCommuteCheck(url, env);
     }
+    // Public, unauthenticated: the booking page checks this before letting
+    // anyone step through the wizard, so a paused shop shows a clear notice
+    // instead of an empty-looking calendar.
+    if (url.pathname === "/api/booking-status" && request.method === "GET") {
+      return json({ enabled: await isBookingEnabled(env) });
+    }
     if (url.pathname === "/api/cancel-info" && request.method === "GET") {
       return handleCancelInfo(url, env);
     }
@@ -585,6 +601,12 @@ export default {
       const blockMatch = url.pathname.match(/^\/api\/admin\/blocks\/([^/]+)$/);
       if (blockMatch && request.method === "DELETE") {
         return handleAdminDeleteBlock(request, env, blockMatch[1]);
+      }
+      if (url.pathname === "/api/admin/booking-status" && request.method === "GET") {
+        return handleAdminGetBookingStatus(env);
+      }
+      if (url.pathname === "/api/admin/booking-status" && request.method === "POST") {
+        return handleAdminSetBookingStatus(request, env);
       }
       return new Response(JSON.stringify({ error: "Not found" }), {
         status: 404,

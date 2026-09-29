@@ -15,6 +15,7 @@ import {
   clearFailedLogins,
 } from "./auth.js";
 import { json, berlinNow } from "./utils.js";
+import { isBookingEnabled, setBookingEnabled } from "./settings.js";
 import { sendCancellationEmail } from "./notify.js";
 import catalog from "../catalog.json";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
@@ -303,4 +304,25 @@ export async function handleAdminDeleteBlock(request, env, id) {
   if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
   await env.DB.prepare(`DELETE FROM calendar_blocks WHERE id = ?`).bind(id).run();
   return json({ ok: true });
+}
+
+// ---- Global "bookings enabled" switch (no date range — just on/off) -----
+
+export async function handleAdminGetBookingStatus(env) {
+  return json({ enabled: await isBookingEnabled(env) });
+}
+
+export async function handleAdminSetBookingStatus(request, env) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+  if (typeof body?.enabled !== "boolean") {
+    return json({ error: "Invalid request" }, 400);
+  }
+  await setBookingEnabled(env, body.enabled);
+  return json({ ok: true, enabled: body.enabled });
 }
