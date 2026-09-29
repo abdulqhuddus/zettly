@@ -324,8 +324,15 @@
     /* Extra top/bottom padding, not just the horizontal gutter: setting
        overflow-x alone makes the browser implicitly treat overflow-y as
        "auto" too, so without this room the active card's lift and glow
-       shadow gets clipped flush against the track's own box. */
-    padding: 2.2rem 0.2rem 4.5rem;
+       shadow gets clipped flush against the track's own box.
+       Left/right padding is sized to the active card's box-shadow blur
+       (44px) plus a small margin, so the shadow can fade out naturally
+       instead of being cut off flush against the scroll container's edge
+       for the first/last card. This narrows the visible row slightly
+       (intentional trade-off over a negative-margin compensation, which
+       would make the track overflow past its wrapper and risk a page
+       scrollbar). */
+    padding: 2.2rem 2.75rem 4.5rem;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
