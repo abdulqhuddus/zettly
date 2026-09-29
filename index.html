@@ -110,6 +110,12 @@
   /* Reusable brand wordmark treatment for "Zettly" wherever it appears in
      running text (tagline, footer copy, popups) — mirrors .brand-text's
      ink/accent split without overriding the surrounding font. */
+  .zettly-word {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
   .zettly-word span { color: var(--accent); }
   .brand-mark { width: 52px; height: 52px; flex: 0 0 auto; }
   .brand-mark .m1 { animation: markPulse 3s ease-in-out infinite 0s; }
@@ -653,7 +659,7 @@
   .site-footer .service-item.highlight {
     color: var(--accent); font-weight: 700; gap: 0.5rem;
     background: var(--accent-light); border-radius: 10px;
-    padding: 0.4rem 0.6rem; margin-left: -0.6rem;
+    padding: 0 0.6rem; margin-left: -0.6rem;
     /* Keep the badge and the specialty label on one row: the shared
        `.footer-col a` rule above already sets `display: flex`, but flex
        items wrap their own text by default, and at tablet widths the
@@ -1353,7 +1359,7 @@
   </div>
 </div>
 
-<p class="site-tagline" data-i18n="heroTagline"><span class="zettly-word">Zett<span>ly</span></span>, <span class="grad">Ihr One-Stop-Partner f&uuml;r alles rund um IT</span></p>
+<p class="site-tagline" data-i18n="heroTagline"><span class="zettly-word">Zett<span>ly</span></span>, <span class="grad">Ihr One Stop Partner f&uuml;r alles rund um IT</span></p>
 <div class="trust-strip">
   <span class="trust-pill">
     <span class="icon-flow">
@@ -1689,7 +1695,7 @@
 const I18N = {
   de: {
     title: "Termin buchen | Zettly",
-    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span>, <span class=\"grad\">Ihr One-Stop-Partner für alles rund um IT</span>",
+    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span>, <span class=\"grad\">Ihr One Stop Partner für alles rund um IT</span>",
     bookAnother: "Weiteren Termin buchen",
     step00Title: "Für Zuhause oder Ihr Unternehmen?",
     step00Sub: "So können wir Ihnen gleich die passenden Pakete zeigen.",
@@ -1822,7 +1828,7 @@ const I18N = {
   },
   en: {
     title: "Book an Appointment | Zettly",
-    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span>, <span class=\"grad\">your one-stop partner for everything IT</span>",
+    heroTagline: "<span class=\"zettly-word\">Zett<span>ly</span></span>, <span class=\"grad\">your One Stop Partner for everything IT</span>",
     bookAnother: "Book another appointment",
     step00Title: "For your home or your business?",
     step00Sub: "So we can show you the right packages right away.",
