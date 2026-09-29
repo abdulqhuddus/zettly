@@ -54,8 +54,8 @@
     background-size: 200% 200%;
     animation: ctaShift 6s ease-in-out infinite;
   }
-  .announce-bar .dot {
-    width: 7px; height: 7px; border-radius: 50%; background: #fff; flex: 0 0 auto;
+  .announce-bar .announce-icon {
+    width: 15px; height: 15px; flex: 0 0 auto;
     animation: dotPulse 1.6s ease-in-out infinite;
   }
   @keyframes dotPulse { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
@@ -398,8 +398,12 @@
 </head>
 <body>
 <div class="announce-bar">
-  <span class="dot"></span>
-  <span id="announce-text">Wir befinden uns im Aufbau &middot; bald verfügbar &middot; Buchungen sind derzeit nicht möglich</span>
+  <svg class="announce-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M12 3.5l6.5 16h-13l6.5-16z" fill="#fff"/>
+    <rect x="8.4" y="12.8" width="7.2" height="1.9" rx="0.4" fill="rgba(124,58,237,0.6)"/>
+    <rect x="3.5" y="19" width="17" height="2.3" rx="1.15" fill="#fff"/>
+  </svg>
+  <span id="announce-text">Wir befinden uns im Aufbau &middot; Buchungen sind derzeit nicht möglich</span>
 </div>
 <div class="topbar">
   <a class="brand" href="/">
@@ -806,7 +810,7 @@
       footerServiceBusiness: "IT-Support für Unternehmen",
       footerLinksHeading: "Links",
       footerContactHeading: "Kontakt",
-      announce: "Wir befinden uns im Aufbau · bald verfügbar · Buchungen sind derzeit nicht möglich" },
+      announce: "Wir befinden uns im Aufbau · Buchungen sind derzeit nicht möglich" },
     en: { title: "Zettly | Dynamics 365", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerPrivacy: "Privacy", footerTagline: "Zettly is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
       footerServicesHeading: "Services",
       footerSpecialtyBadge: "Specialty",
@@ -817,7 +821,7 @@
       footerServiceBusiness: "Business IT Support",
       footerLinksHeading: "Links",
       footerContactHeading: "Contact",
-      announce: "We're under construction · coming soon · bookings are currently not accepted" },
+      announce: "We're under construction · bookings are currently not accepted" },
   };
 
   function setLang(lang) {
