@@ -1257,7 +1257,7 @@
     if (b.status !== "completed" && b.status !== "cancelled") {
       actions.appendChild(makeActionBtn(s.actionComplete, "btn-ok", () => updateStatus(b.id, "completed")));
     }
-    if (b.status !== "confirmed" && isFutureBooking(b)) {
+    if (b.status !== "confirmed" && b.status !== "completed" && isFutureBooking(b)) {
       actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", () => updateStatus(b.id, "confirmed")));
     }
     if (b.status !== "cancelled") {
