@@ -942,7 +942,20 @@ export function generateInvoicePdf(data) {
     y -= item.bold ? 18 : 15;
     if (item.bold) content.push(line(LEFT_X, y + 8, RIGHT_X, y + 8, BORDER, 0.6));
   });
-  y -= 10;
+  y -= 4;
+
+  // ---- Mandatory Kleinunternehmer (§19 UStG) VAT-exemption note. Required
+  // on every invoice, in German, verbatim -- even on the English-language
+  // version, where a short English gloss is added right after it rather
+  // than replacing it.
+  const ustgSentence = "Gemäß §19 UStG wird keine Umsatzsteuer berechnet.";
+  content.push(text(LEFT_X, y, 8.5, ustgSentence, { color: MUTED }));
+  y -= 11;
+  if (data.lang === "en") {
+    content.push(text(LEFT_X, y, 8.5, "(No VAT is charged, pursuant to §19 of the German VAT Act - small business regulation.)", { color: MUTED }));
+    y -= 11;
+  }
+  y -= 6;
 
   content.push(line(LEFT_X, y, RIGHT_X, y, BORDER, 1));
   y -= 20;

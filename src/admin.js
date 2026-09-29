@@ -17,8 +17,9 @@ import {
 import { json, berlinNow } from "./utils.js";
 import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
+import { sendConfirmationEmail } from "./index.js";
 import catalog from "../catalog.json";
-import { breadcrumbFromServiceId } from "./catalog-utils.js";
+import { breadcrumbFromServiceId, resolveLeaf, fullBreadcrumb } from "./catalog-utils.js";
 
 // The bookings table only stores the leaf service_name ("New setup"); the
 // admin dashboard wants the full selection path the customer walked through
@@ -209,11 +210,38 @@ export async function handleAdminUpdateStatus(request, env, id) {
     )
     .run();
 
+  // Re-confirming (setting a cancelled or completed booking back to
+  // "confirmed") is treated like the original booking-confirmation email:
+  // the customer gets the same confirmation email, with both PDFs
+  // attached, as when they first booked.
+  const reconfirming = body.status === "confirmed" && existing.status !== "confirmed";
+
   let emailSent = false;
   if (cancelling && body.notifyCustomer !== false) {
     emailSent = (
       await sendCancellationEmail(env, { ...existing, cancellation_reason: reason }, body.lang === "en" ? "en" : "de", { cancelledBy: "admin" })
     ).sent;
+  } else if (reconfirming && body.notifyCustomer !== false) {
+    const lang = body.lang === "en" ? "en" : "de";
+    const [audience, categoryId, ...path] = (existing.service_id || "").split(":");
+    const resolved = audience && categoryId ? resolveLeaf(catalog, audience, categoryId, path) : null;
+    if (resolved) {
+      const bookingRef = `ZTL-${existing.id.split("-")[0].toUpperCase()}`;
+      const bookingForEmail = {
+        id: existing.id,
+        bookingRef,
+        breadcrumbDe: fullBreadcrumb(resolved, audience, "de"),
+        breadcrumbEn: fullBreadcrumb(resolved, audience, "en"),
+        date: existing.date,
+        time: existing.time,
+        customer_name: existing.customer_name,
+        customer_email: existing.customer_email,
+        customer_address: existing.customer_address,
+        commuteFee: existing.commute_fee || 0,
+        phoneConsultation: !!existing.phone_consultation,
+      };
+      emailSent = (await sendConfirmationEmail(env, bookingForEmail, resolved.leaf, lang)).sent;
+    }
   }
 
   return json({ ok: true, id, status: body.status, emailSent });

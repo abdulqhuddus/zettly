@@ -178,7 +178,7 @@ async function handleAvailability(url, env) {
   return json({ date, slots });
 }
 
-async function sendConfirmationEmail(env, booking, service, lang) {
+export async function sendConfirmationEmail(env, booking, service, lang) {
   if (!env.RESEND_API_KEY) {
     return { sent: false, reason: "no_api_key" };
   }
