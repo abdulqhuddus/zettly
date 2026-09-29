@@ -40,6 +40,14 @@
 
   .stage { width: 100%; max-width: 640px; padding: 0 1.25rem; }
 
+  /* Steps are shown/hidden by toggling display, which changes the page's
+     height above and below the fold. Without this, the browser's scroll
+     anchoring tries to keep some now-hidden node "in view" and can leave
+     the viewport scrolled to an arbitrary spot (including the footer) once
+     that node disappears. showStep() also sets the scroll position itself,
+     so we don't want the two fighting each other. */
+  .step { overflow-anchor: none; }
+
   /* A recurring brand motif — the logo's own rounded-square "cubes" — drawn
      very faintly at a few fixed points on the page so it reads as a quiet
      texture throughout the site rather than a one-off decoration. Fixed and
@@ -2050,6 +2058,22 @@ function showStep(n) {
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
   document.getElementById("progress").classList.toggle("hidden", n === 0);
   document.body.classList.toggle("no-progress", n === 0);
+  // Showing/hiding steps changes the document's height above and below the
+  // viewport (e.g. the category grid on step 1 is much taller than the
+  // date picker on step 3). Left alone, the browser can land the scroll
+  // position anywhere the now-shorter/taller page happens to put it,
+  // including down at the footer. Keep the user anchored to the top of the
+  // booking widget itself instead.
+  // Step 0 is the marketing landing page (hero, how-it-works, etc. sit
+  // above .stage there), so leave its scroll position alone — this is only
+  // about keeping steps 1+ of the wizard itself in view.
+  if (n !== 0) {
+    const stageEl = document.querySelector(".stage");
+    if (stageEl) {
+      const top = stageEl.getBoundingClientRect().top + window.scrollY - 12;
+      window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+    }
+  }
 }
 
 async function loadCatalog() {
