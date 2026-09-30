@@ -1357,6 +1357,46 @@
     border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: -3px; margin-right: 0.5rem;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  .privacy-modal-overlay {
+    position: fixed; inset: 0; background: rgba(17,17,20,0.55);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.25rem; z-index: 1000;
+  }
+  .privacy-modal-overlay.hidden { display: none; }
+  .privacy-modal {
+    background: #fff; border-radius: 18px; width: 100%; max-width: 640px;
+    max-height: min(80vh, 720px); display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(17,17,20,0.35);
+    animation: fadeUp 0.2s both;
+  }
+  .privacy-modal-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 1.1rem 1.3rem; border-bottom: 1px solid var(--border);
+    flex: 0 0 auto;
+  }
+  .privacy-modal-head h2 { font-size: 1.1rem; font-weight: 800; color: var(--ink); }
+  .privacy-modal-close {
+    border: none; background: var(--accent-light); color: var(--ink);
+    width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; line-height: 1;
+    cursor: pointer; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .privacy-modal-close:hover { background: var(--pink-light); }
+  .privacy-modal-body {
+    padding: 0.3rem 1.3rem 1.4rem; overflow-y: auto; line-height: 1.6;
+  }
+  .privacy-modal-body h2 { font-size: 1rem; font-weight: 700; margin: 1.4rem 0 0.5rem; color: var(--ink); }
+  .privacy-modal-body h2:first-child { margin-top: 1.2rem; }
+  .privacy-modal-body p, .privacy-modal-body li { font-size: 0.88rem; color: #33333a; }
+  .privacy-modal-body ul { margin: 0.4rem 0 0.4rem 1.2rem; }
+  .privacy-modal-body a { color: var(--accent); }
+  .privacy-modal-body .updated { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
+  @media (max-width: 480px) {
+    .privacy-modal { max-height: 88vh; border-radius: 14px; }
+    .privacy-modal-head { padding: 1rem 1.1rem; }
+    .privacy-modal-body { padding: 0.2rem 1.1rem 1.2rem; }
+  }
 </style>
 </head>
 <body class="no-progress">
@@ -1630,7 +1670,7 @@
     </div>
     <label class="consent-check">
       <input type="checkbox" id="f-consent" />
-      <span data-i18n="consentLabel">Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
+      <span data-i18n="consentLabel">Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
     </label>
     <p class="error-msg" id="form-error"></p>
     <div class="actions">
@@ -1713,6 +1753,109 @@
   </div>
   <div class="footer-bottom-bar">&copy; <span id="footer-year"></span> <span class="zettly-word">zett<span>ly</span></span></div>
 </footer>
+
+<div class="privacy-modal-overlay hidden" id="privacy-modal-overlay">
+  <div class="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-heading">
+    <div class="privacy-modal-head">
+      <h2 id="privacy-modal-heading" data-i18n-text="privacyModalHeading">Datenschutzerklärung</h2>
+      <button type="button" class="privacy-modal-close" id="privacy-modal-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="privacy-modal-body">
+      <div id="privacy-modal-body-de">
+        <div class="updated">Stand: September 2026</div>
+
+        <h2>1. Verantwortlicher</h2>
+        <p>Verantwortlich für die Datenverarbeitung auf dieser Website ist:</p>
+        <p>
+          Zettly GmbH<br>
+          Musterstraße 12, 80331 München, Deutschland<br>
+          E-Mail: kontakt@zettly.de
+        </p>
+
+        <h2>2. Hosting</h2>
+        <p>Diese Website wird über Cloudflare Workers gehostet. Cloudflare verarbeitet dabei technisch notwendige Daten (u. a. IP-Adresse, Zeitpunkt der Anfrage) zur Auslieferung der Seite und zum Schutz vor Missbrauch. Weitere Informationen finden Sie in der <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Datenschutzerklärung von Cloudflare</a>.</p>
+
+        <h2>3. Server-Log-Dateien</h2>
+        <p>Beim Aufruf dieser Website können automatisch Informationen erfasst werden, die Ihr Browser übermittelt (z. B. Browsertyp, verwendetes Betriebssystem, Referrer-URL, IP-Adresse, Datum und Uhrzeit der Anfrage). Diese Daten dienen der Sicherheit und Stabilität des Angebots und werden nicht mit anderen Datenquellen zusammengeführt.</p>
+
+        <h2>4. Terminbuchung</h2>
+        <p>Wenn Sie über unser Formular einen Termin buchen, erheben wir die von Ihnen eingegebenen Daten (Name, E-Mail-Adresse, optional Telefonnummer, die Adresse des Einsatzortes, gewählte Leistung, Termin sowie ggf. Anmerkungen). Die Adresse benötigen wir ausschließlich, um den Vor-Ort-Termin bei Ihnen durchführen zu können. Diese Daten werden in unserer Datenbank gespeichert, um Ihren Termin zu verwalten und mit Ihnen in Kontakt zu treten. Rechtsgrundlage ist die Erfüllung eines Vertrags bzw. vorvertraglicher Maßnahmen (Art. 6 Abs. 1 lit. b DSGVO). Die Verarbeitung erfolgt zudem auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Sie im Buchungsformular erteilen.</p>
+
+        <h2>5. Stornierung von Terminen</h2>
+        <p>Sie können eine gebuchte Terminbuchung bis 24 Stunden vor dem vereinbarten Termin kostenlos selbst stornieren, entweder über den personalisierten Stornierungslink in Ihrer Buchungsbestätigung oder per Kontaktaufnahme an kontakt@zettly.de. Bei einer Stornierung verarbeiten wir zusätzlich den von Ihnen angegebenen Stornierungsgrund sowie den Zeitpunkt der Stornierung; diese Angaben dienen ausschließlich der internen Nachvollziehbarkeit und werden zusammen mit den übrigen Buchungsdaten gespeichert. Rechtsgrundlage ist wie bei der ursprünglichen Terminbuchung Art. 6 Abs. 1 lit. b DSGVO. Sie erhalten im Anschluss eine Stornierungsbestätigung per E-Mail mit den Buchungsdetails als PDF-Anhang.</p>
+
+        <h2>6. Fotodokumentation vor Ort</h2>
+        <p>Bei manchen Leistungen fotografieren wir mit Ihrem Einverständnis ausschließlich das betroffene Gerät vor und nach der Reparatur, um dessen Zustand und die durchgeführte Leistung zu dokumentieren. Fotografiert wird dabei nur das Gerät selbst: es werden keine Aufnahmen von Dateien, Daten, Bildschirminhalten, Ihrem Standort, anwesenden Personen oder sonstigen Gegenständen, Räumen oder Ihrer Wohn- bzw. Geschäftsumgebung angefertigt. Die Fotos werden ausschließlich zur Qualitätssicherung und im Streitfall als Nachweis über den ursprünglichen und den behobenen Zustand des Geräts verwendet und nicht an Dritte weitergegeben. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sowie unser berechtigtes Interesse an einer Nachweisdokumentation (Art. 6 Abs. 1 lit. f DSGVO). Auf Wunsch können Sie der Anfertigung von Fotos jederzeit widersprechen; die Leistung wird davon nicht beeinträchtigt.</p>
+        <p>Die Fotos werden entsprechend dem datenschutzrechtlichen Grundsatz der Speicherbegrenzung (Art. 5 Abs. 1 lit. e DSGVO) nur so lange aufbewahrt, wie dies für den Dokumentationszweck erforderlich ist: grundsätzlich für die Dauer der gesetzlichen Gewährleistungsfrist von zwei Jahren ab Leistungserbringung (§ 438 Abs. 1 Nr. 3 BGB). Besteht zu diesem Zeitpunkt ein konkreter Streitfall, werden die betreffenden Fotos bis zu dessen endgültiger Klärung aufbewahrt. Danach werden die Fotos unverzüglich und unwiederbringlich gelöscht.</p>
+
+        <h2>7. E-Mail-Versand</h2>
+        <p>Zur Bestätigung Ihrer Buchung sowie einer etwaigen Stornierung versenden wir eine E-Mail über den Dienstleister Resend. Dabei werden Ihre E-Mail-Adresse sowie die Buchungsdetails an Resend übermittelt, damit die Nachricht zugestellt werden kann. Weitere Informationen finden Sie in der <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Datenschutzerklärung von Resend</a>.</p>
+
+        <h2>8. Cookies, Schriftarten &amp; lokale Speicherung</h2>
+        <p>Diese Website verwendet keine Tracking-Cookies. Ihre gewählte Sprache (Deutsch/Englisch) wird lediglich lokal in Ihrem Browser gespeichert (localStorage), damit sie bei einem erneuten Besuch erhalten bleibt. Diese Information verlässt Ihr Gerät nicht.</p>
+        <p>Die auf dieser Website verwendete Schriftart ("Plus Jakarta Sans") sowie die Kartenbibliothek Leaflet, die für die Standortkarte auf der Buchungsseite benötigt wird, werden ausschließlich von unserer eigenen Infrastruktur ausgeliefert. Es findet dabei keine Verbindung zu Google Fonts, unpkg.com oder einem anderen externen Anbieter statt, sodass beim Laden dieser Ressourcen keine Daten – insbesondere keine IP-Adresse – an Dritte übermittelt werden.</p>
+
+        <h2>9. Kartendarstellung (OpenStreetMap)</h2>
+        <p>Auf der Buchungsseite zeigen wir Ihnen unser Einsatzgebiet auf einer interaktiven Karte. Die Kartenbibliothek selbst ist, wie in Abschnitt 8 beschrieben, bei uns selbst gehostet. Die eigentlichen Kartenbilder (Kachelgrafiken) werden jedoch direkt von den Servern der OpenStreetMap Foundation (OSMF) geladen, sobald die Karte angezeigt wird. Dabei wird Ihre IP-Adresse an die OpenStreetMap Foundation übermittelt, da dies technisch erforderlich ist, um die Kartenkacheln an Ihr Gerät auszuliefern. Dies ist bei praktisch jeder Website mit einer eingebundenen Live-Karte so und lässt sich technisch nicht vermeiden, ohne auf die Kartendarstellung vollständig zu verzichten. Weitere Informationen finden Sie in der <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Datenschutzerklärung der OpenStreetMap Foundation</a>. Rechtsgrundlage ist unser berechtigtes Interesse an einer verständlichen, nutzerfreundlichen Darstellung unseres Einsatzgebiets (Art. 6 Abs. 1 lit. f DSGVO).</p>
+
+        <h2>10. Ihre Rechte</h2>
+        <p>Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung Ihrer personenbezogenen Daten sowie ein Recht auf Datenübertragbarkeit und Widerspruch. Wenden Sie sich hierzu bitte an die oben genannte Kontaktadresse. Ihnen steht zudem ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde zu.</p>
+
+        <h2>11. Speicherdauer</h2>
+        <p>Wir speichern Ihre Daten nur so lange, wie es für die Erbringung unserer Leistungen und zur Erfüllung gesetzlicher Aufbewahrungspflichten erforderlich ist. Für Fotodokumentationen gilt die in Abschnitt 6 genannte Frist.</p>
+
+        <h2>12. Änderungen dieser Datenschutzerklärung</h2>
+        <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen umzusetzen.</p>
+      </div>
+      <div id="privacy-modal-body-en" style="display:none;">
+        <div class="updated">Last updated: September 2026</div>
+
+        <h2>1. Data Controller</h2>
+        <p>The party responsible for data processing on this website is:</p>
+        <p>
+          Zettly GmbH<br>
+          Musterstraße 12, 80331 Munich, Germany<br>
+          Email: kontakt@zettly.de
+        </p>
+
+        <h2>2. Hosting</h2>
+        <p>This website is hosted on Cloudflare Workers. Cloudflare processes technically necessary data (including IP address and request timestamp) to deliver the site and protect against abuse. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's Privacy Policy</a> for details.</p>
+
+        <h2>3. Server Log Files</h2>
+        <p>When you visit this website, information transmitted automatically by your browser may be collected (e.g. browser type, operating system, referrer URL, IP address, date and time of the request). This data is used to keep the service secure and stable and is not combined with other data sources.</p>
+
+        <h2>4. Appointment Booking</h2>
+        <p>When you book an appointment through our form, we collect the data you enter (name, email address, optionally phone number, the address of the service location, selected service, appointment time, and any notes). We only use the address to carry out the on-site visit. This data is stored in our database to manage your appointment and get in touch with you. The legal basis is the performance of a contract or pre-contractual measures (Art. 6(1)(b) GDPR). Processing is also based on the consent you give in the booking form (Art. 6(1)(a) GDPR).</p>
+
+        <h2>5. Cancelling an Appointment</h2>
+        <p>You can cancel a booked appointment yourself, free of charge, up to 24 hours before the scheduled time, either via the personalized cancellation link in your booking confirmation or by contacting kontakt@zettly.de. When you cancel, we additionally process the cancellation reason you provide and the time of cancellation; this information is used solely for internal traceability and is stored together with the rest of the booking data. The legal basis is the same as for the original booking, Art. 6(1)(b) GDPR. You will then receive a cancellation confirmation email with the booking details attached as a PDF.</p>
+
+        <h2>6. On-Site Photo Documentation</h2>
+        <p>For some services, with your consent, we photograph only the affected device before and after the repair, to document its condition and the work performed. We photograph the device itself only: we do not take pictures of files, data, screen contents, your location, any people present, or other objects, rooms, or your home or business environment in general. These photos are used solely for quality assurance and as evidence of the device's original and repaired condition in case of a dispute, and are never shared with third parties. The legal basis is your consent (Art. 6(1)(a) GDPR) and our legitimate interest in maintaining evidentiary documentation (Art. 6(1)(f) GDPR). You may object to having photos taken at any time; this will not affect the service provided.</p>
+        <p>In line with the data protection principle of storage limitation (Art. 5(1)(e) GDPR), the photos are kept only as long as necessary for the documentation purpose: as a rule, for the statutory warranty period of two years from the date the service was performed (§ 438(1) no. 3 BGB, the German Civil Code). If a specific dispute is still open at that point, the relevant photos are retained until it is finally resolved. After that, the photos are deleted promptly and irretrievably.</p>
+
+        <h2>7. Sending Emails</h2>
+        <p>To confirm your booking and any cancellation, we send an email via the service provider Resend. Your email address and booking details are transmitted to Resend so the message can be delivered. See <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend's Privacy Policy</a> for details.</p>
+
+        <h2>8. Cookies, Fonts &amp; Local Storage</h2>
+        <p>This website does not use tracking cookies. Your chosen language (German/English) is stored only locally in your browser (localStorage) so it is remembered on your next visit. This information never leaves your device.</p>
+        <p>The font used on this website ("Plus Jakarta Sans") and the Leaflet mapping library used for the location map on the booking page are both served exclusively from our own infrastructure. No connection is made to Google Fonts, unpkg.com, or any other third-party provider, so loading these resources does not transmit any data — including your IP address — to third parties.</p>
+
+        <h2>9. Map Display (OpenStreetMap)</h2>
+        <p>On the booking page, we show you our service area on an interactive map. The mapping library itself is, as described in Section 8, self-hosted on our own infrastructure. The actual map imagery (tiles), however, is loaded directly from the servers of the OpenStreetMap Foundation (OSMF) once the map is displayed. This transmits your IP address to the OpenStreetMap Foundation, which is technically necessary to deliver the map tiles to your device. This is standard for virtually any website that includes a live map and cannot be avoided without removing the map entirely. See the <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">OpenStreetMap Foundation's Privacy Policy</a> for details. The legal basis is our legitimate interest in providing a clear, user-friendly display of our service area (Art. 6(1)(f) GDPR).</p>
+
+        <h2>10. Your Rights</h2>
+        <p>You have the right at any time to access, correct, delete, or restrict the processing of your personal data, as well as a right to data portability and objection. Please contact us at the address above. You also have the right to lodge a complaint with a data protection supervisory authority.</p>
+
+        <h2>11. Data Retention</h2>
+        <p>We store your data only for as long as necessary to provide our services and to comply with legal retention obligations. Photo documentation is retained for the period set out in Section 6.</p>
+
+        <h2>12. Changes to this Privacy Policy</h2>
+        <p>We reserve the right to update this privacy policy to reflect current legal requirements or changes to our services.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="progress-bar hidden" id="progress">
   <div class="track"><div class="fill" id="progress-fill"></div></div>
@@ -1829,8 +1972,9 @@ const I18N = {
     summaryCommute: "Anfahrt",
     summaryTotal: "Gesamt",
     commuteFreeShort: "Kostenlos",
-    consentLabel: 'Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.',
+    consentLabel: 'Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.',
     fillConsent: "Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.",
+    privacyModalHeading: "Datenschutzerklärung",
     notes: "Was sollten wir wissen?",
     notesPlaceholder: "Kurze Beschreibung des Anliegens",
     phoneConsultationLabel: "Ich möchte diese Beratung lieber telefonisch statt vor Ort.",
@@ -1962,8 +2106,9 @@ const I18N = {
     summaryCommute: "Call-out",
     summaryTotal: "Total",
     commuteFreeShort: "Free",
-    consentLabel: 'I have read the <a href="/datenschutz/" target="_blank" rel="noopener">privacy policy</a> and agree that my details will be stored and processed to handle my booking.',
+    consentLabel: 'I have read the <a href="#" id="privacy-modal-link" rel="noopener">privacy policy</a> and agree that my details will be stored and processed to handle my booking.',
     fillConsent: "Please agree to the privacy policy to continue.",
+    privacyModalHeading: "Privacy Policy",
     notes: "Anything we should know?",
     notesPlaceholder: "Briefly describe the issue or what you need",
     phoneConsultationLabel: "I'd prefer this consultation to be held over the phone instead of in person.",
@@ -2795,6 +2940,62 @@ document.getElementById("to-details").addEventListener("click", () => {
 document.getElementById("f-phone-consultation").addEventListener("change", (e) => {
   state.phoneConsultation = e.target.checked;
 });
+
+// The consent checkbox is mandatory: keep the submit button disabled until
+// it's checked, and clear the inline error as soon as the visitor agrees,
+// instead of only catching it at submit time.
+function updateConsentGate() {
+  const consentBox = document.getElementById("f-consent");
+  const btn = document.getElementById("submit-booking");
+  if (!consentBox || !btn) return;
+  btn.disabled = !consentBox.checked;
+  if (consentBox.checked) {
+    const errorEl = document.getElementById("form-error");
+    if (errorEl && errorEl.textContent === t("fillConsent")) {
+      errorEl.style.display = "none";
+    }
+  }
+}
+document.getElementById("f-consent").addEventListener("change", updateConsentGate);
+
+// Privacy policy link inside the consent label: opens a small in-page modal
+// with the actual policy text instead of navigating away and losing booking
+// progress. The label's innerHTML is re-rendered on every language switch
+// (applyStaticTranslations), so the link is handled via delegation rather
+// than a listener bound to one element instance.
+function openPrivacyModal() {
+  document.getElementById("privacy-modal-heading").textContent = t("privacyModalHeading");
+  document.getElementById("privacy-modal-body-de").style.display = lang === "de" ? "" : "none";
+  document.getElementById("privacy-modal-body-en").style.display = lang === "en" ? "" : "none";
+  const overlay = document.getElementById("privacy-modal-overlay");
+  overlay.classList.remove("hidden");
+  overlay.querySelector(".privacy-modal-body").scrollTop = 0;
+}
+function closePrivacyModal() {
+  document.getElementById("privacy-modal-overlay").classList.add("hidden");
+}
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("#privacy-modal-link");
+  if (link) {
+    e.preventDefault();
+    openPrivacyModal();
+    return;
+  }
+  if (e.target.closest("#privacy-modal-close")) {
+    closePrivacyModal();
+    return;
+  }
+  if (e.target.id === "privacy-modal-overlay") {
+    closePrivacyModal();
+  }
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !document.getElementById("privacy-modal-overlay").classList.contains("hidden")) {
+    closePrivacyModal();
+  }
+});
+
+updateConsentGate();
 
 document.getElementById("submit-booking").addEventListener("click", async () => {
   const firstName = document.getElementById("f-firstname").value.trim();
