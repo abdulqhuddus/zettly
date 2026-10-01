@@ -1528,6 +1528,29 @@
   .privacy-modal-body ul { margin: 0.4rem 0 0.4rem 1.2rem; }
   .privacy-modal-body a { color: var(--accent); }
   .privacy-modal-body .updated { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
+  .liability-row {
+    display: flex; align-items: center; gap: 0.6rem; margin: 0.8rem 0 1.1rem;
+    padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 12px;
+    background: #fafafa;
+  }
+  .liability-info-btn {
+    border: none; background: var(--accent-light); color: var(--ink);
+    width: 28px; height: 28px; border-radius: 50%; cursor: pointer; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+  }
+  .liability-info-btn:hover { background: var(--pink-light); }
+  .liability-row-label { font-size: 0.9rem; font-weight: 600; color: var(--ink); flex: 1 1 auto; }
+  .liability-status-pill {
+    font-size: 0.76rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px;
+    background: #efefef; color: #666; white-space: nowrap;
+  }
+  .liability-status-pill.confirmed { background: #e4f8ec; color: #1c8a4b; }
+  .liability-points { margin: 0.4rem 0 1rem 1.2rem; padding: 0; }
+  .liability-points li { font-size: 0.88rem; color: #33333a; margin-bottom: 0.7rem; }
+  .liability-points li b { display: block; color: var(--ink); font-weight: 700; margin-bottom: 0.15rem; }
+  .liability-accept-check { margin-top: 0.3rem; }
+  .liability-modal-actions { margin-top: 0.9rem; display: flex; justify-content: flex-end; }
+  .liability-modal-actions .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   @media (max-width: 480px) {
     .privacy-modal { max-height: 88vh; border-radius: 14px; }
     .privacy-modal-head { padding: 1rem 1.1rem; }
@@ -1765,6 +1788,13 @@
     <h1 data-i18n="step3Title">Ihre Angaben</h1>
     <p class="subtitle" data-i18n="step3Sub">Die Bestätigung senden wir an diese Adresse.</p>
     <div class="summary" id="summary"></div>
+    <div class="liability-row" id="liability-row">
+      <button type="button" class="liability-info-btn" id="liability-info-btn" aria-label="Haftungshinweise anzeigen" data-i18n-aria="liabilityInfoAria">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="12" cy="12" r="9.25" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
+      </button>
+      <span class="liability-row-label" data-i18n="liabilityRowLabel">Haftungshinweise</span>
+      <span class="liability-status-pill" id="liability-status-pill" data-i18n="liabilityNotConfirmed">Noch nicht bestätigt</span>
+    </div>
     <div class="field-row">
       <div class="field">
         <label data-i18n="firstName">Vorname</label>
@@ -1995,6 +2025,25 @@
   </div>
 </div>
 
+<div class="privacy-modal-overlay hidden" id="liability-modal-overlay">
+  <div class="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="liability-modal-heading">
+    <div class="privacy-modal-head">
+      <h2 id="liability-modal-heading" data-i18n-text="liabilityModalHeading">Haftungshinweise</h2>
+      <button type="button" class="privacy-modal-close" id="liability-modal-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="privacy-modal-body">
+      <ol class="liability-points" id="liability-points"></ol>
+      <label class="consent-check liability-accept-check">
+        <input type="checkbox" id="liability-accept-checkbox" />
+        <span data-i18n="liabilityAcceptLabel">Ich akzeptiere</span>
+      </label>
+      <div class="liability-modal-actions">
+        <button type="button" class="btn btn-primary" id="liability-accept-close" data-i18n="liabilityAcceptClose" disabled>Akzeptieren &amp; schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="progress-bar hidden" id="progress">
   <div class="track"><div class="fill" id="progress-fill"></div></div>
   <div class="step-label" id="progress-label"><b>1</b> / 5</div>
@@ -2114,6 +2163,26 @@ const I18N = {
     consentLabel: 'Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.',
     fillConsent: "Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.",
     privacyModalHeading: "Datenschutzerklärung",
+    liabilityRowLabel: "Haftungshinweise",
+    liabilityInfoAria: "Haftungshinweise anzeigen",
+    liabilityModalHeading: "Haftungshinweise",
+    liabilityPoint1Title: "Datensicherung",
+    liabilityPoint1: "Vor jeder Formatierung oder Neuinstallation empfehlen wir dringend, eine Sicherungskopie Ihrer Daten zu erstellen. Für Datenverlust während der Bearbeitung übernehmen wir keine Haftung.",
+    liabilityPoint2Title: "Formatierung/Neuinstallation",
+    liabilityPoint2: "Sollte das System in einen nicht behebbaren, fehlerhaften Zustand geraten, kann mit Zustimmung des Kunden eine Formatierung und Neuinstallation durchgeführt werden. Hierbei werden alle Daten auf dem Gerät gelöscht.",
+    liabilityPoint3Title: "Keine Garantie auf den Service",
+    liabilityPoint3: "Aufgrund unseres günstigen Preismodells bieten wir keine Garantie auf durchgeführte Serviceleistungen. Bei erneut auftretenden Problemen beraten wir Sie gerne zu weiteren Lösungsmöglichkeiten.",
+    liabilityPoint4Title: "Software und Drittanbieter",
+    liabilityPoint4: "Für Schäden durch nicht autorisierte Software, Drittanbieter-Programme oder Malware, die vor unserem Eingriff bereits vorhanden waren, übernehmen wir keine Haftung.",
+    liabilityPoint5Title: "Bearbeitungsdauer",
+    liabilityPoint5: "Die angegebene Bearbeitungsdauer ist ein Richtwert und kann je nach Problemstellung variieren.",
+    liabilityPoint6Title: "Zustimmung des Kunden",
+    liabilityPoint6: "Weitergehende Maßnahmen (z. B. Formatierung, Neuinstallation) werden ausschließlich mit vorheriger Zustimmung des Kunden durchgeführt.",
+    liabilityAcceptLabel: "Ich akzeptiere",
+    liabilityAcceptClose: "Akzeptieren & schließen",
+    liabilityConfirmed: "Bestätigt",
+    liabilityNotConfirmed: "Noch nicht bestätigt",
+    fillLiability: "Bitte bestätigen Sie die Haftungshinweise, um fortzufahren.",
     notes: "Was sollten wir wissen?",
     notesPlaceholder: "Kurze Beschreibung des Anliegens",
     phoneConsultationLabel: "Ich möchte diese Beratung lieber telefonisch statt vor Ort.",
@@ -2249,6 +2318,26 @@ const I18N = {
     consentLabel: 'I have read the <a href="#" id="privacy-modal-link" rel="noopener">privacy policy</a> and agree that my details will be stored and processed to handle my booking.',
     fillConsent: "Please agree to the privacy policy to continue.",
     privacyModalHeading: "Privacy Policy",
+    liabilityRowLabel: "Liability notices",
+    liabilityInfoAria: "Show liability notices",
+    liabilityModalHeading: "Liability Notices",
+    liabilityPoint1Title: "Data backup",
+    liabilityPoint1: "Before any formatting or reinstallation, we strongly recommend creating a backup of your data. We assume no liability for data loss during the process.",
+    liabilityPoint2Title: "Formatting/reinstallation",
+    liabilityPoint2: "Should the system reach an unrecoverable, corrupt state, formatting and reinstallation can be carried out with the customer's consent. This will delete all data on the device.",
+    liabilityPoint3Title: "No warranty on the service",
+    liabilityPoint3: "Due to our low-cost pricing model, we do not offer a warranty on performed services. Should problems reoccur, we're happy to advise you on further solutions.",
+    liabilityPoint4Title: "Software & third-party",
+    liabilityPoint4: "We assume no liability for damages from unauthorized software, third-party programs, or malware that were already present before our intervention.",
+    liabilityPoint5Title: "Processing time",
+    liabilityPoint5: "The stated processing time is an estimate and may vary depending on the nature of the problem.",
+    liabilityPoint6Title: "Customer consent",
+    liabilityPoint6: "Further measures (e.g. formatting, reinstallation) will only be carried out with the customer's prior consent.",
+    liabilityAcceptLabel: "I accept",
+    liabilityAcceptClose: "Accept & close",
+    liabilityConfirmed: "Confirmed",
+    liabilityNotConfirmed: "Not confirmed yet",
+    fillLiability: "Please confirm the liability notices to continue.",
     notes: "Anything we should know?",
     notesPlaceholder: "Briefly describe the issue or what you need",
     phoneConsultationLabel: "I'd prefer this consultation to be held over the phone instead of in person.",
@@ -2288,6 +2377,7 @@ const state = {
   // "ok", or "error".
   zip: null, city: null, commuteFee: 0, commuteDistanceKm: null, commuteStatus: null, commuteErrorReason: null,
   phoneConsultation: false,
+  liabilityAccepted: false,
 };
 let CATALOG = { home: [], business: [] };
 
@@ -2309,6 +2399,11 @@ function applyStaticTranslations() {
     const key = el.getAttribute("data-i18n-placeholder");
     if (I18N[lang][key]) el.placeholder = I18N[lang][key];
   });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => {
+    const key = el.getAttribute("data-i18n-aria");
+    if (I18N[lang][key]) el.setAttribute("aria-label", I18N[lang][key]);
+  });
+  updateLiabilityStatusPill();
   document.querySelectorAll(".lang-switch button").forEach(b => {
     b.classList.toggle("active", b.dataset.lang === lang);
   });
@@ -3155,14 +3250,15 @@ document.getElementById("f-phone-consultation").addEventListener("change", (e) =
   state.phoneConsultation = e.target.checked;
 });
 
-// The consent checkbox is mandatory: keep the submit button disabled until
-// it's checked, and clear the inline error as soon as the visitor agrees,
-// instead of only catching it at submit time.
+// The consent checkbox and the liability-notice acceptance are both
+// mandatory: keep the submit button disabled until both are satisfied,
+// and clear the inline error as soon as the visitor agrees, instead of
+// only catching it at submit time.
 function updateConsentGate() {
   const consentBox = document.getElementById("f-consent");
   const btn = document.getElementById("submit-booking");
   if (!consentBox || !btn) return;
-  btn.disabled = !consentBox.checked;
+  btn.disabled = !consentBox.checked || !state.liabilityAccepted;
   if (consentBox.checked) {
     const errorEl = document.getElementById("form-error");
     if (errorEl && errorEl.textContent === t("fillConsent")) {
@@ -3171,6 +3267,51 @@ function updateConsentGate() {
   }
 }
 document.getElementById("f-consent").addEventListener("change", updateConsentGate);
+
+// ---- Liability notices modal (services only, no hardware sales) -----------
+// Reuses the privacy-policy modal's visual style and open/close mechanism.
+// Gates the submit button the same way the consent checkbox does: both
+// must be satisfied before a booking can be confirmed.
+function renderLiabilityPoints() {
+  const list = document.getElementById("liability-points");
+  if (!list) return;
+  const points = [1, 2, 3, 4, 5, 6].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
+  list.innerHTML = points;
+}
+function updateLiabilityStatusPill() {
+  const pill = document.getElementById("liability-status-pill");
+  if (!pill) return;
+  pill.textContent = state.liabilityAccepted ? t("liabilityConfirmed") : t("liabilityNotConfirmed");
+  pill.classList.toggle("confirmed", state.liabilityAccepted);
+}
+function openLiabilityModal() {
+  document.getElementById("liability-modal-heading").textContent = t("liabilityModalHeading");
+  renderLiabilityPoints();
+  const checkbox = document.getElementById("liability-accept-checkbox");
+  checkbox.checked = state.liabilityAccepted;
+  document.getElementById("liability-accept-close").disabled = !checkbox.checked;
+  const overlay = document.getElementById("liability-modal-overlay");
+  overlay.classList.remove("hidden");
+  overlay.querySelector(".privacy-modal-body").scrollTop = 0;
+}
+function closeLiabilityModal() {
+  document.getElementById("liability-modal-overlay").classList.add("hidden");
+}
+document.getElementById("liability-accept-checkbox").addEventListener("change", (e) => {
+  document.getElementById("liability-accept-close").disabled = !e.target.checked;
+});
+document.getElementById("liability-accept-close").addEventListener("click", () => {
+  if (!document.getElementById("liability-accept-checkbox").checked) return;
+  state.liabilityAccepted = true;
+  updateLiabilityStatusPill();
+  updateConsentGate();
+  closeLiabilityModal();
+  const errorEl = document.getElementById("form-error");
+  if (errorEl && errorEl.textContent === t("fillLiability")) {
+    errorEl.style.display = "none";
+  }
+});
+document.getElementById("liability-info-btn").addEventListener("click", openLiabilityModal);
 
 // Privacy policy link inside the consent label: opens a small in-page modal
 // with the actual policy text instead of navigating away and losing booking
@@ -3201,14 +3342,26 @@ document.addEventListener("click", (e) => {
   }
   if (e.target.id === "privacy-modal-overlay") {
     closePrivacyModal();
+    return;
+  }
+  if (e.target.closest("#liability-modal-close")) {
+    closeLiabilityModal();
+    return;
+  }
+  if (e.target.id === "liability-modal-overlay") {
+    closeLiabilityModal();
   }
 });
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !document.getElementById("privacy-modal-overlay").classList.contains("hidden")) {
     closePrivacyModal();
   }
+  if (e.key === "Escape" && !document.getElementById("liability-modal-overlay").classList.contains("hidden")) {
+    closeLiabilityModal();
+  }
 });
 
+updateLiabilityStatusPill();
 updateConsentGate();
 
 document.getElementById("submit-booking").addEventListener("click", async () => {
@@ -3242,6 +3395,11 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
   }
   if (!document.getElementById("f-consent").checked) {
     errorEl.textContent = t("fillConsent");
+    errorEl.style.display = "block";
+    return;
+  }
+  if (!state.liabilityAccepted) {
+    errorEl.textContent = t("fillLiability");
     errorEl.style.display = "block";
     return;
   }
