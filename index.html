@@ -643,11 +643,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: #7c3aed;
-    box-shadow: 0 1px 4px rgba(17,17,20,0.4);
+    width: 22px;
+    height: 22px;
+  }
+  .customer-vehicle-icon .vehicle-arrow {
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(17,17,20,0.45));
+    transition: transform 0.15s ease-out;
   }
   .customer-vehicle-icon svg { display: block; overflow: visible; }
   @media (prefers-reduced-motion: reduce) {
@@ -3685,14 +3687,13 @@ function getCustomerVehicleIcon() {
   if (!customerVehicleIcon) {
     customerVehicleIcon = L.divIcon({
       className: "customer-vehicle-icon",
-      // A simple, deliberately low-detail car silhouette (body + cabin +
-      // two wheels) in flat white on the purple circle background —
-      // chosen over a more detailed van drawing because a hand-written
-      // multi-curve path at this tiny size (16px) is exactly what
-      // rendered as a deformed blob before.
-      html: '<svg viewBox="0 0 16 16" width="16" height="16"><path fill="#fff" d="M2 9.5h12v2.6a.8.8 0 0 1-.8.8h-.7a1.6 1.6 0 1 1-3.2 0H6.7a1.6 1.6 0 1 1-3.2 0h-.7a.8.8 0 0 1-.8-.8Z"/><path fill="#fff" d="M3 9.5 3.9 6a1.3 1.3 0 0 1 1.25-1h5.7A1.3 1.3 0 0 1 12.1 6l.9 3.5Z"/><circle cx="5.1" cy="12.1" r="0.9" fill="#7c3aed"/><circle cx="10.9" cy="12.1" r="0.9" fill="#7c3aed"/></svg>',
-      iconSize: [26, 26],
-      iconAnchor: [13, 13],
+      // A plain directional arrow/pointer (not a vehicle shape) — the
+      // inner .vehicle-arrow span is what gets rotated in JS to face
+      // whichever way it's currently travelling, kept separate from the
+      // outer element that Leaflet itself repositions every frame.
+      html: '<span class="vehicle-arrow"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2 20 20 12 15.5 4 20Z" fill="#7c3aed" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg></span>',
+      iconSize: [22, 22],
+      iconAnchor: [11, 11],
     });
   }
   return customerVehicleIcon;
@@ -3721,6 +3722,27 @@ function startCustomerVehicleAnimation(from, to) {
   let legStart = performance.now();
   let forward = true;
 
+  // Bearing in degrees clockwise from north, via a flat-plane approximation
+  // (fine at this scale) — used to rotate the arrow to face the direction
+  // of travel. The arrow icon's own artwork points north (0°) by default.
+  function bearing(a, b) {
+    const latRad = (a[0] * Math.PI) / 180;
+    const dLat = b[0] - a[0];
+    const dLon = (b[1] - a[1]) * Math.cos(latRad);
+    return (Math.atan2(dLon, dLat) * 180) / Math.PI;
+  }
+  const forwardBearing = bearing(from, to);
+  const backwardBearing = forwardBearing + 180;
+  let lastForward = null;
+
+  function applyRotation(isForward) {
+    if (isForward === lastForward || !customerVehicleMarker) return;
+    lastForward = isForward;
+    const el = customerVehicleMarker.getElement();
+    const arrow = el && el.querySelector(".vehicle-arrow");
+    if (arrow) arrow.style.transform = `rotate(${isForward ? forwardBearing : backwardBearing}deg)`;
+  }
+
   function frame(now) {
     const elapsed = now - legStart;
     if (elapsed >= legMs + pauseMs) {
@@ -3729,6 +3751,7 @@ function startCustomerVehicleAnimation(from, to) {
       customerVehicleRaf = requestAnimationFrame(frame);
       return;
     }
+    applyRotation(forward);
     const t = ease(Math.min(1, elapsed / legMs));
     const a = forward ? from : to;
     const b = forward ? to : from;
