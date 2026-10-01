@@ -97,11 +97,11 @@ export async function computeCommute(plz) {
   const distanceKm = haversineKm(MUNICH.lat, MUNICH.lon, point.lat, point.lon);
 
   if (FREE_ZONE_PLZ_OVERRIDE.has(clean)) {
-    return { ok: true, distanceKm, fee: 0, zoneIndex: 0, place: point.place };
+    return { ok: true, distanceKm, fee: 0, zoneIndex: 0, place: point.place, lat: point.lat, lon: point.lon };
   }
 
   const zone = zoneForDistance(distanceKm);
   if (!zone) return { ok: false, reason: "out_of_area", distanceKm };
 
-  return { ok: true, distanceKm, fee: zone.fee, zoneIndex: zone.index, place: point.place };
+  return { ok: true, distanceKm, fee: zone.fee, zoneIndex: zone.index, place: point.place, lat: point.lat, lon: point.lon };
 }

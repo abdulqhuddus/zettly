@@ -3119,6 +3119,7 @@ async function checkCommute(zip) {
       state.commuteStatus = "ok";
       state.commuteFee = data.fee;
       state.commuteDistanceKm = data.distanceKm;
+      updateCustomerLocationMarker(data.lat, data.lon);
       // Auto-fill the city from the postal code so the customer doesn't
       // have to type it too; leave it alone if they've already typed
       // something themselves that the lookup didn't just produce.
@@ -3132,17 +3133,20 @@ async function checkCommute(zip) {
       state.commuteStatus = "outOfArea";
       state.commuteDistanceKm = data.distanceKm ?? null;
       state.commuteFee = 0;
+      updateCustomerLocationMarker(null, null);
     } else {
       state.commuteStatus = "error";
       state.commuteErrorReason = data.reason;
       state.commuteDistanceKm = null;
       state.commuteFee = 0;
+      updateCustomerLocationMarker(null, null);
     }
   } catch {
     if (myToken !== commuteCheckToken) return;
     state.commuteStatus = "error";
     state.commuteErrorReason = "network";
     state.commuteFee = 0;
+    updateCustomerLocationMarker(null, null);
   }
   renderCommuteResult();
   // A successful lookup that returned no place name (rare) leaves the city
@@ -3199,6 +3203,7 @@ function onLocationInputChange() {
   if (!/^\d{5}$/.test(zip)) {
     state.commuteStatus = null;
     renderCommuteResult();
+    updateCustomerLocationMarker(null, null);
     return;
   }
   // Only the postal code is required to look up the commute fee — the city
@@ -3554,6 +3559,43 @@ const GERMANY_BOUNDS = [
   [49.9, 13.6], // NE
 ];
 let serviceAreaPopup = null;
+let serviceAreaMap = null;
+let customerLocationMarker = null;
+let customerLocationLine = null;
+
+// Places (or clears) a marker at the customer's geocoded location, with a
+// dashed line back to the Munich HQ dot — a visual complement to the
+// zone-color readout in the commute result, reusing the exact same
+// lat/lon the server already resolved for the fee calculation (no separate
+// client-side geocoding).
+function updateCustomerLocationMarker(lat, lon) {
+  if (!serviceAreaMap) return;
+  if (customerLocationMarker) {
+    serviceAreaMap.removeLayer(customerLocationMarker);
+    customerLocationMarker = null;
+  }
+  if (customerLocationLine) {
+    serviceAreaMap.removeLayer(customerLocationLine);
+    customerLocationLine = null;
+  }
+  if (typeof lat !== "number" || typeof lon !== "number" || !Number.isFinite(lat) || !Number.isFinite(lon)) return;
+  const point = [lat, lon];
+  customerLocationLine = L.polyline([MUNICH_LATLNG, point], {
+    color: "#111114",
+    weight: 2,
+    opacity: 0.6,
+    dashArray: "6 6",
+    interactive: false,
+  }).addTo(serviceAreaMap);
+  customerLocationMarker = L.circleMarker(point, {
+    radius: 7,
+    color: "#fff",
+    weight: 2,
+    fillColor: "#7c3aed",
+    fillOpacity: 1,
+    className: "customer-location-marker",
+  }).addTo(serviceAreaMap);
+}
 
 // Approximates a circle of `radiusMeters` around `center` as a closed
 // polygon ring, so it can be combined with another ring in a single
@@ -3577,7 +3619,7 @@ function circleLatLngs(center, radiusMeters, steps = 72) {
 
 function initServiceAreaMap() {
   if (typeof L === "undefined" || !document.getElementById("service-area-map")) return;
-  const map = L.map("service-area-map", {
+  const map = (serviceAreaMap = L.map("service-area-map", {
     scrollWheelZoom: false,
     zoomSnap: 0.1, // allows the fractional MAP_VIEW_ZOOM below
     center: MAP_VIEW_CENTER,
@@ -3585,7 +3627,7 @@ function initServiceAreaMap() {
     minZoom: MAP_VIEW_ZOOM,
     maxBounds: GERMANY_BOUNDS,
     maxBoundsViscosity: 1.0,
-  });
+  }));
   // Plain OpenStreetMap tiles: a "roadmap" style (streets/labels, no
   // satellite imagery) that needs no API key. CartoDB's Voyager tiles
   // looked cleaner but now require a Carto account/API key to serve, which
