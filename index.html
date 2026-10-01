@@ -1072,51 +1072,63 @@
     z-index: 2;
   }
 
-  .service-list { display: flex; flex-direction: column; gap: 1rem; }
+  /* Final "priced package" step for every leaf list in the booking tree:
+     a responsive card grid (2-3 cols desktop, stacks on mobile), each card
+     topped with an icon (a storage icon for GB/TB size-tier leaves,
+     inferred generically — see isStorageTierOption() — or a per-id icon
+     otherwise). Shared by every category's package-list leaf, not just
+     Computers & Laptops. */
+  .service-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
   .service-card {
     position: relative;
     border: 1px solid var(--border);
     border-radius: 18px;
-    padding: 1.3rem 1.5rem;
-    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.4rem 1.2rem 1.2rem;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.55rem;
     cursor: pointer;
     background: #fff;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(17,17,20,0.04);
-    transition: padding 0.25s ease, border-color 0.25s, transform 0.2s cubic-bezier(.2,.9,.3,1), box-shadow 0.25s;
+    transition: border-color 0.25s, transform 0.2s cubic-bezier(.2,.9,.3,1), box-shadow 0.25s;
   }
   .service-card::before {
     content: '';
-    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: linear-gradient(180deg, var(--accent), #a78bfa);
-    transform: scaleY(0);
+    position: absolute; left: 0; top: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--accent), #a78bfa);
+    transform: scaleX(0);
     transition: transform 0.25s ease;
   }
   .service-card:hover {
     border-color: var(--accent);
-    padding: 1.55rem 1.5rem;
     transform: translateY(-3px);
     box-shadow: 0 14px 30px rgba(124,58,237,0.14);
     z-index: 2;
   }
-  .service-card:hover::before { transform: scaleY(1); }
+  .service-card:hover::before { transform: scaleX(1); }
   .service-card:active { transform: translateY(-1px) scale(0.995); }
   .service-icon {
     flex: 0 0 auto;
-    width: 44px; height: 44px; border-radius: 13px;
+    width: 48px; height: 48px; border-radius: 14px;
     background: var(--accent-light);
     display: flex; align-items: center; justify-content: center;
   }
-  .service-icon svg { width: 22px; height: 22px; }
-  .service-main { flex: 1; min-width: 0; }
-  .service-top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.15rem; }
-  .service-main h3 { font-size: 1.03rem; font-weight: 700; }
-  .service-main .tagline { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.6rem; }
-  .service-main ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .service-icon svg { width: 24px; height: 24px; }
+  .service-main { width: 100%; min-width: 0; }
+  .service-top-row { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; }
+  .service-main h3 { font-size: 1.0rem; font-weight: 700; }
+  .service-main .tagline { font-size: 0.82rem; color: var(--muted); margin: 0.3rem 0 0.4rem; }
+  .service-main ul { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; }
   .service-main li { font-size: 0.72rem; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600; }
-  .service-price { text-align: right; white-space: nowrap; flex: 0 0 auto; }
-  .service-price .amount { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
+  .service-price { white-space: nowrap; margin-top: 0.1rem; }
+  .service-price .amount { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; }
   .service-price .duration { font-size: 0.73rem; color: var(--muted); margin-top: 0.1rem; }
+  @media (max-width: 560px) {
+    .service-list { grid-template-columns: 1fr; }
+  }
 
   .date-strip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.6rem; }
   .date-chip { flex: 1 1 64px; max-width: 80px; border: 1.5px solid var(--border); border-radius: 12px; padding: 0.7rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.2s; }
@@ -2310,7 +2322,7 @@ const OPTION_ICONS = {
   bootMenu: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="5" width="16" height="14" rx="1.5"/><path ${ICON_STROKE} d="M8 9.5h8M8 13h8M8 16.5h5"/></svg>`,
   blankScreen: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="4.5" width="19" height="12.5" rx="1.5"/><path ${ICON_STROKE} d="M8 21h8M12 17v4"/></svg>`,
   // data-size tiers
-  "10gb": DISK_ICON, "50gb": DISK_ICON, "100gb": DISK_ICON, "250gb": DISK_ICON, "500gb": DISK_ICON, "1tb": DISK_ICON,
+  "10gb": DISK_ICON, "50gb": DISK_ICON, "100gb": DISK_ICON, "250gb": DISK_ICON, "500gb": DISK_ICON, "1tb": DISK_ICON, "1to5tb": DISK_ICON,
   // device sub-types reused across "deviceThenSimple" categories
   printer: CATEGORY_ICONS.printer,
   scanner: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="4" y="3" width="16" height="7" rx="1.5"/><rect ${ICON_STROKE} x="4" y="14" width="16" height="7" rx="1.5"/></svg>`,
@@ -2370,6 +2382,23 @@ const OPTION_ICONS = {
 
 function iconForOption(id, fallback) {
   return OPTION_ICONS[id] || fallback;
+}
+
+// Generic storage-size detector shared by every package-list leaf in the
+// booking tree (not just Computers & Laptops): any option whose id or
+// localized name looks like a data-size tier ("10gb", "Up to 1TB", "1TB to
+// 5TB", "Bis 500 GB", ...) gets the storage icon, with no per-category
+// icon data needed in catalog.json. Falls back to the normal per-id/leaf
+// icon lookup for everything else.
+const STORAGE_TIER_PATTERN = /\d+\s*(gb|tb)\b/i;
+function isStorageTierOption(o) {
+  if (/\d+(gb|tb)$/i.test(o.id || "")) return true;
+  const names = [o.name && o.name.de, o.name && o.name.en].filter(Boolean);
+  return names.some(n => STORAGE_TIER_PATTERN.test(n));
+}
+function serviceLeafIcon(o) {
+  if (isStorageTierOption(o)) return DISK_ICON;
+  return iconForOption(o.id, GENERIC_LEAF_ICON);
 }
 
 // Short fallback descriptions for option ids that don't carry their own catalog `desc`.
@@ -2525,7 +2554,7 @@ function renderTreeStep() {
       const div = document.createElement("div");
       div.className = "service-card";
       div.innerHTML = `
-        <div class="service-icon">${iconForOption(o.id, GENERIC_LEAF_ICON)}</div>
+        <div class="service-icon">${serviceLeafIcon(o)}</div>
         <div class="service-main">
           <div class="service-top-row">
             <h3>${o.name[lang]}</h3>
