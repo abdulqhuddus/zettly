@@ -11,6 +11,7 @@ import {
   handleAdminListBookings,
   handleAdminBookingDetail,
   handleAdminUpdateStatus,
+  handleAdminDeleteBooking,
   handleAdminListBlocks,
   handleAdminCreateBlock,
   handleAdminDeleteBlock,
@@ -618,6 +619,9 @@ export default {
       }
       if (bookingMatch && url.pathname.endsWith("/status") && request.method === "POST") {
         return handleAdminUpdateStatus(request, env, bookingMatch[1]);
+      }
+      if (bookingMatch && !url.pathname.endsWith("/status") && request.method === "DELETE") {
+        return handleAdminDeleteBooking(request, env, bookingMatch[1]);
       }
       const invoiceMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/send-invoice$/);
       if (invoiceMatch && request.method === "POST") {

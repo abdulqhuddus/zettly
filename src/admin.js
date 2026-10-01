@@ -169,6 +169,20 @@ export async function handleAdminBookingDetail(env, id) {
   return json(withServiceBreadcrumb({ ...row, bookingRef: `ZTL-${row.id.split("-")[0].toUpperCase()}` }));
 }
 
+// Permanently removes a booking row. This is a hard delete (unlike
+// cancelling, which keeps the row with a cancelled_at timestamp) -- meant
+// for cleaning up test bookings or genuine mistakes, not for the normal
+// cancellation flow, which should still go through handleAdminUpdateStatus
+// so the customer gets a cancellation email and the record stays for
+// history. No customer notification is sent here.
+export async function handleAdminDeleteBooking(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  const existing = await env.DB.prepare(`SELECT id FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+  await env.DB.prepare(`DELETE FROM bookings WHERE id = ?`).bind(id).run();
+  return json({ ok: true });
+}
+
 const VALID_STATUSES = ["confirmed", "cancelled", "completed"];
 
 export async function handleAdminUpdateStatus(request, env, id) {

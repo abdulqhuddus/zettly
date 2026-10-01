@@ -646,6 +646,7 @@
       actionCancel: "Cancel booking",
       actionComplete: "Mark as completed",
       actionReconfirm: "Re-confirm",
+      actionDelete: "Delete booking",
       actionSendInvoice: "Send invoice",
       actionSendPaymentLink: "Send payment link",
       invoiceSent: "Invoice sent",
@@ -658,6 +659,11 @@
       confirmCompleteMessage: "Mark this booking as completed?",
       confirmReconfirmTitle: "Re-confirm booking",
       confirmReconfirmMessage: "Re-send confirmation email to the customer?",
+      confirmDeleteTitle: "Delete booking",
+      confirmDeleteMessage: "This permanently deletes the booking record — it cannot be undone and no email is sent to the customer. Type the booking reference below to confirm.",
+      confirmDeleteRefMismatch: "That doesn't match the booking reference. Type it exactly to confirm.",
+      bookingDeleted: "Booking deleted",
+      deleteFailed: "Failed to delete",
       confirmSendInvoiceTitle: "Send invoice",
       confirmSendInvoiceMessage: "Send invoice to the customer now?",
       confirmSendPaymentLinkTitle: "Send payment link",
@@ -752,6 +758,7 @@
       actionCancel: "Stornieren",
       actionComplete: "Als abgeschlossen markieren",
       actionReconfirm: "Wieder bestätigen",
+      actionDelete: "Buchung löschen",
       actionSendInvoice: "Rechnung senden",
       actionSendPaymentLink: "Zahlungslink senden",
       invoiceSent: "Rechnung gesendet",
@@ -764,6 +771,11 @@
       confirmCompleteMessage: "Buchung als abgeschlossen markieren?",
       confirmReconfirmTitle: "Buchung wieder bestätigen",
       confirmReconfirmMessage: "Bestätigungs-E-Mail erneut an den Kunden senden?",
+      confirmDeleteTitle: "Buchung löschen",
+      confirmDeleteMessage: "Dies löscht den Buchungsdatensatz endgültig – das kann nicht rückgängig gemacht werden, und der Kunde wird nicht benachrichtigt. Geben Sie zur Bestätigung unten die Buchungsnummer ein.",
+      confirmDeleteRefMismatch: "Das stimmt nicht mit der Buchungsnummer überein. Geben Sie sie zur Bestätigung genau ein.",
+      bookingDeleted: "Buchung gelöscht",
+      deleteFailed: "Löschen fehlgeschlagen",
       confirmSendInvoiceTitle: "Rechnung senden",
       confirmSendInvoiceMessage: "Rechnung jetzt an den Kunden senden?",
       confirmSendPaymentLinkTitle: "Zahlungslink senden",
@@ -1264,6 +1276,7 @@
       actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", () => sendInvoice(b.id)));
       actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", () => sendPaymentLink(b.id)));
     }
+    actions.appendChild(makeActionBtn(s.actionDelete, "btn-danger", () => deleteBooking(b.id, b.bookingRef)));
     document.getElementById("modal").classList.add("open");
   }
 
@@ -1286,7 +1299,7 @@
   }
 
   // ---- Custom confirm dialog (replaces window.confirm/alert) ------------
-  function showConfirm({ title, message, requireReason }) {
+  function showConfirm({ title, message, requireReason, reasonLabel, reasonPlaceholder, matchValue, matchError }) {
     return new Promise((resolve) => {
       const s = t();
       const backdrop = document.getElementById("confirm-modal");
@@ -1294,12 +1307,15 @@
       const reasonInput = document.getElementById("confirm-reason");
       const reasonError = document.getElementById("confirm-reason-error");
       const reasonCount = document.getElementById("confirm-reason-count");
+      const reasonLabelEl = document.getElementById("t-confirm-reason-label");
       document.getElementById("confirm-title").textContent = title;
       document.getElementById("confirm-message").textContent = message;
       reasonInput.value = "";
       reasonError.textContent = "";
-      reasonCount.textContent = "0/100";
+      reasonCount.textContent = matchValue ? "" : "0/100";
       reasonField.style.display = requireReason ? "block" : "none";
+      if (reasonLabelEl) reasonLabelEl.textContent = reasonLabel || s.confirmReasonLabel;
+      reasonInput.placeholder = reasonPlaceholder || s.confirmReasonPlaceholder;
 
       const okBtn = document.getElementById("confirm-ok-btn");
       const cancelBtn = document.getElementById("confirm-cancel-btn");
@@ -1313,13 +1329,22 @@
         reasonInput.removeEventListener("input", onReasonInput);
         resolve(result);
       }
-      function onReasonInput() { reasonCount.textContent = `${reasonInput.value.length}/100`; }
+      function onReasonInput() { if (!matchValue) reasonCount.textContent = `${reasonInput.value.length}/100`; }
       function onOk() {
         if (requireReason) {
           const reason = reasonInput.value.trim();
           if (!reason) {
             reasonError.textContent = s.confirmReasonError;
             reasonInput.focus();
+            return;
+          }
+          if (matchValue) {
+            if (reason !== matchValue) {
+              reasonError.textContent = matchError || s.confirmReasonError;
+              reasonInput.focus();
+              return;
+            }
+            cleanup({ confirmed: true });
             return;
           }
           if (reason.length > 100) {
@@ -1417,6 +1442,32 @@
       toast(s.paymentLinkSent);
     } catch (err) {
       toast(err.message || s.paymentLinkSendFailed);
+    }
+  }
+
+  // A hard, permanent delete -- not the same as cancelling. Guarded by
+  // having the admin type the booking reference back, since unlike every
+  // other action here this one can't be undone and the customer isn't
+  // notified either way.
+  async function deleteBooking(id, bookingRef) {
+    const s = t();
+    const result = await showConfirm({
+      title: s.confirmDeleteTitle,
+      message: s.confirmDeleteMessage,
+      requireReason: true,
+      reasonLabel: bookingRef,
+      reasonPlaceholder: bookingRef,
+      matchValue: bookingRef,
+      matchError: s.confirmDeleteRefMismatch,
+    });
+    if (!result.confirmed) return;
+    try {
+      await api(`/api/admin/bookings/${encodeURIComponent(id)}`, { method: "DELETE" });
+      toast(s.bookingDeleted);
+      closeModal();
+      loadBookings();
+    } catch (err) {
+      toast(err.message || s.deleteFailed);
     }
   }
 
