@@ -1107,20 +1107,75 @@
   }
   .tree-notice svg { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 0.1rem; }
 
-  /* Numbered process explainer, reusing the "how it works" step look for
-     visual consistency, used below the Fix-a-Hardware-Issue choice cards. */
+  /* Numbered process explainer, reusing the "how it works" step card look
+     (icon badge, numbered chip, soft shadow) for visual consistency, used
+     below the Fix-a-Hardware-Issue choice cards. */
   .tree-explainer {
-    margin-top: 1.6rem;
+    position: relative;
+    margin-top: 1.8rem;
     border-top: 1px solid var(--border);
-    padding-top: 1.4rem;
+    padding-top: 1.6rem;
+    overflow: hidden;
   }
-  .tree-explainer h4 { font-size: 1.02rem; font-weight: 800; margin-bottom: 0.9rem; }
-  .tree-explainer ol { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-  .tree-explainer li { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; }
-  .tree-explainer .hiw-num {
-    flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
-    background: var(--accent-light); color: var(--accent); font-weight: 800; font-size: 0.78rem;
+  .tree-explainer::before {
+    content: '';
+    position: absolute;
+    top: 1.2rem; right: -60px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%);
+    pointer-events: none;
+  }
+  .tree-explainer::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(167,139,250,0.10), transparent 70%);
+    pointer-events: none;
+  }
+  .tree-explainer h4 {
+    position: relative;
+    font-size: 1.05rem; font-weight: 800; margin-bottom: 1.1rem;
+  }
+  .tree-explainer-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 0.9rem;
+  }
+  .tree-explainer-step {
+    position: relative;
+    display: flex; flex-direction: column; gap: 0.6rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.1rem 1rem 1rem;
+    box-shadow: 0 2px 10px rgba(17,17,20,0.04);
+    transition: transform 0.2s cubic-bezier(.2,.9,.3,1), box-shadow 0.25s, border-color 0.25s;
+  }
+  .tree-explainer-step:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(124,58,237,0.14);
+    border-color: #e2d6fb;
+  }
+  .tree-explainer-top { display: flex; align-items: center; gap: 0.6rem; }
+  .tree-explainer-num {
+    flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent); font-weight: 800; font-size: 0.72rem;
     display: flex; align-items: center; justify-content: center;
+  }
+  .tree-explainer-icon {
+    flex: 0 0 auto; width: 38px; height: 38px; border-radius: 12px;
+    background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tree-explainer-icon svg { width: 20px; height: 20px; }
+  .tree-explainer-step p { font-size: 0.85rem; line-height: 1.5; color: var(--ink); margin: 0; }
+  @media (max-width: 560px) {
+    .tree-explainer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .tree-explainer-grid { grid-template-columns: 1fr; }
   }
 
   /* Final "priced package" step for every leaf list in the booking tree:
@@ -1131,7 +1186,7 @@
      Computers & Laptops. */
   .service-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
     gap: 1rem;
   }
   .service-card {
@@ -1178,6 +1233,9 @@
   .service-price .amount { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; }
   .service-price .duration { font-size: 0.73rem; color: var(--muted); margin-top: 0.1rem; }
   @media (max-width: 560px) {
+    .service-list { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 400px) {
     .service-list { grid-template-columns: 1fr; }
   }
 
@@ -2605,15 +2663,43 @@ function renderTreeNotices(node) {
   `).join("");
 }
 
+// Icon per explainer step, reusing the site's existing inline-SVG icon
+// style (thin purple stroke, 24x24 viewBox) rather than introducing a new
+// icon set. Matched positionally to the fixed 7-point hardware process.
+const EXPLAINER_STEP_ICONS = [
+  // 1: inspection (magnifying glass)
+  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="#7C3AED" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  // 2: pickup (box/truck)
+  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7.5h11v9H3z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 10.5h3.5L21 13.5v3h-7z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.6" stroke="#7C3AED" stroke-width="1.6"/><circle cx="17.5" cy="18" r="1.6" stroke="#7C3AED" stroke-width="1.6"/></svg>`,
+  // 3: diagnosis (wrench/diagnostic)
+  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a4 4 0 00-5.4 4.9L4 16.5V20h3.5l5.3-5.3a4 4 0 004.9-5.4l-2.6 2.6-2.1-.6-.6-2.1 2.3-2.9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+  // 4: cost/approval for component swap (document with check)
+  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  // 5: cost/approval for simple repair (handshake-style check badge)
+  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  // 6: proceeding with approved repair (checkmark)
+  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.5" stroke="#7C3AED" stroke-width="1.6"/><path d="M8 12.3l2.6 2.6L16.3 9" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  // 7: returning hardware unchanged if declined (return arrow/box)
+  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 13l-3-2.5v1.6H9v1.8h2.5v1.6z" fill="#7C3AED"/></svg>`
+];
+
 function renderTreeExplainer(node) {
   const el = document.getElementById("tree-explainer");
   if (!node.explainer || !Array.isArray(node.explainer[lang])) { el.innerHTML = ""; return; }
   el.innerHTML = `
     <div class="tree-explainer">
       <h4 data-i18n="hwExplainerTitle">${t("hwExplainerTitle")}</h4>
-      <ol>
-        ${node.explainer[lang].map((step, i) => `<li><span class="hiw-num">${i + 1}</span><span>${step}</span></li>`).join("")}
-      </ol>
+      <div class="tree-explainer-grid">
+        ${node.explainer[lang].map((step, i) => `
+          <div class="tree-explainer-step">
+            <div class="tree-explainer-top">
+              <span class="tree-explainer-num">${i + 1}</span>
+              <div class="tree-explainer-icon">${EXPLAINER_STEP_ICONS[i % EXPLAINER_STEP_ICONS.length]}</div>
+            </div>
+            <p>${step}</p>
+          </div>
+        `).join("")}
+      </div>
     </div>
   `;
 }
