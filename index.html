@@ -1570,6 +1570,7 @@
     width: 20px; height: 20px; flex: 0 0 auto; accent-color: #d97a06; cursor: pointer;
   }
   .liability-row.confirmed .privacy-row-checkbox { accent-color: #1c8a4b; }
+  .liability-modal-intro { color: var(--muted); margin-bottom: 1rem; }
   .liability-points { margin: 0.4rem 0 1rem 1.2rem; padding: 0; }
   .liability-points li { font-size: 0.88rem; color: #33333a; margin-bottom: 0.7rem; }
   .liability-points li b { display: block; color: var(--ink); font-weight: 700; margin-bottom: 0.15rem; }
@@ -1938,6 +1939,7 @@
       <h5 data-i18n="footerLinksHeading">Links</h5>
       <a href="/" data-i18n="footerHome">Startseite</a>
       <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
+      <a href="/haftungshinweise/" data-i18n="footerLiability">Haftungshinweise</a>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerContactHeading">Kontakt</h5>
@@ -2058,6 +2060,7 @@
       <button type="button" class="privacy-modal-close" id="liability-modal-close" aria-label="Close">&times;</button>
     </div>
     <div class="privacy-modal-body">
+      <p class="liability-modal-intro" id="liability-modal-intro" data-i18n="liabilityModalIntro">Die folgenden Punkte beschreiben mögliche Haftungsaspekte, die je nach gewähltem Service relevant sein können. Nicht alle Punkte treffen auf jede Leistung zu.</p>
       <ol class="liability-points" id="liability-points"></ol>
       <label class="consent-check liability-accept-check">
         <input type="checkbox" id="liability-accept-checkbox" />
@@ -2104,6 +2107,7 @@ const I18N = {
     trustDoorstepTitle: "Vor Ort",
     trustDoorstepDesc: "Service direkt bei Ihnen",
     footerPrivacy: "Datenschutz",
+    footerLiability: "Haftungshinweise",
     footerHome: "Startseite",
     footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
     footerServicesHeading: "Leistungen",
@@ -2192,6 +2196,7 @@ const I18N = {
     liabilityRowLabel: "Haftungshinweise",
     liabilityInfoAria: "Haftungshinweise anzeigen",
     liabilityModalHeading: "Haftungshinweise",
+    liabilityModalIntro: "Die folgenden Punkte beschreiben mögliche Haftungsaspekte, die je nach gewähltem Service relevant sein können. Nicht alle Punkte treffen auf jede Leistung zu.",
     liabilityPoint1Title: "Datensicherung",
     liabilityPoint1: "Wir empfehlen dringend, vor jeder Formatierung, Neuinstallation oder ähnlichen Leistung eine Sicherungskopie Ihrer Daten zu erstellen. Sofern Sie nicht zusätzlich unseren Datensicherungs-/Migrationsservice gebucht haben, sichern wir Ihre Daten während des Termins ausschließlich auf einem von Ihnen bereitgestellten Speichermedium – eine zusätzliche Kopie wird von uns nicht aufbewahrt.",
     liabilityPoint2Title: "Formatierung/Neuinstallation",
@@ -2265,6 +2270,7 @@ const I18N = {
     trustDoorstepTitle: "At Your Door",
     trustDoorstepDesc: "We come to you",
     footerPrivacy: "Privacy Policy",
+    footerLiability: "Liability Notices",
     footerHome: "Home",
     footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
     footerServicesHeading: "Services",
@@ -2353,6 +2359,7 @@ const I18N = {
     liabilityRowLabel: "Liability notices",
     liabilityInfoAria: "Show liability notices",
     liabilityModalHeading: "Liability Notices",
+    liabilityModalIntro: "The points below outline potential liability considerations that may apply depending on the service you've selected. Not all points will be relevant to every service.",
     liabilityPoint1Title: "Data backup",
     liabilityPoint1: "We strongly recommend creating a backup of your data before any formatting, reinstallation, or similar service. Unless you've also booked our data backup/migration service, we will back up your data only onto a storage device you provide during the appointment — we don't retain or keep a separate copy afterwards.",
     liabilityPoint2Title: "Formatting/reinstallation",

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title data-i18n-title>Zettly | Haftungshinweise</title>
+<link rel="stylesheet" href="/assets/fonts/plus-jakarta-sans.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #7C3AED;
+    --accent-light: #F3EEFF;
+    --pink: #EC4899;
+    --pink-light: #FDEEF7;
+    --ink: #111114;
+    --muted: #6b6b74;
+    --border: #e9e7ef;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 3rem;
+  }
+
+  .stage { width: 100%; max-width: 720px; padding: 0 1.25rem; }
+
+  .announce-bar {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
+    background-size: 200% 200%;
+    animation: ctaShift 6s ease-in-out infinite;
+  }
+  @media (max-width: 640px) {
+    .announce-bar .announce-tail { flex-basis: 100%; }
+  }
+  .announce-bar .announce-icon {
+    width: 15px; height: 15px; flex: 0 0 auto;
+    animation: dotPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes dotPulse { 0%, 100% { opacity: 0.4; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+  @keyframes ctaShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  .topbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem clamp(1.25rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .brand { display: flex; align-items: center; gap: 0.85rem; text-decoration: none; }
+  .brand-text {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 2.2rem;
+    font-weight: 200;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .brand-text span { color: var(--accent); }
+  .brand-mark { width: 52px; height: 52px; flex: 0 0 auto; }
+
+  .topbar-right { display: flex; align-items: center; gap: 1rem; }
+
+  .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .back-link:hover { color: var(--ink); }
+
+  .lang-switch {
+    display: flex;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .lang-switch button {
+    border: none;
+    background: transparent;
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+    color: var(--muted);
+    transition: background 0.2s, color 0.2s;
+  }
+  .lang-switch button.active { background: var(--accent); color: #fff; }
+
+  .legal {
+    width: 100%;
+    max-width: 720px;
+    padding: 0.5rem 1.25rem 3rem;
+    line-height: 1.65;
+  }
+  .legal h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .legal .updated { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.6rem; }
+  .legal .intro { font-size: 0.92rem; color: var(--muted); margin-bottom: 1.6rem; }
+  .legal h2 { font-size: 1.05rem; font-weight: 700; margin: 2rem 0 0.6rem; }
+  .legal p, .legal li { font-size: 0.92rem; color: #33333a; }
+  .legal ul { margin: 0.4rem 0 0.4rem 1.2rem; }
+  .legal a { color: var(--accent); }
+
+  .liability-points { list-style: decimal; margin: 0 0 0.4rem 1.2rem; padding: 0; }
+  .liability-points li { margin-bottom: 1rem; }
+  .liability-points li b { display: block; color: var(--ink); font-weight: 700; margin-bottom: 0.2rem; }
+
+  .site-footer {
+    width: 100%;
+    max-width: 720px;
+    padding: 2.5rem 1.25rem 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+  .site-footer .footer-links a { color: var(--muted); text-decoration: none; margin-right: 1.2rem; }
+  .site-footer .footer-links a:hover { color: var(--accent); }
+  .site-footer .footer-bottom { color: #b3b1ba; margin-top: 0.8rem; }
+</style>
+</head>
+<body>
+<div class="announce-bar">
+  <svg class="announce-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M12 3.5l6.5 16h-13l6.5-16z" fill="#fff"/>
+    <rect x="8.4" y="12.8" width="7.2" height="1.9" rx="0.4" fill="rgba(124,58,237,0.6)"/>
+    <rect x="3.5" y="19" width="17" height="2.3" rx="1.15" fill="#fff"/>
+  </svg>
+  <span id="announce-text-head">Wir befinden uns im Aufbau &middot;</span>
+  <span id="announce-text-tail" class="announce-tail">Buchungen sind derzeit nicht möglich</span>
+</div>
+<div class="topbar">
+  <a class="brand" href="/">
+    <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
+      <rect x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
+      <rect x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+      <rect x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
+    </svg>
+    <span class="brand-text">zett<span>ly</span></span>
+  </a>
+  <div class="topbar-right">
+    <a class="back-link" href="/" data-i18n="backHome">&larr; Zur Startseite</a>
+    <div class="lang-switch" id="lang-switch">
+      <button data-lang="de">DE</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+</div>
+
+<div class="legal" id="legal-de">
+  <h1>Haftungshinweise</h1>
+  <div class="updated">Stand: Oktober 2026</div>
+  <p class="intro">Die folgenden Punkte beschreiben mögliche Haftungsaspekte, die je nach gewähltem Service relevant sein können. Nicht alle Punkte treffen auf jede Leistung zu.</p>
+
+  <ol class="liability-points">
+    <li><b>Datensicherung</b>Wir empfehlen dringend, vor jeder Formatierung, Neuinstallation oder ähnlichen Leistung eine Sicherungskopie Ihrer Daten zu erstellen. Sofern Sie nicht zusätzlich unseren Datensicherungs-/Migrationsservice gebucht haben, sichern wir Ihre Daten während des Termins ausschließlich auf einem von Ihnen bereitgestellten Speichermedium – eine zusätzliche Kopie wird von uns nicht aufbewahrt.</li>
+    <li><b>Formatierung/Neuinstallation</b>Sollte das System in einen nicht behebbaren, fehlerhaften Zustand geraten, kann mit Ihrer Zustimmung eine Formatierung und Neuinstallation durchgeführt werden. Dies kann zu einem Datenverlust führen, der im Nachhinein nicht wiederhergestellt werden kann.</li>
+    <li><b>Keine Garantie auf den Service</b>Obwohl wir uns bei jedem Auftrag für eine sorgfältige und qualitativ hochwertige Ausführung einsetzen, können wir aufgrund unseres aktuellen Preismodells leider keine formelle Garantie auf abgeschlossene Serviceleistungen anbieten. Sollte ein Problem erneut auftreten, schauen wir es uns gerne noch einmal an und beraten Sie zu den nächsten Schritten.</li>
+    <li><b>Software und Drittanbieter</b>Für Schäden durch nicht autorisierte Software, Drittanbieter-Programme oder Malware, die vor unserem Eingriff bereits vorhanden waren, übernehmen wir keine Haftung.</li>
+    <li><b>Bearbeitungsdauer</b>Die angegebene Bearbeitungsdauer ist ein Richtwert und kann je nach Problemstellung variieren.</li>
+    <li><b>Zustimmung des Kunden</b>Weitergehende Maßnahmen (z. B. Formatierung, Neuinstallation) werden ausschließlich mit Ihrer vorherigen Zustimmung durchgeführt.</li>
+    <li><b>Software- und Betriebssystem-Lizenzen</b>Erforderliche Software- oder Betriebssystem-Lizenzen müssen gültig sein und von Ihnen bereitgestellt werden. Wir können keine Lizenzen in Ihrem Namen zur Verfügung stellen, aktivieren oder garantieren.</li>
+    <li><b>Vorbestehender Zustand der Hardware</b>Wir gehen sorgfältig mit jedem Gerät um, können jedoch nicht für bereits bestehende Abnutzung, Schäden oder Defekte verantwortlich gemacht werden, die vor Beginn unserer Leistung vorhanden waren. Wo relevant, besprechen wir den Zustand des Geräts vorab gemeinsam mit Ihnen.</li>
+    <li><b>Unlizenzierte/raubkopierte Software</b>Wir installieren keine unlizenzierte oder raubkopierte Software und bieten dafür auch keinen Support. Sollten wir solche Software auf Ihrem Gerät feststellen, informieren wir Sie darüber.</li>
+  </ol>
+</div>
+
+<div class="legal" id="legal-en" style="display:none;">
+  <h1>Liability Notices</h1>
+  <div class="updated">Last updated: October 2026</div>
+  <p class="intro">The points below outline potential liability considerations that may apply depending on the service you've selected. Not all points will be relevant to every service.</p>
+
+  <ol class="liability-points">
+    <li><b>Data backup</b>We strongly recommend creating a backup of your data before any formatting, reinstallation, or similar service. Unless you've also booked our data backup/migration service, we will back up your data only onto a storage device you provide during the appointment — we don't retain or keep a separate copy afterwards.</li>
+    <li><b>Formatting/reinstallation</b>Should the system reach an unrecoverable, faulty state, formatting and reinstallation may be carried out with your consent. This may result in data loss that cannot be recovered afterwards.</li>
+    <li><b>No warranty on the service</b>While we're committed to careful, high-quality work on every job, our current pricing model means we're not able to offer a formal warranty on completed services. If an issue comes back, we're always happy to take another look and advise on next steps.</li>
+    <li><b>Software & third-party</b>We assume no liability for damages from unauthorized software, third-party programs, or malware that were already present before our intervention.</li>
+    <li><b>Processing time</b>The stated processing time is an estimate and may vary depending on the nature of the problem.</li>
+    <li><b>Customer consent</b>Further measures (e.g. formatting, reinstallation) will only be carried out with your prior consent.</li>
+    <li><b>Software & OS licenses</b>Any required software or operating system license must be valid and provided by you. We're not able to supply, activate, or guarantee licenses on your behalf.</li>
+    <li><b>Pre-existing hardware condition</b>We handle every device with care, but we're not responsible for pre-existing wear, damage, or faults that were already present before our service began. Where relevant, we'll go over the device's condition together with you beforehand.</li>
+    <li><b>Unlicensed/pirated software</b>We don't install or provide support for unlicensed or pirated software. If any is found on your device, we'll let you know.</li>
+  </ol>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="/" data-i18n="footerHome">Startseite</a>
+    <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
+    <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+  </div>
+  <div class="footer-bottom">&copy; <span id="footer-year"></span> Zettly</div>
+</footer>
+
+<script>
+  const STRINGS = {
+    de: { title: "Zettly | Haftungshinweise", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", announceHead: "Wir befinden uns im Aufbau ·", announceTail: "Buchungen sind derzeit nicht möglich" },
+    en: { title: "Zettly | Liability Notices", back: "← Back to home", home: "Home", privacy: "Privacy Policy", announceHead: "We're under construction ·", announceTail: "bookings are currently not accepted" },
+  };
+
+  function setLang(lang) {
+    localStorage.setItem("zettly_lang", lang);
+    document.title = STRINGS[lang].title;
+    document.getElementById("legal-de").style.display = lang === "de" ? "" : "none";
+    document.getElementById("legal-en").style.display = lang === "en" ? "" : "none";
+    document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
+    document.querySelector('[data-i18n="footerHome"]').textContent = STRINGS[lang].home;
+    document.querySelector('[data-i18n="footerPrivacy"]').textContent = STRINGS[lang].privacy;
+    document.getElementById("announce-text-head").textContent = STRINGS[lang].announceHead;
+    document.getElementById("announce-text-tail").textContent = STRINGS[lang].announceTail;
+    document.querySelectorAll("#lang-switch button").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+  }
+
+  document.getElementById("lang-switch").addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-lang]");
+    if (btn) setLang(btn.dataset.lang);
+  });
+
+  document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+  const saved = localStorage.getItem("zettly_lang");
+  setLang(saved === "en" ? "en" : "de");
+</script>
+</body>
+</html>
