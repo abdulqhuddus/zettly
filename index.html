@@ -591,22 +591,61 @@
     0% { r: 4.8; stroke-opacity: 0.7; fill-opacity: 0.35; }
     100% { r: 25.6; stroke-opacity: 0; fill-opacity: 0; }
   }
-  /* Same "grow from the middle" technique as the HQ dot above, applied to
-     the customer's purple location marker so it reads as clearly as the
-     HQ dot does, instead of sitting there static. */
-  #service-area-map .customer-location-marker { animation: customerDotPulse 2.4s ease-in-out infinite; }
-  @keyframes customerDotPulse { 0%, 100% { r: 7; } 50% { r: 9; } }
-  #service-area-map .customer-location-ping { animation: customerPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; }
+  /* The customer's purple marker is a plain HTML divIcon, not an SVG
+     circleMarker: Leaflet's SVG renderer draws a circleMarker as a <path>
+     with a "d" arc string, not a real <circle> with an r attribute, so a
+     CSS animation on "r" (the HQ dot's approach above) silently never
+     animates it. A divIcon's contents are ordinary DOM elements, so
+     transform/opacity animations apply normally everywhere. */
+  .customer-location-icon { pointer-events: none; }
+  .customer-location-icon .customer-dot,
+  .customer-location-icon .customer-dot-ping {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+  }
+  .customer-location-icon .customer-dot {
+    background: #7c3aed;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(17,17,20,0.35);
+    animation: customerDotPulse 2.4s ease-in-out infinite;
+  }
+  .customer-location-icon .customer-dot-ping {
+    background: #7c3aed;
+    animation: customerPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  }
+  @keyframes customerDotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
   @keyframes customerPing {
-    0% { r: 4.2; stroke-opacity: 0.7; fill-opacity: 0.35; }
-    100% { r: 22.4; stroke-opacity: 0; fill-opacity: 0; }
+    0% { transform: scale(0.6); opacity: 0.55; }
+    100% { transform: scale(2.8); opacity: 0; }
+  }
+  /* "Marching ants" flow along the dashed HQ-to-customer line, animating
+     stroke-dashoffset — a real SVG presentation property on <path>, so
+     (unlike "r" above) this one does animate correctly. */
+  #service-area-map .customer-route-line { animation: customerRouteFlow 1s linear infinite; }
+  @keyframes customerRouteFlow { to { stroke-dashoffset: -18; } }
+  /* The small van div-icon looping along that line (positioned via JS). */
+  .customer-vehicle-icon { pointer-events: none; display: flex; align-items: center; justify-content: center; }
+  .customer-vehicle-icon svg { filter: drop-shadow(0 1px 3px rgba(17,17,20,0.45)); }
+  .customer-vehicle-icon::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 50%;
+    background: #7c3aed;
+    z-index: -1;
   }
   @media (prefers-reduced-motion: reduce) {
     #service-area-map .zone-ring,
     #service-area-map .hq-marker,
     #service-area-map .hq-ping,
-    #service-area-map .customer-location-marker,
-    #service-area-map .customer-location-ping { animation: none; }
+    #service-area-map .customer-route-line,
+    .customer-location-icon .customer-dot,
+    .customer-location-icon .customer-dot-ping { animation: none; }
   }
   /* Leaflet's own popup chrome, restyled to match the site instead of the
      library's default white-and-blue look. */
@@ -1950,6 +1989,7 @@
     <div class="footer-col">
       <h5 data-i18n="footerLinksHeading">Links</h5>
       <a href="/" data-i18n="footerHome">Startseite</a>
+      <a href="#service-area" id="footer-coverage-link" data-i18n="footerCoverage">Abdeckungsgebiet</a>
       <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
       <a href="/haftungshinweise/" data-i18n="footerLiability">Haftungshinweise</a>
     </div>
@@ -2121,6 +2161,7 @@ const I18N = {
     footerPrivacy: "Datenschutz",
     footerLiability: "Haftungshinweise",
     footerHome: "Startseite",
+    footerCoverage: "Abdeckungsgebiet",
     footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
     footerServicesHeading: "Leistungen",
     footerSpecialtyBadge: "Schwerpunkt",
@@ -2286,6 +2327,7 @@ const I18N = {
     footerPrivacy: "Privacy Policy",
     footerLiability: "Liability Notices",
     footerHome: "Home",
+    footerCoverage: "Coverage",
     footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
     footerServicesHeading: "Services",
     footerSpecialtyBadge: "Specialty",
@@ -2489,6 +2531,15 @@ document.getElementById("lang-switch").addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-lang]");
   if (btn) setLang(btn.dataset.lang);
 });
+
+const footerCoverageLink = document.getElementById("footer-coverage-link");
+if (footerCoverageLink) {
+  footerCoverageLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    showStep(0);
+    document.getElementById("service-area").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
 
 const TOTAL_STEPS = 7;
 let currentStepN = 0;
@@ -3590,25 +3641,101 @@ const GERMANY_BOUNDS = [
 let serviceAreaPopup = null;
 let serviceAreaMap = null;
 let customerLocationMarker = null;
-let customerLocationPing = null;
 let customerLocationLine = null;
+let customerVehicleMarker = null;
+let customerVehicleRaf = null;
 
-// Places (or clears) a marker at the customer's geocoded location, with a
-// dashed line back to the Munich HQ dot — a visual complement to the
-// zone-color readout in the commute result, reusing the exact same
-// lat/lon the server already resolved for the fee calculation (no separate
-// client-side geocoding). The dot pulses and gets an expanding "ping"
-// halo, same technique as the HQ marker, so it's clearly highlighted
-// rather than a static dot easy to miss on the map.
+// A small HTML pin (div, not SVG) for the customer's dot: Leaflet's SVG
+// renderer draws a circleMarker as a <path> with a "d" arc string, not a
+// real <circle> with an r attribute, so a CSS animation on "r" (as used
+// for the HQ dot above) silently does nothing — it never actually pulsed.
+// A divIcon sidesteps that entirely: it's a plain HTML element positioned
+// by Leaflet with a CSS transform, so ordinary transform/opacity
+// animations on the nested spans work everywhere.
+// Built lazily (not as a top-level const) because this script can run
+// before the Leaflet ES module has set up window.L — referencing L.divIcon
+// at parse time would throw and abort the rest of this script.
+let customerDotIcon = null;
+let customerVehicleIcon = null;
+function getCustomerDotIcon() {
+  if (!customerDotIcon) {
+    customerDotIcon = L.divIcon({
+      className: "customer-location-icon",
+      html: '<span class="customer-dot-ping"></span><span class="customer-dot"></span>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+    });
+  }
+  return customerDotIcon;
+}
+// A small van icon that travels along the HQ-to-customer line, in its own
+// divIcon so it can be repositioned every frame independent of the line.
+function getCustomerVehicleIcon() {
+  if (!customerVehicleIcon) {
+    customerVehicleIcon = L.divIcon({
+      className: "customer-vehicle-icon",
+      html: '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 11.5 4.6 7A2 2 0 0 1 6.5 5.6h7.9A2 2 0 0 1 16.3 7l1.6 4.5M3 11.5h15.9M3 11.5v4.3A1.2 1.2 0 0 0 4.2 17H5m13.9-5.5v4.3A1.2 1.2 0 0 1 17.7 17H17m-10.2 0a1.7 1.7 0 1 0 3.4 0m-3.4 0a1.7 1.7 0 1 1 3.4 0m7.2 0a1.7 1.7 0 1 0 3.4 0m-3.4 0a1.7 1.7 0 1 1 3.4 0" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      iconSize: [26, 26],
+      iconAnchor: [13, 13],
+    });
+  }
+  return customerVehicleIcon;
+}
+
+function stopCustomerVehicleAnimation() {
+  if (customerVehicleRaf) {
+    cancelAnimationFrame(customerVehicleRaf);
+    customerVehicleRaf = null;
+  }
+  if (customerVehicleMarker) {
+    serviceAreaMap.removeLayer(customerVehicleMarker);
+    customerVehicleMarker = null;
+  }
+}
+
+// Loops a small van marker along the straight line from Munich HQ to the
+// customer's point, taking ~3.2s per leg with an eased start/stop, then
+// pausing briefly at the customer before heading back to HQ and repeating
+// — reusing the same lat/lon the line and dot already use.
+function startCustomerVehicleAnimation(from, to) {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const legMs = 3200;
+  const pauseMs = 700;
+  const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  let legStart = performance.now();
+  let forward = true;
+
+  function frame(now) {
+    const elapsed = now - legStart;
+    if (elapsed >= legMs + pauseMs) {
+      legStart = now;
+      forward = !forward;
+      customerVehicleRaf = requestAnimationFrame(frame);
+      return;
+    }
+    const t = ease(Math.min(1, elapsed / legMs));
+    const a = forward ? from : to;
+    const b = forward ? to : from;
+    const lat = a[0] + (b[0] - a[0]) * t;
+    const lon = a[1] + (b[1] - a[1]) * t;
+    if (customerVehicleMarker) customerVehicleMarker.setLatLng([lat, lon]);
+    customerVehicleRaf = requestAnimationFrame(frame);
+  }
+  customerVehicleRaf = requestAnimationFrame(frame);
+}
+
+// Places (or clears) a marker at the customer's geocoded location, with an
+// animated dashed line flowing from the Munich HQ dot towards it and a
+// small van looping back and forth along that line — a visual complement
+// to the zone-color readout in the commute result, reusing the exact same
+// lat/lon the server already resolved for the fee calculation (no
+// separate client-side geocoding).
 function updateCustomerLocationMarker(lat, lon) {
   if (!serviceAreaMap) return;
+  stopCustomerVehicleAnimation();
   if (customerLocationMarker) {
     serviceAreaMap.removeLayer(customerLocationMarker);
     customerLocationMarker = null;
-  }
-  if (customerLocationPing) {
-    serviceAreaMap.removeLayer(customerLocationPing);
-    customerLocationPing = null;
   }
   if (customerLocationLine) {
     serviceAreaMap.removeLayer(customerLocationLine);
@@ -3617,29 +3744,26 @@ function updateCustomerLocationMarker(lat, lon) {
   if (typeof lat !== "number" || typeof lon !== "number" || !Number.isFinite(lat) || !Number.isFinite(lon)) return;
   const point = [lat, lon];
   customerLocationLine = L.polyline([MUNICH_LATLNG, point], {
-    color: "#111114",
-    weight: 2,
-    opacity: 0.6,
-    dashArray: "6 6",
-    interactive: false,
-  }).addTo(serviceAreaMap);
-  customerLocationPing = L.circleMarker(point, {
-    radius: 7,
     color: "#7c3aed",
-    weight: 1,
-    fillColor: "#7c3aed",
-    fillOpacity: 0.35,
-    className: "customer-location-ping",
+    weight: 2.5,
+    opacity: 0.75,
+    dashArray: "8 10",
+    className: "customer-route-line",
     interactive: false,
   }).addTo(serviceAreaMap);
-  customerLocationMarker = L.circleMarker(point, {
-    radius: 7,
-    color: "#fff",
-    weight: 2,
-    fillColor: "#7c3aed",
-    fillOpacity: 1,
-    className: "customer-location-marker",
+  customerLocationMarker = L.marker(point, {
+    icon: getCustomerDotIcon(),
+    interactive: false,
+    keyboard: false,
+    zIndexOffset: 500,
   }).addTo(serviceAreaMap);
+  customerVehicleMarker = L.marker(MUNICH_LATLNG, {
+    icon: getCustomerVehicleIcon(),
+    interactive: false,
+    keyboard: false,
+    zIndexOffset: 600,
+  }).addTo(serviceAreaMap);
+  startCustomerVehicleAnimation(MUNICH_LATLNG, point);
 }
 
 // Approximates a circle of `radiusMeters` around `center` as a closed
