@@ -591,10 +591,22 @@
     0% { r: 4.8; stroke-opacity: 0.7; fill-opacity: 0.35; }
     100% { r: 25.6; stroke-opacity: 0; fill-opacity: 0; }
   }
+  /* Same "grow from the middle" technique as the HQ dot above, applied to
+     the customer's purple location marker so it reads as clearly as the
+     HQ dot does, instead of sitting there static. */
+  #service-area-map .customer-location-marker { animation: customerDotPulse 2.4s ease-in-out infinite; }
+  @keyframes customerDotPulse { 0%, 100% { r: 7; } 50% { r: 9; } }
+  #service-area-map .customer-location-ping { animation: customerPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; }
+  @keyframes customerPing {
+    0% { r: 4.2; stroke-opacity: 0.7; fill-opacity: 0.35; }
+    100% { r: 22.4; stroke-opacity: 0; fill-opacity: 0; }
+  }
   @media (prefers-reduced-motion: reduce) {
     #service-area-map .zone-ring,
     #service-area-map .hq-marker,
-    #service-area-map .hq-ping { animation: none; }
+    #service-area-map .hq-ping,
+    #service-area-map .customer-location-marker,
+    #service-area-map .customer-location-ping { animation: none; }
   }
   /* Leaflet's own popup chrome, restyled to match the site instead of the
      library's default white-and-blue look. */
@@ -1900,7 +1912,7 @@
 </div>
 
 <div class="service-area" id="service-area">
-  <h2 data-i18n="serviceAreaTitle">Wo erreichen wir Sie?</h2>
+  <h2 id="service-area-title" data-i18n="serviceAreaTitle">Wo sind wir für Sie im Einsatz?</h2>
   <p class="hiw-sub" data-i18n="serviceAreaSub">Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km, ausschließlich innerhalb Deutschlands.</p>
   <div class="service-area-map-wrap">
     <div id="service-area-map"></div>
@@ -1912,7 +1924,7 @@
     <span class="commute-zone" style="--zone-color:#f97316;"><i></i><b data-i18n="commuteZone4Label">50–75 km</b><span data-i18n="commuteZone4Fee">+ 25 €</span></span>
     <span class="commute-zone" style="--zone-color:#dc2626;"><i></i><b data-i18n="commuteZone5Label">75–100 km</b><span data-i18n="commuteZone5Fee">+ 30 €</span></span>
   </div>
-  <p class="commute-explainer" data-i18n="commuteExplainer">Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung.</p>
+  <p class="commute-explainer" id="service-area-explainer" data-i18n="commuteExplainer">Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.</p>
 </div>
 
 <footer class="site-footer">
@@ -2123,7 +2135,8 @@ const I18N = {
     footerServiceBusiness: "IT-Support für Unternehmen",
     footerLinksHeading: "Links",
     footerContactHeading: "Kontakt",
-    serviceAreaTitle: "Wo erreichen wir Sie?",
+    serviceAreaTitle: "Wo sind wir für Sie im Einsatz?",
+    serviceAreaTitleBooking: "Wo erreichen wir Sie?",
     serviceAreaSub: "Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km, ausschließlich innerhalb Deutschlands.",
     serviceAreaPopup: "<b class=\"zettly-word\">zett<span>ly</span></b><span>München &amp; Umgebung, bis 100 km</span>",
     commuteZone1Label: "0–15 km",
@@ -2136,7 +2149,8 @@ const I18N = {
     commuteZone4Fee: "+ 25 €",
     commuteZone5Label: "75–100 km",
     commuteZone5Fee: "+ 30 €",
-    commuteExplainer: "Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung.",
+    commuteExplainer: "Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.",
+    commuteExplainerBooking: "Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung.",
     ctaBannerTitle: "Jetzt Termin buchen",
     ctaBannerSub: "In nur 2 Minuten online: schnell & unkompliziert.",
     hiwTitle: "So läuft Ihr Termin ab",
@@ -2286,7 +2300,8 @@ const I18N = {
     footerServiceBusiness: "Business IT Support",
     footerLinksHeading: "Links",
     footerContactHeading: "Contact",
-    serviceAreaTitle: "Where can we reach you?",
+    serviceAreaTitle: "Where are we available?",
+    serviceAreaTitleBooking: "Where can we reach you?",
     serviceAreaSub: "From Munich, we cover the whole surrounding region – within a 100 km radius, Germany only.",
     serviceAreaPopup: "<b class=\"zettly-word\">zett<span>ly</span></b><span>Munich &amp; surroundings, up to 100 km</span>",
     commuteZone1Label: "0–15 km",
@@ -2299,7 +2314,8 @@ const I18N = {
     commuteZone4Fee: "+ €25",
     commuteZone5Label: "75–100 km",
     commuteZone5Fee: "+ €30",
-    commuteExplainer: "Within 15 km of Munich, you only pay the service price – no extra call-out fee. Further addresses get a tiered call-out fee based on distance.",
+    commuteExplainer: "Within 15 km of Munich, you only pay the service price – no extra call-out fee. Further addresses get a tiered call-out fee based on distance – you'll see the exact surcharge as soon as you enter your postal code during booking.",
+    commuteExplainerBooking: "Within 15 km of Munich, you only pay the service price – no extra call-out fee. Further addresses get a tiered call-out fee based on distance.",
     ctaBannerTitle: "Book an appointment now",
     ctaBannerSub: "Online in just 2 minutes: fast & simple.",
     hiwTitle: "How your appointment works",
@@ -2450,6 +2466,7 @@ function applyStaticTranslations() {
   });
   updateLiabilityStatusPill();
   updatePrivacyStatusPill();
+  if (typeof applyServiceAreaText === "function") applyServiceAreaText();
   document.querySelectorAll(".lang-switch button").forEach(b => {
     b.classList.toggle("active", b.dataset.lang === lang);
   });
@@ -2474,8 +2491,19 @@ document.getElementById("lang-switch").addEventListener("click", (e) => {
 });
 
 const TOTAL_STEPS = 7;
+let currentStepN = 0;
+
+function applyServiceAreaText() {
+  // On the location (postal code) step, use the booking-specific heading/
+  // explainer wording; on the home page, keep the original wording.
+  const areaTitleKey = currentStepN === 4 ? "serviceAreaTitleBooking" : "serviceAreaTitle";
+  const areaExplainerKey = currentStepN === 4 ? "commuteExplainerBooking" : "commuteExplainer";
+  document.getElementById("service-area-title").textContent = t(areaTitleKey);
+  document.getElementById("service-area-explainer").textContent = t(areaExplainerKey);
+}
 
 function showStep(n) {
+  currentStepN = n;
   document.querySelectorAll(".step").forEach(el => {
     el.classList.toggle("visible", el.dataset.step == n);
   });
@@ -2487,6 +2515,7 @@ function showStep(n) {
   // an in-progress booking; only show it on the home screen and again on
   // the location step, where it actually explains what's being asked.
   document.getElementById("service-area").classList.toggle("collapsed", n !== 0 && n !== 4);
+  applyServiceAreaText();
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
@@ -3561,18 +3590,25 @@ const GERMANY_BOUNDS = [
 let serviceAreaPopup = null;
 let serviceAreaMap = null;
 let customerLocationMarker = null;
+let customerLocationPing = null;
 let customerLocationLine = null;
 
 // Places (or clears) a marker at the customer's geocoded location, with a
 // dashed line back to the Munich HQ dot — a visual complement to the
 // zone-color readout in the commute result, reusing the exact same
 // lat/lon the server already resolved for the fee calculation (no separate
-// client-side geocoding).
+// client-side geocoding). The dot pulses and gets an expanding "ping"
+// halo, same technique as the HQ marker, so it's clearly highlighted
+// rather than a static dot easy to miss on the map.
 function updateCustomerLocationMarker(lat, lon) {
   if (!serviceAreaMap) return;
   if (customerLocationMarker) {
     serviceAreaMap.removeLayer(customerLocationMarker);
     customerLocationMarker = null;
+  }
+  if (customerLocationPing) {
+    serviceAreaMap.removeLayer(customerLocationPing);
+    customerLocationPing = null;
   }
   if (customerLocationLine) {
     serviceAreaMap.removeLayer(customerLocationLine);
@@ -3585,6 +3621,15 @@ function updateCustomerLocationMarker(lat, lon) {
     weight: 2,
     opacity: 0.6,
     dashArray: "6 6",
+    interactive: false,
+  }).addTo(serviceAreaMap);
+  customerLocationPing = L.circleMarker(point, {
+    radius: 7,
+    color: "#7c3aed",
+    weight: 1,
+    fillColor: "#7c3aed",
+    fillOpacity: 0.35,
+    className: "customer-location-ping",
     interactive: false,
   }).addTo(serviceAreaMap);
   customerLocationMarker = L.circleMarker(point, {
