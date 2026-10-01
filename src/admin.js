@@ -239,6 +239,8 @@ export async function handleAdminUpdateStatus(request, env, id) {
         customer_address: existing.customer_address,
         commuteFee: existing.commute_fee || 0,
         phoneConsultation: !!existing.phone_consultation,
+        liabilityAcceptedAt: existing.liability_accepted_at,
+        privacyAcceptedAt: existing.privacy_accepted_at,
       };
       emailSent = (await sendConfirmationEmail(env, bookingForEmail, resolved.leaf, lang)).sent;
     }
