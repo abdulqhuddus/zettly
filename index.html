@@ -1229,8 +1229,18 @@
   .service-main .tagline { font-size: 0.82rem; color: var(--muted); margin: 0.3rem 0 0.4rem; }
   .service-main ul { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; }
   .service-main li { font-size: 0.72rem; color: var(--accent); background: var(--accent-light); padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600; }
-  .service-price { white-space: nowrap; margin-top: 0.1rem; }
-  .service-price .amount { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; }
+  .service-price { margin-top: 0.1rem; max-width: 100%; }
+  .service-price .amount {
+    font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em;
+    overflow-wrap: break-word; word-wrap: break-word; hyphens: auto;
+    max-width: 100%;
+  }
+  .service-price .amount.amount-quote {
+    font-size: clamp(0.78rem, 2.6vw, 0.95rem);
+    font-weight: 700;
+    line-height: 1.25;
+    white-space: normal;
+  }
   .service-price .duration { font-size: 0.73rem; color: var(--muted); margin-top: 0.1rem; }
   @media (max-width: 560px) {
     .service-list { grid-template-columns: repeat(2, 1fr); }
@@ -2725,7 +2735,7 @@ function renderTreeStep() {
           <div class="service-top-row">
             <h3>${o.name[lang]}</h3>
             <div class="service-price">
-              <div class="amount">${leaf.quote ? t("priceOnRequest") : fmtEuro(leaf.price)}</div>
+              <div class="amount${leaf.quote ? " amount-quote" : ""}">${leaf.quote ? t("priceOnRequest") : fmtEuro(leaf.price)}</div>
               <div class="duration">${leaf.duration} ${t("minLabel")}</div>
             </div>
           </div>
