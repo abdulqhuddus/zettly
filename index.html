@@ -1533,24 +1533,24 @@
   .privacy-modal-body .updated { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
   .liability-row {
     display: flex; align-items: center; gap: 0.6rem; margin: 0.8rem 0 1.1rem;
-    padding: 0.7rem 0.9rem; border: 1px solid var(--warn-border); border-radius: 12px;
-    background: var(--warn-light);
+    padding: 0.8rem 0.95rem; border: 2.5px solid #d97a06; border-radius: 12px;
+    background: #ffe3ad;
     transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
-    animation: liabilityRowPulse 2.2s ease-in-out infinite;
+    animation: liabilityRowPulse 1.8s ease-in-out infinite;
   }
   .liability-row.confirmed {
     border-color: #bfe8cf; background: #f1fbf5; animation: none; box-shadow: none;
   }
   @keyframes liabilityRowPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(242, 182, 60, 0.35); }
-    50% { box-shadow: 0 0 0 5px rgba(242, 182, 60, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(217, 122, 6, 0.45); }
+    50% { box-shadow: 0 0 0 8px rgba(217, 122, 6, 0); }
   }
   .liability-info-btn {
-    border: none; background: var(--warn-border); color: #5a3b00;
+    border: none; background: #d97a06; color: #fff;
     width: 30px; height: 30px; border-radius: 50%; cursor: pointer; flex: 0 0 auto;
     display: flex; align-items: center; justify-content: center; transition: background 0.15s, width 0.2s, height 0.2s;
   }
-  .liability-info-btn:hover { background: #e8a926; }
+  .liability-info-btn:hover { background: #b96300; }
   .liability-row.confirmed .liability-info-btn {
     background: var(--accent-light); color: var(--ink); width: 28px; height: 28px;
   }
@@ -1558,10 +1558,14 @@
   .liability-row-label { font-size: 0.9rem; font-weight: 700; color: var(--ink); flex: 1 1 auto; }
   .liability-row.confirmed .liability-row-label { font-weight: 600; }
   .liability-status-pill {
-    font-size: 0.78rem; font-weight: 700; padding: 0.3rem 0.65rem; border-radius: 999px;
-    background: var(--warn-border); color: #5a3b00; white-space: nowrap;
+    font-size: 0.78rem; font-weight: 800; padding: 0.3rem 0.7rem 0.3rem 0.55rem; border-radius: 999px;
+    background: #d97a06; color: #fff; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    box-shadow: 0 1px 3px rgba(185, 99, 0, 0.4);
   }
-  .liability-status-pill.confirmed { background: #e4f8ec; color: #1c8a4b; }
+  .liability-status-pill .pill-warn-icon { display: inline-flex; flex: 0 0 auto; }
+  .liability-status-pill.confirmed { background: #e4f8ec; color: #1c8a4b; box-shadow: none; }
+  .liability-status-pill.confirmed .pill-warn-icon { display: none; }
   .liability-points { margin: 0.4rem 0 1rem 1.2rem; padding: 0; }
   .liability-points li { font-size: 0.88rem; color: #33333a; margin-bottom: 0.7rem; }
   .liability-points li b { display: block; color: var(--ink); font-weight: 700; margin-bottom: 0.15rem; }
@@ -3310,7 +3314,9 @@ function renderLiabilityPoints() {
 function updateLiabilityStatusPill() {
   const pill = document.getElementById("liability-status-pill");
   if (!pill) return;
-  pill.textContent = state.liabilityAccepted ? t("liabilityConfirmed") : t("liabilityNotConfirmed");
+  const pillText = state.liabilityAccepted ? t("liabilityConfirmed") : t("liabilityNotConfirmed");
+  const warnIcon = '<svg class="pill-warn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13" aria-hidden="true"><path d="M12 3.5l9 15.5H3l9-15.5z" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5.3" rx="0.6" fill="#fff"/><rect x="11.1" y="15.8" width="1.8" height="1.8" rx="0.6" fill="#fff"/></svg>';
+  pill.innerHTML = (state.liabilityAccepted ? "" : warnIcon) + "<span>" + pillText + "</span>";
   pill.classList.toggle("confirmed", state.liabilityAccepted);
   const row = document.getElementById("liability-row");
   if (row) row.classList.toggle("confirmed", state.liabilityAccepted);
