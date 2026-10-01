@@ -317,6 +317,10 @@
                                       "price": 89,
                                       "duration": 60,
                                       "quote": false
+                                    },
+                                    "priceHint": {
+                                      "de": "89 €",
+                                      "en": "89 €"
                                     }
                                   }
                                 ],
@@ -523,6 +527,10 @@
                                       "price": 30,
                                       "duration": 45,
                                       "quote": false
+                                    },
+                                    "priceHint": {
+                                      "de": "30 €",
+                                      "en": "30 €"
                                     }
                                   }
                                 ]
@@ -891,6 +899,10 @@
                                 "price": null,
                                 "duration": 45,
                                 "quote": true
+                              },
+                              "priceHint": {
+                                "de": "Preis nach Diagnose",
+                                "en": "Price after diagnosis"
                               }
                             }
                           ],
@@ -1224,6 +1236,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -1430,6 +1446,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -1798,6 +1818,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -2118,6 +2142,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -2324,6 +2352,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -2692,6 +2724,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -3031,6 +3067,10 @@
                                       "price": 89,
                                       "duration": 60,
                                       "quote": false
+                                    },
+                                    "priceHint": {
+                                      "de": "89 €",
+                                      "en": "89 €"
                                     }
                                   }
                                 ],
@@ -3237,6 +3277,10 @@
                                       "price": 30,
                                       "duration": 45,
                                       "quote": false
+                                    },
+                                    "priceHint": {
+                                      "de": "30 €",
+                                      "en": "30 €"
                                     }
                                   }
                                 ]
@@ -3605,6 +3649,10 @@
                                 "price": null,
                                 "duration": 45,
                                 "quote": true
+                              },
+                              "priceHint": {
+                                "de": "Preis nach Diagnose",
+                                "en": "Price after diagnosis"
                               }
                             }
                           ],
@@ -3938,6 +3986,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -4144,6 +4196,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -4512,6 +4568,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -4832,6 +4892,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -5038,6 +5102,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -5406,6 +5474,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -5745,6 +5817,10 @@
                                       "price": 89,
                                       "duration": 60,
                                       "quote": false
+                                    },
+                                    "priceHint": {
+                                      "de": "89 €",
+                                      "en": "89 €"
                                     }
                                   }
                                 ],
@@ -5951,6 +6027,10 @@
                                       "price": 30,
                                       "duration": 45,
                                       "quote": false
+                                    },
+                                    "priceHint": {
+                                      "de": "30 €",
+                                      "en": "30 €"
                                     }
                                   }
                                 ]
@@ -6319,6 +6399,10 @@
                                 "price": null,
                                 "duration": 45,
                                 "quote": true
+                              },
+                              "priceHint": {
+                                "de": "Preis nach Diagnose",
+                                "en": "Price after diagnosis"
                               }
                             }
                           ],
@@ -6652,6 +6736,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -6858,6 +6946,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -7226,6 +7318,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -7546,6 +7642,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -7752,6 +7852,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -8120,6 +8224,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -9549,6 +9657,10 @@
                     "price": 39,
                     "duration": 30,
                     "quote": false
+                  },
+                  "priceHint": {
+                    "de": "39 €",
+                    "en": "39 €"
                   }
                 },
                 {
@@ -9613,6 +9725,10 @@
                     "price": null,
                     "duration": 30,
                     "quote": true
+                  },
+                  "priceHint": {
+                    "de": "Preis nach Diagnose",
+                    "en": "Price after diagnosis"
                   }
                 }
               ]
@@ -9650,6 +9766,10 @@
                     "price": 39,
                     "duration": 30,
                     "quote": false
+                  },
+                  "priceHint": {
+                    "de": "39 €",
+                    "en": "39 €"
                   }
                 },
                 {
@@ -9714,6 +9834,10 @@
                     "price": null,
                     "duration": 30,
                     "quote": true
+                  },
+                  "priceHint": {
+                    "de": "Preis nach Diagnose",
+                    "en": "Price after diagnosis"
                   }
                 }
               ]
@@ -10556,6 +10680,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -10762,6 +10890,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -11130,6 +11262,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -11463,6 +11599,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -11669,6 +11809,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -12037,6 +12181,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -12357,6 +12505,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -12563,6 +12715,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -12931,6 +13087,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -13270,6 +13430,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -13476,6 +13640,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -13844,6 +14012,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -14177,6 +14349,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -14383,6 +14559,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -14751,6 +14931,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -15071,6 +15255,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -15277,6 +15465,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -15645,6 +15837,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -15984,6 +16180,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -16190,6 +16390,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -16558,6 +16762,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -16891,6 +17099,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -17097,6 +17309,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -17465,6 +17681,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -17785,6 +18005,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -17991,6 +18215,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -18359,6 +18587,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -18714,6 +18946,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -18920,6 +19156,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -19288,6 +19528,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -19621,6 +19865,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -19827,6 +20075,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -20195,6 +20447,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -20515,6 +20771,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -20721,6 +20981,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -21089,6 +21353,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -21428,6 +21696,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -21634,6 +21906,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -22002,6 +22278,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -22335,6 +22615,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -22541,6 +22825,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -22909,6 +23197,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -23229,6 +23521,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -23435,6 +23731,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -23803,6 +24103,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -24142,6 +24446,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -24348,6 +24656,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -24716,6 +25028,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -25049,6 +25365,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -25255,6 +25575,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -25623,6 +25947,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -25943,6 +26271,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -26149,6 +26481,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -26517,6 +26853,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -26872,6 +27212,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -27078,6 +27422,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -27446,6 +27794,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -27779,6 +28131,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -27985,6 +28341,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -28353,6 +28713,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -28673,6 +29037,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -28879,6 +29247,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -29247,6 +29619,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -29586,6 +29962,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -29792,6 +30172,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -30160,6 +30544,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -30493,6 +30881,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -30699,6 +31091,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -31067,6 +31463,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -31387,6 +31787,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -31593,6 +31997,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -31961,6 +32369,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -32300,6 +32712,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -32506,6 +32922,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -32874,6 +33294,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -33207,6 +33631,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -33413,6 +33841,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -33781,6 +34213,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -34101,6 +34537,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -34307,6 +34747,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -34675,6 +35119,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -35030,6 +35478,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -35236,6 +35688,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -35604,6 +36060,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -35937,6 +36397,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -36143,6 +36607,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -36511,6 +36979,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -36831,6 +37303,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -37037,6 +37513,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -37405,6 +37885,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -37744,6 +38228,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -37950,6 +38438,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -38318,6 +38810,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -38651,6 +39147,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -38857,6 +39357,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -39225,6 +39729,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -39545,6 +40053,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -39751,6 +40263,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -40119,6 +40635,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -40458,6 +40978,10 @@
                                             "price": 89,
                                             "duration": 60,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "89 €",
+                                            "en": "89 €"
                                           }
                                         }
                                       ],
@@ -40664,6 +41188,10 @@
                                             "price": 30,
                                             "duration": 45,
                                             "quote": false
+                                          },
+                                          "priceHint": {
+                                            "de": "30 €",
+                                            "en": "30 €"
                                           }
                                         }
                                       ]
@@ -41032,6 +41560,10 @@
                                       "price": null,
                                       "duration": 45,
                                       "quote": true
+                                    },
+                                    "priceHint": {
+                                      "de": "Preis nach Diagnose",
+                                      "en": "Price after diagnosis"
                                     }
                                   }
                                 ],
@@ -41365,6 +41897,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -41571,6 +42107,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -41939,6 +42479,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
@@ -42259,6 +42803,10 @@
                                                   "price": 89,
                                                   "duration": 60,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "89 €",
+                                                  "en": "89 €"
                                                 }
                                               }
                                             ],
@@ -42465,6 +43013,10 @@
                                                   "price": 30,
                                                   "duration": 45,
                                                   "quote": false
+                                                },
+                                                "priceHint": {
+                                                  "de": "30 €",
+                                                  "en": "30 €"
                                                 }
                                               }
                                             ]
@@ -42833,6 +43385,10 @@
                                             "price": null,
                                             "duration": 45,
                                             "quote": true
+                                          },
+                                          "priceHint": {
+                                            "de": "Preis nach Diagnose",
+                                            "en": "Price after diagnosis"
                                           }
                                         }
                                       ],
