@@ -23,6 +23,9 @@
     --muted: #6b6b74;
     --border: #e9e7ef;
     --danger: #c2185b;
+    --warn: #b45309;
+    --warn-light: #fff4de;
+    --warn-border: #f2b63c;
   }
 
   body {
@@ -1530,19 +1533,33 @@
   .privacy-modal-body .updated { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
   .liability-row {
     display: flex; align-items: center; gap: 0.6rem; margin: 0.8rem 0 1.1rem;
-    padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 12px;
-    background: #fafafa;
+    padding: 0.7rem 0.9rem; border: 1px solid var(--warn-border); border-radius: 12px;
+    background: var(--warn-light);
+    transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+    animation: liabilityRowPulse 2.2s ease-in-out infinite;
+  }
+  .liability-row.confirmed {
+    border-color: #bfe8cf; background: #f1fbf5; animation: none; box-shadow: none;
+  }
+  @keyframes liabilityRowPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(242, 182, 60, 0.35); }
+    50% { box-shadow: 0 0 0 5px rgba(242, 182, 60, 0); }
   }
   .liability-info-btn {
-    border: none; background: var(--accent-light); color: var(--ink);
-    width: 28px; height: 28px; border-radius: 50%; cursor: pointer; flex: 0 0 auto;
-    display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+    border: none; background: var(--warn-border); color: #5a3b00;
+    width: 30px; height: 30px; border-radius: 50%; cursor: pointer; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s, width 0.2s, height 0.2s;
   }
-  .liability-info-btn:hover { background: var(--pink-light); }
-  .liability-row-label { font-size: 0.9rem; font-weight: 600; color: var(--ink); flex: 1 1 auto; }
+  .liability-info-btn:hover { background: #e8a926; }
+  .liability-row.confirmed .liability-info-btn {
+    background: var(--accent-light); color: var(--ink); width: 28px; height: 28px;
+  }
+  .liability-row.confirmed .liability-info-btn:hover { background: var(--pink-light); }
+  .liability-row-label { font-size: 0.9rem; font-weight: 700; color: var(--ink); flex: 1 1 auto; }
+  .liability-row.confirmed .liability-row-label { font-weight: 600; }
   .liability-status-pill {
-    font-size: 0.76rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px;
-    background: #efefef; color: #666; white-space: nowrap;
+    font-size: 0.78rem; font-weight: 700; padding: 0.3rem 0.65rem; border-radius: 999px;
+    background: var(--warn-border); color: #5a3b00; white-space: nowrap;
   }
   .liability-status-pill.confirmed { background: #e4f8ec; color: #1c8a4b; }
   .liability-points { margin: 0.4rem 0 1rem 1.2rem; padding: 0; }
@@ -3295,6 +3312,8 @@ function updateLiabilityStatusPill() {
   if (!pill) return;
   pill.textContent = state.liabilityAccepted ? t("liabilityConfirmed") : t("liabilityNotConfirmed");
   pill.classList.toggle("confirmed", state.liabilityAccepted);
+  const row = document.getElementById("liability-row");
+  if (row) row.classList.toggle("confirmed", state.liabilityAccepted);
 }
 function openLiabilityModal() {
   document.getElementById("liability-modal-heading").textContent = t("liabilityModalHeading");
