@@ -221,7 +221,7 @@
                           "notice": [
                             {
                               "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                              "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                              "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                             }
                           ]
                         }
@@ -668,8 +668,8 @@
                                 },
                                 "notice": [
                                   {
-                                    "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                    "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                    "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                    "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                   }
                                 ],
                                 "options": [
@@ -1140,7 +1140,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -1587,8 +1587,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -2046,7 +2046,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -2493,8 +2493,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -2971,7 +2971,7 @@
                           "notice": [
                             {
                               "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                              "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                              "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                             }
                           ]
                         }
@@ -3418,8 +3418,8 @@
                                 },
                                 "notice": [
                                   {
-                                    "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                    "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                    "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                    "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                   }
                                 ],
                                 "options": [
@@ -3890,7 +3890,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -4337,8 +4337,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -4796,7 +4796,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -5243,8 +5243,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -5721,7 +5721,7 @@
                           "notice": [
                             {
                               "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                              "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                              "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                             }
                           ]
                         }
@@ -6168,8 +6168,8 @@
                                 },
                                 "notice": [
                                   {
-                                    "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                    "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                    "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                    "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                   }
                                 ],
                                 "options": [
@@ -6640,7 +6640,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -7087,8 +7087,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -7546,7 +7546,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -7993,8 +7993,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -10584,7 +10584,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -11031,8 +11031,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -11503,7 +11503,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -11950,8 +11950,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -12409,7 +12409,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -12856,8 +12856,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -13334,7 +13334,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -13781,8 +13781,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -14253,7 +14253,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -14700,8 +14700,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -15159,7 +15159,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -15606,8 +15606,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -16084,7 +16084,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -16531,8 +16531,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -17003,7 +17003,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -17450,8 +17450,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -17909,7 +17909,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -18356,8 +18356,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -18850,7 +18850,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -19297,8 +19297,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -19769,7 +19769,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -20216,8 +20216,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -20675,7 +20675,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -21122,8 +21122,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -21600,7 +21600,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -22047,8 +22047,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -22519,7 +22519,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -22966,8 +22966,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -23425,7 +23425,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -23872,8 +23872,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -24350,7 +24350,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -24797,8 +24797,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -25269,7 +25269,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -25716,8 +25716,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -26175,7 +26175,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -26622,8 +26622,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -27116,7 +27116,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -27563,8 +27563,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -28035,7 +28035,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -28482,8 +28482,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -28941,7 +28941,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -29388,8 +29388,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -29866,7 +29866,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -30313,8 +30313,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -30785,7 +30785,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -31232,8 +31232,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -31691,7 +31691,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -32138,8 +32138,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -32616,7 +32616,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -33063,8 +33063,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -33535,7 +33535,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -33982,8 +33982,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -34441,7 +34441,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -34888,8 +34888,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -35382,7 +35382,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -35829,8 +35829,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -36301,7 +36301,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -36748,8 +36748,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -37207,7 +37207,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -37654,8 +37654,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -38132,7 +38132,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -38579,8 +38579,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -39051,7 +39051,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -39498,8 +39498,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -39957,7 +39957,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -40404,8 +40404,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -40882,7 +40882,7 @@
                                 "notice": [
                                   {
                                     "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                    "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                    "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                   }
                                 ]
                               }
@@ -41329,8 +41329,8 @@
                                       },
                                       "notice": [
                                         {
-                                          "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                          "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                          "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                          "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                         }
                                       ],
                                       "options": [
@@ -41801,7 +41801,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -42248,8 +42248,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
@@ -42707,7 +42707,7 @@
                                       "notice": [
                                         {
                                           "de": "Hinweis: Für die Neuinstallation benötigen Sie einen gültigen Lizenzschlüssel für Ihr Betriebssystem. Zettly stellt keine Betriebssystem-Lizenzen zur Verfügung.",
-                                          "en": "Note: You must provide a valid operating system license key for the reinstallation. Zettly does not supply OS licenses as part of this service."
+                                          "en": "Please note: you'll need a valid operating system license key ready for the reinstallation, as Zettly doesn't supply OS licenses as part of this service."
                                         }
                                       ]
                                     }
@@ -43154,8 +43154,8 @@
                                             },
                                             "notice": [
                                               {
-                                                "de": "Die Antivirensoftware muss vom Kunden bereitgestellt werden oder kann während des Termins gegen Aufpreis erworben werden.",
-                                                "en": "Antivirus software must be provided by the customer, or can be purchased during the visit at an additional cost."
+                                                "de": "Bitte halten Sie Ihre eigene Antivirensoftware bereit, oder erwerben Sie bei Bedarf eine während des Termins gegen Aufpreis.",
+                                                "en": "Please have your own antivirus software ready, or purchase one during the visit for an additional cost."
                                               }
                                             ],
                                             "options": [
