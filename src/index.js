@@ -280,6 +280,8 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       servicePriceText,
       commuteFee,
       phoneConsultation: booking.phoneConsultation,
+      liabilityAcceptedAt: booking.liabilityAcceptedAt,
+      privacyAcceptedAt: booking.privacyAcceptedAt,
       lang: "de",
     });
     const pdfBytesEn = generateBookingPdf({
@@ -296,6 +298,8 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       servicePriceText,
       commuteFee,
       phoneConsultation: booking.phoneConsultation,
+      liabilityAcceptedAt: booking.liabilityAcceptedAt,
+      privacyAcceptedAt: booking.privacyAcceptedAt,
       lang: "en",
     });
     attachments = [
@@ -402,12 +406,19 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, lang: rawLang } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, lang: rawLang } = body;
   const lang = rawLang === "en" ? "en" : "de";
   const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
 
   if (!audience || !categoryId || !date || !time || !name || !email || !address || !zip || !(notes || "").trim()) {
     return json({ error: "Missing required fields" }, 400);
+  }
+
+  // The booking UI gates the submit button on both checkboxes, but that's
+  // only client-side enforcement, so re-check here before anything is
+  // written: a booking can't be accepted without both acceptances.
+  if (!liabilityAccepted || !privacyAccepted) {
+    return json({ error: "Liability notices and privacy policy must be accepted" }, 400);
   }
 
   // The postal code drives the call-out (Anfahrt) fee the customer already
@@ -486,9 +497,13 @@ async function handleBook(request, env) {
   const breadcrumbEn = fullBreadcrumb(resolved, audience, "en");
   const serviceIdStr = `${audience}:${categoryId}:${(path || []).join(":")}`;
 
+  // Matches the format SQLite's own datetime('now') produces for created_at,
+  // so all three timestamp columns on a row are directly comparable.
+  const acceptedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
+
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
       id,
@@ -505,11 +520,13 @@ async function handleBook(request, env) {
       notesWithAudience,
       commuteFee,
       Math.round(commute.distanceKm * 10) / 10,
-      wantsPhoneConsultation ? 1 : 0
+      wantsPhoneConsultation ? 1 : 0,
+      acceptedAt,
+      acceptedAt
     )
     .run();
 
-  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, phoneConsultation: wantsPhoneConsultation };
+  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, phoneConsultation: wantsPhoneConsultation, liabilityAcceptedAt: acceptedAt, privacyAcceptedAt: acceptedAt };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
   // Best-effort: the owner's own heads-up email should never affect the
   // customer-facing response, so its failure is swallowed here.

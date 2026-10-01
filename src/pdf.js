@@ -314,6 +314,8 @@ export function generateBookingPdf(data) {
         email: "Email",
         minutes: "min",
         cancelHeading: "Cancellation policy",
+        liabilityAccepted: "Liability policy accepted",
+        privacyAccepted: "Privacy policy accepted",
         footer1: "You can cancel this booking free of charge up to 24 hours before your appointment, using the cancellation link in your confirmation email, or by contacting us at kontakt@zettly.de.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
@@ -351,6 +353,8 @@ export function generateBookingPdf(data) {
         email: "E-Mail",
         minutes: "Min.",
         cancelHeading: "Stornierungsbedingungen",
+        liabilityAccepted: "Haftungshinweise akzeptiert",
+        privacyAccepted: "Datenschutzerklärung akzeptiert",
         footer1: "Sie können diese Buchung bis 24 Stunden vor dem Termin kostenlos stornieren - über den Stornierungslink in Ihrer Bestätigungs-E-Mail oder per Kontakt an kontakt@zettly.de.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
@@ -645,13 +649,71 @@ export function generateBookingPdf(data) {
   y -= 15;
   content.push(text(LEFT_X, y, 10, L.closing2, { bold: true, color: PURPLE }));
 
+  // ---- Acceptance footer: a small row of clickable pills confirming the
+  // customer accepted the liability notices and the privacy policy, each
+  // linking to the live policy page. Sits just above the company-info
+  // footer bar. Only rendered for whichever acceptances the caller actually
+  // passed (a fresh booking always has both -- the form can't submit
+  // without them -- but this stays harmless if either is ever omitted).
+  const acceptanceLinks = [];
+  if (data.liabilityAcceptedAt) {
+    acceptanceLinks.push({ label: L.liabilityAccepted, uri: "https://zettly.de/haftungshinweise/", color: PURPLE, bg: [0.953, 0.925, 0.996] });
+  }
+  if (data.privacyAcceptedAt) {
+    acceptanceLinks.push({ label: L.privacyAccepted, uri: "https://zettly.de/datenschutz/", color: PINK, bg: [0.996, 0.925, 0.961] });
+  }
+
+  const pdfLinks = [];
+  if (acceptanceLinks.length) {
+    const pillTopY = fromTop(261); // pt; top edge of the pill row
+    const pillH = 18; // pt
+    const pillBottomY = pillTopY - pillH;
+    const badgeD = 11; // pt, checkmark-badge diameter
+    const padX = 9; // pt, pill inner left/right padding
+    const iconTextGap = 5; // pt
+    const textSize = 8.5;
+    const pillGap = 10; // pt, space between pills
+
+    const pills = acceptanceLinks.map((l) => {
+      const textW = estWidth(l.label, textSize, true);
+      return { ...l, w: padX * 2 + badgeD + iconTextGap + textW, textW };
+    });
+    const totalW = pills.reduce((s, p) => s + p.w, 0) + pillGap * (pills.length - 1);
+    let cursorX = (LEFT_X + RIGHT_X) / 2 - totalW / 2;
+
+    pills.forEach((p) => {
+      // Pill background (fully rounded -- a stadium shape).
+      content.push(roundedRect(cursorX, pillBottomY, p.w, pillH, pillH / 2, p.bg));
+
+      // Checkmark badge: a filled circle with a white tick drawn on top.
+      const badgeCX = cursorX + padX + badgeD / 2;
+      const badgeCY = pillBottomY + pillH / 2;
+      content.push(roundedRect(badgeCX - badgeD / 2, badgeCY - badgeD / 2, badgeD, badgeD, badgeD / 2, p.color));
+      const checkA = [badgeCX - badgeD * 0.28, badgeCY - badgeD * 0.02];
+      const checkB = [badgeCX - badgeD * 0.06, badgeCY - badgeD * 0.24];
+      const checkC = [badgeCX + badgeD * 0.3, badgeCY + badgeD * 0.22];
+      content.push(line(checkA[0], checkA[1], checkB[0], checkB[1], [1, 1, 1], 1.4));
+      content.push(line(checkB[0], checkB[1], checkC[0], checkC[1], [1, 1, 1], 1.4));
+
+      // Label, underlined to read as a link.
+      const textX = cursorX + padX + badgeD + iconTextGap;
+      const textY = pillBottomY + pillH / 2 - textSize * 0.33;
+      content.push(text(textX, textY, textSize, p.label, { bold: true, color: p.color }));
+      content.push(line(textX, textY - 1.6, textX + p.textW, textY - 1.6, p.color, 0.6));
+
+      // The whole pill (not just the text) is the clickable area.
+      pdfLinks.push({ x: cursorX, y: pillBottomY, w: p.w, h: pillH, uri: p.uri });
+      cursorX += p.w + pillGap;
+    });
+  }
+
   // ---- Letter footer bar (company info strip at the bottom of the page) ----
   content.push(line(LEFT_X, fromTop(272), RIGHT_X, fromTop(272), BORDER, 1));
   content.push(rect(LEFT_X, fromTop(276.5), 22, 1.6, PINK));
   content.push(textCenter((LEFT_X + RIGHT_X) / 2, fromTop(278), 7.5, L.footerBar, { color: MUTED }));
 
   const contentStream = concat(content);
-  return buildPdfDocument(contentStream);
+  return buildPdfDocument(contentStream, pdfLinks);
 }
 
 // ---- Assemble a one-page PDF's object graph around a content stream ----
@@ -662,7 +724,11 @@ export function generateBookingPdf(data) {
 // FontFile2+FontDescriptor, 9/10 F2's, 11/12 F3 (wordmark)'s, 13 Font F3.
 // Shared by every generator in this file (generateBookingPdf and
 // generateInvoicePdf) so the low-level PDF/font plumbing lives in one place.
-export function buildPdfDocument(contentStream) {
+// `links` is an optional array of { x, y, w, h, uri } rectangles (PDF user
+// space, origin bottom-left — the same coordinate system `rect`/`text` use
+// via `fromTop`), each rendered as an invisible `/Subtype /Link` annotation
+// with a `/URI` action so the rectangle opens that URL in any PDF viewer.
+export function buildPdfDocument(contentStream, links = []) {
   function widthsArray(font, firstChar, lastChar) {
     const widths = [];
     for (let c = firstChar; c <= lastChar; c++) {
@@ -692,9 +758,13 @@ export function buildPdfDocument(contentStream) {
   const objects = [];
   objects.push(te("<< /Type /Catalog /Pages 2 0 R >>")); // 1
   objects.push(te("<< /Type /Pages /Kids [3 0 R] /Count 1 >>")); // 2
+  // Link annotations are appended as objects 14, 15, ... (after the fixed
+  // 1-13 above), so their object numbers are only known once we get here.
+  const annotRefs = links.map((_, i) => `${14 + i} 0 R`);
+  const annotsEntry = annotRefs.length ? ` /Annots [${annotRefs.join(" ")}]` : "";
   objects.push(te(
     `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PAGE_W} ${PAGE_H}] ` +
-    `/Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 13 0 R >> >> /Contents 6 0 R >>`
+    `/Resources << /Font << /F1 4 0 R /F2 5 0 R /F3 13 0 R >> >> /Contents 6 0 R${annotsEntry} >>`
   )); // 3
   objects.push(te(
     `<< /Type /Font /Subtype /TrueType /BaseFont /LiberationSans /FirstChar 32 /LastChar 255 ` +
@@ -731,6 +801,14 @@ export function buildPdfDocument(contentStream) {
     `<< /Type /Font /Subtype /TrueType /BaseFont /DejaVuSansExtraLight /FirstChar 32 /LastChar 126 ` +
     `/Widths [${wfWidths.join(" ")}] /Encoding /WinAnsiEncoding /FontDescriptor 12 0 R >>`
   )); // 13
+  // 14, 15, ... one per link annotation: an invisible (/Border 0) clickable
+  // rectangle over the link text, with a /URI action that opens it.
+  links.forEach((l) => {
+    objects.push(te(
+      `<< /Type /Annot /Subtype /Link /Rect [${l.x} ${l.y} ${l.x + l.w} ${l.y + l.h}] ` +
+      `/Border [0 0 0] /C [0 0 0] /A << /Type /Action /S /URI /URI (${escapeLiteral(toWinAnsiBytes(l.uri)).map((b) => String.fromCharCode(b)).join("")}) >> >>`
+    ));
+  });
 
   const chunks = [te("%PDF-1.4\n")];
   const offsets = [];

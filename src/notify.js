@@ -93,6 +93,8 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
       cancelled: true,
       cancelledBy,
       cancellationReason: booking.cancellation_reason,
+      liabilityAcceptedAt: booking.liability_accepted_at,
+      privacyAcceptedAt: booking.privacy_accepted_at,
     };
     const pdfBytesDe = generateBookingPdf({
       ...basePdfData, breadcrumb: breadcrumbDe, date: booking.date, dateDisplay: dateDisplayDe, lang: "de",

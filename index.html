@@ -3484,6 +3484,8 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         time: state.time,
         name, email, phone, address, zip: state.zip, notes, lang,
         phoneConsultation: !!state.phoneConsultation,
+        liabilityAccepted: !!state.liabilityAccepted,
+        privacyAccepted: !!document.getElementById("f-consent").checked,
       }),
     });
     const data = await res.json();
