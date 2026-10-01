@@ -1072,6 +1072,57 @@
     z-index: 2;
   }
 
+  /* Grid variant: used for a branch step whose options carry a priceHint
+     (e.g. Installation and Setup New's "With data transfer" / "Without
+     data" choice) so the cards sit side by side instead of stacking
+     full-width. Generic: any branch step can opt in by giving its options
+     a priceHint field, nothing else changes for steps that don't. */
+  .path-list.path-grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.9rem;
+  }
+  .path-list.path-grid-cards .path-card { flex-direction: column; align-items: flex-start; text-align: left; }
+  .path-list.path-grid-cards .path-card .go-btn { align-self: flex-end; margin-top: 0.6rem; }
+  .path-card .price-hint { font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-top: 0.3rem; }
+  @media (max-width: 560px) {
+    .path-list.path-grid-cards { grid-template-columns: 1fr; }
+  }
+
+  /* Generic info/announcement note shown above or below a tree step's
+     options (e.g. OS license requirement, antivirus policy, recovery
+     disclaimer). Reused for every such note on the site. */
+  .tree-notice {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 14px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.86rem;
+    color: #7c2d12;
+    line-height: 1.45;
+  }
+  .tree-notice svg { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 0.1rem; }
+
+  /* Numbered process explainer, reusing the "how it works" step look for
+     visual consistency, used below the Fix-a-Hardware-Issue choice cards. */
+  .tree-explainer {
+    margin-top: 1.6rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.4rem;
+  }
+  .tree-explainer h4 { font-size: 1.02rem; font-weight: 800; margin-bottom: 0.9rem; }
+  .tree-explainer ol { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .tree-explainer li { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; }
+  .tree-explainer .hiw-num {
+    flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent); font-weight: 800; font-size: 0.78rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+
   /* Final "priced package" step for every leaf list in the booking tree:
      a responsive card grid (2-3 cols desktop, stacks on mobile), each card
      topped with an icon (a storage icon for GB/TB size-tier leaves,
@@ -1594,7 +1645,9 @@
   <div class="step" data-step="2">
     <h1 id="tree-title"></h1>
     <p class="subtitle" id="tree-sub"></p>
+    <div id="tree-notices"></div>
     <div id="tree-grid"></div>
+    <div id="tree-explainer"></div>
     <div class="actions">
       <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
     </div>
@@ -1893,6 +1946,7 @@ const I18N = {
     step0Sub: "Wählen Sie einen Bereich: wir zeigen Ihnen die passenden Pakete.",
     back: "Zurück",
     priceOnRequest: "Preis nach Diagnose",
+    hwExplainerTitle: "So läuft die Hardware-Reparatur ab",
     trustFastTitle: "Schnelle Termine",
     trustFastDesc: "Kurzfristig verfügbar",
     trustNoHiddenTitle: "Faire Preise",
@@ -2027,6 +2081,7 @@ const I18N = {
     step0Sub: "Pick a path and we'll show you the right packages.",
     back: "Back",
     priceOnRequest: "Price after diagnosis",
+    hwExplainerTitle: "How the hardware repair process works",
     trustFastTitle: "Fast Slots",
     trustFastDesc: "Available at short notice",
     trustNoHiddenTitle: "Fair Pricing",
@@ -2540,10 +2595,35 @@ function renderCategoryGrid() {
   });
 }
 
+const NOTICE_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#c2410c" stroke-width="1.6"/><path d="M12 8v5" stroke="#c2410c" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="#c2410c"/></svg>`;
+
+function renderTreeNotices(node) {
+  const el = document.getElementById("tree-notices");
+  const notices = Array.isArray(node.notice) ? node.notice : [];
+  el.innerHTML = notices.map(n => `
+    <div class="tree-notice">${NOTICE_ICON}<span>${n[lang]}</span></div>
+  `).join("");
+}
+
+function renderTreeExplainer(node) {
+  const el = document.getElementById("tree-explainer");
+  if (!node.explainer || !Array.isArray(node.explainer[lang])) { el.innerHTML = ""; return; }
+  el.innerHTML = `
+    <div class="tree-explainer">
+      <h4 data-i18n="hwExplainerTitle">${t("hwExplainerTitle")}</h4>
+      <ol>
+        ${node.explainer[lang].map((step, i) => `<li><span class="hiw-num">${i + 1}</span><span>${step}</span></li>`).join("")}
+      </ol>
+    </div>
+  `;
+}
+
 function renderTreeStep() {
   const node = state.currentNode;
   document.getElementById("tree-title").textContent = (node.prompt && node.prompt[lang]) || state.category.name[lang];
   document.getElementById("tree-sub").textContent = (node.sub && node.sub[lang]) || "";
+  renderTreeNotices(node);
+  renderTreeExplainer(node);
   const container = document.getElementById("tree-grid");
   container.innerHTML = "";
 
@@ -2570,7 +2650,8 @@ function renderTreeStep() {
       container.appendChild(div);
     });
   } else {
-    container.className = "path-list";
+    const hasPriceHints = node.options.some(o => o.priceHint);
+    container.className = hasPriceHints ? "path-list path-grid-cards" : "path-list";
     node.options.forEach(o => {
       const div = document.createElement("div");
       div.className = "path-card";
@@ -2579,6 +2660,7 @@ function renderTreeStep() {
         <div class="body">
           <h3>${o.name[lang]}</h3>
           <p>${optionDesc(o)}</p>
+          ${o.priceHint ? `<div class="price-hint">${o.priceHint[lang]}</div>` : ""}
         </div>
         <span class="go-btn">&rarr;</span>
       `;
