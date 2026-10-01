@@ -30,6 +30,13 @@ import { computeCommute } from "./commute.js";
 // src/cancel.js based on the booking's real date/time, not this expiry.
 const CANCEL_LINK_TTL_MS = 90 * 24 * 60 * 60 * 1000;
 
+// How many devices/units a single booking can cover. Matches the client's
+// own stepper cap in index.html (MAX_BOOKING_QUANTITY there) -- kept in
+// sync by convention since the two can't share a constant across a
+// frontend/worker split, but this server-side copy is the one that's
+// actually enforced.
+const MAX_BOOKING_QUANTITY = 10;
+
 function resolveLeaf(audience, categoryId, path) {
   return resolveLeafFromCatalog(catalog, audience, categoryId, path);
 }
@@ -280,6 +287,8 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       priceText,
       servicePriceText,
       commuteFee,
+      quantity: service.quantity,
+      unitPrice: service.unitPrice,
       phoneConsultation: booking.phoneConsultation,
       liabilityAcceptedAt: booking.liabilityAcceptedAt,
       privacyAcceptedAt: booking.privacyAcceptedAt,
@@ -298,6 +307,8 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       priceText,
       servicePriceText,
       commuteFee,
+      quantity: service.quantity,
+      unitPrice: service.unitPrice,
       phoneConsultation: booking.phoneConsultation,
       liabilityAcceptedAt: booking.liabilityAcceptedAt,
       privacyAcceptedAt: booking.privacyAcceptedAt,
@@ -375,6 +386,7 @@ async function sendAdminNotification(env, booking, service, lang) {
           <tr><td style="padding:4px 0; color:#6b6b74;">Date</td><td style="padding:4px 0; text-align:right;">${dateDisplay}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Time</td><td style="padding:4px 0; text-align:right;">${booking.time}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}${commuteFee > 0 ? ` (incl. €${commuteFee} call-out)` : ""}</td></tr>
+          ${service.quantity > 1 ? `<tr><td style="padding:4px 0; color:#6b6b74;">Quantity</td><td style="padding:4px 0; text-align:right; font-weight:700;">×${service.quantity}${service.unitPrice != null ? ` (€${service.unitPrice} each)` : ""}</td></tr>` : ""}
           ${booking.phoneConsultation ? `<tr><td style="padding:4px 0; color:#6b6b74;">Consultation type</td><td style="padding:4px 0; text-align:right; font-weight:700;">Phone call</td></tr>` : ""}
           <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Email</td><td style="padding:4px 0; text-align:right;">${booking.customer_email}</td></tr>
@@ -407,7 +419,7 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, lang: rawLang } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang } = body;
   const lang = rawLang === "en" ? "en" : "de";
   const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
 
@@ -420,6 +432,16 @@ async function handleBook(request, env) {
   // written: a booking can't be accepted without both acceptances.
   if (!liabilityAccepted || !privacyAccepted) {
     return json({ error: "Liability notices and privacy policy must be accepted" }, 400);
+  }
+
+  // How many devices/units this booking covers. Validated strictly (not
+  // just clamped) since it directly multiplies into the stored price --
+  // letting a client send an out-of-range value through silently would
+  // mean trusting them for billing. Defaults to 1 when the field is left
+  // out entirely (older clients, direct API use).
+  const quantity = rawQuantity === undefined ? 1 : Number(rawQuantity);
+  if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_BOOKING_QUANTITY) {
+    return json({ error: `Quantity must be a whole number between 1 and ${MAX_BOOKING_QUANTITY}` }, 400);
   }
 
   // The postal code drives the call-out (Anfahrt) fee the customer already
@@ -441,7 +463,19 @@ async function handleBook(request, env) {
   }
   const { leaf } = resolved;
   const serviceName = localizedBreadcrumbName(resolved, lang);
-  const service = { duration: leaf.duration, price: leaf.price, quote: leaf.quote };
+  // `price` here is the full total for `quantity` devices (quantity * the
+  // catalog's per-unit price) -- every downstream consumer (DB column,
+  // email, PDF "Total" row) already just adds this to the call-out fee, so
+  // pre-multiplying here means none of that math needs to know about
+  // quantity at all. unitPrice is carried alongside purely for display
+  // (the "€X each" / "x2" breakdown line), never used in a total itself.
+  const service = {
+    duration: leaf.duration,
+    price: leaf.quote ? null : leaf.price * quantity,
+    quote: leaf.quote,
+    quantity,
+    unitPrice: leaf.quote ? null : leaf.price,
+  };
   const quoteTag = leaf.quote ? "[Kostenvoranschlag vor Ort] " : "";
   const notesWithAudience = `${audienceTag}${quoteTag}${notes || ""}`.trim() || null;
   // Only honored when the catalog actually offers a phone option for this
@@ -503,14 +537,14 @@ async function handleBook(request, env) {
   const acceptedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at, quantity)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
       id,
       serviceIdStr,
       serviceName,
-      leaf.quote ? 0 : leaf.price,
+      leaf.quote ? 0 : leaf.price * quantity,
       leaf.duration,
       date,
       time,
@@ -523,7 +557,8 @@ async function handleBook(request, env) {
       Math.round(commute.distanceKm * 10) / 10,
       wantsPhoneConsultation ? 1 : 0,
       acceptedAt,
-      acceptedAt
+      acceptedAt,
+      quantity
     )
     .run();
 

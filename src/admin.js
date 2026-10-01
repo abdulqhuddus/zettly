@@ -120,7 +120,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation
+            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
      LIMIT ? OFFSET ?`
@@ -160,7 +160,7 @@ export async function handleAdminListBookings(url, env) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation
+            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity
      FROM bookings WHERE id = ?`
   )
     .bind(id)
@@ -256,7 +256,21 @@ export async function handleAdminUpdateStatus(request, env, id) {
         liabilityAcceptedAt: existing.liability_accepted_at,
         privacyAcceptedAt: existing.privacy_accepted_at,
       };
-      emailSent = (await sendConfirmationEmail(env, bookingForEmail, resolved.leaf, lang)).sent;
+      // Built from the recorded row, not re-derived from the catalog leaf:
+      // `existing.price` is the actual total the customer was charged
+      // (already quantity-multiplied at booking time, and immune to any
+      // catalog price change since), and `existing.quantity` is what they
+      // actually booked -- resolved.leaf only supplies the "is this a
+      // quote" flag, which doesn't change booking to booking.
+      const quantity = existing.quantity || 1;
+      const serviceForEmail = {
+        duration: existing.duration_minutes,
+        price: resolved.leaf.quote ? null : existing.price,
+        quote: !!resolved.leaf.quote,
+        quantity,
+        unitPrice: resolved.leaf.quote ? null : Math.round((existing.price / quantity) * 100) / 100,
+      };
+      emailSent = (await sendConfirmationEmail(env, bookingForEmail, serviceForEmail, lang)).sent;
     }
   }
 

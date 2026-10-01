@@ -306,6 +306,8 @@ export function generateBookingPdf(data) {
         date: "Date",
         time: "Time",
         duration: "Duration",
+        quantity: "Quantity",
+        unitPriceEach: (p) => `€${p} each`,
         price: "Price",
         callout: "Call-out fee",
         total: "Total",
@@ -345,6 +347,8 @@ export function generateBookingPdf(data) {
         date: "Datum",
         time: "Uhrzeit",
         duration: "Dauer",
+        quantity: "Menge",
+        unitPriceEach: (p) => `€${p} pro Gerät`,
         price: "Preis",
         callout: "Anfahrtspauschale",
         total: "Gesamt",
@@ -491,6 +495,15 @@ export function generateBookingPdf(data) {
     { label: L.time, value: data.time, size: 9.5 },
     { label: L.duration, value: `${data.duration} ${L.minutes}`, size: 9.5 },
   ];
+  // Shown whenever more than one device/unit was booked, so the customer
+  // can see the per-unit price that was multiplied into the total below.
+  if (data.quantity > 1) {
+    boxRows.push({
+      label: L.quantity,
+      value: data.unitPrice != null ? `×${data.quantity} (${L.unitPriceEach(data.unitPrice)})` : `×${data.quantity}`,
+      size: 9.5,
+    });
+  }
   // Only shown when the customer opted into a phone consultation on a
   // leaf that actually offers it (e.g. the Dynamics 365 consultation) -
   // otherwise this row is simply omitted rather than showing "in person".
@@ -874,6 +887,8 @@ export function generateInvoicePdf(data) {
         price: "Price",
         callout: "Call-out fee",
         total: "Total",
+        quantity: "Quantity",
+        unitPriceEach: (p) => `€${p} each`,
         description: "Description",
         amount: "Amount",
         email: "Email",
@@ -898,6 +913,8 @@ export function generateInvoicePdf(data) {
         price: "Preis",
         callout: "Anfahrtspauschale",
         total: "Gesamt",
+        quantity: "Menge",
+        unitPriceEach: (p) => `€${p} pro Gerät`,
         description: "Beschreibung",
         amount: "Betrag",
         email: "E-Mail",
@@ -1031,9 +1048,21 @@ export function generateInvoicePdf(data) {
   const lineItems = [];
   if (data.commuteFee > 0) {
     lineItems.push({ label: L.service, value: data.servicePriceText });
+    if (data.quantity > 1) {
+      lineItems.push({
+        label: L.quantity,
+        value: data.unitPrice != null ? `×${data.quantity} (${L.unitPriceEach(data.unitPrice)})` : `×${data.quantity}`,
+      });
+    }
     lineItems.push({ label: L.callout, value: `+ ${formatEUR(data.commuteFee)}` });
   } else {
     lineItems.push({ label: L.service, value: data.priceText });
+    if (data.quantity > 1) {
+      lineItems.push({
+        label: L.quantity,
+        value: data.unitPrice != null ? `×${data.quantity} (${L.unitPriceEach(data.unitPrice)})` : `×${data.quantity}`,
+      });
+    }
   }
 
   const tableHeaderH = 20;

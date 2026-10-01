@@ -47,6 +47,8 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const dateDisplay = localizedDate(booking.date, lang);
   const priceText = booking.price ? `€${booking.price}` : lang === "en" ? "Quoted on-site" : "Vor Ort mitgeteilt";
+  const quantity = booking.quantity || 1;
+  const unitPrice = booking.price && quantity > 1 ? Math.round((booking.price / quantity) * 100) / 100 : null;
 
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
@@ -95,6 +97,8 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
       cancellationReason: booking.cancellation_reason,
       liabilityAcceptedAt: booking.liability_accepted_at,
       privacyAcceptedAt: booking.privacy_accepted_at,
+      quantity,
+      unitPrice,
     };
     const pdfBytesDe = generateBookingPdf({
       ...basePdfData, breadcrumb: breadcrumbDe, date: booking.date, dateDisplay: dateDisplayDe, lang: "de",
@@ -224,6 +228,8 @@ export async function sendInvoiceEmail(env, booking, lang = "de") {
   const invoiceNumber = invoiceNumberFor(bookingRef);
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const commuteFee = booking.commute_fee || 0;
+  const quantity = booking.quantity || 1;
+  const unitPrice = booking.price && quantity > 1 ? Math.round((booking.price / quantity) * 100) / 100 : null;
   // The invoice always uses German-standard number formatting (comma
   // decimal separator, period thousands separator, trailing "€"), even on
   // the English invoice -- only the surrounding labels differ by language.
@@ -291,6 +297,8 @@ export async function sendInvoiceEmail(env, booking, lang = "de") {
       customerAddress: booking.customer_address,
       time: booking.time,
       commuteFee,
+      quantity,
+      unitPrice,
     };
     const pdfBytesDe = generateInvoicePdf({
       ...baseData, servicePriceText: servicePriceTextDe, priceText: priceTextDe, breadcrumb: breadcrumbDe, dateDisplay: dateDisplayDe, invoiceDate: invoiceDateDe, paymentStatus: "Bezahlt", lang: "de",

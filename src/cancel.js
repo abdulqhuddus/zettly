@@ -45,6 +45,7 @@ export async function handleCancelInfo(url, env) {
     time: row.time,
     durationMinutes: row.duration_minutes,
     price: row.price,
+    quantity: row.quantity || 1,
     address: row.customer_address,
     status: row.status,
     canCancel,

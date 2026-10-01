@@ -529,6 +529,7 @@
       <div class="detail-row"><dt id="t-m-service">Service</dt><dd id="m-service"></dd></div>
       <div class="detail-row"><dt id="t-m-when">Appointment</dt><dd id="m-when"></dd></div>
       <div class="detail-row"><dt id="t-m-duration">Duration</dt><dd id="m-duration"></dd></div>
+      <div class="detail-row" id="m-qty-row"><dt id="t-m-qty">Quantity</dt><dd id="m-qty"></dd></div>
       <div class="detail-row"><dt id="t-m-price">Price</dt><dd id="m-price"></dd></div>
       <div class="detail-row" id="m-callout-row"><dt id="t-m-callout">Call-out fee</dt><dd id="m-callout"></dd></div>
       <div class="detail-row" id="m-phone-consultation-row"><dt id="t-m-consultation-type">Consultation type</dt><dd id="m-consultation-type"></dd></div>
@@ -628,6 +629,9 @@
       onSiteQuote: "Quoted on-site",
       calloutFree: "Free",
       atTime: (time) => `${time}`,
+      qtyBadge: (n) => `×${n} devices`,
+      mQuantity: "Quantity",
+      mUnitPrice: "Unit price",
       mStatus: "Status",
       mService: "Service",
       mWhen: "Appointment",
@@ -740,6 +744,9 @@
       onSiteQuote: "Vor Ort mitgeteilt",
       calloutFree: "Kostenlos",
       atTime: (time) => `${time} Uhr`,
+      qtyBadge: (n) => `×${n} Geräte`,
+      mQuantity: "Anzahl",
+      mUnitPrice: "Einzelpreis",
       mStatus: "Status",
       mService: "Leistung",
       mWhen: "Termin",
@@ -860,6 +867,7 @@
     document.getElementById("t-m-service").textContent = s.mService;
     document.getElementById("t-m-when").textContent = s.mWhen;
     document.getElementById("t-m-duration").textContent = s.mDuration;
+    document.getElementById("t-m-qty").textContent = s.mQuantity;
     document.getElementById("t-m-price").textContent = s.mPrice;
     document.getElementById("t-m-callout").textContent = s.mCallout;
     document.getElementById("t-m-consultation-type").textContent = s.mConsultationType;
@@ -1004,7 +1012,7 @@
       tr.innerHTML = `
         <td class="ref">${b.bookingRef}</td>
         <td>${escapeHtml(b.customer_name)}<div class="muted">${escapeHtml(b.customer_email)}</div></td>
-        <td>${escapeHtml((lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › "))}</td>
+        <td>${escapeHtml((lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › "))}${b.quantity > 1 ? `<div class="muted">${s.qtyBadge(b.quantity)}</div>` : ""}</td>
         <td>${b.date}<div class="muted">${s.atTime(b.time)}</div></td>
         <td>${b.price ? "€" + b.price : s.onSite}</td>
         <td>${b.commute_fee ? "€" + b.commute_fee : s.calloutFree}</td>
@@ -1239,6 +1247,14 @@
       (lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › ");
     document.getElementById("m-when").textContent = `${b.date}, ${s.atTime(b.time)}`;
     document.getElementById("m-duration").textContent = `${b.duration_minutes} ${s.minutes}`;
+    const qtyRow = document.getElementById("m-qty-row");
+    if (b.quantity > 1) {
+      qtyRow.style.display = "flex";
+      const unit = b.price ? Math.round((b.price / b.quantity) * 100) / 100 : null;
+      document.getElementById("m-qty").textContent = `×${b.quantity}${unit != null ? ` (${s.mUnitPrice}: €${unit})` : ""}`;
+    } else {
+      qtyRow.style.display = "none";
+    }
     document.getElementById("m-price").textContent = b.price ? "€" + b.price : s.onSiteQuote;
     document.getElementById("m-callout").textContent = b.commute_fee
       ? `€${b.commute_fee}${b.commute_distance_km != null ? ` (${Math.round(b.commute_distance_km)} km)` : ""}`
