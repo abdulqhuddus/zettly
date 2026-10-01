@@ -1566,6 +1566,10 @@
   .liability-status-pill .pill-warn-icon { display: inline-flex; flex: 0 0 auto; }
   .liability-status-pill.confirmed { background: #e4f8ec; color: #1c8a4b; box-shadow: none; }
   .liability-status-pill.confirmed .pill-warn-icon { display: none; }
+  .privacy-row-checkbox {
+    width: 20px; height: 20px; flex: 0 0 auto; accent-color: #d97a06; cursor: pointer;
+  }
+  .liability-row.confirmed .privacy-row-checkbox { accent-color: #1c8a4b; }
   .liability-points { margin: 0.4rem 0 1rem 1.2rem; padding: 0; }
   .liability-points li { font-size: 0.88rem; color: #33333a; margin-bottom: 0.7rem; }
   .liability-points li b { display: block; color: var(--ink); font-weight: 700; margin-bottom: 0.15rem; }
@@ -1857,9 +1861,10 @@
       <label data-i18n="notes">Was sollten wir wissen? (optional)</label>
       <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens" required></textarea>
     </div>
-    <label class="consent-check">
-      <input type="checkbox" id="f-consent" />
-      <span data-i18n="consentLabel">Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
+    <label class="liability-row privacy-consent-row" id="privacy-row" for="f-consent">
+      <input type="checkbox" id="f-consent" class="privacy-row-checkbox" />
+      <span class="liability-row-label" data-i18n="consentLabel">Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
+      <span class="liability-status-pill" id="privacy-status-pill" data-i18n="liabilityNotConfirmed">Noch nicht bestätigt</span>
     </label>
     <p class="error-msg" id="form-error"></p>
     <div class="actions">
@@ -2437,6 +2442,7 @@ function applyStaticTranslations() {
     if (I18N[lang][key]) el.setAttribute("aria-label", I18N[lang][key]);
   });
   updateLiabilityStatusPill();
+  updatePrivacyStatusPill();
   document.querySelectorAll(".lang-switch button").forEach(b => {
     b.classList.toggle("active", b.dataset.lang === lang);
   });
@@ -3292,6 +3298,7 @@ function updateConsentGate() {
   const btn = document.getElementById("submit-booking");
   if (!consentBox || !btn) return;
   btn.disabled = !consentBox.checked || !state.liabilityAccepted;
+  updatePrivacyStatusPill();
   if (consentBox.checked) {
     const errorEl = document.getElementById("form-error");
     if (errorEl && errorEl.textContent === t("fillConsent")) {
@@ -3311,15 +3318,26 @@ function renderLiabilityPoints() {
   const points = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
   list.innerHTML = points;
 }
-function updateLiabilityStatusPill() {
-  const pill = document.getElementById("liability-status-pill");
+// Shared "confirmation row" pill renderer: both the liability-notices row
+// and the privacy-policy consent row use the exact same markup/classes/
+// animation (.liability-row / .liability-status-pill / liabilityRowPulse)
+// so they stay visually identical instead of drifting apart as two copies.
+const PILL_WARN_ICON = '<svg class="pill-warn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13" aria-hidden="true"><path d="M12 3.5l9 15.5H3l9-15.5z" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5.3" rx="0.6" fill="#fff"/><rect x="11.1" y="15.8" width="1.8" height="1.8" rx="0.6" fill="#fff"/></svg>';
+function updateConfirmRow(rowId, pillId, confirmed) {
+  const pill = document.getElementById(pillId);
   if (!pill) return;
-  const pillText = state.liabilityAccepted ? t("liabilityConfirmed") : t("liabilityNotConfirmed");
-  const warnIcon = '<svg class="pill-warn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="13" height="13" aria-hidden="true"><path d="M12 3.5l9 15.5H3l9-15.5z" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5.3" rx="0.6" fill="#fff"/><rect x="11.1" y="15.8" width="1.8" height="1.8" rx="0.6" fill="#fff"/></svg>';
-  pill.innerHTML = (state.liabilityAccepted ? "" : warnIcon) + "<span>" + pillText + "</span>";
-  pill.classList.toggle("confirmed", state.liabilityAccepted);
-  const row = document.getElementById("liability-row");
-  if (row) row.classList.toggle("confirmed", state.liabilityAccepted);
+  const pillText = confirmed ? t("liabilityConfirmed") : t("liabilityNotConfirmed");
+  pill.innerHTML = (confirmed ? "" : PILL_WARN_ICON) + "<span>" + pillText + "</span>";
+  pill.classList.toggle("confirmed", confirmed);
+  const row = document.getElementById(rowId);
+  if (row) row.classList.toggle("confirmed", confirmed);
+}
+function updateLiabilityStatusPill() {
+  updateConfirmRow("liability-row", "liability-status-pill", state.liabilityAccepted);
+}
+function updatePrivacyStatusPill() {
+  const consentBox = document.getElementById("f-consent");
+  updateConfirmRow("privacy-row", "privacy-status-pill", !!(consentBox && consentBox.checked));
 }
 function openLiabilityModal() {
   document.getElementById("liability-modal-heading").textContent = t("liabilityModalHeading");
@@ -3399,6 +3417,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 updateLiabilityStatusPill();
+updatePrivacyStatusPill();
 updateConsentGate();
 
 document.getElementById("submit-booking").addEventListener("click", async () => {
