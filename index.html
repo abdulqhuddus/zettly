@@ -1185,9 +1185,14 @@
      otherwise). Shared by every category's package-list leaf, not just
      Computers & Laptops. */
   .service-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1rem;
+  }
+  .service-card {
+    flex: 1 1 155px;
+    max-width: calc(33.333% - 0.667rem);
   }
   .service-card {
     position: relative;
@@ -1243,10 +1248,10 @@
   }
   .service-price .duration { font-size: 0.73rem; color: var(--muted); margin-top: 0.1rem; }
   @media (max-width: 560px) {
-    .service-list { grid-template-columns: repeat(2, 1fr); }
+    .service-card { max-width: calc(50% - 0.5rem); }
   }
   @media (max-width: 400px) {
-    .service-list { grid-template-columns: 1fr; }
+    .service-card { max-width: 100%; }
   }
 
   .date-strip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.6rem; }
