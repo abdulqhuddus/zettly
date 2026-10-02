@@ -8460,6 +8460,250 @@
       }
     },
     {
+      "id": "printers",
+      "icon": "printer",
+      "name": {
+        "de": "Drucker & Scanner",
+        "en": "Printers & Scanners"
+      },
+      "desc": {
+        "de": "Einrichtung, Fehlerbehebung, Netzwerkdrucker",
+        "en": "Setup, troubleshooting, network printers"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Welches Gerät?",
+          "en": "Which device?"
+        },
+        "options": [
+          {
+            "id": "printer",
+            "name": {
+              "de": "Drucker",
+              "en": "Printer"
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Worum geht es?",
+                "en": "What do you need?"
+              },
+              "options": [
+                {
+                  "id": "setupNew",
+                  "name": {
+                    "de": "Neueinrichtung",
+                    "en": "New setup"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Neueinrichtung",
+                      "en": "New setup"
+                    },
+                    "price": 39,
+                    "duration": 30,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "fixIssue",
+                  "name": {
+                    "de": "Druckproblem beheben",
+                    "en": "Fix a printing issue"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Druckproblem beheben",
+                      "en": "Fix a printing issue"
+                    },
+                    "price": 49,
+                    "duration": 30,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "network",
+                  "name": {
+                    "de": "Netzwerkdrucker (WLAN) einrichten",
+                    "en": "Set up network (WiFi) printer"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Netzwerkdrucker (WLAN) einrichten",
+                      "en": "Set up network (WiFi) printer"
+                    },
+                    "price": 39,
+                    "duration": 30,
+                    "quote": false
+                  }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass das Gerät selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen.",
+                  "en": "As with any repair, our fix assumes the device itself is in working order, if a hardware fault turns out to be the cause."
+                }
+              ]
+            }
+          },
+          {
+            "id": "scanner",
+            "name": {
+              "de": "Scanner",
+              "en": "Scanner"
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Worum geht es?",
+                "en": "What do you need?"
+              },
+              "options": [
+                {
+                  "id": "setupNew",
+                  "name": {
+                    "de": "Neueinrichtung",
+                    "en": "New setup"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Neueinrichtung",
+                      "en": "New setup"
+                    },
+                    "price": 39,
+                    "duration": 30,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "fixIssue",
+                  "name": {
+                    "de": "Druckproblem beheben",
+                    "en": "Fix a printing issue"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Druckproblem beheben",
+                      "en": "Fix a printing issue"
+                    },
+                    "price": 49,
+                    "duration": 30,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "network",
+                  "name": {
+                    "de": "Netzwerkdrucker (WLAN) einrichten",
+                    "en": "Set up network (WiFi) printer"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Netzwerkdrucker (WLAN) einrichten",
+                      "en": "Set up network (WiFi) printer"
+                    },
+                    "price": 39,
+                    "duration": 30,
+                    "quote": false
+                  }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass das Gerät selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen.",
+                  "en": "As with any repair, our fix assumes the device itself is in working order, if a hardware fault turns out to be the cause."
+                }
+              ]
+            }
+          },
+          {
+            "id": "allinone",
+            "name": {
+              "de": "Multifunktionsdrucker (Drucken / Kopieren / Scannen)",
+              "en": "Multi Function Printer (Print / Copy / Scan)"
+            },
+            "desc": {
+              "de": "Ein Gerät für Drucken, Kopieren und Scannen.",
+              "en": "One device for printing, copying, and scanning."
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Worum geht es?",
+                "en": "What do you need?"
+              },
+              "options": [
+                {
+                  "id": "setupNew",
+                  "name": {
+                    "de": "Neueinrichtung",
+                    "en": "New setup"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Neueinrichtung",
+                      "en": "New setup"
+                    },
+                    "price": 39,
+                    "duration": 30,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "fixIssue",
+                  "name": {
+                    "de": "Druckproblem beheben",
+                    "en": "Fix a printing issue"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Druckproblem beheben",
+                      "en": "Fix a printing issue"
+                    },
+                    "price": 49,
+                    "duration": 30,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "network",
+                  "name": {
+                    "de": "Netzwerkdrucker (WLAN) einrichten",
+                    "en": "Set up network (WiFi) printer"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Netzwerkdrucker (WLAN) einrichten",
+                      "en": "Set up network (WiFi) printer"
+                    },
+                    "price": 39,
+                    "duration": 30,
+                    "quote": false
+                  }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass das Gerät selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen.",
+                  "en": "As with any repair, our fix assumes the device itself is in working order, if a hardware fault turns out to be the cause."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
       "id": "speakers",
       "icon": "speaker",
       "name": {
@@ -8605,228 +8849,6 @@
                     },
                     "price": 69,
                     "duration": 45,
-                    "quote": false
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "printers",
-      "icon": "printer",
-      "name": {
-        "de": "Drucker & Scanner",
-        "en": "Printers & Scanners"
-      },
-      "desc": {
-        "de": "Einrichtung, Fehlerbehebung, Netzwerkdrucker",
-        "en": "Setup, troubleshooting, network printers"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Welches Gerät?",
-          "en": "Which device?"
-        },
-        "options": [
-          {
-            "id": "printer",
-            "name": {
-              "de": "Drucker",
-              "en": "Printer"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
-              },
-              "options": [
-                {
-                  "id": "setupNew",
-                  "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Druckproblem beheben",
-                    "en": "Fix a printing issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Druckproblem beheben",
-                      "en": "Fix a printing issue"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "network",
-                  "name": {
-                    "de": "Netzwerkdrucker (WLAN) einrichten",
-                    "en": "Set up network (WiFi) printer"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Netzwerkdrucker (WLAN) einrichten",
-                      "en": "Set up network (WiFi) printer"
-                    },
-                    "price": 59,
-                    "duration": 30,
-                    "quote": false
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "scanner",
-            "name": {
-              "de": "Scanner",
-              "en": "Scanner"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
-              },
-              "options": [
-                {
-                  "id": "setupNew",
-                  "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Druckproblem beheben",
-                    "en": "Fix a printing issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Druckproblem beheben",
-                      "en": "Fix a printing issue"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "network",
-                  "name": {
-                    "de": "Netzwerkdrucker (WLAN) einrichten",
-                    "en": "Set up network (WiFi) printer"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Netzwerkdrucker (WLAN) einrichten",
-                      "en": "Set up network (WiFi) printer"
-                    },
-                    "price": 59,
-                    "duration": 30,
-                    "quote": false
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "allinone",
-            "name": {
-              "de": "All-in-One-Gerät",
-              "en": "All-in-one device"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
-              },
-              "options": [
-                {
-                  "id": "setupNew",
-                  "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Druckproblem beheben",
-                    "en": "Fix a printing issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Druckproblem beheben",
-                      "en": "Fix a printing issue"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "network",
-                  "name": {
-                    "de": "Netzwerkdrucker (WLAN) einrichten",
-                    "en": "Set up network (WiFi) printer"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Netzwerkdrucker (WLAN) einrichten",
-                      "en": "Set up network (WiFi) printer"
-                    },
-                    "price": 59,
-                    "duration": 30,
                     "quote": false
                   }
                 }
