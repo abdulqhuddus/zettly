@@ -8306,8 +8306,8 @@
               "quote": false
             },
             "desc": {
-              "de": "Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
-              "en": "Basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
+              "de": "Grundkonfiguration Ihres neuen Routers.",
+              "en": "Basic configuration of your new router."
             }
           },
           {
@@ -8359,8 +8359,8 @@
             "en": "Please note: the router hardware is provided by you — Zettly doesn't supply devices. New setup and router replacement include basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
           },
           {
-            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass der Router selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen, wird dieser gesondert behandelt.",
-            "en": "As with any repair, our fix assumes the router itself is in working order — if a hardware fault turns out to be the cause, that's handled separately."
+            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass der Router selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen.",
+            "en": "As with any repair, our fix assumes the router itself is in working order — if a hardware fault turns out to be the cause."
           }
         ]
       }
@@ -8437,7 +8437,7 @@
                 "de": "WLAN-Extender einrichten",
                 "en": "WiFi Extender Setup"
               },
-              "price": 99,
+              "price": 39,
               "duration": 45,
               "quote": false
             },
@@ -8453,8 +8453,8 @@
             "en": "Please note: the access point hardware is provided by you — Zettly doesn't supply devices."
           },
           {
-            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass der Access Point selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen, wird dieser gesondert behandelt.",
-            "en": "As with any repair, our fix assumes the access point itself is in working order — if a hardware fault turns out to be the cause, that's handled separately."
+            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass der Access Point selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen.",
+            "en": "As with any repair, our fix assumes the access point itself is in working order — if a hardware fault turns out to be the cause."
           }
         ]
       }
