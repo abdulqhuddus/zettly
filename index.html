@@ -1672,13 +1672,13 @@
   .privacy-modal-body .updated { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
   .liability-row {
     display: flex; align-items: center; gap: 0.6rem; margin: 0.8rem 0 1.1rem;
-    padding: 0.8rem 0.95rem; border: 2.5px solid #d97a06; border-radius: 12px;
+    padding: 0.8rem 0.95rem; border: none; border-radius: 12px;
     background: #ffe3ad;
-    transition: background 0.25s, border-color 0.25s, box-shadow 0.25s;
+    transition: background 0.25s, box-shadow 0.25s;
     animation: liabilityRowPulse 1.8s ease-in-out infinite;
   }
   .liability-row.confirmed {
-    border-color: #bfe8cf; background: #f1fbf5; animation: none; box-shadow: none;
+    background: #f1fbf5; animation: none; box-shadow: none;
   }
   @keyframes liabilityRowPulse {
     0%, 100% { box-shadow: 0 0 0 0 rgba(217, 122, 6, 0.45); }
