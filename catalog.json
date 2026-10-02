@@ -43695,6 +43695,378 @@
       }
     },
     {
+      "id": "datacenter",
+      "icon": "server",
+      "name": {
+        "de": "Rechenzentrum (Cloud / On-Premise)",
+        "en": "Data Center (Cloud / On-Premise)"
+      },
+      "desc": {
+        "de": "Virtualisierung, NAS, Infrastruktur",
+        "en": "Virtualization, NAS, infrastructure"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Welcher Service?",
+          "en": "Which service?"
+        },
+        "options": [
+          {
+            "id": "virtualization",
+            "name": {
+              "de": "Virtualisierung",
+              "en": "Virtualization"
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Welche Plattform?",
+                "en": "Which platform?"
+              },
+              "options": [
+                {
+                  "id": "proxmox",
+                  "name": {
+                    "de": "Proxmox",
+                    "en": "Proxmox"
+                  },
+                  "next": {
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
+                    },
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 149,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "fixIssue",
+                        "name": {
+                          "de": "Problem beheben",
+                          "en": "Fix an issue"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Problem beheben",
+                            "en": "Fix an issue"
+                          },
+                          "price": 99,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "maintenance",
+                        "name": {
+                          "de": "Wartung & Gesundheitscheck",
+                          "en": "Maintenance & health check"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Wartung & Gesundheitscheck",
+                            "en": "Maintenance & health check"
+                          },
+                          "price": 89,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "vmware",
+                  "name": {
+                    "de": "VMware",
+                    "en": "VMware"
+                  },
+                  "next": {
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
+                    },
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 149,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "fixIssue",
+                        "name": {
+                          "de": "Problem beheben",
+                          "en": "Fix an issue"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Problem beheben",
+                            "en": "Fix an issue"
+                          },
+                          "price": 99,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "maintenance",
+                        "name": {
+                          "de": "Wartung & Gesundheitscheck",
+                          "en": "Maintenance & health check"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Wartung & Gesundheitscheck",
+                            "en": "Maintenance & health check"
+                          },
+                          "price": 89,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "hypervisor",
+                  "name": {
+                    "de": "Hypervisor",
+                    "en": "Hypervisor"
+                  },
+                  "next": {
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
+                    },
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 149,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "fixIssue",
+                        "name": {
+                          "de": "Problem beheben",
+                          "en": "Fix an issue"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Problem beheben",
+                            "en": "Fix an issue"
+                          },
+                          "price": 99,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "maintenance",
+                        "name": {
+                          "de": "Wartung & Gesundheitscheck",
+                          "en": "Maintenance & health check"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Wartung & Gesundheitscheck",
+                            "en": "Maintenance & health check"
+                          },
+                          "price": 89,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "citrixXen",
+                  "name": {
+                    "de": "Citrix Xen",
+                    "en": "Citrix Xen"
+                  },
+                  "next": {
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
+                    },
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 149,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "fixIssue",
+                        "name": {
+                          "de": "Problem beheben",
+                          "en": "Fix an issue"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Problem beheben",
+                            "en": "Fix an issue"
+                          },
+                          "price": 99,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "maintenance",
+                        "name": {
+                          "de": "Wartung & Gesundheitscheck",
+                          "en": "Maintenance & health check"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Wartung & Gesundheitscheck",
+                            "en": "Maintenance & health check"
+                          },
+                          "price": 89,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "nas",
+            "name": {
+              "de": "NAS",
+              "en": "NAS"
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Worum geht es?",
+                "en": "What do you need?"
+              },
+              "options": [
+                {
+                  "id": "setupNew",
+                  "name": {
+                    "de": "Neueinrichtung",
+                    "en": "New setup"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Neueinrichtung",
+                      "en": "New setup"
+                    },
+                    "price": 99,
+                    "duration": 60,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "fixIssue",
+                  "name": {
+                    "de": "Zugriffsproblem beheben",
+                    "en": "Fix an access issue"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Zugriffsproblem beheben",
+                      "en": "Fix an access issue"
+                    },
+                    "price": 59,
+                    "duration": 30,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "expand",
+                  "name": {
+                    "de": "Speicher erweitern",
+                    "en": "Expand storage"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Speicher erweitern",
+                      "en": "Expand storage"
+                    },
+                    "price": 109,
+                    "duration": 60,
+                    "quote": false
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
       "id": "bizwifi",
       "icon": "wifi",
       "name": {
@@ -43924,8 +44296,8 @@
         "en": "Cloud Services"
       },
       "desc": {
-        "de": "Neues Tenant, Migration, Zugriffsprobleme",
-        "en": "New tenant, migration, access issues"
+        "de": "Office 365, E-Mail, SharePoint, Intune und mehr",
+        "en": "Office 365, Email, SharePoint, Intune and others"
       },
       "root": {
         "type": "branch",
@@ -43982,6 +44354,78 @@
               },
               "price": 69,
               "duration": 30,
+              "quote": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "security",
+      "icon": "shield",
+      "name": {
+        "de": "Backup-Lösungen",
+        "en": "Backup Solutions"
+      },
+      "desc": {
+        "de": "Virenschutz, Firewall, Backup-Strategie",
+        "en": "Antivirus, firewall, backup strategy"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Worum geht es?",
+          "en": "What do you need?"
+        },
+        "options": [
+          {
+            "id": "endpoint",
+            "name": {
+              "de": "Virenschutz/Endpoint-Schutz einrichten",
+              "en": "Set up antivirus/endpoint protection"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Endpoint-Schutz einrichten",
+                "en": "Set up endpoint protection"
+              },
+              "price": 89,
+              "duration": 45,
+              "quote": false
+            }
+          },
+          {
+            "id": "firewall",
+            "name": {
+              "de": "Firewall konfigurieren",
+              "en": "Configure firewall"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Firewall konfigurieren",
+                "en": "Configure firewall"
+              },
+              "price": 129,
+              "duration": 60,
+              "quote": false
+            }
+          },
+          {
+            "id": "backup",
+            "name": {
+              "de": "Backup einrichten & Notfallplan",
+              "en": "Set up backup & recovery plan"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Backup & Notfallplan",
+                "en": "Backup & recovery plan"
+              },
+              "price": 149,
+              "duration": 90,
               "quote": false
             }
           }
@@ -44152,78 +44596,6 @@
               "price": null,
               "duration": 90,
               "quote": true
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "security",
-      "icon": "shield",
-      "name": {
-        "de": "Backup-Lösungen",
-        "en": "Backup Solutions"
-      },
-      "desc": {
-        "de": "Virenschutz, Firewall, Backup-Strategie",
-        "en": "Antivirus, firewall, backup strategy"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Worum geht es?",
-          "en": "What do you need?"
-        },
-        "options": [
-          {
-            "id": "endpoint",
-            "name": {
-              "de": "Virenschutz/Endpoint-Schutz einrichten",
-              "en": "Set up antivirus/endpoint protection"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Endpoint-Schutz einrichten",
-                "en": "Set up endpoint protection"
-              },
-              "price": 89,
-              "duration": 45,
-              "quote": false
-            }
-          },
-          {
-            "id": "firewall",
-            "name": {
-              "de": "Firewall konfigurieren",
-              "en": "Configure firewall"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Firewall konfigurieren",
-                "en": "Configure firewall"
-              },
-              "price": 129,
-              "duration": 60,
-              "quote": false
-            }
-          },
-          {
-            "id": "backup",
-            "name": {
-              "de": "Backup einrichten & Notfallplan",
-              "en": "Set up backup & recovery plan"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Backup & Notfallplan",
-                "en": "Backup & recovery plan"
-              },
-              "price": 149,
-              "duration": 90,
-              "quote": false
             }
           }
         ]
@@ -44518,78 +44890,6 @@
                   }
                 }
               ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "biznas",
-      "icon": "nas",
-      "name": {
-        "de": "NAS / Business-Dateispeicher",
-        "en": "NAS / Business File Storage"
-      },
-      "desc": {
-        "de": "Einrichtung, Zugriff, Erweiterung",
-        "en": "Setup, access, expansion"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Worum geht es?",
-          "en": "What do you need?"
-        },
-        "options": [
-          {
-            "id": "setupNew",
-            "name": {
-              "de": "Neueinrichtung",
-              "en": "New setup"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Neueinrichtung",
-                "en": "New setup"
-              },
-              "price": 99,
-              "duration": 60,
-              "quote": false
-            }
-          },
-          {
-            "id": "fixIssue",
-            "name": {
-              "de": "Zugriffsproblem beheben",
-              "en": "Fix an access issue"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Zugriffsproblem beheben",
-                "en": "Fix an access issue"
-              },
-              "price": 59,
-              "duration": 30,
-              "quote": false
-            }
-          },
-          {
-            "id": "expand",
-            "name": {
-              "de": "Speicher erweitern",
-              "en": "Expand storage"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Speicher erweitern",
-                "en": "Expand storage"
-              },
-              "price": 109,
-              "duration": 60,
-              "quote": false
             }
           }
         ]
