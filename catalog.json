@@ -8301,9 +8301,13 @@
                 "de": "Neueinrichtung",
                 "en": "New setup"
               },
-              "price": 69,
+              "price": 39,
               "duration": 45,
               "quote": false
+            },
+            "desc": {
+              "de": "Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
+              "en": "Basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
             }
           },
           {
@@ -8321,6 +8325,10 @@
               "price": 49,
               "duration": 30,
               "quote": false
+            },
+            "desc": {
+              "de": "Wir diagnostizieren WAN, LAN, WLAN, DHCP und weitere mögliche Ursachen und beheben das Problem.",
+              "en": "We diagnose WAN, LAN, WiFi, DHCP and other possible causes, and fix the issue."
             }
           },
           {
@@ -8335,10 +8343,20 @@
                 "de": "Router ersetzen/aufrüsten",
                 "en": "Replace or upgrade router"
               },
-              "price": 89,
+              "price": 39,
               "duration": 45,
               "quote": false
+            },
+            "desc": {
+              "de": "Gleicher Leistungsumfang wie die Neueinrichtung, für Ihren Ersatz-Router.",
+              "en": "Same scope as a new setup, for your replacement router."
             }
+          }
+        ],
+        "notice": [
+          {
+            "de": "Hinweis: Die Hardware (Router) stellen Sie bereit — Zettly liefert keine Geräte. Die Neueinrichtung sowie der Ersatz-Router umfassen die Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
+            "en": "Please note: the router hardware is provided by you — Zettly doesn't supply devices. New setup and router replacement include basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
           }
         ]
       }
@@ -8373,9 +8391,13 @@
                 "de": "Neueinrichtung",
                 "en": "New setup"
               },
-              "price": 89,
+              "price": 39,
               "duration": 60,
               "quote": false
+            },
+            "desc": {
+              "de": "Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
+              "en": "Basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
             }
           },
           {
@@ -8390,9 +8412,13 @@
                 "de": "Empfangsproblem beheben",
                 "en": "Fix a coverage issue"
               },
-              "price": 59,
+              "price": 49,
               "duration": 30,
               "quote": false
+            },
+            "desc": {
+              "de": "Wir diagnostizieren WAN, LAN, WLAN, DHCP und weitere mögliche Ursachen und beheben das Problem.",
+              "en": "We diagnose WAN, LAN, WiFi, DHCP and other possible causes, and fix the issue."
             }
           },
           {
@@ -8412,77 +8438,11 @@
               "quote": false
             }
           }
-        ]
-      }
-    },
-    {
-      "id": "switches",
-      "icon": "switch",
-      "name": {
-        "de": "LAN-Switches",
-        "en": "LAN Switches"
-      },
-      "desc": {
-        "de": "Netzwerk erweitern und einrichten",
-        "en": "Expand and set up your network"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Worum geht es?",
-          "en": "What do you need?"
-        },
-        "options": [
+        ],
+        "notice": [
           {
-            "id": "setupNew",
-            "name": {
-              "de": "Neueinrichtung",
-              "en": "New setup"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Neueinrichtung",
-                "en": "New setup"
-              },
-              "price": 79,
-              "duration": 45,
-              "quote": false
-            }
-          },
-          {
-            "id": "fixIssue",
-            "name": {
-              "de": "Verbindung überprüfen",
-              "en": "Troubleshoot connectivity"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Verbindung überprüfen",
-                "en": "Troubleshoot connectivity"
-              },
-              "price": 49,
-              "duration": 30,
-              "quote": false
-            }
-          },
-          {
-            "id": "expand",
-            "name": {
-              "de": "Netzwerk erweitern",
-              "en": "Expand network"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Netzwerk erweitern",
-                "en": "Expand network"
-              },
-              "price": 99,
-              "duration": 60,
-              "quote": false
-            }
+            "de": "Hinweis: Die Hardware (Access Point) stellen Sie bereit — Zettly liefert keine Geräte. Die Neueinrichtung umfasst die Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
+            "en": "Please note: the access point hardware is provided by you — Zettly doesn't supply devices. New setup includes basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
           }
         ]
       }
@@ -9680,78 +9640,6 @@
       }
     },
     {
-      "id": "cabling",
-      "icon": "cabling",
-      "name": {
-        "de": "Netzwerkverkabelung & Anschlussdosen",
-        "en": "Ethernet Cabling & Wall Points"
-      },
-      "desc": {
-        "de": "Neuverlegung, Reparatur, Erweiterung",
-        "en": "New runs, repair, expansion"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Worum geht es?",
-          "en": "What do you need?"
-        },
-        "options": [
-          {
-            "id": "setupNew",
-            "name": {
-              "de": "Neue Verkabelung verlegen",
-              "en": "New cabling installation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Neue Verkabelung verlegen",
-                "en": "New cabling installation"
-              },
-              "price": 99,
-              "duration": 60,
-              "quote": false
-            }
-          },
-          {
-            "id": "fixIssue",
-            "name": {
-              "de": "Bestehenden Anschluss reparieren",
-              "en": "Fix an existing point"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Bestehenden Anschluss reparieren",
-                "en": "Fix an existing point"
-              },
-              "price": 49,
-              "duration": 30,
-              "quote": false
-            }
-          },
-          {
-            "id": "extend",
-            "name": {
-              "de": "Netzwerk erweitern",
-              "en": "Extend network cabling"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Netzwerk erweitern",
-                "en": "Extend network cabling"
-              },
-              "price": 89,
-              "duration": 45,
-              "quote": false
-            }
-          }
-        ]
-      }
-    },
-    {
       "id": "license",
       "icon": "license",
       "name": {
@@ -9835,275 +9723,6 @@
               "price": 29,
               "duration": 20,
               "quote": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "datarecovery",
-      "icon": "recovery",
-      "name": {
-        "de": "Datenrettung",
-        "en": "Data Recovery"
-      },
-      "desc": {
-        "de": "Diagnose vor Ort, individuelles Angebot",
-        "en": "On-site diagnosis, custom quote"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Welches Gerät betrifft es?",
-          "en": "Which device is affected?"
-        },
-        "options": [
-          {
-            "id": "computer",
-            "name": {
-              "de": "Computer/Laptop",
-              "en": "Computer/Laptop"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "external",
-            "name": {
-              "de": "Externe Festplatte",
-              "en": "External drive"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "mobile",
-            "name": {
-              "de": "Handy/Tablet",
-              "en": "Phone/Tablet"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "nas",
-            "name": {
-              "de": "NAS",
-              "en": "NAS"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
             }
           }
         ]
