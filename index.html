@@ -924,6 +924,27 @@
 
   .stage { transition: max-width 0.3s ease; }
   .stage.wide { max-width: 1180px; }
+  .stage.wide-details { max-width: 960px; }
+
+  /* Step 5 (details) is the longest single-column form in the whole
+     wizard - booking summary, liability box, name/email/phone, address,
+     notes, privacy consent - which made it feel endless on desktop even
+     though there's plenty of horizontal room to spare. On wide screens,
+     split it into two half-width columns instead: the summary/liability
+     recap on the left, the form itself on the right. Collapses back to
+     a single stacked column below 880px, where there isn't room for two
+     genuinely usable halves. */
+  .details-grid { display: block; }
+  @media (min-width: 881px) {
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 2.5rem;
+      align-items: start;
+    }
+    .details-col-left { grid-column: 1; }
+    .details-col-right { grid-column: 2; }
+  }
 
   .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .path-grid.audience-grid { grid-template-columns: 1fr 1fr; }
@@ -1967,60 +1988,66 @@
   <div class="step" data-step="5">
     <h1 data-i18n="step3Title">Ihre Angaben</h1>
     <p class="subtitle" data-i18n="step3Sub">Die Bestätigung senden wir an diese Adresse.</p>
-    <div class="summary" id="summary"></div>
-    <div class="liability-row" id="liability-row">
-      <button type="button" class="liability-info-btn" id="liability-info-btn" aria-label="Haftungshinweise anzeigen" data-i18n-aria="liabilityInfoAria">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="12" cy="12" r="9.25" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
-      </button>
-      <span class="liability-row-label" data-i18n="liabilityRowLabel">Haftungshinweise</span>
-      <span class="liability-status-pill" id="liability-status-pill" data-i18n="liabilityNotConfirmed">Noch nicht bestätigt</span>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label data-i18n="firstName">Vorname</label>
-        <input type="text" id="f-firstname" placeholder="Max" />
-      </div>
-      <div class="field">
-        <label data-i18n="lastName">Nachname</label>
-        <input type="text" id="f-lastname" placeholder="Mustermann" />
-      </div>
-    </div>
-    <div class="field">
-      <label data-i18n="email">E-Mail</label>
-      <input type="email" id="f-email" placeholder="max@beispiel.de" />
-    </div>
-    <div class="field">
-      <label data-i18n="phone">Telefon (optional)</label>
-      <input type="tel" id="f-phone" placeholder="+49 ..." />
-    </div>
-    <label class="consent-check" id="phone-consultation-field" style="display:none;">
-      <input type="checkbox" id="f-phone-consultation" />
-      <span data-i18n="phoneConsultationLabel">Ich möchte diese Beratung lieber telefonisch statt vor Ort.</span>
-    </label>
-    <div class="address-section">
-      <div class="address-section-head">
-        <span class="address-section-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
-        </span>
-        <div>
-          <div class="address-section-title" data-i18n="addressTitle">Adresse für den Vor-Ort-Termin</div>
-          <div class="address-section-sub" id="address-section-sub-known"></div>
+    <div class="details-grid">
+      <div class="details-col-left">
+        <div class="summary" id="summary"></div>
+        <div class="liability-row" id="liability-row">
+          <button type="button" class="liability-info-btn" id="liability-info-btn" aria-label="Haftungshinweise anzeigen" data-i18n-aria="liabilityInfoAria">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="12" cy="12" r="9.25" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
+          </button>
+          <span class="liability-row-label" data-i18n="liabilityRowLabel">Haftungshinweise</span>
+          <span class="liability-status-pill" id="liability-status-pill" data-i18n="liabilityNotConfirmed">Noch nicht bestätigt</span>
         </div>
       </div>
-      <div class="field">
-        <label data-i18n="addressStreet">Straße &amp; Hausnummer</label>
-        <input type="text" id="f-street" placeholder="Musterstraße 12" />
+      <div class="details-col-right">
+        <div class="field-row">
+          <div class="field">
+            <label data-i18n="firstName">Vorname</label>
+            <input type="text" id="f-firstname" placeholder="Max" />
+          </div>
+          <div class="field">
+            <label data-i18n="lastName">Nachname</label>
+            <input type="text" id="f-lastname" placeholder="Mustermann" />
+          </div>
+        </div>
+        <div class="field">
+          <label data-i18n="email">E-Mail</label>
+          <input type="email" id="f-email" placeholder="max@beispiel.de" />
+        </div>
+        <div class="field">
+          <label data-i18n="phone">Telefon (optional)</label>
+          <input type="tel" id="f-phone" placeholder="+49 ..." />
+        </div>
+        <label class="consent-check" id="phone-consultation-field" style="display:none;">
+          <input type="checkbox" id="f-phone-consultation" />
+          <span data-i18n="phoneConsultationLabel">Ich möchte diese Beratung lieber telefonisch statt vor Ort.</span>
+        </label>
+        <div class="address-section">
+          <div class="address-section-head">
+            <span class="address-section-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
+            </span>
+            <div>
+              <div class="address-section-title" data-i18n="addressTitle">Adresse für den Vor-Ort-Termin</div>
+              <div class="address-section-sub" id="address-section-sub-known"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label data-i18n="addressStreet">Straße &amp; Hausnummer</label>
+            <input type="text" id="f-street" placeholder="Musterstraße 12" />
+          </div>
+        </div>
+        <div class="field">
+          <label data-i18n="notes">Was sollten wir wissen? (optional)</label>
+          <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens" required></textarea>
+        </div>
+        <label class="liability-row privacy-consent-row" id="privacy-row" for="f-consent">
+          <input type="checkbox" id="f-consent" class="privacy-row-checkbox" />
+          <span class="liability-row-label" data-i18n="consentLabel">Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
+          <span class="liability-status-pill" id="privacy-status-pill" data-i18n="liabilityNotConfirmed">Noch nicht bestätigt</span>
+        </label>
       </div>
     </div>
-    <div class="field">
-      <label data-i18n="notes">Was sollten wir wissen? (optional)</label>
-      <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens" required></textarea>
-    </div>
-    <label class="liability-row privacy-consent-row" id="privacy-row" for="f-consent">
-      <input type="checkbox" id="f-consent" class="privacy-row-checkbox" />
-      <span class="liability-row-label" data-i18n="consentLabel">Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
-      <span class="liability-status-pill" id="privacy-status-pill" data-i18n="liabilityNotConfirmed">Noch nicht bestätigt</span>
-    </label>
     <p class="error-msg" id="form-error"></p>
     <div class="actions">
       <button class="btn btn-ghost" data-action="back" data-i18n="back">Zurück</button>
@@ -2679,6 +2706,7 @@ function showStep(n) {
     el.classList.toggle("visible", el.dataset.step == n);
   });
   document.querySelector(".stage").classList.toggle("wide", n === 1);
+  document.querySelector(".stage").classList.toggle("wide-details", n === 5);
   document.querySelector(".trust-strip").classList.toggle("wide", n === 1);
   document.getElementById("how-it-works").classList.toggle("collapsed", n !== 0);
   document.getElementById("cta-banner").classList.toggle("collapsed", n !== 0);
