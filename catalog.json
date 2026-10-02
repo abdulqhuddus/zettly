@@ -8275,8 +8275,8 @@
               "en": "Stick Computer"
             },
             "desc": {
-              "de": "Kompakter Mini-Computer, der direkt am Bildschirm steckt.",
-              "en": "A compact mini computer that plugs directly into a display."
+              "de": "Kompakter Mini-Computer, der direkt in einen Fernseher oder Bildschirm gesteckt wird.",
+              "en": "A compact mini computer that plugs directly into a TV or Display."
             },
             "next": {
               "type": "branch",
@@ -10009,7 +10009,7 @@
                 "de": "Batteriewechsel",
                 "en": "Battery replacement"
               },
-              "price": 39,
+              "price": 79,
               "duration": 30,
               "quote": false
             }

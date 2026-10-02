@@ -188,6 +188,7 @@
     background: linear-gradient(120deg, var(--brand-blue), var(--accent) 55%, var(--pink));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  .site-tagline .zettly-word { font-size: 1.2em; }
   @media (max-width: 400px) {
     .site-tagline { font-size: 0.9rem; margin-bottom: 1.1rem; padding: 0 0.6rem; white-space: nowrap; letter-spacing: 0; }
     .site-tagline .grad { letter-spacing: 0; }
@@ -750,7 +751,8 @@
   .site-footer .footer-col { min-width: 150px; display: flex; flex-direction: column; gap: 0.65rem; }
   .site-footer .footer-col.footer-about { flex: 1 1 260px; max-width: 320px; }
   .site-footer .footer-brand-mark { width: 44px; height: 44px; margin-bottom: 0.8rem; }
-  .site-footer .footer-tagline { color: var(--muted); font-size: 0.96rem; line-height: 1.65; max-width: 300px; }
+  .site-footer .footer-tagline { color: var(--muted); font-size: 0.85rem; line-height: 1.65; max-width: 300px; }
+  .site-footer .footer-tagline .zettly-word { font-size: 1.15em; }
   .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.9rem; font-weight: 700; }
   .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item {
     display: flex; align-items: center; color: var(--ink); text-decoration: none; font-size: 0.85rem;
@@ -1960,7 +1962,7 @@
         </div>
         <div class="body">
           <h3 data-i18n="audienceBizTitle">Unternehmen</h3>
-          <p data-i18n="audienceBizDesc">Kleine & mittlere Unternehmen.</p>
+          <p data-i18n="audienceBizDesc">Kleine, mittlere & Großunternehmen.</p>
         </div>
         <span class="tap-hint">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" fill="#7C3AED"/><circle cx="12" cy="12" r="7" stroke="#7C3AED" stroke-width="1.4" fill="none" opacity="0.55"/><circle cx="12" cy="12" r="10.5" stroke="#7C3AED" stroke-width="1.2" fill="none" opacity="0.28"/></svg>
@@ -2323,7 +2325,7 @@ const I18N = {
     audienceHomeTitle: "Zuhause",
     audienceHomeDesc: "Privatpersonen & Homeoffice.",
     audienceBizTitle: "Unternehmen",
-    audienceBizDesc: "Kleine & mittlere Unternehmen.",
+    audienceBizDesc: "Kleine, mittlere & Großunternehmen.",
     tapToSelect: "Antippen zum Auswählen",
     audiencePausedNote: "Aktuell keine Buchungen möglich",
     step0Title: "Wobei können wir helfen?",
@@ -2457,6 +2459,10 @@ const I18N = {
     liabilityPoint8: "Wir gehen sorgfältig mit jedem Gerät um, können jedoch nicht für bereits bestehende Abnutzung, Schäden oder Defekte verantwortlich gemacht werden, die vor Beginn unserer Leistung vorhanden waren. Wo relevant, besprechen wir den Zustand des Geräts vorab gemeinsam mit Ihnen.",
     liabilityPoint9Title: "Unlizenzierte/raubkopierte Software",
     liabilityPoint9: "Wir installieren keine unlizenzierte oder raubkopierte Software und bieten dafür auch keinen Support. Sollten wir solche Software auf Ihrem Gerät feststellen, informieren wir Sie darüber.",
+    liabilityPoint10Title: "Verkabelung und bauliche Arbeiten",
+    liabilityPoint10: "Unsere Leistungen umfassen die Konfiguration und den Anschluss von Geräten, jedoch keine Neuverkabelung, Bohrarbeiten oder sonstige bauliche Maßnahmen, sofern für die gebuchte Leistung nicht ausdrücklich etwas anderes angegeben ist.",
+    liabilityPoint11Title: "Netzwerk- und WLAN-Leistung",
+    liabilityPoint11: "Die Reichweite und Leistung von WLAN-Geräten, kabellosen Kameras, Smart-Home-Geräten und Sprachassistenten hängt von Ihrer vorhandenen Internetverbindung und den baulichen Gegebenheiten vor Ort ab und kann von uns nicht garantiert werden.",
     liabilityAcceptLabel: "Ich akzeptiere",
     liabilityAcceptClose: "Akzeptieren & schließen",
     liabilityConfirmed: "Bestätigt",
@@ -2495,7 +2501,7 @@ const I18N = {
     audienceHomeTitle: "Home",
     audienceHomeDesc: "Individuals & home offices.",
     audienceBizTitle: "Business",
-    audienceBizDesc: "Small & medium businesses.",
+    audienceBizDesc: "Small, medium & enterprise businesses.",
     tapToSelect: "Tap to select",
     audiencePausedNote: "Not accepting bookings right now",
     step0Title: "What brings you here today?",
@@ -2629,6 +2635,10 @@ const I18N = {
     liabilityPoint8: "We handle every device with care, but we're not responsible for pre-existing wear, damage, or faults that were already present before our service began. Where relevant, we'll go over the device's condition together with you beforehand.",
     liabilityPoint9Title: "Unlicensed/pirated software",
     liabilityPoint9: "We don't install or provide support for unlicensed or pirated software. If any is found on your device, we'll let you know.",
+    liabilityPoint10Title: "Cabling and structural work",
+    liabilityPoint10: "Our services cover configuring and connecting devices, not new cabling, drilling, or other structural work, unless explicitly stated for the booked service.",
+    liabilityPoint11Title: "Network and WiFi performance",
+    liabilityPoint11: "The range and performance of WiFi devices, wireless cameras, smart home devices, and voice assistants depend on your existing internet connection and on-site conditions, and cannot be guaranteed by us.",
     liabilityAcceptLabel: "I accept",
     liabilityAcceptClose: "Accept & close",
     liabilityConfirmed: "Confirmed",
@@ -3663,7 +3673,7 @@ document.getElementById("f-consent").addEventListener("change", updateConsentGat
 function renderLiabilityPoints() {
   const list = document.getElementById("liability-points");
   if (!list) return;
-  const points = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
+  const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
   list.innerHTML = points;
 }
 // Shared "confirmation row" pill renderer: both the liability-notices row
