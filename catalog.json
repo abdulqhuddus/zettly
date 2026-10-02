@@ -10391,8 +10391,8 @@
       "id": "computers",
       "icon": "computer",
       "name": {
-        "de": "Computer & Laptops (Flotte)",
-        "en": "Computers & Laptops (Fleet)"
+        "de": "Workstations",
+        "en": "Workstations"
       },
       "desc": {
         "de": "Reparatur, Einrichtung, Software & Hardware",
@@ -43476,8 +43476,8 @@
       "id": "servers",
       "icon": "server",
       "name": {
-        "de": "Server & Business-Netzwerke",
-        "en": "Servers & Business Networking"
+        "de": "Server und Unternehmensdienste",
+        "en": "Servers and Enterprise Services"
       },
       "desc": {
         "de": "Einrichtung, Wartung, Fehlerbehebung",
@@ -43698,8 +43698,8 @@
       "id": "bizwifi",
       "icon": "wifi",
       "name": {
-        "de": "Business-WLAN & Netzwerke",
-        "en": "Business WiFi & Networking"
+        "de": "Netzwerke, Sicherheit und WLAN",
+        "en": "Networking, Security and Wireless Networks"
       },
       "desc": {
         "de": "Router, Access Points, Switches",
@@ -43920,8 +43920,8 @@
       "id": "m365",
       "icon": "office365",
       "name": {
-        "de": "Office 365 & E-Mail-Einrichtung",
-        "en": "Office 365 & Email Setup"
+        "de": "Cloud-Services",
+        "en": "Cloud Services"
       },
       "desc": {
         "de": "Neues Tenant, Migration, Zugriffsprobleme",
@@ -44161,8 +44161,8 @@
       "id": "security",
       "icon": "shield",
       "name": {
-        "de": "Cybersicherheit & Backup",
-        "en": "Cybersecurity & Backup"
+        "de": "Backup-Lösungen",
+        "en": "Backup Solutions"
       },
       "desc": {
         "de": "Virenschutz, Firewall, Backup-Strategie",
@@ -44599,152 +44599,69 @@
       "id": "bizcameras",
       "icon": "camera",
       "name": {
-        "de": "Überwachungskameras & Zutrittskontrolle",
-        "en": "Security Cameras & Access Control"
+        "de": "Überwachungskameras",
+        "en": "Security Cameras"
       },
       "desc": {
-        "de": "Kameras, Türzutrittssysteme",
-        "en": "Cameras, door access systems"
+        "de": "Einrichtung, Anbindung, Erweiterung",
+        "en": "Setup, connectivity, expansion"
       },
       "root": {
         "type": "branch",
         "prompt": {
-          "de": "Welches Gerät?",
-          "en": "Which device?"
+          "de": "Worum geht es?",
+          "en": "What do you need?"
         },
         "options": [
           {
-            "id": "camera",
+            "id": "setupNew",
             "name": {
-              "de": "Kamera",
-              "en": "Camera"
+              "de": "Neueinrichtung",
+              "en": "New setup"
             },
             "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
+              "type": "leaf",
+              "name": {
+                "de": "Neueinrichtung",
+                "en": "New setup"
               },
-              "options": [
-                {
-                  "id": "setupNew",
-                  "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 59,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "addMore",
-                  "name": {
-                    "de": "Weitere Geräte ergänzen",
-                    "en": "Add more devices"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Weitere Geräte ergänzen",
-                      "en": "Add more devices"
-                    },
-                    "price": 109,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ]
+              "price": 99,
+              "duration": 60,
+              "quote": false
             }
           },
           {
-            "id": "doorAccess",
+            "id": "fixIssue",
             "name": {
-              "de": "Türzutrittssystem",
-              "en": "Door access system"
+              "de": "Problem beheben",
+              "en": "Fix an issue"
             },
             "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
+              "type": "leaf",
+              "name": {
+                "de": "Problem beheben",
+                "en": "Fix an issue"
               },
-              "options": [
-                {
-                  "id": "setupNew",
-                  "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 59,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "addMore",
-                  "name": {
-                    "de": "Weitere Geräte ergänzen",
-                    "en": "Add more devices"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Weitere Geräte ergänzen",
-                      "en": "Add more devices"
-                    },
-                    "price": 109,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ]
+              "price": 59,
+              "duration": 30,
+              "quote": false
+            }
+          },
+          {
+            "id": "addMore",
+            "name": {
+              "de": "Weitere Geräte ergänzen",
+              "en": "Add more devices"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Weitere Geräte ergänzen",
+                "en": "Add more devices"
+              },
+              "price": 109,
+              "duration": 60,
+              "quote": false
             }
           }
         ]
@@ -44754,8 +44671,8 @@
       "id": "onboarding",
       "icon": "user",
       "name": {
-        "de": "Neue-Mitarbeiter-Einrichtung",
-        "en": "New Employee Onboarding"
+        "de": "Mitarbeiter-Onboarding und -Offboarding",
+        "en": "Employee Onboarding and Offboarding"
       },
       "desc": {
         "de": "Geräte, Konten, Software: als Paket",
@@ -44817,564 +44734,6 @@
               "price": 49,
               "duration": 30,
               "quote": false
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "bizlicense",
-      "icon": "license",
-      "name": {
-        "de": "Lizenzkauf (Business)",
-        "en": "License Purchase (Business)"
-      },
-      "desc": {
-        "de": "Windows Server, Microsoft 365, Antivirus",
-        "en": "Windows Server, Microsoft 365, antivirus"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Welche Lizenz benötigen Sie?",
-          "en": "Which license do you need?"
-        },
-        "options": [
-          {
-            "id": "winserver",
-            "name": {
-              "de": "Windows Server",
-              "en": "Windows Server"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Wie viele Lizenzen/Nutzer?",
-                "en": "How many licenses/seats?"
-              },
-              "options": [
-                {
-                  "id": "small",
-                  "name": {
-                    "de": "1–5",
-                    "en": "1-5"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "medium",
-                  "name": {
-                    "de": "6–20",
-                    "en": "6-20"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "large",
-                  "name": {
-                    "de": "21+",
-                    "en": "21+"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "m365biz",
-            "name": {
-              "de": "Microsoft 365 Business",
-              "en": "Microsoft 365 Business"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Wie viele Lizenzen/Nutzer?",
-                "en": "How many licenses/seats?"
-              },
-              "options": [
-                {
-                  "id": "small",
-                  "name": {
-                    "de": "1–5",
-                    "en": "1-5"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "medium",
-                  "name": {
-                    "de": "6–20",
-                    "en": "6-20"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "large",
-                  "name": {
-                    "de": "21+",
-                    "en": "21+"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "antivirus",
-            "name": {
-              "de": "Antivirus",
-              "en": "Antivirus"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Wie viele Lizenzen/Nutzer?",
-                "en": "How many licenses/seats?"
-              },
-              "options": [
-                {
-                  "id": "small",
-                  "name": {
-                    "de": "1–5",
-                    "en": "1-5"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "medium",
-                  "name": {
-                    "de": "6–20",
-                    "en": "6-20"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "large",
-                  "name": {
-                    "de": "21+",
-                    "en": "21+"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "other",
-            "name": {
-              "de": "Andere Software",
-              "en": "Other software"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Wie viele Lizenzen/Nutzer?",
-                "en": "How many licenses/seats?"
-              },
-              "options": [
-                {
-                  "id": "small",
-                  "name": {
-                    "de": "1–5",
-                    "en": "1-5"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "medium",
-                  "name": {
-                    "de": "6–20",
-                    "en": "6-20"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "large",
-                  "name": {
-                    "de": "21+",
-                    "en": "21+"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Lizenzkauf & Aktivierung",
-                      "en": "License purchase & activation"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "bizdatarecovery",
-      "icon": "recovery",
-      "name": {
-        "de": "Datenrettung (Business)",
-        "en": "Data Recovery (Business)"
-      },
-      "desc": {
-        "de": "Diagnose vor Ort, individuelles Angebot",
-        "en": "On-site diagnosis, custom quote"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Welches Gerät betrifft es?",
-          "en": "Which device is affected?"
-        },
-        "options": [
-          {
-            "id": "computer",
-            "name": {
-              "de": "Computer/Laptop",
-              "en": "Computer/Laptop"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "server",
-            "name": {
-              "de": "Server",
-              "en": "Server"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "external",
-            "name": {
-              "de": "Externe Festplatte",
-              "en": "External drive"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "id": "nas",
-            "name": {
-              "de": "NAS",
-              "en": "NAS"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Was ist passiert?",
-                "en": "What happened?"
-              },
-              "sub": {
-                "de": "Der genaue Preis wird nach der Diagnose mitgeteilt.",
-                "en": "The exact price is quoted after diagnosis."
-              },
-              "options": [
-                {
-                  "id": "deleted",
-                  "name": {
-                    "de": "Versehentlich gelöscht",
-                    "en": "Accidentally deleted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "failure",
-                  "name": {
-                    "de": "Laufwerk defekt",
-                    "en": "Drive failure"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                },
-                {
-                  "id": "corrupted",
-                  "name": {
-                    "de": "Laufwerk beschädigt/korrupt",
-                    "en": "Drive corrupted"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": null,
-                    "price": null,
-                    "duration": 45,
-                    "quote": true
-                  }
-                }
-              ]
             }
           }
         ]
