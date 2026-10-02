@@ -1691,6 +1691,18 @@
     .privacy-modal-head { padding: 1rem 1.1rem; }
     .privacy-modal-body { padding: 0.2rem 1.1rem 1.2rem; }
   }
+  /* The liability/privacy status pill is a fixed-width, non-wrapping badge
+     (white-space: nowrap), so on narrow screens there isn't room for the
+     icon/checkbox + label + pill side by side — without this, the pill
+     simply overflowed the row and the viewport instead of shrinking.
+     Wrapping the row lets the pill drop to its own full-width line instead. */
+  @media (max-width: 560px) {
+    .liability-row { flex-wrap: wrap; row-gap: 0.5rem; }
+    .liability-row .liability-status-pill {
+      flex: 1 1 100%;
+      justify-content: center;
+    }
+  }
 </style>
 </head>
 <body class="no-progress">
