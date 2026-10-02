@@ -8357,6 +8357,10 @@
           {
             "de": "Hinweis: Die Hardware (Router) stellen Sie bereit — Zettly liefert keine Geräte. Die Neueinrichtung sowie der Ersatz-Router umfassen die Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
             "en": "Please note: the router hardware is provided by you — Zettly doesn't supply devices. New setup and router replacement include basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
+          },
+          {
+            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass der Router selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen, wird dieser gesondert behandelt.",
+            "en": "As with any repair, our fix assumes the router itself is in working order — if a hardware fault turns out to be the cause, that's handled separately."
           }
         ]
       }
@@ -8396,8 +8400,8 @@
               "quote": false
             },
             "desc": {
-              "de": "Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
-              "en": "Basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
+              "de": "Access Point in Ihr bestehendes Netzwerk einbinden.",
+              "en": "Add an access point to your existing network."
             }
           },
           {
@@ -8417,32 +8421,40 @@
               "quote": false
             },
             "desc": {
-              "de": "Wir diagnostizieren WAN, LAN, WLAN, DHCP und weitere mögliche Ursachen und beheben das Problem.",
-              "en": "We diagnose WAN, LAN, WiFi, DHCP and other possible causes, and fix the issue."
+              "de": "Wir prüfen Signalstärke, Kanalüberschneidungen, Platzierung und weitere mögliche Ursachen und beheben das Problem.",
+              "en": "We check signal strength, channel interference, placement and other possible causes, and fix the issue."
             }
           },
           {
-            "id": "addMore",
+            "id": "extenderSetup",
             "name": {
-              "de": "Weitere Access Points ergänzen",
-              "en": "Add more access points"
+              "de": "WLAN-Extender einrichten",
+              "en": "WiFi Extender Setup"
             },
             "next": {
               "type": "leaf",
               "name": {
-                "de": "Weitere Access Points ergänzen",
-                "en": "Add more access points"
+                "de": "WLAN-Extender einrichten",
+                "en": "WiFi Extender Setup"
               },
               "price": 99,
               "duration": 45,
               "quote": false
+            },
+            "desc": {
+              "de": "Einrichtung zur Erweiterung der WLAN-Abdeckung.",
+              "en": "Configure to extend WiFi coverage."
             }
           }
         ],
         "notice": [
           {
-            "de": "Hinweis: Die Hardware (Access Point) stellen Sie bereit — Zettly liefert keine Geräte. Die Neueinrichtung umfasst die Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
-            "en": "Please note: the access point hardware is provided by you — Zettly doesn't supply devices. New setup includes basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
+            "de": "Hinweis: Die Hardware (Access Point) stellen Sie bereit — Zettly liefert keine Geräte.",
+            "en": "Please note: the access point hardware is provided by you — Zettly doesn't supply devices."
+          },
+          {
+            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass der Access Point selbst funktionstüchtig ist. Sollte sich doch ein Hardwaredefekt als Ursache herausstellen, wird dieser gesondert behandelt.",
+            "en": "As with any repair, our fix assumes the access point itself is in working order — if a hardware fault turns out to be the cause, that's handled separately."
           }
         ]
       }

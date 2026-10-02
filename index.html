@@ -922,6 +922,28 @@
   .step[data-step="0"] h1,
   .step[data-step="0"] .subtitle { text-align: center; }
 
+  /* Running breadcrumb trail (audience / category / branch choices so
+     far), shown above the step content from the moment a category is
+     picked onward. Plain inline text rather than boxed pills - pills of
+     uneven width wrapped unpredictably (see the step-5 summary redesign),
+     while plain text reflows normally like any other wrapped sentence.
+     The current/deepest choice is set apart in the brand color so it
+     stays the obvious "you are here" marker as the trail grows. */
+  .progress-crumbs {
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 1.1rem;
+    line-height: 1.5;
+  }
+  .progress-crumbs.visible { display: flex; }
+  .progress-crumbs .pc-sep { color: #cfc9e2; flex: 0 0 auto; }
+  .progress-crumbs .pc-current { color: var(--accent); font-weight: 800; }
+
   .stage { transition: max-width 0.3s ease; }
   .stage.wide { max-width: 1180px; }
   .stage.wide-details { max-width: 960px; }
@@ -1882,6 +1904,14 @@
     <span class="cta-sub" data-i18n="ctaBannerSub">In nur 2 Minuten online: schnell &amp; unkompliziert.</span>
   </div>
 
+  <!-- Running "where am I" trail: audience, category, and every branch
+       choice made so far, kept visible at the top from the moment a
+       category is picked through to the final review, with the most
+       recent/current choice highlighted - so the selection never gets
+       lost while scrolling through later steps. Hidden on step 0 (nothing
+       picked yet) and step 6 (the booking is already done). -->
+  <div class="progress-crumbs" id="progress-crumbs"></div>
+
   <!-- Step 0: home or business -->
   <div class="step visible" data-step="0">
     <h1 data-i18n="step00Title">Für Zuhause oder Ihr Unternehmen?</h1>
@@ -2671,6 +2701,7 @@ function setLang(newLang) {
   if (state.date) renderSlots();
   if (document.querySelector('.step[data-step="4"]').classList.contains("visible")) renderCommuteResult();
   if (document.querySelector('.step[data-step="5"]').classList.contains("visible")) { updateAddressKnownLine(); renderSummary("summary"); }
+  renderProgressCrumbs();
   if (typeof updateServiceAreaPopup === "function") updateServiceAreaPopup();
 }
 
@@ -2700,11 +2731,33 @@ function applyServiceAreaText() {
   document.getElementById("service-area-explainer").textContent = t(areaExplainerKey);
 }
 
+// Builds the same audience/category/branch-choice trail renderSummary()
+// uses for the step-5 review, but as a compact single-line header shown
+// from the moment a category is picked (step 1) through to the final
+// review (step 5), so the selection stays visible while stepping through
+// the date/time, location and details screens in between.
+function renderProgressCrumbs() {
+  const el = document.getElementById("progress-crumbs");
+  if (!el) return;
+  const show = !!state.category && currentStepN >= 1 && currentStepN <= 5;
+  el.classList.toggle("visible", show);
+  if (!show) return;
+  const audienceLabel = state.audience === "business" ? t("audienceBizTitle") : t("audienceHomeTitle");
+  const crumbs = [audienceLabel, state.category.name[lang]];
+  state.treePath.forEach(e => crumbs.push(e.choiceLabel[lang]));
+  const sep = '<span class="pc-sep">&rsaquo;</span>';
+  el.innerHTML = crumbs.map((c, i) => {
+    const isLast = i === crumbs.length - 1;
+    return `${i > 0 ? sep : ""}<span${isLast ? ' class="pc-current"' : ""}>${c}</span>`;
+  }).join("");
+}
+
 function showStep(n) {
   currentStepN = n;
   document.querySelectorAll(".step").forEach(el => {
     el.classList.toggle("visible", el.dataset.step == n);
   });
+  renderProgressCrumbs();
   document.querySelector(".stage").classList.toggle("wide", n === 1);
   document.querySelector(".stage").classList.toggle("wide-details", n === 5);
   document.querySelector(".trust-strip").classList.toggle("wide", n === 1);
@@ -3092,6 +3145,7 @@ function renderTreeExplainer(node) {
 
 function renderTreeStep() {
   const node = state.currentNode;
+  renderProgressCrumbs();
   document.getElementById("tree-title").textContent = (node.prompt && node.prompt[lang]) || state.category.name[lang];
   document.getElementById("tree-sub").textContent = (node.sub && node.sub[lang]) || "";
   renderTreeNotices(node);
