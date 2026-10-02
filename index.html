@@ -574,22 +574,39 @@
   }
   /* The Munich marker gets its own slow "home base" pulse, plus an
      expanding, fading halo ring that visually kicks off the ripple above.
-     Leaflet renders a circleMarker as a plain SVG <circle> (cx/cy/r
-     attributes), so the "grow from the middle" effect is done by
-     animating `r` directly instead of `transform: scale()` with
-     `transform-box: fill-box` — the previous approach. fill-box's
-     bounding-box math for an element nested inside Leaflet's own
-     CSS-transformed panning <g> is inconsistently supported across mobile
-     browser engines, which was silently dropping the animation (no error,
-     it just never visibly grew) on phones while desktop browsers rendered
-     it fine. Animating `r`/opacity needs no bounding-box computation at
-     all, so it's not exposed to that gap. */
-  #service-area-map .hq-marker { animation: hqDotPulse 2.4s ease-in-out infinite; }
-  @keyframes hqDotPulse { 0%, 100% { r: 8; } 50% { r: 10; } }
-  #service-area-map .hq-ping { animation: hqPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite; }
+     This used to be an L.circleMarker with CSS animating the SVG `r`
+     attribute directly, on the assumption that Leaflet renders a
+     circleMarker as a real <circle> (cx/cy/r). It doesn't: Leaflet's SVG
+     renderer draws every circleMarker as a <path> with an arc "d" string,
+     the same as the customer marker issue noted below, so there was no
+     `r` attribute for the animation to touch and the dot never visibly
+     pulsed. Fixed the same way as the customer marker: a plain HTML
+     divIcon with transform/opacity animations, which apply normally. */
+  .hq-location-icon { pointer-events: none; }
+  .hq-location-icon .hq-dot,
+  .hq-location-icon .hq-dot-ping {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border-radius: 50%;
+  }
+  .hq-location-icon .hq-dot {
+    background: #111114;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(17,17,20,0.35);
+    animation: hqDotPulse 2.4s ease-in-out infinite;
+  }
+  .hq-location-icon .hq-dot-ping {
+    background: #111114;
+    animation: hqPing 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  }
+  @keyframes hqDotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
   @keyframes hqPing {
-    0% { r: 4.8; stroke-opacity: 0.7; fill-opacity: 0.35; }
-    100% { r: 25.6; stroke-opacity: 0; fill-opacity: 0; }
+    0% { transform: scale(0.6); opacity: 0.6; }
+    100% { transform: scale(3.2); opacity: 0; }
   }
   /* The customer's purple marker is a plain HTML divIcon, not an SVG
      circleMarker: Leaflet's SVG renderer draws a circleMarker as a <path>
@@ -654,9 +671,9 @@
   .customer-vehicle-icon svg { display: block; overflow: visible; }
   @media (prefers-reduced-motion: reduce) {
     #service-area-map .zone-ring,
-    #service-area-map .hq-marker,
-    #service-area-map .hq-ping,
     #service-area-map .customer-route-line,
+    .hq-location-icon .hq-dot,
+    .hq-location-icon .hq-dot-ping,
     .customer-location-icon .customer-dot,
     .customer-location-icon .customer-dot-ping { animation: none; }
   }
@@ -732,9 +749,8 @@
   }
   .site-footer .footer-col { min-width: 150px; display: flex; flex-direction: column; gap: 0.65rem; }
   .site-footer .footer-col.footer-about { flex: 1 1 260px; max-width: 320px; }
-  .site-footer .footer-brand { font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 200; font-size: 1.4rem; color: var(--ink); margin-bottom: 0.6rem; }
-  .site-footer .footer-brand span { color: var(--accent); }
-  .site-footer .footer-tagline { color: var(--muted); font-size: 0.85rem; line-height: 1.65; max-width: 300px; }
+  .site-footer .footer-brand-mark { width: 44px; height: 44px; margin-bottom: 0.8rem; }
+  .site-footer .footer-tagline { color: var(--muted); font-size: 0.96rem; line-height: 1.65; max-width: 300px; }
   .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.9rem; font-weight: 700; }
   .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item {
     display: flex; align-items: center; color: var(--ink); text-decoration: none; font-size: 0.85rem;
@@ -2112,7 +2128,7 @@
 
 <div class="service-area" id="service-area">
   <h2 id="service-area-title" data-i18n="serviceAreaTitle">Wo sind wir für Sie im Einsatz?</h2>
-  <p class="hiw-sub" data-i18n="serviceAreaSub">Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km, ausschließlich innerhalb Deutschlands.</p>
+  <p class="hiw-sub" data-i18n="serviceAreaSub">Von München aus decken wir das gesamte Umland ab, im Umkreis von 100 km, ausschließlich innerhalb Deutschlands.</p>
   <div class="service-area-map-wrap">
     <div id="service-area-map"></div>
   </div>
@@ -2123,7 +2139,7 @@
     <span class="commute-zone" style="--zone-color:#f97316;"><i></i><b data-i18n="commuteZone4Label">50–75 km</b><span data-i18n="commuteZone4Fee">+ 25 €</span></span>
     <span class="commute-zone" style="--zone-color:#dc2626;"><i></i><b data-i18n="commuteZone5Label">75–100 km</b><span data-i18n="commuteZone5Fee">+ 30 €</span></span>
   </div>
-  <p class="commute-explainer" id="service-area-explainer" data-i18n="commuteExplainer">Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.</p>
+  <p class="commute-explainer" id="service-area-explainer" data-i18n="commuteExplainer">Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis, keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung: Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.</p>
 </div>
 
 <footer class="site-footer">
@@ -2135,7 +2151,12 @@
   </svg>
   <div class="footer-inner">
     <div class="footer-col footer-about">
-      <div class="footer-brand">zett<span>ly</span></div>
+      <svg class="footer-brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
+        <rect x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
+        <rect x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+        <rect x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
+      </svg>
       <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
     </div>
     <div class="footer-col">
@@ -2193,7 +2214,7 @@
         <p>Sie können eine gebuchte Terminbuchung bis 24 Stunden vor dem vereinbarten Termin kostenlos selbst stornieren, entweder über den personalisierten Stornierungslink in Ihrer Buchungsbestätigung oder per Kontaktaufnahme an kontakt@zettly.de. Bei einer Stornierung verarbeiten wir zusätzlich den von Ihnen angegebenen Stornierungsgrund sowie den Zeitpunkt der Stornierung; diese Angaben dienen ausschließlich der internen Nachvollziehbarkeit und werden zusammen mit den übrigen Buchungsdaten gespeichert. Rechtsgrundlage ist wie bei der ursprünglichen Terminbuchung Art. 6 Abs. 1 lit. b DSGVO. Sie erhalten im Anschluss eine Stornierungsbestätigung per E-Mail mit den Buchungsdetails als PDF-Anhang.</p>
 
         <h2>6. Fotodokumentation vor Ort</h2>
-        <p>Bei manchen Leistungen fotografieren wir mit Ihrem Einverständnis ausschließlich das betroffene Gerät vor und nach der Reparatur, um dessen Zustand und die durchgeführte Leistung zu dokumentieren. Fotografiert wird dabei nur das Gerät selbst: es werden keine Aufnahmen von Dateien, Daten, Bildschirminhalten, Ihrem Standort, anwesenden Personen oder sonstigen Gegenständen, Räumen oder Ihrer Wohn- bzw. Geschäftsumgebung angefertigt. Die Fotos werden ausschließlich zur Qualitätssicherung und im Streitfall als Nachweis über den ursprünglichen und den behobenen Zustand des Geräts verwendet und nicht an Dritte weitergegeben. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sowie unser berechtigtes Interesse an einer Nachweisdokumentation (Art. 6 Abs. 1 lit. f DSGVO). Auf Wunsch können Sie der Anfertigung von Fotos jederzeit widersprechen; die Leistung wird davon nicht beeinträchtigt.</p>
+        <p>Bei manchen Leistungen fotografieren wir mit Ihrem Einverständnis ausschließlich das betroffene Gerät vor und nach der Reparatur, um dessen Zustand und die durchgeführte Leistung zu dokumentieren. Fotografiert wird dabei nur das Gerät selbst: es werden keine Aufnahmen von Dateien, Daten, Bildschirminhalten, Ihrem Standort, anwesenden Personen oder sonstigen Gegenständen, Räumen oder Ihrer Wohn- bzw. Geschäftsumgebung angefertigt. Die Fotos werden ausschließlich zur Qualitätssicherung und im Streitfall als Nachweis über den ursprünglichen und den behobenen Zustand des Geräts verwendet und nicht an Dritte weitergegeben. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sowie unser berechtigtes Interesse an einer Nachweisdokumentation (Art. 6 Abs. 1 lit. f DSGVO). Auf Wunsch können Sie der Anfertigung von Fotos jederzeit widersprechen: die Leistung wird davon nicht beeinträchtigt.</p>
         <p>Die Fotos werden entsprechend dem datenschutzrechtlichen Grundsatz der Speicherbegrenzung (Art. 5 Abs. 1 lit. e DSGVO) nur so lange aufbewahrt, wie dies für den Dokumentationszweck erforderlich ist: grundsätzlich für die Dauer der gesetzlichen Gewährleistungsfrist von zwei Jahren ab Leistungserbringung (§ 438 Abs. 1 Nr. 3 BGB). Besteht zu diesem Zeitpunkt ein konkreter Streitfall, werden die betreffenden Fotos bis zu dessen endgültiger Klärung aufbewahrt. Danach werden die Fotos unverzüglich und unwiederbringlich gelöscht.</p>
 
         <h2>7. E-Mail-Versand</h2>
@@ -2201,7 +2222,7 @@
 
         <h2>8. Cookies, Schriftarten &amp; lokale Speicherung</h2>
         <p>Diese Website verwendet keine Tracking-Cookies. Ihre gewählte Sprache (Deutsch/Englisch) wird lediglich lokal in Ihrem Browser gespeichert (localStorage), damit sie bei einem erneuten Besuch erhalten bleibt. Diese Information verlässt Ihr Gerät nicht.</p>
-        <p>Die auf dieser Website verwendete Schriftart ("Plus Jakarta Sans") sowie die Kartenbibliothek Leaflet, die für die Standortkarte auf der Buchungsseite benötigt wird, werden ausschließlich von unserer eigenen Infrastruktur ausgeliefert. Es findet dabei keine Verbindung zu Google Fonts, unpkg.com oder einem anderen externen Anbieter statt, sodass beim Laden dieser Ressourcen keine Daten – insbesondere keine IP-Adresse – an Dritte übermittelt werden.</p>
+        <p>Die auf dieser Website verwendete Schriftart ("Plus Jakarta Sans") sowie die Kartenbibliothek Leaflet, die für die Standortkarte auf der Buchungsseite benötigt wird, werden ausschließlich von unserer eigenen Infrastruktur ausgeliefert. Es findet dabei keine Verbindung zu Google Fonts, unpkg.com oder einem anderen externen Anbieter statt, sodass beim Laden dieser Ressourcen keine Daten, insbesondere keine IP-Adresse, an Dritte übermittelt werden.</p>
 
         <h2>9. Kartendarstellung (OpenStreetMap)</h2>
         <p>Auf der Buchungsseite zeigen wir Ihnen unser Einsatzgebiet auf einer interaktiven Karte. Die Kartenbibliothek selbst ist, wie in Abschnitt 8 beschrieben, bei uns selbst gehostet. Die eigentlichen Kartenbilder (Kachelgrafiken) werden jedoch direkt von den Servern der OpenStreetMap Foundation (OSMF) geladen, sobald die Karte angezeigt wird. Dabei wird Ihre IP-Adresse an die OpenStreetMap Foundation übermittelt, da dies technisch erforderlich ist, um die Kartenkacheln an Ihr Gerät auszuliefern. Dies ist bei praktisch jeder Website mit einer eingebundenen Live-Karte so und lässt sich technisch nicht vermeiden, ohne auf die Kartendarstellung vollständig zu verzichten. Weitere Informationen finden Sie in der <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Datenschutzerklärung der OpenStreetMap Foundation</a>. Rechtsgrundlage ist unser berechtigtes Interesse an einer verständlichen, nutzerfreundlichen Darstellung unseres Einsatzgebiets (Art. 6 Abs. 1 lit. f DSGVO).</p>
@@ -2239,7 +2260,7 @@
         <p>You can cancel a booked appointment yourself, free of charge, up to 24 hours before the scheduled time, either via the personalized cancellation link in your booking confirmation or by contacting kontakt@zettly.de. When you cancel, we additionally process the cancellation reason you provide and the time of cancellation; this information is used solely for internal traceability and is stored together with the rest of the booking data. The legal basis is the same as for the original booking, Art. 6(1)(b) GDPR. You will then receive a cancellation confirmation email with the booking details attached as a PDF.</p>
 
         <h2>6. On-Site Photo Documentation</h2>
-        <p>For some services, with your consent, we photograph only the affected device before and after the repair, to document its condition and the work performed. We photograph the device itself only: we do not take pictures of files, data, screen contents, your location, any people present, or other objects, rooms, or your home or business environment in general. These photos are used solely for quality assurance and as evidence of the device's original and repaired condition in case of a dispute, and are never shared with third parties. The legal basis is your consent (Art. 6(1)(a) GDPR) and our legitimate interest in maintaining evidentiary documentation (Art. 6(1)(f) GDPR). You may object to having photos taken at any time; this will not affect the service provided.</p>
+        <p>For some services, with your consent, we photograph only the affected device before and after the repair, to document its condition and the work performed. We photograph the device itself only: we do not take pictures of files, data, screen contents, your location, any people present, or other objects, rooms, or your home or business environment in general. These photos are used solely for quality assurance and as evidence of the device's original and repaired condition in case of a dispute, and are never shared with third parties. The legal basis is your consent (Art. 6(1)(a) GDPR) and our legitimate interest in maintaining evidentiary documentation (Art. 6(1)(f) GDPR). You may object to having photos taken at any time: this will not affect the service provided.</p>
         <p>In line with the data protection principle of storage limitation (Art. 5(1)(e) GDPR), the photos are kept only as long as necessary for the documentation purpose: as a rule, for the statutory warranty period of two years from the date the service was performed (§ 438(1) no. 3 BGB, the German Civil Code). If a specific dispute is still open at that point, the relevant photos are retained until it is finally resolved. After that, the photos are deleted promptly and irretrievably.</p>
 
         <h2>7. Sending Emails</h2>
@@ -2247,7 +2268,7 @@
 
         <h2>8. Cookies, Fonts &amp; Local Storage</h2>
         <p>This website does not use tracking cookies. Your chosen language (German/English) is stored only locally in your browser (localStorage) so it is remembered on your next visit. This information never leaves your device.</p>
-        <p>The font used on this website ("Plus Jakarta Sans") and the Leaflet mapping library used for the location map on the booking page are both served exclusively from our own infrastructure. No connection is made to Google Fonts, unpkg.com, or any other third-party provider, so loading these resources does not transmit any data — including your IP address — to third parties.</p>
+        <p>The font used on this website ("Plus Jakarta Sans") and the Leaflet mapping library used for the location map on the booking page are both served exclusively from our own infrastructure. No connection is made to Google Fonts, unpkg.com, or any other third-party provider, so loading these resources does not transmit any data, including your IP address, to third parties.</p>
 
         <h2>9. Map Display (OpenStreetMap)</h2>
         <p>On the booking page, we show you our service area on an interactive map. The mapping library itself is, as described in Section 8, self-hosted on our own infrastructure. The actual map imagery (tiles), however, is loaded directly from the servers of the OpenStreetMap Foundation (OSMF) once the map is displayed. This transmits your IP address to the OpenStreetMap Foundation, which is technically necessary to deliver the map tiles to your device. This is standard for virtually any website that includes a live map and cannot be avoided without removing the map entirely. See the <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">OpenStreetMap Foundation's Privacy Policy</a> for details. The legal basis is our legitimate interest in providing a clear, user-friendly display of our service area (Art. 6(1)(f) GDPR).</p>
@@ -2338,7 +2359,7 @@ const I18N = {
     footerContactHeading: "Kontakt",
     serviceAreaTitle: "Wo sind wir für Sie im Einsatz?",
     serviceAreaTitleBooking: "Wo erreichen wir Sie?",
-    serviceAreaSub: "Von München aus decken wir das gesamte Umland ab – im Umkreis von 100 km, ausschließlich innerhalb Deutschlands.",
+    serviceAreaSub: "Von München aus decken wir das gesamte Umland ab, im Umkreis von 100 km, ausschließlich innerhalb Deutschlands.",
     serviceAreaPopup: "<b class=\"zettly-word\">zett<span>ly</span></b><span>München &amp; Umgebung, bis 100 km</span>",
     commuteZone1Label: "0–15 km",
     commuteZone1Fee: "Kostenlos",
@@ -2350,8 +2371,8 @@ const I18N = {
     commuteZone4Fee: "+ 25 €",
     commuteZone5Label: "75–100 km",
     commuteZone5Fee: "+ 30 €",
-    commuteExplainer: "Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung – Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.",
-    commuteExplainerBooking: "Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis – keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung.",
+    commuteExplainer: "Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis, keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung: Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.",
+    commuteExplainerBooking: "Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis, keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung.",
     ctaBannerTitle: "Jetzt Termin buchen",
     ctaBannerSub: "In nur 2 Minuten online: schnell & unkompliziert.",
     hiwTitle: "So läuft Ihr Termin ab",
@@ -2379,11 +2400,11 @@ const I18N = {
     locChecking: "Wir prüfen die Entfernung …",
     locResultTitle: "Anfahrt",
     locOutOfAreaTitle: "Ein kleiner Meilenstein!",
-    locOutOfAreaGeneric: "Sie sind die/der Erste, die/der versucht, von so weit weg bei uns zu buchen – wir freuen uns riesig über Ihr Interesse! Dieses Gebiet gehört noch nicht zu unserem Einsatzbereich, aber wir wachsen stetig und decken schon bald hoffentlich auch Ihre Region ab.",
+    locOutOfAreaGeneric: "Sie sind die/der Erste, die/der versucht, von so weit weg bei uns zu buchen, wir freuen uns riesig über Ihr Interesse! Dieses Gebiet gehört noch nicht zu unserem Einsatzbereich, aber wir wachsen stetig und decken schon bald hoffentlich auch Ihre Region ab.",
     locFillZip: "Bitte geben Sie eine gültige 5-stellige Postleitzahl ein.",
     locFillCity: "Bitte geben Sie Ihren Ort an.",
     locNotFound: "Diese Postleitzahl konnten wir leider nicht finden. Bitte prüfen Sie Ihre Eingabe.",
-    locOutOfArea: (km) => `Sie sind sage und schreibe ${Math.round(km)} km von München entfernt – und damit die/der Erste in dieser Gegend, die/der versucht, bei uns zu buchen! Das ist für uns ein kleiner Meilenstein. Dieses Gebiet liegt aktuell noch außerhalb unseres 100-km-Einsatzbereichs, aber wir wachsen stetig und hoffen, schon bald auch Sie erreichen zu können.`,
+    locOutOfArea: (km) => `Sie sind sage und schreibe ${Math.round(km)} km von München entfernt, und damit die/der Erste in dieser Gegend, die/der versucht, bei uns zu buchen! Das ist für uns ein kleiner Meilenstein. Dieses Gebiet liegt aktuell noch außerhalb unseres 100-km-Einsatzbereichs, aber wir wachsen stetig und hoffen, schon bald auch Sie erreichen zu können.`,
     locDistanceLine: "Entfernung ab München",
     locFeeLabel: "Anfahrtspauschale",
     locFeeFree: "Kostenlos",
@@ -2419,7 +2440,7 @@ const I18N = {
     liabilityModalHeading: "Haftungshinweise",
     liabilityModalIntro: "Die folgenden Punkte beschreiben mögliche Haftungsaspekte, die je nach gewähltem Service relevant sein können. Nicht alle Punkte treffen auf jede Leistung zu.",
     liabilityPoint1Title: "Datensicherung",
-    liabilityPoint1: "Wir empfehlen dringend, vor jeder Formatierung, Neuinstallation oder ähnlichen Leistung eine Sicherungskopie Ihrer Daten zu erstellen. Sofern Sie nicht zusätzlich unseren Datensicherungs-/Migrationsservice gebucht haben, sichern wir Ihre Daten während des Termins ausschließlich auf einem von Ihnen bereitgestellten Speichermedium – eine zusätzliche Kopie wird von uns nicht aufbewahrt.",
+    liabilityPoint1: "Wir empfehlen dringend, vor jeder Formatierung, Neuinstallation oder ähnlichen Leistung eine Sicherungskopie Ihrer Daten zu erstellen. Sofern Sie nicht zusätzlich unseren Datensicherungs-/Migrationsservice gebucht haben, sichern wir Ihre Daten während des Termins ausschließlich auf einem von Ihnen bereitgestellten Speichermedium, eine zusätzliche Kopie wird von uns nicht aufbewahrt.",
     liabilityPoint2Title: "Formatierung/Neuinstallation",
     liabilityPoint2: "Sollte das System in einen nicht behebbaren, fehlerhaften Zustand geraten, kann mit Ihrer Zustimmung eine Formatierung und Neuinstallation durchgeführt werden. Dies kann zu einem Datenverlust führen, der im Nachhinein nicht wiederhergestellt werden kann.",
     liabilityPoint3Title: "Keine Garantie auf den Service",
@@ -2510,7 +2531,7 @@ const I18N = {
     footerContactHeading: "Contact",
     serviceAreaTitle: "Where are we available?",
     serviceAreaTitleBooking: "Where can we reach you?",
-    serviceAreaSub: "From Munich, we cover the whole surrounding region – within a 100 km radius, Germany only.",
+    serviceAreaSub: "From Munich, we cover the whole surrounding region, within a 100 km radius, Germany only.",
     serviceAreaPopup: "<b class=\"zettly-word\">zett<span>ly</span></b><span>Munich &amp; surroundings, up to 100 km</span>",
     commuteZone1Label: "0–15 km",
     commuteZone1Fee: "Free",
@@ -2522,8 +2543,8 @@ const I18N = {
     commuteZone4Fee: "+ €25",
     commuteZone5Label: "75–100 km",
     commuteZone5Fee: "+ €30",
-    commuteExplainer: "Within 15 km of Munich, you only pay the service price – no extra call-out fee. Further addresses get a tiered call-out fee based on distance – you'll see the exact surcharge as soon as you enter your postal code during booking.",
-    commuteExplainerBooking: "Within 15 km of Munich, you only pay the service price – no extra call-out fee. Further addresses get a tiered call-out fee based on distance.",
+    commuteExplainer: "Within 15 km of Munich, you only pay the service price, no extra call-out fee. Further addresses get a tiered call-out fee based on distance: you'll see the exact surcharge as soon as you enter your postal code during booking.",
+    commuteExplainerBooking: "Within 15 km of Munich, you only pay the service price, no extra call-out fee. Further addresses get a tiered call-out fee based on distance.",
     ctaBannerTitle: "Book an appointment now",
     ctaBannerSub: "Online in just 2 minutes: fast & simple.",
     hiwTitle: "How your appointment works",
@@ -2551,11 +2572,11 @@ const I18N = {
     locChecking: "Checking the distance …",
     locResultTitle: "Call-out",
     locOutOfAreaTitle: "A little milestone!",
-    locOutOfAreaGeneric: "You're the first to try booking with us from this far away – we're genuinely thrilled about your interest! This area isn't part of our service area just yet, but we're growing steadily and hope to cover your region soon too.",
+    locOutOfAreaGeneric: "You're the first to try booking with us from this far away, we're genuinely thrilled about your interest! This area isn't part of our service area just yet, but we're growing steadily and hope to cover your region soon too.",
     locFillZip: "Please enter a valid 5-digit postal code.",
     locFillCity: "Please enter your city.",
     locNotFound: "We couldn't find that postal code. Please double-check it.",
-    locOutOfArea: (km) => `You're a whopping ${Math.round(km)} km from Munich – making you the first person in that area to try booking with us! That's a little milestone for us. It's outside our 100 km service area for now, but we're growing steadily and hope to reach you soon too.`,
+    locOutOfArea: (km) => `You're a whopping ${Math.round(km)} km from Munich, making you the first person in that area to try booking with us! That's a little milestone for us. It's outside our 100 km service area for now, but we're growing steadily and hope to reach you soon too.`,
     locDistanceLine: "Distance from Munich",
     locFeeLabel: "Call-out fee",
     locFeeFree: "Free",
@@ -2591,7 +2612,7 @@ const I18N = {
     liabilityModalHeading: "Liability Notices",
     liabilityModalIntro: "The points below outline potential liability considerations that may apply depending on the service you've selected. Not all points will be relevant to every service.",
     liabilityPoint1Title: "Data backup",
-    liabilityPoint1: "We strongly recommend creating a backup of your data before any formatting, reinstallation, or similar service. Unless you've also booked our data backup/migration service, we will back up your data only onto a storage device you provide during the appointment — we don't retain or keep a separate copy afterwards.",
+    liabilityPoint1: "We strongly recommend creating a backup of your data before any formatting, reinstallation, or similar service. Unless you've also booked our data backup/migration service, we will back up your data only onto a storage device you provide during the appointment, and we don't retain or keep a separate copy afterwards.",
     liabilityPoint2Title: "Formatting/reinstallation",
     liabilityPoint2: "Should the system reach an unrecoverable, faulty state, formatting and reinstallation may be carried out with your consent. This may result in data loss that cannot be recovered afterwards.",
     liabilityPoint3Title: "No warranty on the service",
@@ -3210,8 +3231,8 @@ function selectTreeOption(option) {
 function finalizeLeaf(leaf) {
   const breadcrumb = state.treePath.map(e => e.choiceLabel);
   const composedName = leaf.name || {
-    de: breadcrumb.map(b => b.de).join(" – "),
-    en: breadcrumb.map(b => b.en).join(" – "),
+    de: breadcrumb.map(b => b.de).join(", "),
+    en: breadcrumb.map(b => b.en).join(", "),
   };
   state.service = {
     name: composedName,
@@ -3883,14 +3904,27 @@ let customerVehicleRaf = null;
 
 // A small HTML pin (div, not SVG) for the customer's dot: Leaflet's SVG
 // renderer draws a circleMarker as a <path> with a "d" arc string, not a
-// real <circle> with an r attribute, so a CSS animation on "r" (as used
-// for the HQ dot above) silently does nothing — it never actually pulsed.
+// real <circle> with an r attribute, so a CSS animation on "r" silently
+// does nothing — it never actually pulses. The HQ dot below uses the same
+// divIcon approach for the same reason.
 // A divIcon sidesteps that entirely: it's a plain HTML element positioned
 // by Leaflet with a CSS transform, so ordinary transform/opacity
 // animations on the nested spans work everywhere.
 // Built lazily (not as a top-level const) because this script can run
 // before the Leaflet ES module has set up window.L — referencing L.divIcon
 // at parse time would throw and abort the rest of this script.
+let hqDotIcon = null;
+function getHqDotIcon() {
+  if (!hqDotIcon) {
+    hqDotIcon = L.divIcon({
+      className: "hq-location-icon",
+      html: '<span class="hq-dot-ping"></span><span class="hq-dot"></span>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+    });
+  }
+  return hqDotIcon;
+}
 let customerDotIcon = null;
 let customerVehicleIcon = null;
 function getCustomerDotIcon() {
@@ -4097,25 +4131,12 @@ function initServiceAreaMap() {
     prevRadiusKm = zone.km;
   });
 
-  // A fading, expanding halo behind the HQ dot — a "ping" that visually
-  // kicks off the ripple animating outward through the zone rings above.
-  L.circleMarker(MUNICH_LATLNG, {
-    radius: 8,
-    color: "#111114",
-    weight: 1,
-    fillColor: "#111114",
-    fillOpacity: 0.35,
-    className: "hq-ping",
-    interactive: false,
-  }).addTo(map);
-
-  const marker = L.circleMarker(MUNICH_LATLNG, {
-    radius: 8,
-    color: "#fff",
-    weight: 2,
-    fillColor: "#111114",
-    fillOpacity: 1,
-    className: "hq-marker",
+  // The HQ dot, with its pulsing ring, as a divIcon (see getHqDotIcon
+  // above for why: an SVG circleMarker here never actually animates).
+  const marker = L.marker(MUNICH_LATLNG, {
+    icon: getHqDotIcon(),
+    interactive: true,
+    keyboard: false,
   }).addTo(map);
   serviceAreaPopup = marker.bindPopup(t("serviceAreaPopup")).getPopup();
 }

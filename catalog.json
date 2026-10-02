@@ -8322,8 +8322,8 @@
               ],
               "notice": [
                 {
-                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any repair, we assume that the device itself has no hardware fault."
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 }
               ]
             }
@@ -8415,12 +8415,12 @@
         ],
         "notice": [
           {
-            "de": "Hinweis: Die Hardware (Router) stellen Sie bereit — Zettly liefert keine Geräte. Die Neueinrichtung sowie der Ersatz-Router umfassen die Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
-            "en": "Please note: the router hardware is provided by you — Zettly doesn't supply devices. New setup and router replacement include basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
+            "de": "Hinweis: Die Hardware (Router) stellen Sie bereit, Zettly liefert keine Geräte. Die Neueinrichtung sowie der Ersatz-Router umfassen die Grundkonfiguration: LAN, WLAN, WAN/Internet, DHCP, Port-Weiterleitung bei Bedarf und weitere Grundeinstellungen.",
+            "en": "Please note: the router hardware is provided by you, Zettly doesn't supply devices. New setup and router replacement include basic configuration: LAN, WiFi, WAN/Internet, DHCP, port forwarding if required, and other basic settings."
           },
           {
-            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim Router selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any repair, we assume that the router itself has no hardware fault."
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Router selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the router itself has no hardware fault."
           }
         ]
       }
@@ -8509,12 +8509,12 @@
         ],
         "notice": [
           {
-            "de": "Hinweis: Die Hardware (Access Point) stellen Sie bereit — Zettly liefert keine Geräte.",
-            "en": "Please note: the access point hardware is provided by you — Zettly doesn't supply devices."
+            "de": "Hinweis: Die Hardware (Access Point) stellen Sie bereit, Zettly liefert keine Geräte.",
+            "en": "Please note: the access point hardware is provided by you, Zettly doesn't supply devices."
           },
           {
-            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim Access Point selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any repair, we assume that the access point itself has no hardware fault."
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Access Point selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the access point itself has no hardware fault."
           }
         ]
       }
@@ -8604,8 +8604,8 @@
               ],
               "notice": [
                 {
-                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any repair, we assume that the device itself has no hardware fault."
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 }
               ]
             }
@@ -8677,8 +8677,8 @@
               ],
               "notice": [
                 {
-                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any repair, we assume that the device itself has no hardware fault."
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 }
               ]
             }
@@ -8754,8 +8754,8 @@
               ],
               "notice": [
                 {
-                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any repair, we assume that the device itself has no hardware fault."
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 }
               ]
             }
@@ -8839,8 +8839,8 @@
         ],
         "notice": [
           {
-            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim NAS-Gerät selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any repair, we assume that the NAS device itself has no hardware fault."
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim NAS-Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the NAS device itself has no hardware fault."
           }
         ]
       }
@@ -8938,206 +8938,6 @@
                             }
                           ]
                         }
-                      },
-                      {
-                        "id": "qty_5_8",
-                        "name": {
-                          "de": "5-8 Kameras",
-                          "en": "5-8 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 49,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "id": "qty_8_16",
-                        "name": {
-                          "de": "8-16 Kameras",
-                          "en": "8-16 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 59,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "id": "qty_16_24",
-                        "name": {
-                          "de": "16-24 Kameras",
-                          "en": "16-24 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 69,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 79,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "id": "qty_24_32",
-                        "name": {
-                          "de": "24-32 Kameras",
-                          "en": "24-32 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 79,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 89,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
                       }
                     ],
                     "notice": [
@@ -9146,8 +8946,8 @@
                         "en": "Our service covers configuration and connecting the devices, but does not include cabling."
                       },
                       {
-                        "de": "Wie bei jeder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
-                        "en": "As with any repair, we assume that the cameras themselves have no hardware fault."
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the cameras themselves have no hardware fault."
                       }
                     ]
                   }
@@ -9264,156 +9064,6 @@
                             }
                           ]
                         }
-                      },
-                      {
-                        "id": "qty_8_16",
-                        "name": {
-                          "de": "8-16 Kameras",
-                          "en": "8-16 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 59,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "id": "qty_16_24",
-                        "name": {
-                          "de": "16-24 Kameras",
-                          "en": "16-24 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 69,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 79,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "id": "qty_24_32",
-                        "name": {
-                          "de": "24-32 Kameras",
-                          "en": "24-32 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 79,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 89,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
                       }
                     ],
                     "notice": [
@@ -9422,8 +9072,8 @@
                         "en": "Our service covers configuration and connecting the devices, but does not include cabling."
                       },
                       {
-                        "de": "Wie bei jeder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
-                        "en": "As with any repair, we assume that the cameras themselves have no hardware fault."
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the cameras themselves have no hardware fault."
                       }
                     ]
                   }
@@ -9590,106 +9240,6 @@
                             }
                           ]
                         }
-                      },
-                      {
-                        "id": "qty_16_24",
-                        "name": {
-                          "de": "16-24 Kameras",
-                          "en": "16-24 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 69,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 79,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "id": "qty_24_32",
-                        "name": {
-                          "de": "24-32 Kameras",
-                          "en": "24-32 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 79,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 89,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
                       }
                     ],
                     "notice": [
@@ -9698,8 +9248,8 @@
                         "en": "Our service covers configuration and connecting the devices, but does not include cabling."
                       },
                       {
-                        "de": "Wie bei jeder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
-                        "en": "As with any repair, we assume that the cameras themselves have no hardware fault."
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the cameras themselves have no hardware fault."
                       }
                     ]
                   }
@@ -9916,56 +9466,6 @@
                             }
                           ]
                         }
-                      },
-                      {
-                        "id": "qty_24_32",
-                        "name": {
-                          "de": "24-32 Kameras",
-                          "en": "24-32 cameras"
-                        },
-                        "next": {
-                          "type": "branch",
-                          "prompt": {
-                            "de": "Worum geht es?",
-                            "en": "What do you need?"
-                          },
-                          "options": [
-                            {
-                              "id": "setupNew",
-                              "name": {
-                                "de": "Neueinrichtung",
-                                "en": "New setup"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Neueinrichtung",
-                                  "en": "New setup"
-                                },
-                                "price": 79,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 89,
-                                "duration": 45,
-                                "quote": false
-                              }
-                            }
-                          ]
-                        }
                       }
                     ],
                     "notice": [
@@ -9974,8 +9474,8 @@
                         "en": "Our service covers configuration and connecting the devices, but does not include cabling."
                       },
                       {
-                        "de": "Wie bei jeder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
-                        "en": "As with any repair, we assume that the cameras themselves have no hardware fault."
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the cameras themselves have no hardware fault."
                       }
                     ]
                   }
@@ -10250,8 +9750,8 @@
                         "en": "Our service covers configuration and connecting the devices, but does not include cabling."
                       },
                       {
-                        "de": "Wie bei jeder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
-                        "en": "As with any repair, we assume that the cameras themselves have no hardware fault."
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the cameras themselves have no hardware fault."
                       }
                     ]
                   }
@@ -10409,8 +9909,8 @@
               ],
               "notice": [
                 {
-                  "de": "Wie bei jeder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any repair, we assume that the cameras themselves have no hardware fault."
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass bei den Kameras selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the cameras themselves have no hardware fault."
                 }
               ]
             }
@@ -10456,8 +9956,8 @@
         ],
         "notice": [
           {
-            "de": "Bitte stellen Sie sicher, dass Sie bereits im Besitz der erforderlichen Lizenz bzw. des Kaufs der zu installierenden Software sind.",
-            "en": "Please make sure you already have any required license or purchase for the software to be installed."
+            "de": "Bitte stellen Sie sicher, dass Sie bereits im Besitz der anwendbaren erforderlichen Lizenz bzw. des Kaufs der zu installierenden und konfigurierenden Software sind.",
+            "en": "Please make sure you already have any applicable required license or purchase for the software to be installed and configured."
           }
         ]
       }
@@ -10517,8 +10017,8 @@
         ],
         "notice": [
           {
-            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass bei der USV selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any repair, we assume that the UPS itself has no hardware fault."
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass bei der USV selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the UPS itself has no hardware fault."
           }
         ]
       }
@@ -10879,8 +10379,8 @@
         ],
         "notice": [
           {
-            "de": "Wie bei jeder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any repair, we assume that the device itself has no hardware fault."
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
           }
         ]
       }
@@ -45258,8 +44758,8 @@
         "en": "New Employee Onboarding"
       },
       "desc": {
-        "de": "Geräte, Konten, Software – als Paket",
-        "en": "Devices, accounts, software — bundled"
+        "de": "Geräte, Konten, Software: als Paket",
+        "en": "Devices, accounts, software: bundled"
       },
       "root": {
         "type": "branch",
@@ -45888,8 +45388,8 @@
         "en": "IT Support Contract / Managed IT"
       },
       "desc": {
-        "de": "Monatliche Betreuung — individuelles Angebot",
-        "en": "Monthly support — custom quote"
+        "de": "Monatliche Betreuung: individuelles Angebot",
+        "en": "Monthly support: custom quote"
       },
       "root": {
         "type": "branch",
