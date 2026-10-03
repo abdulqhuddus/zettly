@@ -66,6 +66,22 @@
   .brand-mark { width: 48px; height: 48px; flex: 0 0 auto; }
   .topbar-right { display: flex; align-items: center; gap: 1.2rem; }
   .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  /* Quick links to the main site's two booking tracks, kept visible on
+     every marketing/legal page (not just the homepage) so a visitor who
+     landed here directly - e.g. from a search result or a shared link -
+     can jump straight into the Home or Business flow without detouring
+     back through the homepage first. Freelancers has no booking flow yet
+     (same as the homepage's own nav), so it's shown but inert. */
+  .quick-links { display: flex; align-items: center; gap: 1rem; }
+  .quick-links a, .quick-links .quick-link-soon {
+    font-size: 0.85rem; font-weight: 600; color: var(--muted); text-decoration: none; white-space: nowrap;
+  }
+  .quick-links a:hover { color: var(--accent); }
+  .quick-links .quick-link-soon { opacity: 0.55; cursor: default; }
+  @media (max-width: 640px) {
+    .quick-links { gap: 0.7rem; }
+    .quick-links a, .quick-links .quick-link-soon { font-size: 0.76rem; }
+  }
   .back-link:hover { color: var(--ink); }
   .lang-switch { display: flex; border: 1.5px solid var(--border); border-radius: 999px; overflow: hidden; font-size: 0.75rem; font-weight: 600; }
   .lang-switch button { border: none; background: transparent; padding: 0.35rem 0.7rem; cursor: pointer; color: var(--muted); transition: background 0.2s, color 0.2s; }
@@ -292,7 +308,7 @@
     .topbar { padding: 1rem 1.1rem; gap: 0.6rem; flex-wrap: wrap; }
     .brand-text { font-size: 1.55rem; }
     .brand-mark { width: 36px; height: 36px; }
-    .topbar-right { gap: 0.7rem; }
+    .topbar-right { gap: 0.7rem; flex-wrap: wrap; justify-content: flex-end; row-gap: 0.4rem; }
     .back-link { font-size: 0.76rem; }
     .lang-switch button { padding: 0.3rem 0.55rem; font-size: 0.7rem; }
     .announce-bar { font-size: 0.72rem; padding: 0.55rem 0.8rem; gap: 0.4rem; line-height: 1.3; }
@@ -341,6 +357,11 @@
     <span class="brand-text">zett<span>ly</span></span>
   </a>
   <div class="topbar-right">
+    <nav class="quick-links" aria-label="Quick links">
+      <a href="/?audience=home" data-i18n="navHome">Zuhause</a>
+      <a href="/?audience=business" data-i18n="navBusiness">Unternehmen</a>
+      <span class="quick-link-soon" data-i18n="navFreelancers" title="Bald verfügbar">Freelancer</span>
+    </nav>
     <a class="back-link" href="/" data-i18n="backHome">&larr; Zur Startseite</a>
     <div class="lang-switch" id="lang-switch">
       <button data-lang="de">DE</button>
@@ -777,6 +798,9 @@
       footerServiceBusiness: "IT-Support für Unternehmen",
       footerLinksHeading: "Links",
       footerContactHeading: "Kontakt",
+      navHome: "Zuhause",
+      navBusiness: "Unternehmen",
+      navFreelancers: "Freelancer",
       announceHead: "Wir befinden uns im Aufbau ·",
       announceTail: "Buchungen sind derzeit nicht möglich" },
     en: { title: "Zettly | Website Builder", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
@@ -789,6 +813,9 @@
       footerServiceBusiness: "Business IT Support",
       footerLinksHeading: "Links",
       footerContactHeading: "Contact",
+      navHome: "Home Services",
+      navBusiness: "Business Services",
+      navFreelancers: "Freelancers",
       announceHead: "We're under construction ·",
       announceTail: "bookings are currently not accepted" },
   };
@@ -799,6 +826,10 @@
     document.getElementById("page-de").style.display = lang === "de" ? "" : "none";
     document.getElementById("page-en").style.display = lang === "en" ? "" : "none";
     document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
+    document.querySelectorAll(".quick-links [data-i18n]").forEach(el => {
+      const key = el.dataset.i18n;
+      if (STRINGS[lang][key]) el.textContent = STRINGS[lang][key];
+    });
     document.querySelectorAll(".site-footer [data-i18n]").forEach(el => {
       const key = el.dataset.i18n;
       if (STRINGS[lang][key]) { if (key === "footerTagline") el.innerHTML = STRINGS[lang][key]; else el.textContent = STRINGS[lang][key]; }

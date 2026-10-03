@@ -4620,6 +4620,18 @@ showStep(0);
   }
   history.replaceState(null, "", location.pathname);
 })();
+
+// Lets the quick-links nav on the standalone marketing/legal pages
+// (Home services / Business services) jump straight back here with the
+// matching audience pre-selected, via /?audience=home|business.
+(async function handleAudienceDeepLink() {
+  const params = new URLSearchParams(location.search);
+  if (params.get("book")) return;
+  const audience = params.get("audience");
+  if (audience !== "home" && audience !== "business") return;
+  await selectAudience(audience);
+  history.replaceState(null, "", location.pathname);
+})();
 </script>
 </body>
 </html>

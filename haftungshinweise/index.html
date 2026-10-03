@@ -88,6 +88,19 @@
   .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .back-link:hover { color: var(--ink); }
 
+  .quick-links { display: flex; align-items: center; gap: 1rem; }
+  .quick-links a, .quick-links .quick-link-soon {
+    font-size: 0.85rem; font-weight: 600; color: var(--muted); text-decoration: none; white-space: nowrap;
+  }
+  .quick-links a:hover { color: var(--accent); }
+  .quick-links .quick-link-soon { opacity: 0.55; cursor: default; }
+  @media (max-width: 640px) {
+    .quick-links { gap: 0.7rem; }
+    .quick-links a, .quick-links .quick-link-soon { font-size: 0.76rem; }
+    .topbar { flex-wrap: wrap; row-gap: 0.6rem; }
+    .topbar-right { flex-wrap: wrap; justify-content: flex-end; row-gap: 0.5rem; }
+  }
+
   .lang-switch {
     display: flex;
     border: 1.5px solid var(--border);
@@ -160,6 +173,11 @@
     <span class="brand-text">zett<span>ly</span></span>
   </a>
   <div class="topbar-right">
+    <nav class="quick-links" aria-label="Quick links">
+      <a href="/?audience=home" data-i18n="navHome">Zuhause</a>
+      <a href="/?audience=business" data-i18n="navBusiness">Unternehmen</a>
+      <span class="quick-link-soon" data-i18n="navFreelancers" title="Bald verfügbar">Freelancer</span>
+    </nav>
     <a class="back-link" href="/" data-i18n="backHome">&larr; Zur Startseite</a>
     <div class="lang-switch" id="lang-switch">
       <button data-lang="de">DE</button>
@@ -229,8 +247,8 @@
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly | Haftungshinweise", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", announceHead: "Wir befinden uns im Aufbau ·", announceTail: "Buchungen sind derzeit nicht möglich" },
-    en: { title: "Zettly | Liability Notices", back: "← Back to home", home: "Home", privacy: "Privacy Policy", announceHead: "We're under construction ·", announceTail: "bookings are currently not accepted" },
+    de: { title: "Zettly | Haftungshinweise", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", navHome: "Zuhause", navBusiness: "Unternehmen", navFreelancers: "Freelancer", announceHead: "Wir befinden uns im Aufbau ·", announceTail: "Buchungen sind derzeit nicht möglich" },
+    en: { title: "Zettly | Liability Notices", back: "← Back to home", home: "Home", privacy: "Privacy Policy", navHome: "Home Services", navBusiness: "Business Services", navFreelancers: "Freelancers", announceHead: "We're under construction ·", announceTail: "bookings are currently not accepted" },
   };
 
   function setLang(lang) {
@@ -239,6 +257,10 @@
     document.getElementById("legal-de").style.display = lang === "de" ? "" : "none";
     document.getElementById("legal-en").style.display = lang === "en" ? "" : "none";
     document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
+    document.querySelectorAll(".quick-links [data-i18n]").forEach(el => {
+      const key = el.dataset.i18n;
+      if (STRINGS[lang][key]) el.textContent = STRINGS[lang][key];
+    });
     document.querySelector('[data-i18n="footerHome"]').textContent = STRINGS[lang].home;
     document.querySelector('[data-i18n="footerPrivacy"]').textContent = STRINGS[lang].privacy;
     document.getElementById("announce-text-head").textContent = STRINGS[lang].announceHead;
