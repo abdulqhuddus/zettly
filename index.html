@@ -2691,6 +2691,10 @@ const I18N = {
     liabilityPoint13: "Bei Backup- und Speicherlösungen gehen wir davon aus, dass der Kunde über eine Backup-Verwaltungssoftware (Backup-Manager) verfügt. Die entsprechenden Details sind im letzten Schritt des Buchungsprozesses anzugeben; ohne diese Angaben kann sich die Einrichtung verzögern.",
     liabilityPoint14Title: "Leistungsumfang und Mengenbegrenzungen",
     liabilityPoint14: "Unsere Pakete beinhalten einen definierten Leistungsumfang (z. B. eine bestimmte Anzahl an Geräten, Postfächern, Boards, Access Points oder Telefonleitungen). Darüber hinausgehender Bedarf wird als separate, zusätzlich buchbare Leistung angeboten.",
+    liabilityPoint15Title: "Datenverarbeitung vor Ort",
+    liabilityPoint15: "Sämtliche im Rahmen der Einrichtungs- und Konfigurationsleistungen verarbeiteten Daten verbleiben ausschließlich auf den Geräten und im Eigentum des Kunden. Wir speichern, kopieren oder übertragen diese Daten zu keinem Zeitpunkt außerhalb des Kundeneigentums.",
+    liabilityPoint16Title: "Zugänge und Zugangsdaten",
+    liabilityPoint16: "Zugänge, Zugangsdaten oder Berechtigungen, die vom Kunden erstellt oder mit uns geteilt werden, verwenden wir ausschließlich zur Erbringung der gebuchten Leistung. Auch diese werden von uns nicht gespeichert, kopiert oder außerhalb des Kundeneigentums aufbewahrt.",
     liabilityAcceptLabel: "Ich akzeptiere",
     liabilityAcceptClose: "Akzeptieren & schließen",
     liabilityConfirmed: "Bestätigt",
@@ -2882,6 +2886,10 @@ const I18N = {
     liabilityPoint13: "For backup and storage solutions, we assume the customer has backup management software (a backup manager) available. The relevant details must be provided in the last step of the booking process; without this information, setup may be delayed.",
     liabilityPoint14Title: "Service scope and quantity limits",
     liabilityPoint14: "Our packages include a defined scope of service (e.g. a specific number of devices, mailboxes, boards, access points, or telephone lines). Any requirements beyond this are offered as a separate, additionally bookable service.",
+    liabilityPoint15Title: "On-site data handling",
+    liabilityPoint15: "All data handled during setup and configuration work stays exclusively on the customer's own devices and within the customer's property. We never retain, copy, or transfer this data outside the customer's property.",
+    liabilityPoint16Title: "Access and credentials",
+    liabilityPoint16: "Any access, credentials, or permissions created or shared with us by the customer are used solely to carry out the booked service. These, too, are never stored, copied, or kept by us outside the customer's property.",
     liabilityAcceptLabel: "I accept",
     liabilityAcceptClose: "Accept & close",
     liabilityConfirmed: "Confirmed",
@@ -4014,7 +4022,7 @@ document.getElementById("f-consent").addEventListener("change", updateConsentGat
 function renderLiabilityPoints() {
   const list = document.getElementById("liability-points");
   if (!list) return;
-  const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
+  const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
   list.innerHTML = points;
 }
 // Shared "confirmation row" pill renderer: both the liability-notices row
