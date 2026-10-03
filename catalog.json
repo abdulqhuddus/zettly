@@ -10936,7 +10936,29 @@
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
-              ]
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung der vorhandenen Netzwerk- und Serverumgebung.",
+                  "Installation des Betriebssystems und der Active-Directory-Domänendienste (AD DS).",
+                  "Einrichtung der neuen Domäne oder Hinzufügen eines weiteren Domänencontrollers (ADC) zur bestehenden Domäne.",
+                  "Konfiguration von DNS und Replikation zwischen den Domänencontrollern.",
+                  "Anlegen der grundlegenden Organisationseinheiten (OUs) und Benutzerstruktur.",
+                  "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                  "Einspielen der neuesten Updates und Patches.",
+                  "Optional können noch ein paar weitere kleinere Konfigurationen enthalten sein, die im Buchungsprozess klar definiert sind."
+                ],
+                "en": [
+                  "Review the existing network and server environment.",
+                  "Install the operating system and Active Directory Domain Services (AD DS).",
+                  "Set up the new domain, or add an additional domain controller (ADC) to an existing domain.",
+                  "Configure DNS and replication between domain controllers.",
+                  "Create the basic organizational units (OUs) and user structure.",
+                  "Set up backup management, if a backup solution is in place.",
+                  "Apply the latest updates and patches.",
+                  "A few other minor configurations can also be included, clearly defined during the booking process."
+                ]
+              }
             }
           },
           {
@@ -11017,7 +11039,29 @@
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
-              ]
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung der bestehenden Active-Directory-Struktur und Anforderungen.",
+                  "Anlegen bzw. Anpassen von Organisationseinheiten (OUs), Benutzern und Gruppen.",
+                  "Erstellung der gewünschten Gruppenrichtlinien (GPOs), z. B. für Sicherheits-, Passwort- oder Softwareeinstellungen.",
+                  "Verknüpfung der Gruppenrichtlinien mit den passenden OUs und Festlegung der Anwendungsreihenfolge.",
+                  "Test der Richtlinien auf ausgewählten Geräten oder Benutzerkonten.",
+                  "Dokumentation der eingerichteten Struktur und Richtlinien.",
+                  "Einspielen der neuesten Updates und Patches.",
+                  "Optional können noch ein paar weitere kleinere Konfigurationen enthalten sein, die im Buchungsprozess klar definiert sind."
+                ],
+                "en": [
+                  "Review the existing Active Directory structure and requirements.",
+                  "Create or adjust organizational units (OUs), users, and groups.",
+                  "Create the requested Group Policy Objects (GPOs), e.g. for security, password, or software settings.",
+                  "Link the Group Policies to the appropriate OUs and set the order in which they apply.",
+                  "Test the policies on selected devices or user accounts.",
+                  "Document the structure and policies that were set up.",
+                  "Apply the latest updates and patches.",
+                  "A few other minor configurations can also be included, clearly defined during the booking process."
+                ]
+              }
             },
             "desc": {
               "de": "Benutzerverwaltung & Richtlinien im Netzwerk.",
@@ -11102,7 +11146,29 @@
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
-              ]
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung der vorhandenen Server- und Speicherumgebung.",
+                  "Installation der Dateidienste-Rolle und Einrichtung der gewünschten Freigaben.",
+                  "Festlegung der Ordnerstruktur sowie der Berechtigungen (NTFS- und Freigabeberechtigungen) je Benutzer oder Gruppe.",
+                  "Einrichtung von Kontingenten (Quotas) und Dateiprüfungen, falls gewünscht.",
+                  "Aktivierung des Papierkorbs bzw. der Schattenkopien für versehentlich gelöschte Dateien, falls gewünscht.",
+                  "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                  "Einspielen der neuesten Updates und Patches.",
+                  "Optional können noch ein paar weitere kleinere Konfigurationen enthalten sein, die im Buchungsprozess klar definiert sind."
+                ],
+                "en": [
+                  "Review the existing server and storage environment.",
+                  "Install the File Services role and set up the requested shares.",
+                  "Define the folder structure and permissions (NTFS and share permissions) per user or group.",
+                  "Set up storage quotas and file screening, if requested.",
+                  "Enable the recycle bin or shadow copies for accidentally deleted files, if requested.",
+                  "Set up backup management, if a backup solution is in place.",
+                  "Apply the latest updates and patches.",
+                  "A few other minor configurations can also be included, clearly defined during the booking process."
+                ]
+              }
             },
             "desc": {
               "de": "Zentrale Dateiablage im Unternehmensnetzwerk.",
@@ -11187,7 +11253,29 @@
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
-              ]
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung der vorhandenen Server-, Netzwerk- und Active-Directory-Umgebung.",
+                  "Installation der erforderlichen Voraussetzungen sowie des Exchange Servers.",
+                  "Konfiguration der E-Mail-Datenbanken sowie der Sende- und Empfangsconnectoren.",
+                  "Einrichtung von Postfächern, Verteilerlisten und Zugriffsrechten.",
+                  "Konfiguration von DNS-Einträgen (MX, SPF, Autodiscover) für den E-Mail-Versand und -Empfang.",
+                  "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                  "Einspielen der neuesten Updates und Patches.",
+                  "Optional können noch ein paar weitere kleinere Konfigurationen enthalten sein, die im Buchungsprozess klar definiert sind."
+                ],
+                "en": [
+                  "Review the existing server, network, and Active Directory environment.",
+                  "Install the required prerequisites and Exchange Server itself.",
+                  "Configure the mail databases and the send/receive connectors.",
+                  "Set up mailboxes, distribution lists, and access permissions.",
+                  "Configure the DNS records (MX, SPF, Autodiscover) needed for sending and receiving mail.",
+                  "Set up backup management, if a backup solution is in place.",
+                  "Apply the latest updates and patches.",
+                  "A few other minor configurations can also be included, clearly defined during the booking process."
+                ]
+              }
             },
             "desc": {
               "de": "Eigene E-Mail-Serverumgebung.",
@@ -11272,7 +11360,29 @@
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
-              ]
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung der vorhandenen Server- und Netzwerkumgebung.",
+                  "Installation des Betriebssystems und des LDAP-Dienstes (z. B. OpenLDAP oder AD LDS).",
+                  "Einrichtung des Verzeichnisbaums (Base DN) sowie der Organisationseinheiten.",
+                  "Anlegen von Benutzern, Gruppen und Zugriffsrichtlinien (ACLs) im Verzeichnis.",
+                  "Konfiguration der Verbindungssicherheit (z. B. LDAPS/TLS) für verschlüsselte Anfragen.",
+                  "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                  "Einspielen der neuesten Updates und Patches.",
+                  "Optional können noch ein paar weitere kleinere Konfigurationen enthalten sein, die im Buchungsprozess klar definiert sind."
+                ],
+                "en": [
+                  "Review the existing server and network environment.",
+                  "Install the operating system and the LDAP service (e.g. OpenLDAP or AD LDS).",
+                  "Set up the directory tree (Base DN) and organizational units.",
+                  "Create users, groups, and access policies (ACLs) within the directory.",
+                  "Configure connection security (e.g. LDAPS/TLS) for encrypted requests.",
+                  "Set up backup management, if a backup solution is in place.",
+                  "Apply the latest updates and patches.",
+                  "A few other minor configurations can also be included, clearly defined during the booking process."
+                ]
+              }
             },
             "desc": {
               "de": "Zentrales Verzeichnis für Benutzer & Zugriffe.",
