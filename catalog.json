@@ -8324,6 +8324,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 }
               ]
             }
@@ -8606,6 +8610,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 }
               ]
             }
@@ -8679,6 +8687,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 }
               ]
             }
@@ -8756,6 +8768,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 }
               ]
             }
@@ -10381,6 +10397,10 @@
           {
             "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
             "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+            "en": "The customer is assumed to have the required licenses available."
           }
         ]
       }
@@ -10463,6 +10483,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -10525,6 +10549,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -10591,6 +10619,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -10653,6 +10685,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -10722,6 +10758,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -10830,6 +10870,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -10882,6 +10926,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -11002,6 +11050,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -11103,6 +11155,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -11212,6 +11268,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -11319,6 +11379,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -11424,6 +11488,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -11550,6 +11618,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             },
@@ -11625,6 +11697,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -11704,6 +11780,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             },
@@ -11779,6 +11859,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -11882,6 +11966,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             },
@@ -11957,6 +12045,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -12036,6 +12128,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             },
@@ -12111,6 +12207,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -12196,6 +12296,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -12267,6 +12371,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -12397,6 +12505,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -12476,6 +12588,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -12559,6 +12675,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -12640,6 +12760,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -12719,6 +12843,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -12804,6 +12932,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -12912,6 +13044,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -12995,6 +13131,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -13082,6 +13222,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -13167,6 +13311,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -13250,6 +13398,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -13358,6 +13510,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -13441,6 +13597,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -13528,6 +13688,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -13611,6 +13775,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -13742,6 +13910,10 @@
             "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
           },
           {
+            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+            "en": "The customer is assumed to have the required licenses available."
+          },
+          {
             "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
             "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
           }
@@ -13845,6 +14017,10 @@
             "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
           },
           {
+            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+            "en": "The customer is assumed to have the required licenses available."
+          },
+          {
             "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
             "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
           }
@@ -13944,6 +14120,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -14029,6 +14209,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -14112,6 +14296,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -14220,6 +14408,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -14305,6 +14497,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -14388,6 +14584,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -14505,6 +14705,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -14595,6 +14799,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -14657,6 +14865,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -14749,6 +14961,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -14813,6 +15029,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -14875,6 +15095,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -14967,6 +15191,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -15029,6 +15257,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -15095,6 +15327,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -15157,6 +15393,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -15249,6 +15489,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -15311,6 +15555,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -15377,6 +15625,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -15441,6 +15693,10 @@
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                             },
                             {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
+                            },
+                            {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
@@ -15503,6 +15759,10 @@
                             {
                               "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                               "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                              "en": "The customer is assumed to have the required licenses available."
                             },
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -15615,6 +15875,10 @@
                         "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                       },
                       {
+                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                        "en": "The customer is assumed to have the required licenses available."
+                      },
+                      {
                         "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                         "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                       }
@@ -15694,6 +15958,10 @@
                       {
                         "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                         "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                        "en": "The customer is assumed to have the required licenses available."
                       },
                       {
                         "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -15802,6 +16070,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -15876,6 +16148,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -15954,6 +16230,10 @@
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
                 },
                 {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
+                },
+                {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
@@ -16028,6 +16308,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -16106,6 +16390,10 @@
                 {
                   "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
                   "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                  "en": "The customer is assumed to have the required licenses available."
                 },
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
@@ -16193,6 +16481,10 @@
           {
             "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
             "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+            "en": "The customer is assumed to have the required licenses available."
           },
           {
             "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
