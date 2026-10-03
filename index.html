@@ -37,6 +37,11 @@
     flex-direction: column;
     align-items: center;
     padding: 0 0 3rem;
+    /* Safety net: nothing on the page should ever need to scroll
+       sideways, so clip anything that briefly overshoots the viewport
+       width (e.g. a topbar element expanding) instead of letting it
+       widen the whole page. */
+    overflow-x: hidden;
   }
 
   .stage { width: 100%; max-width: 640px; padding: 0 1.25rem; }
@@ -185,12 +190,59 @@
     .nav-chip:hover .nav-chip-icon svg *, .nav-chip:focus-visible .nav-chip-icon svg * { stroke: var(--chip-color); }
     /* Tap-to-reveal: on touch, hover never fires, so a single tap used to
        navigate immediately with no chance to see the label. A first tap
-       now only expands the chip (JS adds this class instead of
-       navigating); a second tap on the already-expanded chip navigates. */
-    .nav-chip-tapped { width: 176px !important; background: var(--chip-color) !important; border-color: var(--chip-color) !important; box-shadow: 0 8px 18px color-mix(in srgb, var(--chip-color) 35%, transparent) !important; }
-    .nav-chip-tapped.nav-chip-soon { width: 150px !important; }
-    .nav-chip-tapped .nav-chip-label { display: inline; opacity: 1; margin-right: 0.9rem; }
+       now shows the label as a small floating tooltip under the chip
+       (JS adds this class instead of navigating) without changing the
+       chip's own width, so the topbar row never gets wider than the
+       viewport; a second tap on the already-expanded chip navigates. */
+    .nav-chip { position: relative; }
+    .nav-chip-tapped {
+      background: var(--chip-color) !important;
+      border-color: var(--chip-color) !important;
+      /* .nav-chip has overflow:hidden (it's what hides the sliding-in
+         label during the desktop hover animation) — without overriding
+         it here, that same overflow:hidden would clip the absolutely
+         positioned tooltip label below, since this button is its
+         positioned ancestor. */
+      overflow: visible !important;
+    }
     .nav-chip-tapped .nav-chip-icon svg * { stroke: #fff !important; }
+    .nav-chip-tapped .nav-chip-label {
+      display: block;
+      position: absolute;
+      top: calc(100% + 9px);
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 1;
+      margin-right: 0;
+      background: var(--chip-color);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      white-space: nowrap;
+      padding: 0.4rem 0.7rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--chip-color) 35%, transparent);
+      z-index: 30;
+      max-width: 42vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .nav-chip-tapped .nav-chip-label::before {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-bottom-color: var(--chip-color);
+    }
+    /* Keep the tooltip from sliding off-screen for the chips nearest the
+       left/right edges — the chip itself never moves, only the tooltip's
+       own anchor point shifts. */
+    .nav-chip:first-child .nav-chip-tapped .nav-chip-label { left: 0; transform: none; }
+    .nav-chip:first-child .nav-chip-tapped .nav-chip-label::before { left: 16px; transform: none; }
+    .nav-chip:last-child .nav-chip-tapped .nav-chip-label { left: auto; right: 0; transform: none; }
+    .nav-chip:last-child .nav-chip-tapped .nav-chip-label::before { left: auto; right: 16px; transform: none; }
   }
   /* Shrink the brand mark/wordmark and the nav chips together on narrow
      phones — without this the three chips plus the DE/EN switch no
