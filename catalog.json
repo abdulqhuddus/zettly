@@ -14830,50 +14830,320 @@
       "root": {
         "type": "branch",
         "prompt": {
-          "de": "Worum geht es?",
-          "en": "What do you need?"
+          "de": "Für wie viele Mitarbeiter?",
+          "en": "How many employees?"
         },
         "options": [
           {
-            "id": "onboardingFull",
+            "id": "one",
             "name": {
-              "de": "Onboarding (Komplettpaket)",
-              "en": "Onboarding full setup"
+              "de": "1 Mitarbeiter",
+              "en": "1 employee"
             },
             "desc": {
-              "de": "Gerät, Konto & Software: alles aus einer Hand",
-              "en": "Device, account & software, all in one"
+              "de": "Ein einzelner Mitarbeiter.",
+              "en": "A single employee."
             },
             "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Onboarding (Komplettpaket)",
-                "en": "Onboarding full setup"
+              "type": "branch",
+              "prompt": {
+                "de": "Was soll eingerichtet werden?",
+                "en": "What do you need?"
               },
-              "price": 149,
-              "duration": 90,
-              "quote": false
+              "options": [
+                {
+                  "id": "onboardingFull",
+                  "name": {
+                    "de": "Onboarding (Komplettpaket)",
+                    "en": "Onboarding full setup"
+                  },
+                  "desc": {
+                    "de": "Gerät, Konto & Software: alles aus einer Hand",
+                    "en": "Device, account & software, all in one"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Onboarding (Komplettpaket)",
+                      "en": "Onboarding full setup"
+                    },
+                    "price": 149,
+                    "duration": 90,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "offboardingFull",
+                  "name": {
+                    "de": "Offboarding (Komplettbereinigung)",
+                    "en": "Offboarding full cleanup"
+                  },
+                  "desc": {
+                    "de": "Konten deaktivieren, Gerät zurücksetzen & Daten sichern",
+                    "en": "Deactivate accounts, wipe device & secure data"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Offboarding (Komplettbereinigung)",
+                      "en": "Offboarding full cleanup"
+                    },
+                    "price": 89,
+                    "duration": 60,
+                    "quote": false
+                  }
+                }
+              ]
             }
           },
           {
-            "id": "offboardingFull",
+            "id": "small",
             "name": {
-              "de": "Offboarding (Komplettbereinigung)",
-              "en": "Offboarding full cleanup"
+              "de": "2-3 Mitarbeiter",
+              "en": "2-3 employees"
             },
             "desc": {
-              "de": "Konten deaktivieren, Gerät zurücksetzen & Daten sichern",
-              "en": "Deactivate accounts, wipe device & secure data"
+              "de": "Eine kleine Gruppe.",
+              "en": "A small group."
             },
             "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Offboarding (Komplettbereinigung)",
-                "en": "Offboarding full cleanup"
+              "type": "branch",
+              "prompt": {
+                "de": "Was soll eingerichtet werden?",
+                "en": "What do you need?"
               },
-              "price": 89,
-              "duration": 60,
-              "quote": false
+              "options": [
+                {
+                  "id": "onboardingFull",
+                  "name": {
+                    "de": "Onboarding (Komplettpaket)",
+                    "en": "Onboarding full setup"
+                  },
+                  "desc": {
+                    "de": "Gerät, Konto & Software: alles aus einer Hand",
+                    "en": "Device, account & software, all in one"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Onboarding (Komplettpaket)",
+                      "en": "Onboarding full setup"
+                    },
+                    "price": 249,
+                    "duration": 90,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "offboardingFull",
+                  "name": {
+                    "de": "Offboarding (Komplettbereinigung)",
+                    "en": "Offboarding full cleanup"
+                  },
+                  "desc": {
+                    "de": "Konten deaktivieren, Gerät zurücksetzen & Daten sichern",
+                    "en": "Deactivate accounts, wipe device & secure data"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Offboarding (Komplettbereinigung)",
+                      "en": "Offboarding full cleanup"
+                    },
+                    "price": 159,
+                    "duration": 60,
+                    "quote": false
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "medium",
+            "name": {
+              "de": "4-8 Mitarbeiter",
+              "en": "4-8 employees"
+            },
+            "desc": {
+              "de": "Eine mittlere Gruppe.",
+              "en": "A medium-sized group."
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Was soll eingerichtet werden?",
+                "en": "What do you need?"
+              },
+              "options": [
+                {
+                  "id": "onboardingFull",
+                  "name": {
+                    "de": "Onboarding (Komplettpaket)",
+                    "en": "Onboarding full setup"
+                  },
+                  "desc": {
+                    "de": "Gerät, Konto & Software: alles aus einer Hand",
+                    "en": "Device, account & software, all in one"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Onboarding (Komplettpaket)",
+                      "en": "Onboarding full setup"
+                    },
+                    "price": 399,
+                    "duration": 90,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "offboardingFull",
+                  "name": {
+                    "de": "Offboarding (Komplettbereinigung)",
+                    "en": "Offboarding full cleanup"
+                  },
+                  "desc": {
+                    "de": "Konten deaktivieren, Gerät zurücksetzen & Daten sichern",
+                    "en": "Deactivate accounts, wipe device & secure data"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Offboarding (Komplettbereinigung)",
+                      "en": "Offboarding full cleanup"
+                    },
+                    "price": 259,
+                    "duration": 60,
+                    "quote": false
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "xlarge",
+            "name": {
+              "de": "9-16 Mitarbeiter",
+              "en": "9-16 employees"
+            },
+            "desc": {
+              "de": "Für eine größere Belegschaft.",
+              "en": "For a larger workforce."
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Was soll eingerichtet werden?",
+                "en": "What do you need?"
+              },
+              "options": [
+                {
+                  "id": "onboardingFull",
+                  "name": {
+                    "de": "Onboarding (Komplettpaket)",
+                    "en": "Onboarding full setup"
+                  },
+                  "desc": {
+                    "de": "Gerät, Konto & Software: alles aus einer Hand",
+                    "en": "Device, account & software, all in one"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Onboarding (Komplettpaket)",
+                      "en": "Onboarding full setup"
+                    },
+                    "price": 699,
+                    "duration": 90,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "offboardingFull",
+                  "name": {
+                    "de": "Offboarding (Komplettbereinigung)",
+                    "en": "Offboarding full cleanup"
+                  },
+                  "desc": {
+                    "de": "Konten deaktivieren, Gerät zurücksetzen & Daten sichern",
+                    "en": "Deactivate accounts, wipe device & secure data"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Offboarding (Komplettbereinigung)",
+                      "en": "Offboarding full cleanup"
+                    },
+                    "price": 449,
+                    "duration": 60,
+                    "quote": false
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "enterprise",
+            "name": {
+              "de": "17+ Mitarbeiter",
+              "en": "17+ employees"
+            },
+            "desc": {
+              "de": "Individuelles Angebot nach Beratung.",
+              "en": "Custom quote after consultation."
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Was soll eingerichtet werden?",
+                "en": "What do you need?"
+              },
+              "options": [
+                {
+                  "id": "onboardingFull",
+                  "name": {
+                    "de": "Onboarding (Komplettpaket)",
+                    "en": "Onboarding full setup"
+                  },
+                  "desc": {
+                    "de": "Gerät, Konto & Software: alles aus einer Hand",
+                    "en": "Device, account & software, all in one"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Onboarding (Komplettpaket)",
+                      "en": "Onboarding full setup"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  }
+                },
+                {
+                  "id": "offboardingFull",
+                  "name": {
+                    "de": "Offboarding (Komplettbereinigung)",
+                    "en": "Offboarding full cleanup"
+                  },
+                  "desc": {
+                    "de": "Konten deaktivieren, Gerät zurücksetzen & Daten sichern",
+                    "en": "Deactivate accounts, wipe device & secure data"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Offboarding (Komplettbereinigung)",
+                      "en": "Offboarding full cleanup"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  }
+                }
+              ]
             }
           }
         ]
