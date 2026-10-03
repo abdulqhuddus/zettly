@@ -183,6 +183,14 @@
     .nav-chip-label { display: none; }
     .nav-chip:hover, .nav-chip:focus-visible { width: 36px; background: #fff; border-color: var(--border); box-shadow: none; }
     .nav-chip:hover .nav-chip-icon svg *, .nav-chip:focus-visible .nav-chip-icon svg * { stroke: var(--chip-color); }
+    /* Tap-to-reveal: on touch, hover never fires, so a single tap used to
+       navigate immediately with no chance to see the label. A first tap
+       now only expands the chip (JS adds this class instead of
+       navigating); a second tap on the already-expanded chip navigates. */
+    .nav-chip-tapped { width: 176px !important; background: var(--chip-color) !important; border-color: var(--chip-color) !important; box-shadow: 0 8px 18px color-mix(in srgb, var(--chip-color) 35%, transparent) !important; }
+    .nav-chip-tapped.nav-chip-soon { width: 150px !important; }
+    .nav-chip-tapped .nav-chip-label { display: inline; opacity: 1; margin-right: 0.9rem; }
+    .nav-chip-tapped .nav-chip-icon svg * { stroke: #fff !important; }
   }
   /* Shrink the brand mark/wordmark and the nav chips together on narrow
      phones — without this the three chips plus the DE/EN switch no
@@ -3807,11 +3815,33 @@ document.querySelectorAll(".path-card[data-audience]").forEach(card => {
 // a separate section to be added later), so its chip is present for the
 // nav layout but intentionally inert for now.
 document.querySelectorAll(".nav-chip[data-nav-audience]").forEach(chip => {
-  chip.addEventListener("click", () => {
+  chip.addEventListener("click", (e) => {
+    // On mobile, hover never fires, so a tap used to navigate immediately
+    // without ever showing the chip's label. First tap here just expands
+    // the chip (showing the label); a second tap on the now-expanded chip
+    // goes ahead and navigates. Desktop (hover-capable) is unaffected,
+    // since hover already reveals the label before any click happens.
+    const isMobileNav = window.matchMedia("(max-width: 720px)").matches;
+    if (isMobileNav && !chip.classList.contains("nav-chip-tapped")) {
+      e.preventDefault();
+      document.querySelectorAll(".nav-chip-tapped").forEach(c => {
+        if (c !== chip) c.classList.remove("nav-chip-tapped");
+      });
+      chip.classList.add("nav-chip-tapped");
+      return;
+    }
     const audience = chip.dataset.navAudience;
     if (audience !== "home" && audience !== "business") return;
     selectAudience(audience);
   });
+});
+
+// Tapping anywhere outside an expanded mobile nav chip collapses it back
+// down, so it doesn't stay stuck open after the visitor changes their mind.
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".nav-chip")) {
+    document.querySelectorAll(".nav-chip-tapped").forEach(c => c.classList.remove("nav-chip-tapped"));
+  }
 });
 
 // The admin can pause bookings for "home" and "business" independently
