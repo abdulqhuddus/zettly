@@ -462,11 +462,18 @@
      Framed as one large, wide card (not just a bare section) so it reads as
      its own distinct block beneath the home/business picker. It lives
      inside .stage (max-width 640px), so it breaks out of that width with
-     the margin-left/right calc trick below instead of being capped to it. */
+     the margin-left/right calc trick below instead of being capped to it.
+     Plain calc(50% - 50vw) only centers the box while it's still growing
+     to fill the viewport - once the viewport is wider than max-width, the
+     margins stay pinned at their (negative) calculated values, so the box
+     stops growing but its left edge stays glued to the viewport edge,
+     leaving all the leftover space on the right. Clamping the "50vw" term
+     to half of max-width (660px) makes the margin shrink back down once
+     the box hits that cap, so it centers instead of hugging the left. */
   .how-it-works {
     width: auto;
     max-width: 1320px;
-    margin: 1.75rem calc(50% - 50vw) 1.25rem;
+    margin: 1.75rem calc(50% - min(50vw, 660px)) 1.25rem;
     padding: 2.25rem 2rem 1.75rem;
     background: var(--accent-light);
     border-radius: 28px;
