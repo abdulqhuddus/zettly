@@ -1267,9 +1267,25 @@
       linear-gradient(135deg, #7C3AED, #a855f7 45%, #EC4899) border-box;
     box-shadow: 0 18px 36px rgba(124,58,237,0.4);
   }
-  .featured-ribbon {
+  /* Ribbon + info link share one flex row instead of the ribbon sitting in
+     normal flow while the info link floats absolutely over the top-right
+     corner - with the two positioned independently, a long badge label
+     (or a narrow mobile card) could let the ribbon's text run underneath
+     the info icon. In a flex row the ribbon truncates with an ellipsis
+     before it ever reaches the icon, which keeps a fixed slot on the
+     right, so the two can never overlap at any width. */
+  .featured-card-top {
     position: relative; z-index: 2;
+    display: flex; align-items: center; gap: 0.5rem;
+    width: 100%;
+    margin-bottom: 0.7rem;
+  }
+  .featured-ribbon {
     display: inline-block;
+    min-width: 0;
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
     background: linear-gradient(120deg, #7C3AED, #a855f7 60%, #EC4899);
     color: #fff;
     font-size: 0.62rem; font-weight: 800; letter-spacing: 0.03em;
@@ -1278,10 +1294,10 @@
     border-radius: 999px;
     box-shadow: 0 3px 10px rgba(124,58,237,0.35);
     white-space: nowrap;
-    margin-bottom: 0.7rem;
   }
   .featured-info-link {
-    position: absolute; top: 0.7rem; right: 0.7rem; z-index: 2;
+    flex: 0 0 auto;
+    margin-left: auto;
     display: inline-flex; align-items: center; justify-content: center;
     width: 26px; height: 26px; border-radius: 50%;
     background: var(--accent-light); color: var(--accent);
@@ -2589,7 +2605,7 @@ const I18N = {
     webbuilderFeaturedBadge: "Digitaler Auftritt",
     webbuilderLearnMore: "Mehr über unseren Website-Service erfahren",
     webbuilderFeatureLinkSub: "Beispiele, Pakete & mehr auf unserer Website-Seite",
-    supportFeaturedBadge: "Planbare Betreuung",
+    supportFeaturedBadge: "Managed IT",
     supportLearnMore: "Mehr über unseren Managed-IT-Service erfahren",
     supportFeatureLinkSub: "Stundenpakete, Leistungen & mehr auf unserer Managed-IT-Seite",
     footerServiceManagedIt: "Managed IT",
@@ -2784,7 +2800,7 @@ const I18N = {
     webbuilderFeaturedBadge: "Digital presence",
     webbuilderLearnMore: "Learn more about our website service",
     webbuilderFeatureLinkSub: "Examples, packages & more on our website page",
-    supportFeaturedBadge: "Predictable support",
+    supportFeaturedBadge: "Managed IT",
     supportLearnMore: "Learn more about our Managed IT service",
     supportFeatureLinkSub: "Hour packages, services & more on our Managed IT page",
     footerServiceManagedIt: "Managed IT",
@@ -3392,10 +3408,12 @@ function renderCategoryGrid() {
     const div = document.createElement("div");
     div.className = featured ? "path-card featured-card" : "path-card";
     div.innerHTML = `
-      ${featured ? `<span class="featured-ribbon">${t(featured.badgeKey)}</span>
-      <a class="featured-info-link" href="${featured.url}" title="${t(featured.linkKey)}" aria-label="${t(featured.linkKey)}">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
-      </a>` : ""}
+      ${featured ? `<div class="featured-card-top">
+        <span class="featured-ribbon">${t(featured.badgeKey)}</span>
+        <a class="featured-info-link" href="${featured.url}" title="${t(featured.linkKey)}" aria-label="${t(featured.linkKey)}">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>
+        </a>
+      </div>` : ""}
       <div class="icon">${CATEGORY_ICONS[cat.icon] || GENERIC_BRANCH_ICON}</div>
       <div class="body">
         <h3>${cat.name[lang]}</h3>
