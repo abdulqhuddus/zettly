@@ -503,25 +503,25 @@
   .hiw-step.active .hiw-ghost-icon svg * { stroke: rgba(255,255,255,0.22) !important; }
   .hiw-step h4, .hiw-step p { position: relative; z-index: 1; }
   /* The final step gets its own "all done" badge: a green check circle
-     that sits dead-center over the card's own text (centering done the
-     simple, reliable way — top/left 50% plus a translate(-50%,-50%), no
-     corner math to get wrong) and stays invisible until this card is the
-     one the autoplay is highlighting, at which point it scales/fades in
-     and keeps pulsing a ring for as long as it's active. */
+     centered horizontally (left 50% + translateX(-50%), no corner math
+     to get wrong) and anchored a fixed distance from the card's own top
+     edge so it sits just above the "Bezahlen/Payment" title instead of
+     over it. Stays invisible until this card is the one the autoplay is
+     highlighting, then scales/fades in and keeps pulsing a ring. */
   .hiw-done-badge {
-    position: absolute; top: 50%; left: 50%; z-index: 2;
-    width: 46px; height: 46px; border-radius: 50%;
+    position: absolute; top: 1.65rem; left: 50%; z-index: 2;
+    width: 40px; height: 40px; border-radius: 50%;
     background: linear-gradient(135deg, #22c55e, #16a34a);
     display: flex; align-items: center; justify-content: center;
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
+    transform: translateX(-50%) scale(0.5);
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s cubic-bezier(.2,1.4,.4,1);
   }
-  .hiw-done-badge svg { width: 22px; height: 22px; }
+  .hiw-done-badge svg { width: 19px; height: 19px; }
   .hiw-step-done.active .hiw-done-badge {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateX(-50%) scale(1);
     animation: hiwCheckPulse 1.6s ease-in-out 0.3s infinite;
   }
   @keyframes hiwCheckPulse {
