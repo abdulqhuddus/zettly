@@ -92,6 +92,22 @@
   .brand-mark { width: 48px; height: 48px; flex: 0 0 auto; }
   .topbar-right { display: flex; align-items: center; gap: 1.2rem; }
   .back-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  /* Quick links to the main site's two booking tracks, kept visible on
+     every marketing/legal page (not just the homepage) so a visitor who
+     landed here directly - e.g. from a search result or a shared link -
+     can jump straight into the Home or Business flow without detouring
+     back through the homepage first. Freelancers has no booking flow yet
+     (same as the homepage's own nav), so it's shown but inert. */
+  .quick-links { display: flex; align-items: center; gap: 1rem; }
+  .quick-links a, .quick-links .quick-link-soon {
+    font-size: 0.85rem; font-weight: 600; color: var(--muted); text-decoration: none; white-space: nowrap;
+  }
+  .quick-links a:hover { color: var(--accent); }
+  .quick-links .quick-link-soon { opacity: 0.55; cursor: default; }
+  @media (max-width: 640px) {
+    .quick-links { gap: 0.7rem; }
+    .quick-links a, .quick-links .quick-link-soon { font-size: 0.76rem; }
+  }
   .back-link:hover { color: var(--ink); }
   .lang-switch {
     display: flex; border: 1.5px solid var(--border); border-radius: 999px; overflow: hidden;
@@ -176,32 +192,59 @@
      an actual CRM at a glance, while the Dynamics 365 logo above it stays
      put. Pure CSS (no JS): one keyframe animation slides the floating
      deal chip across the five stage columns (the full D365 Sales flow:
-     Lead -> Opportunity -> Offer -> Order -> Invoice) and fades it out
-     before it jumps back to the start, and five more keyframe animations
-     (sharing the same 14s timeline) light up each column's background in
-     turn so it reads as the chip "arriving" there. */
+     Lead -> Opportunity -> Offer -> Order -> Invoice), a dashed connector
+     with small flowing dots links every column, and a sixth "Paid" column
+     draws in an animated checkmark once the chip reaches Invoice, before
+     the whole board fades and loops. */
   .crm-mock { margin-top: 0.8rem; }
-  .crm-board { position: relative; display: flex; gap: 0.5rem; margin-top: 26px; }
+  .crm-board { position: relative; display: flex; gap: 0.35rem; margin-top: 26px; }
   .crm-col {
-    flex: 1; min-width: 0; border-radius: 14px; padding: 1.9rem 0.3rem 0.9rem;
-    text-align: center; background: var(--accent-light);
+    position: relative; z-index: 1; flex: 1; min-width: 0; border-radius: 12px;
+    padding: 1.7rem 0.15rem 0.6rem; text-align: center; background: var(--accent-light);
   }
+  .crm-col-icon { display: block; width: 18px; height: 18px; margin: 0 auto 0.3rem; color: var(--muted); }
+  .crm-col-icon svg { width: 100%; height: 100%; display: block; }
   .crm-col-label {
-    font-size: 0.66rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase;
-    color: var(--muted);
+    font-size: 0.56rem; font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase;
+    color: var(--muted); line-height: 1.15;
   }
-  .crm-col-1 { animation: crmCol1 14s ease-in-out infinite; }
-  .crm-col-2 { animation: crmCol2 14s ease-in-out infinite; }
-  .crm-col-3 { animation: crmCol3 14s ease-in-out infinite; }
-  .crm-col-4 { animation: crmCol4 14s ease-in-out infinite; }
-  .crm-col-5 { animation: crmCol5 14s ease-in-out infinite; }
+  .crm-col-1 { animation: crmCol1 16s ease-in-out infinite; }
+  .crm-col-2 { animation: crmCol2 16s ease-in-out infinite; }
+  .crm-col-3 { animation: crmCol3 16s ease-in-out infinite; }
+  .crm-col-4 { animation: crmCol4 16s ease-in-out infinite; }
+  .crm-col-5 { animation: crmCol5 16s ease-in-out infinite; }
+  .crm-col-6 { animation: crmCol6 16s ease-in-out infinite; }
+  .crm-col-paid .crm-col-icon { animation: crmPaidColor 16s ease-in-out infinite; }
+  .crm-check-path {
+    stroke-dasharray: 13; stroke-dashoffset: 13;
+    animation: crmCheckDraw 16s ease-in-out infinite;
+  }
+  /* Dashed connector running behind the columns, through their icon row,
+     with three small dots drifting along it on their own faster loop. */
+  .crm-connector-line {
+    position: absolute; z-index: 0; top: 2.35rem; left: 6%; right: 6%; height: 2px;
+    background-image: repeating-linear-gradient(to right, var(--border) 0 5px, transparent 5px 10px);
+  }
+  .crm-flow-dot {
+    position: absolute; top: -3px; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); opacity: 0;
+    animation: crmFlow 3.4s linear infinite;
+  }
+  .crm-flow-dot-b { animation-delay: 1.15s; }
+  .crm-flow-dot-c { animation-delay: 2.3s; }
+  @keyframes crmFlow {
+    0% { left: 0%; opacity: 0; }
+    8% { opacity: 1; }
+    92% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
   .crm-deal-chip {
-    position: absolute; top: -18px; left: 10%; transform: translateX(-50%);
+    position: absolute; z-index: 2; top: -18px; left: 8.33%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 0.6rem;
     background: #fff; border: 1px solid var(--border); border-radius: 16px;
     padding: 0.55rem 0.85rem; box-shadow: 0 10px 24px rgba(17,17,20,0.16);
     white-space: nowrap;
-    animation: crmMove 14s ease-in-out infinite;
+    animation: crmMove 16s ease-in-out infinite;
   }
   .crm-avatar {
     width: 30px; height: 30px; border-radius: 50%; flex: 0 0 auto;
@@ -220,48 +263,67 @@
     70% { box-shadow: 0 0 0 7px rgba(22,163,74,0); }
     100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
   }
-  /* Five equal columns -> centers at 10/30/50/70/90%. Each stage holds for
-     roughly 13% of the 14s loop, with a short cross-fade move in between,
-     then the chip fades out before snapping back (invisibly) to the start. */
+  /* Six equal columns -> centers at 8.33/25/41.67/58.33/75/91.67%. The chip
+     visits the first five (Lead..Invoice); the sixth (Paid) gets its
+     checkmark drawn in right after, then everything fades and resets. */
   @keyframes crmMove {
-    0%, 13% { left: 10%; opacity: 1; }
-    17%, 30% { left: 30%; opacity: 1; }
-    34%, 47% { left: 50%; opacity: 1; }
-    51%, 64% { left: 70%; opacity: 1; }
-    68%, 81% { left: 90%; opacity: 1; }
-    89% { opacity: 0; }
-    100% { left: 10%; opacity: 0; }
+    0%, 10% { left: 8.33%; opacity: 1; }
+    14%, 24% { left: 25%; opacity: 1; }
+    28%, 38% { left: 41.67%; opacity: 1; }
+    42%, 52% { left: 58.33%; opacity: 1; }
+    56%, 66% { left: 75%; opacity: 1; }
+    70% { opacity: 0; }
+    100% { left: 8.33%; opacity: 0; }
   }
   @keyframes crmCol1 {
-    0%, 13% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); }
-    17%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 10% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); }
+    14%, 100% { background: var(--accent-light); box-shadow: none; }
   }
   @keyframes crmCol2 {
-    0%, 13% { background: var(--accent-light); box-shadow: none; }
-    17%, 30% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
-    34%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 14% { background: var(--accent-light); box-shadow: none; }
+    14%, 24% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
+    28%, 100% { background: var(--accent-light); box-shadow: none; }
   }
   @keyframes crmCol3 {
-    0%, 30% { background: var(--accent-light); box-shadow: none; }
-    34%, 47% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
-    51%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 28% { background: var(--accent-light); box-shadow: none; }
+    28%, 38% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
+    42%, 100% { background: var(--accent-light); box-shadow: none; }
   }
   @keyframes crmCol4 {
-    0%, 47% { background: var(--accent-light); box-shadow: none; }
-    51%, 64% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
-    68%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 42% { background: var(--accent-light); box-shadow: none; }
+    42%, 52% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
+    56%, 100% { background: var(--accent-light); box-shadow: none; }
   }
   @keyframes crmCol5 {
-    0%, 64% { background: var(--accent-light); box-shadow: none; }
-    68%, 81% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
-    89%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 56% { background: var(--accent-light); box-shadow: none; }
+    56%, 70% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
+    74%, 100% { background: var(--accent-light); box-shadow: none; }
+  }
+  @keyframes crmCol6 {
+    0%, 70% { background: var(--accent-light); box-shadow: none; }
+    74%, 86% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(22,163,74,0.4); }
+    92%, 100% { background: var(--accent-light); box-shadow: none; }
+  }
+  @keyframes crmPaidColor {
+    0%, 70% { color: var(--muted); }
+    76%, 86% { color: #16a34a; }
+    94%, 100% { color: var(--muted); }
+  }
+  @keyframes crmCheckDraw {
+    0%, 68% { stroke-dashoffset: 13; }
+    76%, 86% { stroke-dashoffset: 0; }
+    94%, 100% { stroke-dashoffset: 13; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .crm-deal-chip, .crm-col-1, .crm-col-2, .crm-col-3, .crm-col-4, .crm-col-5, .crm-deal-pulse { animation: none; }
+    .crm-deal-chip, .crm-col-1, .crm-col-2, .crm-col-3, .crm-col-4, .crm-col-5, .crm-col-6,
+    .crm-col-paid .crm-col-icon, .crm-check-path, .crm-deal-pulse, .crm-flow-dot { animation: none; }
     .crm-col-1 { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); }
+    .crm-flow-dot { opacity: 0; }
   }
   @media (max-width: 420px) {
-    .crm-col-label { font-size: 0.58rem; }
+    .crm-col-label { font-size: 0.5rem; }
+    .crm-col-icon { width: 15px; height: 15px; }
+    .crm-board { gap: 0.25rem; }
   }
 
   /* ---- Sections ---- */
@@ -555,6 +617,11 @@
     <span class="brand-text">zett<span>ly</span></span>
   </a>
   <div class="topbar-right">
+    <nav class="quick-links" aria-label="Quick links">
+      <a href="/?audience=home" data-i18n="navHome">Zuhause</a>
+      <a href="/?audience=business" data-i18n="navBusiness">Unternehmen</a>
+      <span class="quick-link-soon" data-i18n="navFreelancers" title="Bald verfügbar">Freelancer</span>
+    </nav>
     <a class="back-link" href="/" data-i18n="backHome">&larr; Zur Startseite</a>
     <div class="lang-switch" id="lang-switch">
       <button data-lang="de">DE</button>
@@ -571,7 +638,7 @@
   <div class="hero-content">
     <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
     <h1>Dynamics 365, das <span class="grad">wirklich zu Ihrem Betrieb passt</span></h1>
-    <p class="lead">Beratung, Workflow-Automatisierung und individuelle Integrationen für Microsoft Dynamics 365 &ndash; aus der Praxis eines IT-Administrators, der Systeme täglich am Laufen hält, nicht nur konfiguriert und wieder verlässt.</p>
+    <p class="lead">Beratung, Workflow-Automatisierung und individuelle Integrationen für Microsoft Dynamics 365 &ndash; damit Ihr CRM nicht nur eingerichtet wird, sondern im Tagesgeschäft zuverlässig läuft.</p>
     <div class="hero-ctas">
       <a class="btn btn-primary" href="/?book=dynamics">Beratung buchen &rarr;</a>
       <a class="btn btn-ghost" href="#pakete-de">Pakete ansehen</a>
@@ -587,11 +654,35 @@
             <span class="crm-deal-text">Acme GmbH<br><b>12.400&nbsp;&euro;</b></span>
             <span class="crm-deal-pulse"></span>
           </div>
-          <div class="crm-col crm-col-1"><span class="crm-col-label">Lead</span></div>
-          <div class="crm-col crm-col-2"><span class="crm-col-label">Chance</span></div>
-          <div class="crm-col crm-col-3"><span class="crm-col-label">Angebot</span></div>
-          <div class="crm-col crm-col-4"><span class="crm-col-label">Auftrag</span></div>
-          <div class="crm-col crm-col-5"><span class="crm-col-label">Rechnung</span></div>
+          <div class="crm-connector-line">
+            <span class="crm-flow-dot crm-flow-dot-a"></span>
+            <span class="crm-flow-dot crm-flow-dot-b"></span>
+            <span class="crm-flow-dot crm-flow-dot-c"></span>
+          </div>
+          <div class="crm-col crm-col-1">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path></svg></span>
+            <span class="crm-col-label">Lead</span>
+          </div>
+          <div class="crm-col crm-col-2">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.3"></circle></svg></span>
+            <span class="crm-col-label">Chance</span>
+          </div>
+          <div class="crm-col crm-col-3">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5l-8-8H6a2 2 0 0 0-2 2v6.5l8 8a2 2 0 0 0 2.8 0l5.7-5.7a2 2 0 0 0 0-2.8z"></path><circle cx="8.5" cy="8.5" r="1.1"></circle></svg></span>
+            <span class="crm-col-label">Angebot</span>
+          </div>
+          <div class="crm-col crm-col-4">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.3"></circle><circle cx="17" cy="20" r="1.3"></circle><path d="M3.5 4h2l2.3 10.6a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.6L21 8H6.5"></path></svg></span>
+            <span class="crm-col-label">Auftrag</span>
+          </div>
+          <div class="crm-col crm-col-5">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v17l-2.5-1.5L13 20l-2.5-1.5L8 20l-2-1.5V3z"></path><path d="M9 8h6M9 12h6"></path></svg></span>
+            <span class="crm-col-label">Rechnung</span>
+          </div>
+          <div class="crm-col crm-col-6 crm-col-paid">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.3"></circle><path class="crm-check-path" d="M7.5 12.5l3 3 6-6"></path></svg></span>
+            <span class="crm-col-label">Bezahlt</span>
+          </div>
         </div>
       </div>
     </div>
@@ -768,7 +859,7 @@
   <div class="hero-content">
     <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
     <h1>Dynamics 365 that <span class="grad">actually fits your business</span></h1>
-    <p class="lead">Consulting, workflow automation, and custom integrations for Microsoft Dynamics 365 &ndash; from an IT administrator who keeps systems running every day, not just configures them and moves on.</p>
+    <p class="lead">Consulting, workflow automation, and custom integrations for Microsoft Dynamics 365 &ndash; so your CRM isn't just set up once, but runs reliably day to day.</p>
     <div class="hero-ctas">
       <a class="btn btn-primary" href="/?book=dynamics">Book a consultation &rarr;</a>
       <a class="btn btn-ghost" href="#pakete-en">View packages</a>
@@ -784,11 +875,35 @@
             <span class="crm-deal-text">Acme Inc.<br><b>&euro;12,400</b></span>
             <span class="crm-deal-pulse"></span>
           </div>
-          <div class="crm-col crm-col-1"><span class="crm-col-label">Lead</span></div>
-          <div class="crm-col crm-col-2"><span class="crm-col-label">Opportunity</span></div>
-          <div class="crm-col crm-col-3"><span class="crm-col-label">Offer</span></div>
-          <div class="crm-col crm-col-4"><span class="crm-col-label">Order</span></div>
-          <div class="crm-col crm-col-5"><span class="crm-col-label">Invoice</span></div>
+          <div class="crm-connector-line">
+            <span class="crm-flow-dot crm-flow-dot-a"></span>
+            <span class="crm-flow-dot crm-flow-dot-b"></span>
+            <span class="crm-flow-dot crm-flow-dot-c"></span>
+          </div>
+          <div class="crm-col crm-col-1">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path></svg></span>
+            <span class="crm-col-label">Lead</span>
+          </div>
+          <div class="crm-col crm-col-2">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.3"></circle></svg></span>
+            <span class="crm-col-label">Opportunity</span>
+          </div>
+          <div class="crm-col crm-col-3">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5l-8-8H6a2 2 0 0 0-2 2v6.5l8 8a2 2 0 0 0 2.8 0l5.7-5.7a2 2 0 0 0 0-2.8z"></path><circle cx="8.5" cy="8.5" r="1.1"></circle></svg></span>
+            <span class="crm-col-label">Offer</span>
+          </div>
+          <div class="crm-col crm-col-4">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.3"></circle><circle cx="17" cy="20" r="1.3"></circle><path d="M3.5 4h2l2.3 10.6a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.6L21 8H6.5"></path></svg></span>
+            <span class="crm-col-label">Order</span>
+          </div>
+          <div class="crm-col crm-col-5">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v17l-2.5-1.5L13 20l-2.5-1.5L8 20l-2-1.5V3z"></path><path d="M9 8h6M9 12h6"></path></svg></span>
+            <span class="crm-col-label">Invoice</span>
+          </div>
+          <div class="crm-col crm-col-6 crm-col-paid">
+            <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.3"></circle><path class="crm-check-path" d="M7.5 12.5l3 3 6-6"></path></svg></span>
+            <span class="crm-col-label">Paid</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1005,6 +1120,9 @@
       footerServiceBusiness: "IT-Support für Unternehmen",
       footerLinksHeading: "Links",
       footerContactHeading: "Kontakt",
+      navHome: "Zuhause",
+      navBusiness: "Unternehmen",
+      navFreelancers: "Freelancer",
       announceHead: "Wir befinden uns im Aufbau ·",
       announceTail: "Buchungen sind derzeit nicht möglich" },
     en: { title: "Zettly | Dynamics 365", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
@@ -1017,6 +1135,9 @@
       footerServiceBusiness: "Business IT Support",
       footerLinksHeading: "Links",
       footerContactHeading: "Contact",
+      navHome: "Home Services",
+      navBusiness: "Business Services",
+      navFreelancers: "Freelancers",
       announceHead: "We're under construction ·",
       announceTail: "bookings are currently not accepted" },
   };
@@ -1027,6 +1148,10 @@
     document.getElementById("page-de").style.display = lang === "de" ? "" : "none";
     document.getElementById("page-en").style.display = lang === "en" ? "" : "none";
     document.querySelector('[data-i18n="backHome"]').textContent = STRINGS[lang].back;
+    document.querySelectorAll(".quick-links [data-i18n]").forEach(el => {
+      const key = el.dataset.i18n;
+      if (STRINGS[lang][key]) el.textContent = STRINGS[lang][key];
+    });
     document.querySelectorAll(".site-footer [data-i18n]").forEach(el => {
       const key = el.dataset.i18n;
       if (STRINGS[lang][key]) { if (key === "footerTagline") el.innerHTML = STRINGS[lang][key]; else el.textContent = STRINGS[lang][key]; }
