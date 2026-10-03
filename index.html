@@ -1411,13 +1411,17 @@
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
     gap: 0.9rem;
   }
+  /* Step card redesigned to match the "How your appointment works"
+     (.hiw-step) cards: a gradient number wedge filling the top-left
+     corner and a big faded "ghost" icon bleeding out of the bottom-right
+     corner, instead of a small round number + icon badge side by side. */
   .tree-explainer-step {
     position: relative;
-    display: flex; flex-direction: column; gap: 0.6rem;
     background: #fff;
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.1rem 1rem 1rem;
+    border-radius: 16px 16px 0 16px;
+    padding: 1.5rem 1rem 1.1rem;
+    overflow: hidden;
     box-shadow: 0 2px 10px rgba(17,17,20,0.04);
     transition: transform 0.2s cubic-bezier(.2,.9,.3,1), box-shadow 0.25s, border-color 0.25s;
   }
@@ -1426,19 +1430,40 @@
     box-shadow: 0 14px 28px rgba(124,58,237,0.14);
     border-color: #e2d6fb;
   }
-  .tree-explainer-top { display: flex; align-items: center; gap: 0.6rem; }
+  .tree-explainer-num-tag {
+    position: absolute; top: 0; left: 0; z-index: 1;
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #a78bfa, #7C3AED);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+  .tree-explainer-step:nth-child(2) .tree-explainer-num-tag { background: linear-gradient(135deg, #9574ec, #6b2fd6); }
+  .tree-explainer-step:nth-child(3) .tree-explainer-num-tag { background: linear-gradient(135deg, #8560db, #5a26bd); }
+  .tree-explainer-step:nth-child(4) .tree-explainer-num-tag { background: linear-gradient(135deg, #754cc9, #4e1fa5); }
+  .tree-explainer-step:nth-child(5) .tree-explainer-num-tag { background: linear-gradient(135deg, #6539b4, #421a8d); }
+  .tree-explainer-step:nth-child(6) .tree-explainer-num-tag { background: linear-gradient(135deg, #55279f, #361576); }
+  .tree-explainer-step:nth-child(7) .tree-explainer-num-tag { background: linear-gradient(135deg, #45177f, #2c1060); }
+  .tree-explainer-step:nth-child(8) .tree-explainer-num-tag { background: linear-gradient(135deg, #370f66, #1f0b4c); }
   .tree-explainer-num {
-    flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%;
-    background: var(--accent-light); color: var(--accent); font-weight: 800; font-size: 0.72rem;
-    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 0.42rem; left: 0.48rem;
+    color: #fff; font-size: 0.68rem; font-weight: 800; line-height: 1;
   }
-  .tree-explainer-icon {
-    flex: 0 0 auto; width: 38px; height: 38px; border-radius: 12px;
-    background: var(--accent-light);
-    display: flex; align-items: center; justify-content: center;
+  .tree-explainer-ghost-icon {
+    position: absolute; right: 0.25rem; bottom: 0.25rem; z-index: 0;
+    width: 46px; height: 46px;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(.2,1.4,.4,1);
   }
-  .tree-explainer-icon svg { width: 20px; height: 20px; }
-  .tree-explainer-step p { font-size: 0.85rem; line-height: 1.5; color: var(--ink); margin: 0; }
+  .tree-explainer-ghost-icon svg { width: 100%; height: 100%; }
+  .tree-explainer-ghost-icon svg * { stroke: var(--accent-light) !important; }
+  .tree-explainer-ghost-icon svg *[fill]:not([fill="none"]) { fill: var(--accent-light) !important; }
+  .tree-explainer-step:nth-child(odd) .tree-explainer-ghost-icon svg * { stroke: var(--violet-light) !important; }
+  .tree-explainer-step:nth-child(odd) .tree-explainer-ghost-icon svg *[fill]:not([fill="none"]) { fill: var(--violet-light) !important; }
+  .tree-explainer-step:hover .tree-explainer-ghost-icon { transform: scale(1.1) translate(-2px, -2px); }
+  .tree-explainer-step p {
+    position: relative; z-index: 1;
+    font-size: 0.78rem; line-height: 1.48; color: var(--ink); margin: 0;
+    padding-right: 1.6rem;
+  }
   @media (max-width: 560px) {
     .tree-explainer-grid { grid-template-columns: 1fr 1fr; }
   }
@@ -3340,10 +3365,8 @@ function renderTreeExplainer(node) {
       <div class="tree-explainer-grid">
         ${node.explainer[lang].map((step, i) => `
           <div class="tree-explainer-step">
-            <div class="tree-explainer-top">
-              <span class="tree-explainer-num">${i + 1}</span>
-              <div class="tree-explainer-icon">${EXPLAINER_STEP_ICONS[i % EXPLAINER_STEP_ICONS.length]}</div>
-            </div>
+            <div class="tree-explainer-ghost-icon" aria-hidden="true">${EXPLAINER_STEP_ICONS[i % EXPLAINER_STEP_ICONS.length]}</div>
+            <span class="tree-explainer-num-tag"><span class="tree-explainer-num">${i + 1}</span></span>
             <p>${step}</p>
           </div>
         `).join("")}
