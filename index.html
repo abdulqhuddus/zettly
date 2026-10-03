@@ -413,7 +413,10 @@
     justify-content: center;
     text-align: center;
     padding: 2.5rem 1.1rem 1.6rem;
-    border-radius: 20px;
+    /* Square off just the bottom-right corner (instead of all four) so
+       the ghost icon bleeding out of that corner sits flush against two
+       straight edges instead of being clipped by the card's own curve. */
+    border-radius: 20px 20px 0 20px;
     background: #fff;
     border: 1px solid var(--border);
     cursor: default;
@@ -428,8 +431,8 @@
      the card edge), just a large faded copy of that step's own icon
      instead of a digit, and now the step's only icon. */
   .hiw-ghost-icon {
-    position: absolute; right: -0.3rem; bottom: -0.75rem; z-index: 0;
-    width: 62px; height: 62px;
+    position: absolute; right: 0.3rem; bottom: 0.3rem; z-index: 0;
+    width: 58px; height: 58px;
     pointer-events: none;
     transition: opacity 0.4s ease, transform 0.3s cubic-bezier(.2,1.4,.4,1);
   }
