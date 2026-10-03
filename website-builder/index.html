@@ -106,6 +106,19 @@
   .hero-browser .bar span { width: 8px; height: 8px; border-radius: 50%; background: #d8d6df; }
   .hero-browser .screen { height: 130px; background: linear-gradient(135deg, var(--accent-light), #e7edfd); overflow: hidden; }
   .hero-browser .screen svg { width: 100%; height: 100%; display: block; }
+  /* Small bits of life in the hero mock browser: the nav dot blinks like a
+     live indicator, the chart line keeps re-drawing itself, and its end
+     point pulses, so the preview reads as an active site rather than a
+     static screenshot. */
+  .wb-nav-dot { animation: wbNavPulse 2.4s ease-in-out infinite; }
+  .wb-chart-line { stroke-dasharray: 130; stroke-dashoffset: 130; animation: wbChartDraw 3s ease-in-out infinite; }
+  .wb-chart-dot { transform-box: fill-box; transform-origin: 50% 50%; animation: wbDotPulse 1.8s ease-in-out infinite; }
+  @keyframes wbNavPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+  @keyframes wbChartDraw { 0% { stroke-dashoffset: 130; } 55%, 100% { stroke-dashoffset: 0; } }
+  @keyframes wbDotPulse { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.3); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .wb-nav-dot, .wb-chart-line, .wb-chart-dot { animation: none; }
+  }
   .hero-card .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 1.2rem; padding: 0.85rem 0; border-top: 1px dashed var(--border); font-size: 0.95rem; }
   .hero-card .stat-row:first-of-type { border-top: none; }
   .hero-card .stat-row b { color: var(--ink); }
@@ -360,7 +373,7 @@
               </linearGradient>
             </defs>
             <rect x="0" y="0" width="380" height="22" fill="#fff" fill-opacity="0.55"/>
-            <circle cx="16" cy="11" r="4.5" fill="#0078D4"/>
+            <circle class="wb-nav-dot" cx="16" cy="11" r="4.5" fill="#0078D4"/>
             <rect x="26" y="8.5" width="34" height="5" rx="2.5" fill="#111114" fill-opacity="0.5"/>
             <rect x="260" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
             <rect x="294" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
@@ -371,8 +384,8 @@
             <rect x="22" y="88" width="128" height="6" rx="3" fill="#6b6b74" fill-opacity="0.55"/>
             <rect x="22" y="102" width="76" height="18" rx="9" fill="url(#wbHeroBtn)"/>
             <rect x="222" y="38" width="136" height="82" rx="10" fill="#F3EEFF" stroke="#e9e7ef"/>
-            <path d="M236 96l24-24 18 18 14-16 26 22" stroke="#0078D4" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="328" cy="56" r="8" fill="#EC4899" fill-opacity="0.7"/>
+            <path class="wb-chart-line" d="M236 96l24-24 18 18 14-16 26 22" stroke="#0078D4" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle class="wb-chart-dot" cx="328" cy="56" r="8" fill="#EC4899" fill-opacity="0.7"/>
           </svg>
         </div>
       </div>
@@ -407,7 +420,7 @@
           <th>
             <div class="tier-name">Enterprise</div>
             <div class="tier-price">Auf Anfrage</div>
-            <div class="tier-duration">90 Min. Erstgespräch</div>
+            <div class="tier-duration">30 Min. Beratung</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder">Projekt starten</a>
           </th>
         </tr>
@@ -550,7 +563,7 @@
               </linearGradient>
             </defs>
             <rect x="0" y="0" width="380" height="22" fill="#fff" fill-opacity="0.55"/>
-            <circle cx="16" cy="11" r="4.5" fill="#0078D4"/>
+            <circle class="wb-nav-dot" cx="16" cy="11" r="4.5" fill="#0078D4"/>
             <rect x="26" y="8.5" width="34" height="5" rx="2.5" fill="#111114" fill-opacity="0.5"/>
             <rect x="260" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
             <rect x="294" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
@@ -561,8 +574,8 @@
             <rect x="22" y="88" width="128" height="6" rx="3" fill="#6b6b74" fill-opacity="0.55"/>
             <rect x="22" y="102" width="76" height="18" rx="9" fill="url(#wbHeroBtn)"/>
             <rect x="222" y="38" width="136" height="82" rx="10" fill="#F3EEFF" stroke="#e9e7ef"/>
-            <path d="M236 96l24-24 18 18 14-16 26 22" stroke="#0078D4" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="328" cy="56" r="8" fill="#EC4899" fill-opacity="0.7"/>
+            <path class="wb-chart-line" d="M236 96l24-24 18 18 14-16 26 22" stroke="#0078D4" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle class="wb-chart-dot" cx="328" cy="56" r="8" fill="#EC4899" fill-opacity="0.7"/>
           </svg>
         </div>
       </div>
@@ -597,7 +610,7 @@
           <th>
             <div class="tier-name">Enterprise</div>
             <div class="tier-price">Custom quote</div>
-            <div class="tier-duration">90 min. kickoff call</div>
+            <div class="tier-duration">30 min. consultation</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder">Start project</a>
           </th>
         </tr>
@@ -727,6 +740,7 @@
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
+      <a class="service-item highlight" href="/managed-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceManagedIt">Managed IT</span></a>
       <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
       <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
       <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
@@ -754,6 +768,7 @@
     de: { title: "Zettly | Website-Erstellung", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerCoverage: "Abdeckungsgebiet", footerPrivacy: "Datenschutz", footerLiability: "Haftungshinweise", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
       footerServicesHeading: "Leistungen",
       footerSpecialtyBadge: "Schwerpunkt",
+      footerServiceManagedIt: "Managed IT",
       footerServiceDynamics: "Dynamics 365",
       footerServiceWebsite: "Website-Erstellung",
       footerServiceComputers: "Computer & Netzwerke",
@@ -766,6 +781,7 @@
     en: { title: "Zettly | Website Builder", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
       footerServicesHeading: "Services",
       footerSpecialtyBadge: "Specialty",
+      footerServiceManagedIt: "Managed IT",
       footerServiceDynamics: "Dynamics 365",
       footerServiceWebsite: "Website Builder",
       footerServiceComputers: "Computers & Networks",

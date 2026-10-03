@@ -6,8 +6,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title data-i18n-title>Zettly | Dynamics 365</title>
-<meta name="description" content="Microsoft Dynamics 365 Beratung, Workflow-Automatisierung und individuelle Integrationen aus München.">
+<title data-i18n-title>Zettly | Managed IT</title>
+<meta name="description" content="Managed IT Support aus München: feste Wochenstunden, ein fester Ansprechpartner, alle IT-Leistungen unter einem Vertrag.">
 <link rel="stylesheet" href="/assets/fonts/plus-jakarta-sans.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,7 +20,7 @@
     --ink: #111114;
     --muted: #6b6b74;
     --border: #e9e7ef;
-    --d365-blue: #0078D4;
+    --mit-teal: #0d9488;
   }
 
   body {
@@ -111,28 +111,23 @@
     position: relative;
   }
   @media (max-width: 860px) { .hero { flex-direction: column; text-align: center; padding-top: 0.5rem; } }
-  /* The glow is clipped to its own wrapper, sized to the hero, rather than
-     the hero itself having overflow:hidden - that used to also clip any
-     button's hover box-shadow that reached close to the hero's edge (e.g.
-     the low bottom padding here), cutting it off instead of letting it
-     render smoothly. */
   .hero-glow-clip {
     position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
   }
   .hero-glow {
     position: absolute; top: -120px; right: -140px; width: 480px; height: 480px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,120,212,0.18), transparent 70%);
+    background: radial-gradient(circle, rgba(13,148,136,0.16), transparent 70%);
     pointer-events: none;
   }
   .hero-content { flex: 1.15; position: relative; z-index: 1; }
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: linear-gradient(120deg, var(--accent-light), #e6f2fc);
-    color: var(--d365-blue);
+    background: linear-gradient(120deg, var(--accent-light), #e3f6f3);
+    color: var(--mit-teal);
     font-size: 0.75rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
     padding: 0.4rem 0.85rem; border-radius: 999px; margin-bottom: 1.2rem;
   }
-  .hero-eyebrow img { width: 16px; height: 16px; }
+  .hero-eyebrow svg { width: 16px; height: 16px; }
   .hero h1 {
     font-size: clamp(2rem, 4.2vw, 3.1rem);
     font-weight: 900;
@@ -141,7 +136,7 @@
     margin-bottom: 1.1rem;
   }
   .hero h1 .grad {
-    background: linear-gradient(120deg, var(--d365-blue), var(--accent) 55%, var(--pink));
+    background: linear-gradient(120deg, var(--mit-teal), var(--accent) 55%, var(--pink));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .hero p.lead { font-size: 1.05rem; color: var(--muted); line-height: 1.65; max-width: 540px; margin-bottom: 1.8rem; }
@@ -155,7 +150,7 @@
     transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
   }
   .btn-primary {
-    background: linear-gradient(120deg, var(--d365-blue), var(--accent));
+    background: linear-gradient(120deg, var(--mit-teal), var(--accent));
     color: #fff;
     box-shadow: 0 10px 24px rgba(124,58,237,0.28);
   }
@@ -169,7 +164,12 @@
     border-radius: 22px; padding: 2.2rem 2.4rem; box-shadow: 0 24px 60px rgba(17,17,20,0.1);
     position: relative;
   }
-  .hero-card img { width: 72px; height: 72px; display: block; margin: 0 auto 1.2rem; }
+  .hero-card .hw-icon {
+    width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #e3f6f3, var(--accent-light));
+  }
+  .hero-card .hw-icon svg { width: 36px; height: 36px; stroke: var(--mit-teal); }
   .hero-card .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 1.2rem; padding: 0.9rem 0; border-top: 1px dashed var(--border); font-size: 0.95rem; }
   .hero-card .stat-row:first-of-type { border-top: none; }
   .hero-card .stat-row b { color: var(--ink); }
@@ -188,15 +188,23 @@
   .service-card {
     background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem;
     transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    position: relative;
   }
-  .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(17,17,20,0.08); border-color: rgba(124,58,237,0.3); }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(17,17,20,0.08); border-color: rgba(13,148,136,0.3); }
   .service-card .ico {
     width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #e6f2fc, var(--accent-light)); margin-bottom: 1rem;
+    background: linear-gradient(135deg, #e3f6f3, var(--accent-light)); margin-bottom: 1rem;
   }
-  .service-card .ico svg { width: 22px; height: 22px; stroke: var(--d365-blue); }
+  .service-card .ico svg { width: 22px; height: 22px; stroke: var(--mit-teal); }
   .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
   .service-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+  .service-card.spotlight { border-color: rgba(124,58,237,0.35); background: linear-gradient(180deg, var(--accent-light), #fff); }
+  .service-card .spotlight-tag {
+    position: absolute; top: 0.9rem; right: 0.9rem;
+    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em;
+    background: linear-gradient(120deg, var(--mit-teal), var(--accent));
+    color: #fff; padding: 0.22rem 0.55rem; border-radius: 999px;
+  }
 
   /* ---- Packages: a Fiverr-style tier comparison table ---- */
   .tier-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 10px 30px rgba(17,17,20,0.06); }
@@ -209,14 +217,17 @@
   .tier-table thead th.tier-col-hl { background: linear-gradient(180deg, var(--accent-light), #fff); position: relative; }
   .tier-pop {
     display: inline-block; margin-bottom: 0.6rem;
-    background: linear-gradient(120deg, var(--d365-blue), var(--accent));
+    background: linear-gradient(120deg, var(--mit-teal), var(--accent));
     color: #fff; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em;
     padding: 0.28rem 0.65rem; border-radius: 999px; white-space: nowrap;
   }
   .tier-name { font-size: 1.05rem; font-weight: 800; color: var(--ink); margin-bottom: 0.35rem; }
-  .tier-price { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
-  .tier-price small { font-size: 0.7rem; font-weight: 600; color: var(--muted); }
-  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 1rem; }
+  .tier-hours {
+    display: inline-flex; align-items: baseline; gap: 0.3rem;
+    font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; color: var(--ink);
+  }
+  .tier-hours small { font-size: 0.7rem; font-weight: 600; color: var(--muted); }
+  .tier-price { font-size: 0.8rem; color: var(--muted); margin: 0.3rem 0 1rem; }
   .tier-btn { width: 100%; justify-content: center; padding: 0.7rem 0.9rem; font-size: 0.85rem; }
   .tier-table tbody td {
     padding: 0.95rem 1.1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem;
@@ -233,7 +244,7 @@
   /* ---- Why us / experience ---- */
   .why-wrap {
     display: flex; align-items: center; gap: 3rem;
-    background: linear-gradient(155deg, #0d0d11, #1a1830);
+    background: linear-gradient(155deg, #0d0d11, #10231f);
     border-radius: 28px; padding: 2.8rem clamp(1.5rem, 4vw, 3rem);
     color: #fff;
   }
@@ -244,10 +255,10 @@
   .why-wrap p.lead2 { color: rgba(255,255,255,0.72); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.4rem; }
   .why-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
   .why-list li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.9rem; color: rgba(255,255,255,0.9); }
-  .why-list li svg { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 1px; stroke: #a855f7; }
+  .why-list li svg { width: 20px; height: 20px; flex: 0 0 auto; margin-top: 1px; stroke: #2dd4bf; }
   .why-stats { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .why-stat { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.3rem; text-align: center; }
-  .why-stat .num { font-size: 1.8rem; font-weight: 900; background: linear-gradient(120deg, #7dd3fc, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .why-stat .num { font-size: 1.8rem; font-weight: 900; background: linear-gradient(120deg, #2dd4bf, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .why-stat .lbl { font-size: 0.72rem; color: rgba(255,255,255,0.65); margin-top: 0.3rem; line-height: 1.4; }
 
   /* ---- FAQ ---- */
@@ -261,7 +272,7 @@
 
   /* ---- Final CTA ---- */
   .cta-banner {
-    background: linear-gradient(120deg, var(--d365-blue), var(--accent) 55%, var(--pink));
+    background: linear-gradient(120deg, var(--mit-teal), var(--accent) 55%, var(--pink));
     border-radius: 28px; padding: 3rem clamp(1.5rem, 4vw, 3rem);
     text-align: center; color: #fff;
   }
@@ -279,8 +290,6 @@
     margin-top: 2.5rem;
     overflow: hidden;
   }
-  /* A giant, barely-there version of the logo mark bleeding off the corner —
-     a quiet brand watermark rather than another loud purple block. */
   .footer-watermark {
     position: absolute;
     top: 50%; right: -6%;
@@ -316,10 +325,6 @@
     line-height: 1.3;
   }
   .site-footer .footer-col a:hover { color: var(--accent); }
-  /* A small dot in front of each plain service line, so the highlighted
-     (badged) line and the plain ones share the same left edge and read as
-     one tidy list instead of the badge line looking like it belongs to a
-     different component. */
   .site-footer .service-item:not(.highlight) { position: relative; }
   .site-footer .service-item:not(.highlight)::before {
     content: ""; position: absolute; left: -0.75rem; top: 50%; transform: translateY(-50%);
@@ -333,7 +338,7 @@
   }
   .site-footer .service-item .badge {
     font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
-    background: linear-gradient(120deg, var(--d365-blue), var(--accent));
+    background: linear-gradient(120deg, var(--mit-teal), var(--accent));
     box-shadow: 0 4px 10px rgba(124,58,237,0.28);
     color: #fff; padding: 0.2rem 0.5rem; border-radius: 999px;
     flex: 0 0 auto;
@@ -348,28 +353,12 @@
     text-align: center;
   }
 
-  /* Mobile footer: centered, single column, with a divider between each
-     section instead of the columns just wrapping and losing their shared
-     baseline — reads as one organized list instead of scattered blocks. */
   @media (max-width: 640px) {
-    /* No flex `gap` here on purpose — each column's own padding does the
-       spacing (see below), so the border between two columns sits at the
-       midpoint of one consistent gap instead of being lost inside an extra,
-       separately-added gap on top of it. */
-    /* The desktop rule above sets `justify-content: space-between` to spread
-       columns across one row; switching to a column direction here without
-       overriding it left `space-between` spreading the stacked columns
-       apart *vertically* instead — the real source of the big gap under the
-       paragraph, not the border color or the flex `gap`. */
     .site-footer .footer-inner { flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; gap: 0; padding: 2.4rem 1.5rem 0.5rem; }
     .site-footer .footer-col { width: 100%; max-width: 280px; padding: 1.3rem 0; }
     .site-footer .footer-col.footer-about { max-width: 100%; padding-top: 0; }
     .site-footer .footer-col:last-child { padding-bottom: 0; }
     .site-footer .footer-tagline { margin: 0 auto; }
-    /* A divider right after each section, including the intro paragraph.
-       var(--border) is nearly the same lightness as the footer's own
-       lavender background, so it disappeared entirely there — a solid,
-       darker-tinted line instead of that near-invisible dashed one. */
     .site-footer .footer-col:not(:last-child) { border-bottom: 1px solid rgba(17,17,20,0.1); }
     .site-footer .footer-col h5 { text-align: center; }
     .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { justify-content: center; }
@@ -399,7 +388,7 @@
     .tier-table thead th { padding: 1.1rem 0.6rem 0.9rem; }
     .tier-table tbody td { padding: 0.75rem 0.6rem; font-size: 0.78rem; }
     .tier-name { font-size: 0.95rem; }
-    .tier-price { font-size: 1.3rem; }
+    .tier-hours { font-size: 1.3rem; }
     .tier-table tbody td:first-child, .tier-table thead th.tier-feature-col {
       white-space: normal; width: 150px; min-width: 150px; line-height: 1.3;
     }
@@ -448,28 +437,28 @@
 <section class="hero">
   <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
-    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
-    <h1>Dynamics 365, das <span class="grad">wirklich zu Ihrem Betrieb passt</span></h1>
-    <p class="lead">Beratung, Workflow-Automatisierung und individuelle Integrationen für Microsoft Dynamics 365 &ndash; aus der Praxis eines IT-Administrators, der Systeme täglich am Laufen hält, nicht nur konfiguriert und wieder verlässt.</p>
+    <span class="hero-eyebrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 12l4-4 4 3-2 2.5M21.5 12l-4-4-4 3 2 2.5" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 13.5l3 2.5 3-2.5" stroke="currentColor" stroke-width="1.8"/></svg>Managed IT Support</span>
+    <h1>Feste <span class="grad">Wochenstunden</span> für Ihre komplette IT</h1>
+    <p class="lead">Ein Vertrag, ein Ansprechpartner, alle Leistungen von Workstations bis Mitarbeiter-Onboarding &ndash; planbar mit festen Stunden pro Woche statt überraschender Rechnungen.</p>
     <div class="hero-ctas">
-      <a class="btn btn-primary" href="/?book=dynamics">Beratung buchen &rarr;</a>
+      <a class="btn btn-primary" href="/?book=support">Beratung buchen &rarr;</a>
       <a class="btn btn-ghost" href="#pakete-de">Pakete ansehen</a>
     </div>
   </div>
   <div class="hero-visual">
     <div class="hero-card">
-      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
-      <div class="stat-row"><span class="label">Beratung</span><b>ab 79&nbsp;&euro;</b></div>
-      <div class="stat-row"><span class="label">Workflow-Erstellung</span><b>ab 249&nbsp;&euro;</b></div>
-      <div class="stat-row"><span class="label">Individuelle Integration</span><b>ab 499&nbsp;&euro;</b></div>
+      <div class="hw-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="stat-row"><span class="label">Basic</span><b>2 Std./Woche</b></div>
+      <div class="stat-row"><span class="label">Standard</span><b>5 Std./Woche</b></div>
+      <div class="stat-row"><span class="label">Premium</span><b>12 Std./Woche</b></div>
       <div class="stat-row"><span class="label">Einsatzgebiet</span><b>München, 100&nbsp;km</b></div>
     </div>
   </div>
 </section>
 
 <section class="block" id="pakete-de">
-  <h2>Pakete &amp; Preise</h2>
-  <p class="sub">Transparent von Anfang an. Jedes Paket lässt sich direkt online buchen &ndash; größere Integrationen besprechen wir vorab im Detail.</p>
+  <h2>Pakete &amp; Wochenstunden</h2>
+  <p class="sub">Jedes Paket deckt unser gesamtes Leistungsspektrum ab &ndash; der Unterschied liegt in den wöchentlichen Stunden, der Reaktionszeit und den inkludierten Vor-Ort-Terminen. Der genaue Preis wird im kostenlosen Beratungsgespräch auf Ihr Unternehmen zugeschnitten.</p>
   <div class="tier-wrap">
     <table class="tier-table">
       <thead>
@@ -477,85 +466,106 @@
           <th class="tier-feature-col"></th>
           <th>
             <div class="tier-name">Basic</div>
-            <div class="tier-price">79&nbsp;&euro;</div>
-            <div class="tier-duration">45 Min. Kick-off</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+            <div class="tier-hours">2<small>&nbsp;Std./Woche</small></div>
+            <div class="tier-price">Preis nach Beratung</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=support">Anfragen</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Beliebt</span>
             <div class="tier-name">Standard</div>
-            <div class="tier-price">249&nbsp;&euro;</div>
-            <div class="tier-duration">90 Min. Kick-off</div>
-            <a class="btn btn-primary tier-btn" href="/?book=dynamics">Buchen</a>
+            <div class="tier-hours">5<small>&nbsp;Std./Woche</small></div>
+            <div class="tier-price">Preis nach Beratung</div>
+            <a class="btn btn-primary tier-btn" href="/?book=support">Anfragen</a>
           </th>
           <th>
             <div class="tier-name">Premium</div>
-            <div class="tier-price">499&nbsp;&euro;</div>
-            <div class="tier-duration">120 Min. Kick-off</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+            <div class="tier-hours">12<small>&nbsp;Std./Woche</small></div>
+            <div class="tier-price">Preis nach Beratung</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=support">Anfragen</a>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Beratung &amp; Bedarfsanalyse</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Standardprozesse (Entitäten, Formulare, Business Process Flow: Angebot&nbsp;&rarr;&nbsp;Rechnung)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Power Automate Workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Individuelle Business Process Flows</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Rollenbasierte Zugriffskontrolle (RBAC) &amp; Sicherheitsrollen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Individuelle Formular-UI</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom Workflows &amp; Business Rules</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom Entitäten &amp; Felder</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom Formulare</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Individuelle Angebote, Aufträge &amp; Rechnungen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Splitrechnung (Teilrechnungsstellung)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>E-Rechnung (E-Invoicing)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Systemintegration mit Drittanbietern</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Datenmigration (Altsystem &amp; Altbestände)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Dokumentation der Umsetzung</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>E-Mail-Support danach</td><td>3 Tage</td><td>10 Tage</td><td>30 Tage</td></tr>
+        <tr><td>Remote-Support-Stunden pro Woche</td><td>2</td><td>5</td><td>12</td></tr>
+        <tr><td>Reaktionszeit</td><td>Nächster Werktag</td><td>Am selben Tag</td><td>Innerhalb von 4 Stunden</td></tr>
+        <tr><td>Vor-Ort-Einsätze</td><td>Nach Bedarf, extra</td><td>1&times; / Monat inklusive</td><td>2&times; / Monat inklusive</td></tr>
+        <tr><td>Fester Ansprechpartner</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Alle Leistungen aus unserem Katalog</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Mitarbeiter-Onboarding &amp; -Offboarding</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Priorisierung bei Störungen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Monatlicher Status- &amp; Wartungsbericht</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Nicht genutzte Stunden übertragbar</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
 <section class="block">
-  <h2>Was ich für Sie umsetze</h2>
-  <p class="sub">Von der ersten Bestandsaufnahme bis zur fertigen Automatisierung &ndash; als fester Ansprechpartner, nicht als anonymes Ticket-System.</p>
+  <h2>Alle Leistungen unter einem Vertrag</h2>
+  <p class="sub">Egal ob Arbeitsplätze, Server, Netzwerk oder der nächste Mitarbeiterwechsel &ndash; mit Managed IT müssen Sie nicht für jede einzelne Leistung extra buchen.</p>
   <div class="service-grid">
     <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.8"/><path d="M8 20h8M12 16v4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Workstations</h3>
+      <p>Einrichtung, Wartung und Fehlerbehebung für Computer und Laptops im gesamten Unternehmen.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="8" rx="2" stroke-width="1.8"/><rect x="4" y="13" width="16" height="8" rx="2" stroke-width="1.8"/><circle cx="8" cy="7" r="0.8" fill="currentColor"/><circle cx="8" cy="17" r="0.8" fill="currentColor"/></svg></div>
+      <h3>Server &amp; Unternehmensdienste</h3>
+      <p>Physische Server, Domain-Controller, Active Directory, Datei-, Exchange- und LDAP-Server.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 15a4 4 0 014-4h0a5 5 0 019.6-1.5A4.5 4.5 0 0120 18H7a4 4 0 01-4-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Rechenzentrum (Cloud / On-Premise)</h3>
+      <p>Virtualisierung &ndash; vor Ort mit Proxmox, VMware, Hyper-V oder Citrix Xen, oder in der Cloud mit Azure, AWS, IONOS oder Hetzner &ndash; plus SAN-Speicher, Failover-Cluster und NAS.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="2.5" stroke-width="1.8"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h3>Netzwerke, Sicherheit &amp; WLAN</h3>
+      <p>Router, Firewall, WLAN-Netzwerk, VPN, Switches und Access Points.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 17a4 4 0 01-1-7.9A5.5 5.5 0 0116.3 7 4.5 4.5 0 0118 17H7z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Cloud-Services</h3>
+      <p>Office 365, Exchange / E-Mail, SharePoint, Intune / MDM und Monday.com.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="10" height="18" rx="2" stroke-width="1.8"/><path d="M17 8h3v10a2 2 0 01-2 2h-1" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Backup-Lösungen</h3>
+      <p>Festplatte, NAS-Speicher, SAN-Speicher und Autoloader &ndash; damit Ihre Daten immer gesichert sind.</p>
+    </div>
+    <div class="service-card spotlight">
+      <span class="spotlight-tag">Schwerpunkt</span>
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 8v4l2.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>D365-Beratung &amp; Bestandsaufnahme</h3>
-      <p>Gemeinsam klären wir, welche Module, Automatisierungen und Anpassungen für Ihren Betrieb wirklich Sinn ergeben &ndash; bevor ein einziger Klick konfiguriert wird.</p>
+      <h3>Dynamics 365</h3>
+      <p>Beratung, Workflow-Automatisierung und individuelle Integrationen &ndash; <a href="/dynamics-365/">mehr auf unserer Dynamics-365-Seite</a>.</p>
     </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.8" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Power Automate Workflows</h3>
-      <p>Wiederkehrende Abläufe &ndash; Genehmigungen, Benachrichtigungen, Datenabgleiche &ndash; als zuverlässige, automatisierte Prozesse statt manueller Handarbeit.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="2" stroke-width="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" stroke-width="1.8"/><path d="M11 7h4a2 2 0 012 2v4M13 17H9a2 2 0 01-2-2v-4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Individuelle Integrationen</h3>
-      <p>Dynamics 365 verbunden mit Ihren anderen Systemen &ndash; Buchhaltung, Kundenportale, Drittanbieter-APIs &ndash; sauber und wartbar aufgesetzt.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-      <h3>Sicherheitsrollen &amp; Zugriffskonzepte</h3>
-      <p>Wer darf was sehen und ändern? Saubere Rollen- und Berechtigungsstrukturen, damit sensible Daten dort bleiben, wo sie hingehören.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Datenmigration &amp; Reporting</h3>
-      <p>Bestehende Daten sauber übernehmen und mit Power BI-Dashboards sichtbar machen, statt sie in Tabellen verstauben zu lassen.</p>
+    <div class="service-card spotlight">
+      <span class="spotlight-tag">Schwerpunkt</span>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" stroke-width="1.6"/></svg></div>
+      <h3>Website-Erstellung</h3>
+      <p>Moderne Websites mit CMS, Shop &amp; Integrationen &ndash; <a href="/website-builder/">mehr auf unserer Website-Seite</a>.</p>
     </div>
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-      <h3>Laufende Betreuung</h3>
-      <p>Nach dem Go-Live nicht allein gelassen: kontinuierliche Anpassungen, Fehlerbehebung und Weiterentwicklung nach Bedarf.</p>
+      <h3>VoIP &amp; Telefonanlagen</h3>
+      <p>Microsoft Teams, Yeastar oder andere Systeme &ndash; Einrichtung, Nebenstellen und Anrufqualität.</p>
     </div>
     <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8"/><path d="M7 9h6M7 13h10M7 17h4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Dataverse &amp; Kundenservice-Modul</h3>
-      <p>Datenmodelle in Dataverse, Case-Management-Prozesse und Konfiguration des Customer-Service-Moduls &ndash; für Support- und Kundenprozesse, die wirklich nachvollziehbar bleiben.</p>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="16" height="9" rx="2" stroke-width="1.8"/><path d="M7 8V5a2 2 0 012-2h6a2 2 0 012 2v3M8 13h8" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Drucker &amp; Büroausstattung</h3>
+      <p>Kleine und mittlere Multifunktionsgeräte sowie Fotokopierer &ndash; Einrichtung, Fehlerbehebung, Netzwerkfreigabe.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="12" height="9" rx="2" stroke-width="1.8"/><path d="M16 8.5l4-2v8l-4-2" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Überwachungskameras</h3>
+      <p>NVR-/DVR-Kamerasysteme und kabellose Kameras &ndash; Einrichtung, Anbindung und Erweiterung.</p>
+    </div>
+    <div class="service-card spotlight">
+      <span class="spotlight-tag">Oft gefragt</span>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.2" stroke-width="1.8"/><path d="M3.5 19c0-3 2.5-5.3 5.5-5.3s5.5 2.3 5.5 5.3M16 9.5a2.8 2.8 0 100-5.6M19 19c0-2.3-1.6-4.3-3.8-5" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+      <h3>Mitarbeiter-Onboarding &amp; -Offboarding</h3>
+      <p>Neue Mitarbeiter startklar machen: Gerät, Konto &amp; Software aus einer Hand. Beim Austritt: Konten deaktivieren, Gerät zurücksetzen &amp; Daten sichern &ndash; nach Mitarbeiteranzahl gestaffelt.</p>
     </div>
   </div>
 </section>
@@ -563,20 +573,20 @@
 <section class="block">
   <div class="why-wrap">
     <div class="why-content">
-      <h2>Warum <span class="zettly-word">zett<span>ly</span></span> für Dynamics 365?</h2>
-      <p class="lead2">Mein beruflicher Schwerpunkt liegt seit Jahren in der IT- und Netzwerkadministration &ndash; mit einem klaren Fokus auf Microsoft Dynamics 365: individuelle Entwicklung, Workflow-Automatisierung und Systemintegrationen. Diese Erfahrung bringe ich direkt zu Ihnen, ohne Umwege über ein großes Beraterteam.</p>
+      <h2>Warum Managed IT von <span class="zettly-word">zett<span>ly</span></span>?</h2>
+      <p class="lead2">Statt jede Störung einzeln zu buchen, bekommen Sie feste Wochenstunden, eine garantierte Reaktionszeit und einen festen Ansprechpartner, der Ihre Systeme bereits kennt &ndash; vom einzelnen Arbeitsplatz bis zum Rechenzentrum.</p>
       <ul class="why-list">
-        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Hands-on Erfahrung aus dem täglichen Betrieb echter Unternehmenssysteme &ndash; nicht nur aus Schulungen.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ein fester Ansprechpartner von der Beratung bis zur Umsetzung &ndash; keine wechselnden Kontakte.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transparente Festpreise für klar abgegrenzte Leistungen, individuelle Angebote für größere Projekte.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Planbare Kosten statt überraschender Rechnungen pro Einsatz.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ein Vertrag deckt unser gesamtes Leistungsspektrum ab &ndash; von Workstations bis Onboarding.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ein fester Ansprechpartner, der Ihre Umgebung kennt, statt wechselnder Tickets.</li>
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Vor Ort in München und im Umkreis von 100&nbsp;km, remote deutschlandweit möglich.</li>
       </ul>
     </div>
     <div class="why-stats">
-      <div class="why-stat"><div class="num">3</div><div class="lbl">Leistungspakete zur Auswahl</div></div>
+      <div class="why-stat"><div class="num">3</div><div class="lbl">Stundenpakete zur Auswahl</div></div>
+      <div class="why-stat"><div class="num">12+</div><div class="lbl">Leistungsbereiche inklusive</div></div>
       <div class="why-stat"><div class="num">100km</div><div class="lbl">Einsatzradius ab München</div></div>
       <div class="why-stat"><div class="num">1:1</div><div class="lbl">Persönliche Betreuung</div></div>
-      <div class="why-stat"><div class="num">B1&rarr;B2</div><div class="lbl">Deutsch &amp; Englisch im Kundenkontakt</div></div>
     </div>
   </div>
 </section>
@@ -585,29 +595,29 @@
   <h2>Häufige Fragen</h2>
   <div class="faq-wrap">
     <details class="faq-item" open>
-      <summary>Brauche ich bereits eine Dynamics 365-Lizenz?</summary>
-      <p>Nein. In der Beratung klären wir gemeinsam, welche Lizenzform und welche Module zu Ihrem Betrieb passen, bevor Sie etwas kaufen.</p>
+      <summary>Was passiert, wenn ich meine Wochenstunden nicht ausschöpfe?</summary>
+      <p>Im Premium-Paket können nicht genutzte Stunden in den Folgemonat übertragen werden. Bei Basic und Standard verfallen ungenutzte Stunden am Ende der Woche.</p>
     </details>
     <details class="faq-item">
-      <summary>Kann ein bestehendes System erweitert werden, statt neu aufzusetzen?</summary>
-      <p>In den meisten Fällen ja. Individuelle Integrationen und Workflows lassen sich in der Regel auf ein bestehendes D365-System aufsetzen, ohne bei null anzufangen.</p>
+      <summary>Was, wenn ich mehr Stunden brauche als mein Paket bietet?</summary>
+      <p>Zusätzliche Stunden werden nach Aufwand abgerechnet oder wir wechseln gemeinsam in das nächsthöhere Paket &ndash; ganz wie es zu Ihrem Bedarf passt.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Sind Onboarding und Offboarding wirklich in jedem Paket enthalten?</summary>
+      <p>Ja. Geräteeinrichtung, Konten anlegen und Software installieren bei Neueinstellungen sowie die vollständige Bereinigung beim Austritt sind Teil des Leistungsumfangs aller drei Pakete.</p>
     </details>
     <details class="faq-item">
       <summary>Arbeiten Sie remote oder nur vor Ort?</summary>
-      <p>Beides. Beratung, Workflow-Erstellung und viele Integrationen lassen sich remote umsetzen; vor Ort bin ich im Umkreis von 100&nbsp;km um München verfügbar.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Was, wenn mein Projekt größer ist als die gelisteten Pakete?</summary>
-      <p>Die drei Pakete decken die häufigsten Anfragen ab. Für umfangreichere Projekte erstelle ich nach einem kurzen Beratungsgespräch ein individuelles Angebot.</p>
+      <p>Beides. Viele Aufgaben lassen sich remote erledigen; vor Ort bin ich im Umkreis von 100&nbsp;km um München verfügbar, Vor-Ort-Termine sind je nach Paket bereits inklusive.</p>
     </details>
   </div>
 </section>
 
 <section class="block">
   <div class="cta-banner">
-    <h2>Bereit, Dynamics 365 wirklich für sich arbeiten zu lassen?</h2>
-    <p>Buchen Sie ein unverbindliches Beratungsgespräch &ndash; wir klären in 45 Minuten, wo der größte Hebel für Ihren Betrieb liegt.</p>
-    <a class="btn btn-primary" href="/?book=dynamics">Beratung jetzt buchen &rarr;</a>
+    <h2>Bereit für planbare IT-Betreuung?</h2>
+    <p>Buchen Sie ein unverbindliches Beratungsgespräch &ndash; wir finden gemeinsam das passende Stundenpaket für Ihr Unternehmen.</p>
+    <a class="btn btn-primary" href="/?book=support">Beratung jetzt buchen &rarr;</a>
   </div>
 </section>
 
@@ -619,28 +629,28 @@
 <section class="hero">
   <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
-    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
-    <h1>Dynamics 365 that <span class="grad">actually fits your business</span></h1>
-    <p class="lead">Consulting, workflow automation, and custom integrations for Microsoft Dynamics 365 &ndash; from an IT administrator who keeps systems running every day, not just configures them and moves on.</p>
+    <span class="hero-eyebrow"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 12l4-4 4 3-2 2.5M21.5 12l-4-4-4 3 2 2.5" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 13.5l3 2.5 3-2.5" stroke="currentColor" stroke-width="1.8"/></svg>Managed IT Support</span>
+    <h1>Fixed <span class="grad">weekly hours</span> for your entire IT</h1>
+    <p class="lead">One contract, one point of contact, every service from workstations to employee onboarding &ndash; planned around a fixed number of hours per week instead of surprise invoices.</p>
     <div class="hero-ctas">
-      <a class="btn btn-primary" href="/?book=dynamics">Book a consultation &rarr;</a>
+      <a class="btn btn-primary" href="/?book=support">Book a consultation &rarr;</a>
       <a class="btn btn-ghost" href="#pakete-en">View packages</a>
     </div>
   </div>
   <div class="hero-visual">
     <div class="hero-card">
-      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
-      <div class="stat-row"><span class="label">Consultation</span><b>from &euro;79</b></div>
-      <div class="stat-row"><span class="label">Workflow build</span><b>from &euro;249</b></div>
-      <div class="stat-row"><span class="label">Custom integration</span><b>from &euro;499</b></div>
+      <div class="hw-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 7v5l3.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="stat-row"><span class="label">Basic</span><b>2 hrs/week</b></div>
+      <div class="stat-row"><span class="label">Standard</span><b>5 hrs/week</b></div>
+      <div class="stat-row"><span class="label">Premium</span><b>12 hrs/week</b></div>
       <div class="stat-row"><span class="label">Coverage</span><b>Munich, 100&nbsp;km</b></div>
     </div>
   </div>
 </section>
 
 <section class="block" id="pakete-en">
-  <h2>Packages &amp; Pricing</h2>
-  <p class="sub">Transparent from the start. Every package can be booked directly online &ndash; larger integrations we scope together beforehand.</p>
+  <h2>Packages &amp; Weekly Hours</h2>
+  <p class="sub">Every package covers our full range of services &ndash; the difference is the weekly hours, the response time, and the included on-site visits. The exact price is scoped to your business during a free consultation.</p>
   <div class="tier-wrap">
     <table class="tier-table">
       <thead>
@@ -648,85 +658,106 @@
           <th class="tier-feature-col"></th>
           <th>
             <div class="tier-name">Basic</div>
-            <div class="tier-price">&euro;79</div>
-            <div class="tier-duration">45 min. Kick Off</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+            <div class="tier-hours">2<small>&nbsp;hrs/week</small></div>
+            <div class="tier-price">Price after consultation</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=support">Enquire</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Popular</span>
             <div class="tier-name">Standard</div>
-            <div class="tier-price">&euro;249</div>
-            <div class="tier-duration">90 min. Kick Off</div>
-            <a class="btn btn-primary tier-btn" href="/?book=dynamics">Book</a>
+            <div class="tier-hours">5<small>&nbsp;hrs/week</small></div>
+            <div class="tier-price">Price after consultation</div>
+            <a class="btn btn-primary tier-btn" href="/?book=support">Enquire</a>
           </th>
           <th>
             <div class="tier-name">Premium</div>
-            <div class="tier-price">&euro;499</div>
-            <div class="tier-duration">120 min. Kick Off</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+            <div class="tier-hours">12<small>&nbsp;hrs/week</small></div>
+            <div class="tier-price">Price after consultation</div>
+            <a class="btn btn-ghost tier-btn" href="/?book=support">Enquire</a>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Consultation &amp; needs analysis</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Standard processes (entities, forms, business process flow: quote&nbsp;&rarr;&nbsp;invoice)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Power Automate workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom business process flows</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Role-based access control (RBAC) &amp; security roles</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom form UI</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom workflows &amp; business rules</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom entities &amp; fields</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom forms</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom quotes, orders &amp; invoices</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Split invoicing</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>E-invoicing</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Third-party system integration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Data migration (legacy systems &amp; records)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Documentation of the work</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Follow-up email support</td><td>3 days</td><td>10 days</td><td>30 days</td></tr>
+        <tr><td>Remote support hours per week</td><td>2</td><td>5</td><td>12</td></tr>
+        <tr><td>Response time</td><td>Next business day</td><td>Same day</td><td>Within 4 hours</td></tr>
+        <tr><td>On-site visits</td><td>As needed, extra</td><td>1&times; / month included</td><td>2&times; / month included</td></tr>
+        <tr><td>Dedicated point of contact</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Every service in our catalog</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Employee onboarding &amp; offboarding</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Priority on incidents</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Monthly status &amp; maintenance report</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Unused hours roll over</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
 <section class="block">
-  <h2>What I build for you</h2>
-  <p class="sub">From the first stock-take to a finished automation &ndash; as a single point of contact, not an anonymous ticket queue.</p>
+  <h2>Every service under one contract</h2>
+  <p class="sub">Whether it's workstations, servers, the network, or your next hire &ndash; with Managed IT you don't need to book each service separately.</p>
   <div class="service-grid">
     <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.8"/><path d="M8 20h8M12 16v4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Workstations</h3>
+      <p>Setup, maintenance, and troubleshooting for computers and laptops across your business.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="8" rx="2" stroke-width="1.8"/><rect x="4" y="13" width="16" height="8" rx="2" stroke-width="1.8"/><circle cx="8" cy="7" r="0.8" fill="currentColor"/><circle cx="8" cy="17" r="0.8" fill="currentColor"/></svg></div>
+      <h3>Servers &amp; Enterprise Services</h3>
+      <p>Physical servers, domain controllers, Active Directory, file, Exchange, and LDAP servers.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 15a4 4 0 014-4h0a5 5 0 019.6-1.5A4.5 4.5 0 0120 18H7a4 4 0 01-4-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Data Center (Cloud / On-Premise)</h3>
+      <p>Virtualization &ndash; on-premise with Proxmox, VMware, Hyper-V, or Citrix Xen, or in the cloud with Azure, AWS, IONOS, or Hetzner &ndash; plus SAN storage, failover clustering, and NAS.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="2.5" stroke-width="1.8"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h3>Networking, Security &amp; WLAN</h3>
+      <p>Router, firewall, wireless network, VPN, switches, and access points.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 17a4 4 0 01-1-7.9A5.5 5.5 0 0116.3 7 4.5 4.5 0 0118 17H7z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Cloud Services</h3>
+      <p>Office 365, Exchange / Email, SharePoint, Intune / MDM, and Monday.com.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="10" height="18" rx="2" stroke-width="1.8"/><path d="M17 8h3v10a2 2 0 01-2 2h-1" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Backup Solutions</h3>
+      <p>Hard disk, NAS storage, SAN storage, and auto loader &ndash; so your data is always protected.</p>
+    </div>
+    <div class="service-card spotlight">
+      <span class="spotlight-tag">Specialty</span>
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 8v4l2.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>D365 Consulting &amp; Assessment</h3>
-      <p>Together we work out which modules, automations, and customizations actually make sense for your business &ndash; before a single thing gets configured.</p>
+      <h3>Dynamics 365</h3>
+      <p>Consulting, workflow automation, and custom integrations &ndash; <a href="/dynamics-365/">more on our Dynamics 365 page</a>.</p>
     </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3" stroke-width="1.8" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Power Automate Workflows</h3>
-      <p>Recurring processes &ndash; approvals, notifications, data syncs &ndash; turned into reliable, automated flows instead of manual work.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="2" stroke-width="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" stroke-width="1.8"/><path d="M11 7h4a2 2 0 012 2v4M13 17H9a2 2 0 01-2-2v-4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Custom Integrations</h3>
-      <p>Dynamics 365 connected to your other systems &ndash; accounting, customer portals, third-party APIs &ndash; built clean and maintainable.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-      <h3>Security Roles &amp; Access</h3>
-      <p>Who can see and change what? Clean role and permission structures, so sensitive data stays exactly where it belongs.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Data Migration &amp; Reporting</h3>
-      <p>Bring existing data over cleanly and make it visible with Power BI dashboards, instead of letting it sit in spreadsheets.</p>
+    <div class="service-card spotlight">
+      <span class="spotlight-tag">Specialty</span>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" stroke-width="1.6"/></svg></div>
+      <h3>Website Builder</h3>
+      <p>Modern websites with CMS, shop &amp; integrations &ndash; <a href="/website-builder/">more on our website page</a>.</p>
     </div>
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-      <h3>Ongoing Support</h3>
-      <p>Not left alone after go-live: continued adjustments, troubleshooting, and further development as your needs evolve.</p>
+      <h3>VoIP &amp; Phone Systems</h3>
+      <p>Microsoft Teams, Yeastar, or other systems &ndash; setup, extensions, and call quality.</p>
     </div>
     <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8"/><path d="M7 9h6M7 13h10M7 17h4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Dataverse &amp; Customer Service Module</h3>
-      <p>Data models in Dataverse, case-management processes, and Customer Service module configuration &ndash; for support and customer workflows that actually stay traceable.</p>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="16" height="9" rx="2" stroke-width="1.8"/><path d="M7 8V5a2 2 0 012-2h6a2 2 0 012 2v3M8 13h8" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h3>Printers &amp; Office Equipment</h3>
+      <p>Small and medium multifunction devices and photocopiers &ndash; setup, troubleshooting, shared network use.</p>
+    </div>
+    <div class="service-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="12" height="9" rx="2" stroke-width="1.8"/><path d="M16 8.5l4-2v8l-4-2" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+      <h3>Security Cameras</h3>
+      <p>NVR/DVR camera systems and wireless cameras &ndash; setup, connectivity, expansion.</p>
+    </div>
+    <div class="service-card spotlight">
+      <span class="spotlight-tag">Popular</span>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.2" stroke-width="1.8"/><path d="M3.5 19c0-3 2.5-5.3 5.5-5.3s5.5 2.3 5.5 5.3M16 9.5a2.8 2.8 0 100-5.6M19 19c0-2.3-1.6-4.3-3.8-5" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+      <h3>Employee Onboarding &amp; Offboarding</h3>
+      <p>Get new hires ready to go: device, account &amp; software, all in one. When someone leaves: deactivate accounts, wipe the device &amp; secure data &ndash; scaled by employee count.</p>
     </div>
   </div>
 </section>
@@ -734,20 +765,20 @@
 <section class="block">
   <div class="why-wrap">
     <div class="why-content">
-      <h2>Why <span class="zettly-word">zett<span>ly</span></span> for Dynamics 365?</h2>
-      <p class="lead2">My professional focus for years has been IT and network administration &ndash; with a clear specialty in Microsoft Dynamics 365: custom development, workflow automation, and system integrations. I bring that experience directly to you, without routing it through a large consulting team.</p>
+      <h2>Why Managed IT from <span class="zettly-word">zett<span>ly</span></span>?</h2>
+      <p class="lead2">Instead of booking every incident separately, you get fixed weekly hours, a guaranteed response time, and a dedicated point of contact who already knows your systems &ndash; from a single workstation to a data center.</p>
       <ul class="why-list">
-        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Hands-on experience running real enterprise systems day to day &ndash; not just training courses.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>One point of contact from consulting through delivery &ndash; no rotating account managers.</li>
-        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transparent flat rates for clearly scoped work, custom quotes for larger projects.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Predictable costs instead of surprise invoices per call-out.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>One contract covers our full range of services &ndash; from workstations to onboarding.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>One point of contact who knows your environment, instead of rotating tickets.</li>
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>On-site in Munich and within 100&nbsp;km, remote available across Germany.</li>
       </ul>
     </div>
     <div class="why-stats">
-      <div class="why-stat"><div class="num">3</div><div class="lbl">Service packages to choose from</div></div>
+      <div class="why-stat"><div class="num">3</div><div class="lbl">Hour packages to choose from</div></div>
+      <div class="why-stat"><div class="num">12+</div><div class="lbl">Service areas included</div></div>
       <div class="why-stat"><div class="num">100km</div><div class="lbl">On-site radius from Munich</div></div>
       <div class="why-stat"><div class="num">1:1</div><div class="lbl">Direct, personal support</div></div>
-      <div class="why-stat"><div class="num">DE/EN</div><div class="lbl">Fluent in German &amp; English</div></div>
     </div>
   </div>
 </section>
@@ -756,29 +787,29 @@
   <h2>Frequently asked questions</h2>
   <div class="faq-wrap">
     <details class="faq-item" open>
-      <summary>Do I already need a Dynamics 365 license?</summary>
-      <p>No. In the consultation we figure out together which license type and modules fit your business, before you buy anything.</p>
+      <summary>What happens if I don't use all my weekly hours?</summary>
+      <p>On Premium, unused hours roll over into the next month. On Basic and Standard, unused hours expire at the end of the week.</p>
     </details>
     <details class="faq-item">
-      <summary>Can an existing system be extended instead of rebuilt?</summary>
-      <p>In most cases, yes. Custom integrations and workflows can usually be layered onto an existing D365 setup without starting from scratch.</p>
+      <summary>What if I need more hours than my package includes?</summary>
+      <p>Extra hours are billed as needed, or we can move you up to the next package together &ndash; whichever fits your needs better.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Is onboarding and offboarding really included in every package?</summary>
+      <p>Yes. Device setup, account creation, and software installation for new hires, as well as the full cleanup when someone leaves, are part of all three packages.</p>
     </details>
     <details class="faq-item">
       <summary>Do you work remotely or only on-site?</summary>
-      <p>Both. Consulting, workflow builds, and many integrations can be done remotely; on-site I'm available within 100&nbsp;km of Munich.</p>
-    </details>
-    <details class="faq-item">
-      <summary>What if my project is bigger than the listed packages?</summary>
-      <p>The three packages cover the most common requests. For larger projects, I put together a custom quote after a short consultation call.</p>
+      <p>Both. Many tasks can be handled remotely; on-site I'm available within 100&nbsp;km of Munich, and on-site visits are already included depending on your package.</p>
     </details>
   </div>
 </section>
 
 <section class="block">
   <div class="cta-banner">
-    <h2>Ready to make Dynamics 365 actually work for you?</h2>
-    <p>Book a no-obligation consultation &ndash; in 45 minutes we'll find where the biggest lever is for your business.</p>
-    <a class="btn btn-primary" href="/?book=dynamics">Book a consultation &rarr;</a>
+    <h2>Ready for predictable IT support?</h2>
+    <p>Book a no-obligation consultation &ndash; together we'll find the right hour package for your business.</p>
+    <a class="btn btn-primary" href="/?book=support">Book a consultation &rarr;</a>
   </div>
 </section>
 
@@ -794,7 +825,7 @@
   <div class="footer-inner">
     <div class="footer-col footer-about">
       <div class="footer-brand">zett<span>ly</span></div>
-      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
+      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Managed IT, Microsoft Dynamics 365 und Website-Erstellung für Unternehmen.</p>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
@@ -823,7 +854,7 @@
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly | Dynamics 365", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerCoverage: "Abdeckungsgebiet", footerPrivacy: "Datenschutz", footerLiability: "Haftungshinweise", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+    de: { title: "Zettly | Managed IT", back: "← Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerCoverage: "Abdeckungsgebiet", footerPrivacy: "Datenschutz", footerLiability: "Haftungshinweise", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Managed IT, Microsoft Dynamics 365 und Website-Erstellung für Unternehmen.",
       footerServicesHeading: "Leistungen",
       footerSpecialtyBadge: "Schwerpunkt",
       footerServiceManagedIt: "Managed IT",
@@ -836,7 +867,7 @@
       footerContactHeading: "Kontakt",
       announceHead: "Wir befinden uns im Aufbau ·",
       announceTail: "Buchungen sind derzeit nicht möglich" },
-    en: { title: "Zettly | Dynamics 365", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+    en: { title: "Zettly | Managed IT", back: "← Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Managed IT, Microsoft Dynamics 365, and website building for businesses.",
       footerServicesHeading: "Services",
       footerSpecialtyBadge: "Specialty",
       footerServiceManagedIt: "Managed IT",

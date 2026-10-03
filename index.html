@@ -2214,6 +2214,7 @@
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
+      <a class="service-item highlight" href="/managed-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceManagedIt">Managed IT</span></a>
       <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
       <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
       <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
@@ -2406,6 +2407,10 @@ const I18N = {
     webbuilderFeaturedBadge: "Digitaler Auftritt",
     webbuilderLearnMore: "Mehr über unseren Website-Service erfahren",
     webbuilderFeatureLinkSub: "Beispiele, Pakete & mehr auf unserer Website-Seite",
+    supportFeaturedBadge: "Planbare Betreuung",
+    supportLearnMore: "Mehr über unseren Managed-IT-Service erfahren",
+    supportFeatureLinkSub: "Stundenpakete, Leistungen & mehr auf unserer Managed-IT-Seite",
+    footerServiceManagedIt: "Managed IT",
     footerServiceDynamics: "Dynamics 365",
     footerServiceWebsite: "Website-Erstellung",
     footerServiceComputers: "Computer & Netzwerke",
@@ -2585,6 +2590,10 @@ const I18N = {
     webbuilderFeaturedBadge: "Digital presence",
     webbuilderLearnMore: "Learn more about our website service",
     webbuilderFeatureLinkSub: "Examples, packages & more on our website page",
+    supportFeaturedBadge: "Predictable support",
+    supportLearnMore: "Learn more about our Managed IT service",
+    supportFeatureLinkSub: "Hour packages, services & more on our Managed IT page",
+    footerServiceManagedIt: "Managed IT",
     footerServiceDynamics: "Dynamics 365",
     footerServiceWebsite: "Website Builder",
     footerServiceComputers: "Computers & Networks",
@@ -3142,6 +3151,7 @@ function nodeIsTerminal(node) {
 const FEATURED_CATEGORIES = {
   dynamics: { url: "/dynamics-365/", badgeKey: "dynamicsFeaturedBadge", linkKey: "dynamicsLearnMore", subKey: "dynamicsFeatureLinkSub" },
   webbuilder: { url: "/website-builder/", badgeKey: "webbuilderFeaturedBadge", linkKey: "webbuilderLearnMore", subKey: "webbuilderFeatureLinkSub" },
+  support: { url: "/managed-it/", badgeKey: "supportFeaturedBadge", linkKey: "supportLearnMore", subKey: "supportFeatureLinkSub" },
 };
 
 const FEATURE_LINK_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>`;
