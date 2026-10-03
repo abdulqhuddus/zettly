@@ -165,8 +165,8 @@
 
   .hero-visual { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
   .hero-card {
-    width: 100%; max-width: 440px; background: #fff; border: 1px solid var(--border);
-    border-radius: 22px; padding: 2.2rem 2.4rem; box-shadow: 0 24px 60px rgba(17,17,20,0.1);
+    width: 100%; max-width: 600px; background: #fff; border: 1px solid var(--border);
+    border-radius: 22px; padding: 2.2rem 2rem; box-shadow: 0 24px 60px rgba(17,17,20,0.1);
     position: relative;
   }
   .hero-card img { width: 72px; height: 72px; display: block; margin: 0 auto 1.2rem; }
@@ -175,41 +175,44 @@
      of a static price list - gives the hero card some life and reads as
      an actual CRM at a glance, while the Dynamics 365 logo above it stays
      put. Pure CSS (no JS): one keyframe animation slides the floating
-     deal chip across the three stage columns and fades it out before it
-     jumps back to the start, and three more keyframe animations
-     (sharing the same 9s timeline) light up each column's background in
+     deal chip across the five stage columns (the full D365 Sales flow:
+     Lead -> Opportunity -> Offer -> Order -> Invoice) and fades it out
+     before it jumps back to the start, and five more keyframe animations
+     (sharing the same 14s timeline) light up each column's background in
      turn so it reads as the chip "arriving" there. */
-  .crm-mock { margin-top: 0.6rem; }
-  .crm-board { position: relative; display: flex; gap: 0.5rem; margin-top: 22px; }
+  .crm-mock { margin-top: 0.8rem; }
+  .crm-board { position: relative; display: flex; gap: 0.5rem; margin-top: 26px; }
   .crm-col {
-    flex: 1; min-width: 0; border-radius: 12px; padding: 1.5rem 0.3rem 0.7rem;
+    flex: 1; min-width: 0; border-radius: 14px; padding: 1.9rem 0.3rem 0.9rem;
     text-align: center; background: var(--accent-light);
   }
   .crm-col-label {
-    font-size: 0.64rem; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase;
-    color: var(--muted); white-space: nowrap;
+    font-size: 0.66rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase;
+    color: var(--muted);
   }
-  .crm-col-1 { animation: crmCol1 9s ease-in-out infinite; }
-  .crm-col-2 { animation: crmCol2 9s ease-in-out infinite; }
-  .crm-col-3 { animation: crmCol3 9s ease-in-out infinite; }
+  .crm-col-1 { animation: crmCol1 14s ease-in-out infinite; }
+  .crm-col-2 { animation: crmCol2 14s ease-in-out infinite; }
+  .crm-col-3 { animation: crmCol3 14s ease-in-out infinite; }
+  .crm-col-4 { animation: crmCol4 14s ease-in-out infinite; }
+  .crm-col-5 { animation: crmCol5 14s ease-in-out infinite; }
   .crm-deal-chip {
-    position: absolute; top: -16px; left: 16.6%; transform: translateX(-50%);
-    display: flex; align-items: center; gap: 0.5rem;
-    background: #fff; border: 1px solid var(--border); border-radius: 14px;
-    padding: 0.45rem 0.7rem; box-shadow: 0 10px 22px rgba(17,17,20,0.14);
+    position: absolute; top: -18px; left: 10%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 0.6rem;
+    background: #fff; border: 1px solid var(--border); border-radius: 16px;
+    padding: 0.55rem 0.85rem; box-shadow: 0 10px 24px rgba(17,17,20,0.16);
     white-space: nowrap;
-    animation: crmMove 9s ease-in-out infinite;
+    animation: crmMove 14s ease-in-out infinite;
   }
   .crm-avatar {
-    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    width: 30px; height: 30px; border-radius: 50%; flex: 0 0 auto;
     background: linear-gradient(135deg, var(--d365-blue), var(--accent));
-    color: #fff; font-size: 0.62rem; font-weight: 800;
+    color: #fff; font-size: 0.68rem; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
   }
-  .crm-deal-text { font-size: 0.68rem; color: var(--muted); line-height: 1.3; text-align: left; }
-  .crm-deal-text b { color: var(--ink); font-size: 0.8rem; }
+  .crm-deal-text { font-size: 0.74rem; color: var(--muted); line-height: 1.3; text-align: left; }
+  .crm-deal-text b { color: var(--ink); font-size: 0.88rem; }
   .crm-deal-pulse {
-    width: 7px; height: 7px; border-radius: 50%; background: #16a34a; flex: 0 0 auto;
+    width: 8px; height: 8px; border-radius: 50%; background: #16a34a; flex: 0 0 auto;
     animation: crmPulse 1.6s ease-out infinite;
   }
   @keyframes crmPulse {
@@ -217,30 +220,48 @@
     70% { box-shadow: 0 0 0 7px rgba(22,163,74,0); }
     100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
   }
+  /* Five equal columns -> centers at 10/30/50/70/90%. Each stage holds for
+     roughly 13% of the 14s loop, with a short cross-fade move in between,
+     then the chip fades out before snapping back (invisibly) to the start. */
   @keyframes crmMove {
-    0%, 26% { left: 16.6%; opacity: 1; }
-    33%, 59% { left: 50%; opacity: 1; }
-    66%, 88% { left: 83.3%; opacity: 1; }
-    94% { opacity: 0; }
-    100% { left: 16.6%; opacity: 0; }
+    0%, 13% { left: 10%; opacity: 1; }
+    17%, 30% { left: 30%; opacity: 1; }
+    34%, 47% { left: 50%; opacity: 1; }
+    51%, 64% { left: 70%; opacity: 1; }
+    68%, 81% { left: 90%; opacity: 1; }
+    89% { opacity: 0; }
+    100% { left: 10%; opacity: 0; }
   }
   @keyframes crmCol1 {
-    0%, 26% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); }
-    33%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 13% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); }
+    17%, 100% { background: var(--accent-light); box-shadow: none; }
   }
   @keyframes crmCol2 {
-    0%, 26% { background: var(--accent-light); box-shadow: none; }
-    33%, 59% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
-    66%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 13% { background: var(--accent-light); box-shadow: none; }
+    17%, 30% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
+    34%, 100% { background: var(--accent-light); box-shadow: none; }
   }
   @keyframes crmCol3 {
-    0%, 59% { background: var(--accent-light); box-shadow: none; }
-    66%, 88% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
-    96%, 100% { background: var(--accent-light); box-shadow: none; }
+    0%, 30% { background: var(--accent-light); box-shadow: none; }
+    34%, 47% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
+    51%, 100% { background: var(--accent-light); box-shadow: none; }
+  }
+  @keyframes crmCol4 {
+    0%, 47% { background: var(--accent-light); box-shadow: none; }
+    51%, 64% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
+    68%, 100% { background: var(--accent-light); box-shadow: none; }
+  }
+  @keyframes crmCol5 {
+    0%, 64% { background: var(--accent-light); box-shadow: none; }
+    68%, 81% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
+    89%, 100% { background: var(--accent-light); box-shadow: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .crm-deal-chip, .crm-col-1, .crm-col-2, .crm-col-3, .crm-deal-pulse { animation: none; }
-    .crm-col-2 { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
+    .crm-deal-chip, .crm-col-1, .crm-col-2, .crm-col-3, .crm-col-4, .crm-col-5, .crm-deal-pulse { animation: none; }
+    .crm-col-1 { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); }
+  }
+  @media (max-width: 420px) {
+    .crm-col-label { font-size: 0.58rem; }
   }
 
   /* ---- Sections ---- */
@@ -567,8 +588,10 @@
             <span class="crm-deal-pulse"></span>
           </div>
           <div class="crm-col crm-col-1"><span class="crm-col-label">Lead</span></div>
-          <div class="crm-col crm-col-2"><span class="crm-col-label">Qualifiziert</span></div>
-          <div class="crm-col crm-col-3"><span class="crm-col-label">Gewonnen</span></div>
+          <div class="crm-col crm-col-2"><span class="crm-col-label">Chance</span></div>
+          <div class="crm-col crm-col-3"><span class="crm-col-label">Angebot</span></div>
+          <div class="crm-col crm-col-4"><span class="crm-col-label">Auftrag</span></div>
+          <div class="crm-col crm-col-5"><span class="crm-col-label">Rechnung</span></div>
         </div>
       </div>
     </div>
@@ -595,7 +618,7 @@
               <div class="tier-price">299&nbsp;&euro;</div>
               <div class="tier-duration">45 Min. Kick-off</div>
               <div class="tier-timeline">10 Std.</div>
-              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics&amp;plan=dynBasic">Buchen</a>
             </div>
           </th>
           <th class="tier-col-hl">
@@ -605,7 +628,7 @@
               <div class="tier-price">1.199&nbsp;&euro;</div>
               <div class="tier-duration">90 Min. Kick-off</div>
               <div class="tier-timeline">40 Std.</div>
-              <a class="btn btn-primary tier-btn" href="/?book=dynamics">Buchen</a>
+              <a class="btn btn-primary tier-btn" href="/?book=dynamics&amp;plan=dynStandard">Buchen</a>
             </div>
           </th>
           <th>
@@ -614,14 +637,14 @@
               <div class="tier-price">4.799&nbsp;&euro;</div>
               <div class="tier-duration">120 Min. Kick-off</div>
               <div class="tier-timeline">160 Std.</div>
-              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics&amp;plan=dynPremium">Buchen</a>
             </div>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr><td>Beratung &amp; Bedarfsanalyse</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Standardprozesse (Entitäten, Formulare, Produkte, Business Process Flow: Angebot&nbsp;&rarr;&nbsp;Rechnung, und PDF-Vorlagen)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Standardprozesse (Entitäten, Formulare, Produkte, Business Process Flow: Lead, Opportunity, Angebot&nbsp;&rarr;&nbsp;Rechnung, und PDF-Vorlagen)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Rollenbasierte Zugriffskontrolle (RBAC) &amp; Sicherheitsrollen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Neue individuelle Entitäten</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
         <tr><td>Neue individuelle Felder</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>
@@ -762,8 +785,10 @@
             <span class="crm-deal-pulse"></span>
           </div>
           <div class="crm-col crm-col-1"><span class="crm-col-label">Lead</span></div>
-          <div class="crm-col crm-col-2"><span class="crm-col-label">Qualified</span></div>
-          <div class="crm-col crm-col-3"><span class="crm-col-label">Won</span></div>
+          <div class="crm-col crm-col-2"><span class="crm-col-label">Opportunity</span></div>
+          <div class="crm-col crm-col-3"><span class="crm-col-label">Offer</span></div>
+          <div class="crm-col crm-col-4"><span class="crm-col-label">Order</span></div>
+          <div class="crm-col crm-col-5"><span class="crm-col-label">Invoice</span></div>
         </div>
       </div>
     </div>
@@ -790,7 +815,7 @@
               <div class="tier-price">&euro;299</div>
               <div class="tier-duration">45 min. Kick Off</div>
               <div class="tier-timeline">10 hrs</div>
-              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics&amp;plan=dynBasic">Book</a>
             </div>
           </th>
           <th class="tier-col-hl">
@@ -800,7 +825,7 @@
               <div class="tier-price">&euro;1,199</div>
               <div class="tier-duration">90 min. Kick Off</div>
               <div class="tier-timeline">40 hrs</div>
-              <a class="btn btn-primary tier-btn" href="/?book=dynamics">Book</a>
+              <a class="btn btn-primary tier-btn" href="/?book=dynamics&amp;plan=dynStandard">Book</a>
             </div>
           </th>
           <th>
@@ -809,14 +834,14 @@
               <div class="tier-price">&euro;4,799</div>
               <div class="tier-duration">120 min. Kick Off</div>
               <div class="tier-timeline">160 hrs</div>
-              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics&amp;plan=dynPremium">Book</a>
             </div>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr><td>Consultation &amp; needs analysis</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Standard processes (entities, forms, products, business process flow: quote&nbsp;&rarr;&nbsp;invoice, and PDF templates)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Standard processes (entities, forms, products, business process flow: lead, opportunity, quote&nbsp;&rarr;&nbsp;invoice, and PDF templates)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Role-based access control (RBAC) &amp; security roles</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Custom new entities</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
         <tr><td>Custom new fields</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>

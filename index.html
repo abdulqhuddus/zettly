@@ -4589,8 +4589,17 @@ showStep(0);
 // that category's own tree, as if the visitor had clicked through
 // Business -> that category themselves. Any id in FEATURED_CATEGORIES is
 // a valid deep-link target.
+//
+// A package-specific "Book" button on that marketing page (one of its
+// pricing-table tiers) can also pass &plan=<optionId>, matching one of
+// that category's root.options ids (e.g. dynBasic/dynStandard/dynPremium
+// for Dynamics 365) - when present and valid, we go one step further and
+// select that option immediately, which for a tier that books directly
+// (no deeper sub-choices) lands the visitor straight on the calendar step
+// with that package already chosen, instead of making them pick it again.
 (async function handleBookingDeepLink() {
-  const wanted = new URLSearchParams(location.search).get("book");
+  const params = new URLSearchParams(location.search);
+  const wanted = params.get("book");
   if (!wanted || !FEATURED_CATEGORIES[wanted]) return;
   state.audience = "business";
   if (!CATALOG.business || !CATALOG.business.length) await loadCatalog();
@@ -4600,8 +4609,15 @@ showStep(0);
   state.category = cat;
   state.treePath = [];
   state.currentNode = cat.root;
-  renderTreeStep();
-  showStep(2);
+
+  const planId = params.get("plan");
+  const planOption = planId && cat.root.options.find(o => o.id === planId);
+  if (planOption) {
+    selectTreeOption(planOption);
+  } else {
+    renderTreeStep();
+    showStep(2);
+  }
   history.replaceState(null, "", location.pathname);
 })();
 </script>
