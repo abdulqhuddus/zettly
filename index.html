@@ -1355,6 +1355,8 @@
     line-height: 1.45;
   }
   .tree-notice svg { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 0.1rem; }
+  .tree-notice-list { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .tree-notice-list li { padding-left: 0.1rem; }
   /* Same shape as .tree-notice, but in the brand purple rather than amber —
      for a helpful tip rather than a caution (e.g. "you can book for
      multiple devices on the last step"), so it doesn't read as a warning. */
@@ -3293,9 +3295,20 @@ const NOTICE_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.o
 function renderTreeNotices(node) {
   const el = document.getElementById("tree-notices");
   const notices = Array.isArray(node.notice) ? node.notice : [];
-  el.innerHTML = notices.map(n => `
-    <div class="tree-notice">${NOTICE_ICON}<span>${n[lang]}</span></div>
-  `).join("");
+  if (notices.length === 0) {
+    el.innerHTML = "";
+  } else if (notices.length === 1) {
+    el.innerHTML = `<div class="tree-notice">${NOTICE_ICON}<span>${notices[0][lang]}</span></div>`;
+  } else {
+    el.innerHTML = `
+      <div class="tree-notice">
+        ${NOTICE_ICON}
+        <ul class="tree-notice-list">
+          ${notices.map(n => `<li>${n[lang]}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
 }
 
 // Icon per explainer step, reusing the site's existing inline-SVG icon
