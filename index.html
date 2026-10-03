@@ -666,6 +666,200 @@
   .hiw-step h4 { font-size: 0.84rem; font-weight: 700; margin-bottom: 0.35rem; white-space: normal; overflow-wrap: break-word; }
   .hiw-step p { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
 
+  /* "Business Exclusive" section: showcases the three animated hero
+     diagrams from Dynamics 365, Website Builder and Managed IT as a
+     teaser grid linking out to each dedicated page. */
+  .bx-exclusive {
+    width: 100%;
+    max-width: 1180px;
+    padding: 2.5rem 1.25rem 1rem;
+    margin: 0.5rem 0 0.5rem;
+    --bx-teal: #0d9488;
+  }
+  .bx-exclusive h2 {
+    text-align: center;
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .bx-exclusive .hiw-sub { text-align: center; color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; max-width: 620px; margin-left: auto; margin-right: auto; }
+  .bx-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+  .bx-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.4rem 1.3rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(17,17,20,0.06);
+  }
+  .bx-visual {
+    position: relative;
+    height: 210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .bx-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.35rem; }
+  .bx-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.45; margin-bottom: 1rem; flex: 1; }
+  .bx-explore {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-weight: 700; font-size: 0.88rem; color: var(--accent);
+    text-decoration: none; align-self: flex-start;
+    transition: gap 0.2s ease;
+  }
+  .bx-explore:hover { gap: 0.6rem; }
+  @media (max-width: 900px) {
+    .bx-grid { grid-template-columns: 1fr; }
+    .bx-card { max-width: 440px; margin: 0 auto; width: 100%; }
+  }
+
+  /* --- Dynamics 365 CRM mini-diagram (bx-crm-*) --- */
+  .bx-crm-mock { width: 100%; transform: scale(0.82); }
+  .bx-crm-board { position: relative; display: flex; gap: 0.3rem; margin-top: 46px; }
+  .bx-crm-col {
+    position: relative; z-index: 1; flex: 1; min-width: 0; border-radius: 12px;
+    padding: 1.5rem 0.1rem 0.5rem; text-align: center; background: var(--accent-light);
+  }
+  .bx-crm-col-icon { display: block; width: 16px; height: 16px; margin: 0 auto 0.3rem; color: var(--muted); }
+  .bx-crm-col-icon svg { width: 100%; height: 100%; display: block; }
+  .bx-crm-col-label {
+    font-size: 0.46rem; font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase;
+    color: var(--muted); line-height: 1.1; overflow-wrap: break-word;
+  }
+  .bx-crm-col-1 { animation: bxCrmCol1 16s ease-in-out infinite; }
+  .bx-crm-col-2 { animation: bxCrmCol2 16s ease-in-out infinite; }
+  .bx-crm-col-3 { animation: bxCrmCol3 16s ease-in-out infinite; }
+  .bx-crm-col-4 { animation: bxCrmCol4 16s ease-in-out infinite; }
+  .bx-crm-col-5 { animation: bxCrmCol5 16s ease-in-out infinite; }
+  .bx-crm-col-6 { animation: bxCrmCol6 16s ease-in-out infinite; }
+  .bx-crm-col-paid .bx-crm-col-icon { animation: bxCrmPaidColor 16s ease-in-out infinite; }
+  .bx-crm-check-path { stroke-dasharray: 13; stroke-dashoffset: 13; animation: bxCrmCheckDraw 16s ease-in-out infinite; }
+  .bx-crm-connector-line {
+    position: absolute; z-index: 0; top: 2.1rem; left: 6%; right: 6%; height: 2px;
+    background-image: repeating-linear-gradient(to right, var(--border) 0 5px, transparent 5px 10px);
+  }
+  .bx-crm-flow-dot { position: absolute; top: -3px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0; animation: bxCrmFlow 3.4s linear infinite; }
+  .bx-crm-flow-dot-b { animation-delay: 1.15s; }
+  .bx-crm-flow-dot-c { animation-delay: 2.3s; }
+  @keyframes bxCrmFlow { 0% { left: 0%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
+  .bx-crm-deal-chip {
+    position: absolute; z-index: 2; top: -30px; left: 8.33%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 0.5rem;
+    background: #fff; border: 1px solid var(--border); border-radius: 16px;
+    padding: 0.45rem 0.7rem; box-shadow: 0 10px 24px rgba(17,17,20,0.16);
+    white-space: nowrap; animation: bxCrmMove 16s ease-in-out infinite;
+  }
+  .bx-crm-avatar {
+    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    background: linear-gradient(135deg, var(--brand-blue), var(--accent));
+    color: #fff; font-size: 0.6rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bx-crm-deal-text { font-size: 0.66rem; color: var(--muted); line-height: 1.3; text-align: left; }
+  .bx-crm-deal-text b { color: var(--ink); font-size: 0.78rem; }
+  .bx-crm-deal-pulse { width: 7px; height: 7px; border-radius: 50%; background: #16a34a; flex: 0 0 auto; animation: bxCrmPulse 1.6s ease-out infinite; }
+  @keyframes bxCrmPulse { 0% { box-shadow: 0 0 0 0 rgba(22,163,74,0.5); } 70% { box-shadow: 0 0 0 7px rgba(22,163,74,0); } 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); } }
+  @keyframes bxCrmMove {
+    0%, 10% { left: 8.33%; opacity: 1; } 14%, 24% { left: 25%; opacity: 1; } 28%, 38% { left: 41.67%; opacity: 1; }
+    42%, 52% { left: 58.33%; opacity: 1; } 56%, 66% { left: 75%; opacity: 1; } 70% { opacity: 0; } 100% { left: 8.33%; opacity: 0; }
+  }
+  @keyframes bxCrmCol1 { 0%, 10% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); } 14%, 100% { background: var(--accent-light); box-shadow: none; } }
+  @keyframes bxCrmCol2 { 0%, 14% { background: var(--accent-light); box-shadow: none; } 14%, 24% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); } 28%, 100% { background: var(--accent-light); box-shadow: none; } }
+  @keyframes bxCrmCol3 { 0%, 28% { background: var(--accent-light); box-shadow: none; } 28%, 38% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); } 42%, 100% { background: var(--accent-light); box-shadow: none; } }
+  @keyframes bxCrmCol4 { 0%, 42% { background: var(--accent-light); box-shadow: none; } 42%, 52% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); } 56%, 100% { background: var(--accent-light); box-shadow: none; } }
+  @keyframes bxCrmCol5 { 0%, 56% { background: var(--accent-light); box-shadow: none; } 56%, 70% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); } 74%, 100% { background: var(--accent-light); box-shadow: none; } }
+  @keyframes bxCrmCol6 { 0%, 70% { background: var(--accent-light); box-shadow: none; } 74%, 86% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(22,163,74,0.4); } 92%, 100% { background: var(--accent-light); box-shadow: none; } }
+  @keyframes bxCrmPaidColor { 0%, 70% { color: var(--muted); } 76%, 86% { color: #16a34a; } 94%, 100% { color: var(--muted); } }
+  @keyframes bxCrmCheckDraw { 0%, 68% { stroke-dashoffset: 13; } 76%, 86% { stroke-dashoffset: 0; } 94%, 100% { stroke-dashoffset: 13; } }
+
+  /* --- Website Builder mini-diagram (bx-wb-*) --- */
+  .bx-wb-browser { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .bx-wb-browser .bar { display: flex; gap: 0.3rem; padding: 0.5rem 0.6rem; background: #f4f3f7; }
+  .bx-wb-browser .bar span { width: 7px; height: 7px; border-radius: 50%; background: #d8d6df; animation: bxWbTrafficPulse 2.6s ease-in-out infinite; }
+  .bx-wb-browser .bar span:nth-child(1) { background: #ff6159; animation-delay: 0s; }
+  .bx-wb-browser .bar span:nth-child(2) { background: #ffbd2e; animation-delay: 0.3s; }
+  .bx-wb-browser .bar span:nth-child(3) { background: #28c940; animation-delay: 0.6s; }
+  .bx-wb-browser .screen { height: 150px; background: linear-gradient(135deg, var(--accent-light), #e7edfd); overflow: hidden; }
+  .bx-wb-browser .screen svg { width: 100%; height: 100%; display: block; }
+  .bx-wb-nav-dot { animation: bxWbNavPulse 2.4s ease-in-out infinite; }
+  .bx-wb-nav-pill-active { transform-box: fill-box; transform-origin: 50% 50%; animation: bxWbPillGlow 2.4s ease-in-out infinite; }
+  .bx-wb-chart-line { stroke-dasharray: 160; stroke-dashoffset: 160; animation: bxWbChartDraw 3s ease-in-out infinite; }
+  .bx-wb-chart-dot { transform-box: fill-box; transform-origin: 50% 50%; animation: bxWbDotPulse 1.8s ease-in-out infinite; }
+  .bx-wb-click-ripple { fill: #fff; fill-opacity: 0.55; transform-box: fill-box; transform-origin: 50% 50%; animation: bxWbRipple 2.2s ease-out infinite; }
+  .bx-wb-click-dot { transform-box: fill-box; transform-origin: 50% 50%; animation: bxWbClickDot 2.2s ease-in-out infinite; }
+  @keyframes bxWbTrafficPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  @keyframes bxWbNavPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+  @keyframes bxWbPillGlow { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.85; } }
+  @keyframes bxWbChartDraw { 0% { stroke-dashoffset: 160; } 55%, 100% { stroke-dashoffset: 0; } }
+  @keyframes bxWbDotPulse { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.3); opacity: 1; } }
+  @keyframes bxWbRipple { 0%, 15% { transform: scale(1); opacity: 0.7; } 85%, 100% { transform: scale(4.5); opacity: 0; } }
+  @keyframes bxWbClickDot { 0%, 10% { transform: scale(1); } 15% { transform: scale(0.6); } 25%, 100% { transform: scale(1); } }
+
+  /* --- Managed IT mini-diagram (bx-itops-*) --- */
+  .bx-itops-stage { position: relative; width: 100%; height: 195px; transform: scale(0.95); }
+  .bx-itops-pulse {
+    position: absolute; top: 2px; left: 50%; width: 60px; height: 60px; margin-left: -30px;
+    border-radius: 50%; background: radial-gradient(circle, rgba(13,148,136,0.3), transparent 72%);
+    animation: bxItopsPulseRing 2.6s ease-out infinite;
+  }
+  @keyframes bxItopsPulseRing { 0% { transform: scale(0.55); opacity: 0.85; } 100% { transform: scale(2.1); opacity: 0; } }
+  .bx-itops-wires { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .bx-itops-wires .wire { stroke: var(--border); stroke-width: 2; fill: none; }
+  .bx-itops-wires .wire-dot { filter: drop-shadow(0 0 4px rgba(13,148,136,0.55)); }
+  .bx-itops-node { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; z-index: 1; }
+  .bx-itops-node-ico {
+    width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center;
+    background: #fff; border: 1.5px solid var(--border); box-shadow: 0 8px 18px rgba(17,17,20,0.08);
+    animation: bxItopsFloat 3.4s ease-in-out infinite;
+  }
+  .bx-itops-node-ico svg { width: 20px; height: 20px; }
+  .bx-itops-node-label { font-size: 0.56rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  @keyframes bxItopsFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .bx-itops-dc { top: 0; left: 50%; transform: translateX(-50%); }
+  .bx-itops-dc .bx-itops-node-ico {
+    width: 56px; height: 56px; border-radius: 15px; animation: none;
+    background: linear-gradient(135deg, #e3f6f3, var(--accent-light)); border-color: transparent;
+  }
+  .bx-itops-dc .bx-itops-node-ico svg { width: 27px; height: 27px; stroke: var(--bx-teal); }
+  .bx-itops-dc .bx-itops-node-label { font-weight: 800; color: var(--ink); font-size: 0.6rem; margin-top: 0.05rem; }
+  .bx-itops-led { animation: bxItopsLed 1.8s ease-in-out infinite; }
+  .bx-itops-led.led-b { animation-delay: 0.3s; }
+  .bx-itops-led.led-c { animation-delay: 0.6s; }
+  @keyframes bxItopsLed { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .bx-itops-leaf { top: 148px; }
+  .bx-itops-leaf-a { left: 7%; transform: translateX(-50%); }
+  .bx-itops-leaf-b { left: 36%; transform: translateX(-50%); }
+  .bx-itops-leaf-c { left: 64%; transform: translateX(-50%); }
+  .bx-itops-leaf-d { left: 93%; transform: translateX(-50%); }
+  .bx-itops-leaf-a .bx-itops-node-ico { animation-delay: 0.1s; }
+  .bx-itops-leaf-a .bx-itops-node-ico svg { stroke: var(--accent); }
+  .bx-itops-leaf-b .bx-itops-node-ico { animation-delay: 0.4s; }
+  .bx-itops-leaf-b .bx-itops-node-ico svg { stroke: #7C3AED; }
+  .bx-itops-leaf-c .bx-itops-node-ico { animation-delay: 0.7s; }
+  .bx-itops-leaf-c .bx-itops-node-ico svg { stroke: var(--pink); }
+  .bx-itops-leaf-d .bx-itops-node-ico { animation-delay: 1s; }
+  .bx-itops-leaf-d .bx-itops-node-ico svg { stroke: #2563eb; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bx-crm-deal-chip, .bx-crm-col-1, .bx-crm-col-2, .bx-crm-col-3, .bx-crm-col-4, .bx-crm-col-5, .bx-crm-col-6,
+    .bx-crm-col-paid .bx-crm-col-icon, .bx-crm-check-path, .bx-crm-deal-pulse, .bx-crm-flow-dot,
+    .bx-wb-browser .bar span, .bx-wb-nav-dot, .bx-wb-nav-pill-active, .bx-wb-chart-line, .bx-wb-chart-dot, .bx-wb-click-ripple, .bx-wb-click-dot,
+    .bx-itops-pulse, .bx-itops-node-ico, .bx-itops-led { animation: none; }
+  }
+  @media (max-width: 480px) {
+    .bx-crm-mock { transform: scale(0.72); }
+    .bx-itops-stage { transform: scale(0.82); }
+  }
+
   /* "Where we cover" section: a Munich-centered map with a 100km service
      radius, shown after the booking flow and before the footer. */
   .service-area {
@@ -2409,6 +2603,163 @@
   <p class="commute-explainer" id="service-area-explainer" data-i18n="commuteExplainer">Innerhalb von 15 km rund um München zahlen Sie nur den Servicepreis, keine zusätzliche Anfahrtspauschale. Weiter entfernte Adressen erhalten eine gestaffelte Anfahrtspauschale, abhängig von der Entfernung: Sie sehen den genauen Aufpreis, sobald Sie im Buchungsprozess Ihre Postleitzahl eingeben.</p>
 </div>
 
+<div class="bx-exclusive" id="business-exclusive">
+  <h2 data-i18n="bxTitle">Exklusiv für Geschäftskunden</h2>
+  <p class="hiw-sub" data-i18n="bxSub">Drei leistungsstarke Lösungen für Unternehmen &ndash; von der CRM-Einführung bis zum kompletten IT-Outsourcing.</p>
+  <div class="bx-grid">
+
+    <div class="bx-card">
+      <div class="bx-visual">
+        <div class="bx-crm-mock" aria-hidden="true">
+          <div class="bx-crm-board">
+            <div class="bx-crm-deal-chip">
+              <span class="bx-crm-avatar">AG</span>
+              <span class="bx-crm-deal-text">Acme Inc.<br><b>&euro;12.400</b></span>
+              <span class="bx-crm-deal-pulse"></span>
+            </div>
+            <div class="bx-crm-connector-line">
+              <span class="bx-crm-flow-dot bx-crm-flow-dot-a"></span>
+              <span class="bx-crm-flow-dot bx-crm-flow-dot-b"></span>
+              <span class="bx-crm-flow-dot bx-crm-flow-dot-c"></span>
+            </div>
+            <div class="bx-crm-col bx-crm-col-1">
+              <span class="bx-crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"></circle><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path></svg></span>
+              <span class="bx-crm-col-label">Lead</span>
+            </div>
+            <div class="bx-crm-col bx-crm-col-2">
+              <span class="bx-crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.3"></circle></svg></span>
+              <span class="bx-crm-col-label">Opp.</span>
+            </div>
+            <div class="bx-crm-col bx-crm-col-3">
+              <span class="bx-crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5l-8-8H6a2 2 0 0 0-2 2v6.5l8 8a2 2 0 0 0 2.8 0l5.7-5.7a2 2 0 0 0 0-2.8z"></path><circle cx="8.5" cy="8.5" r="1.1"></circle></svg></span>
+              <span class="bx-crm-col-label">Offer</span>
+            </div>
+            <div class="bx-crm-col bx-crm-col-4">
+              <span class="bx-crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.3"></circle><circle cx="17" cy="20" r="1.3"></circle><path d="M3.5 4h2l2.3 10.6a2 2 0 0 0 2 1.6h7.4a2 2 0 0 0 2-1.6L21 8H6.5"></path></svg></span>
+              <span class="bx-crm-col-label">Order</span>
+            </div>
+            <div class="bx-crm-col bx-crm-col-5">
+              <span class="bx-crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v17l-2.5-1.5L13 20l-2.5-1.5L8 20l-2-1.5V3z"></path><path d="M9 8h6M9 12h6"></path></svg></span>
+              <span class="bx-crm-col-label">Invoice</span>
+            </div>
+            <div class="bx-crm-col bx-crm-col-6 bx-crm-col-paid">
+              <span class="bx-crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.3"></circle><path class="bx-crm-check-path" d="M7.5 12.5l3 3 6-6"></path></svg></span>
+              <span class="bx-crm-col-label">Paid</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3 data-i18n="bxCrmTitle">Dynamics 365</h3>
+      <p data-i18n="bxCrmBlurb">Vertrieb, Service und Abläufe in einem System &ndash; von der ersten Anfrage bis zur bezahlten Rechnung.</p>
+      <a class="bx-explore" href="/dynamics-365/"><span data-i18n="bxExplore">Entdecken</span> <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <div class="bx-card">
+      <div class="bx-visual">
+        <div class="bx-wb-browser" aria-hidden="true">
+          <div class="bar"><span></span><span></span><span></span></div>
+          <div class="screen">
+            <svg viewBox="0 0 380 170" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="bxWbHeroBtn" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#0078D4"/>
+                  <stop offset="1" stop-color="#7C3AED"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="380" height="22" fill="#fff" fill-opacity="0.55"/>
+              <circle class="bx-wb-nav-dot" cx="16" cy="11" r="4.5" fill="#0078D4"/>
+              <rect x="26" y="8.5" width="34" height="5" rx="2.5" fill="#111114" fill-opacity="0.5"/>
+              <rect x="260" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
+              <rect x="294" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
+              <rect class="bx-wb-nav-pill-active" x="328" y="8" width="34" height="6" rx="3" fill="#0078D4" fill-opacity="0.35"/>
+              <rect x="22" y="40" width="58" height="6" rx="3" fill="#0078D4" fill-opacity="0.55"/>
+              <rect x="22" y="56" width="150" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
+              <rect x="22" y="74" width="112" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
+              <rect x="22" y="96" width="128" height="6" rx="3" fill="#6b6b74" fill-opacity="0.55"/>
+              <rect x="22" y="114" width="76" height="20" rx="10" fill="url(#bxWbHeroBtn)"/>
+              <circle class="bx-wb-click-ripple" cx="60" cy="124" r="5"/>
+              <circle class="bx-wb-click-dot" cx="60" cy="124" r="4" fill="#fff"/>
+              <rect x="222" y="38" width="136" height="112" rx="10" fill="#F3EEFF" stroke="#e9e7ef"/>
+              <path class="bx-wb-chart-line" d="M236 130l24-26 18 20 14-18 26 24" stroke="#0078D4" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle class="bx-wb-chart-dot" cx="328" cy="78" r="8" fill="#EC4899" fill-opacity="0.7"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <h3 data-i18n="bxWbTitle">Website-Erstellung</h3>
+      <p data-i18n="bxWbBlurb">Professionelle Websites, für Sie gebaut und live geschaltet &ndash; ohne dass Sie selbst etwas einrichten müssen.</p>
+      <a class="bx-explore" href="/website-builder/"><span data-i18n="bxExplore">Entdecken</span> <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <div class="bx-card">
+      <div class="bx-visual">
+        <div class="bx-itops-stage" aria-hidden="true">
+          <div class="bx-itops-pulse"></div>
+          <svg class="bx-itops-wires" viewBox="0 0 360 230" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="wire" d="M180,74 C180,120 60,120 25,172"/>
+            <path class="wire" d="M180,74 C180,120 150,130 130,172"/>
+            <path class="wire" d="M180,74 C180,120 210,130 230,172"/>
+            <path class="wire" d="M180,74 C180,120 300,120 335,172"/>
+            <circle class="wire-dot" r="3.4" fill="#0d9488">
+              <animateMotion dur="2.6s" repeatCount="indefinite" path="M180,74 C180,120 60,120 25,172"/>
+            </circle>
+            <circle class="wire-dot" r="3.4" fill="#7C3AED">
+              <animateMotion dur="2.1s" repeatCount="indefinite" path="M180,74 C180,120 150,130 130,172"/>
+            </circle>
+            <circle class="wire-dot" r="3.4" fill="#EC4899">
+              <animateMotion dur="2.4s" repeatCount="indefinite" path="M180,74 C180,120 210,130 230,172"/>
+            </circle>
+            <circle class="wire-dot" r="3.4" fill="#2563eb">
+              <animateMotion dur="3s" repeatCount="indefinite" path="M180,74 C180,120 300,120 335,172"/>
+            </circle>
+          </svg>
+          <div class="bx-itops-node bx-itops-dc">
+            <div class="bx-itops-node-ico">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="3" width="14" height="18" rx="2" stroke-width="1.6"/>
+                <line x1="5" y1="9" x2="19" y2="9" stroke-width="1.3"/>
+                <line x1="5" y1="15" x2="19" y2="15" stroke-width="1.3"/>
+                <circle class="bx-itops-led led-a" cx="8" cy="6" r="1" fill="#2dd4bf"/>
+                <circle class="bx-itops-led led-b" cx="8" cy="12" r="1" fill="#2dd4bf"/>
+                <circle class="bx-itops-led led-c" cx="8" cy="18" r="1" fill="#2dd4bf"/>
+              </svg>
+            </div>
+            <span class="bx-itops-node-label">Data Center</span>
+          </div>
+          <div class="bx-itops-node bx-itops-leaf bx-itops-leaf-a">
+            <div class="bx-itops-node-ico">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 9a10 10 0 0114 0" stroke-width="1.7" stroke-linecap="round"/><path d="M8 12.5a6 6 0 018 0" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="17" r="1.3" stroke-width="1.7"/></svg>
+            </div>
+            <span class="bx-itops-node-label">Network</span>
+          </div>
+          <div class="bx-itops-node bx-itops-leaf bx-itops-leaf-b">
+            <div class="bx-itops-node-ico">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.6"/><circle cx="12" cy="8.6" r="1.8" stroke-width="1.5"/><path d="M8.3 13c0.6-1.7 2-2.4 3.7-2.4s3.1 0.7 3.7 2.4" stroke-width="1.5" stroke-linecap="round"/><path d="M8 20h8M12 16v4" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <span class="bx-itops-node-label">Users</span>
+          </div>
+          <div class="bx-itops-node bx-itops-leaf bx-itops-leaf-c">
+            <div class="bx-itops-node-ico">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="16" height="9" rx="2" stroke-width="1.7"/><path d="M7 8V5a2 2 0 012-2h6a2 2 0 012 2v3M8 13h8" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <span class="bx-itops-node-label">Printer</span>
+          </div>
+          <div class="bx-itops-node bx-itops-leaf bx-itops-leaf-d">
+            <div class="bx-itops-node-ico">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.7"/><path d="M8 20h8M12 16v4" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <span class="bx-itops-node-label">Workstations</span>
+          </div>
+        </div>
+      </div>
+      <h3 data-i18n="bxItopsTitle">Managed IT</h3>
+      <p data-i18n="bxItopsBlurb">Ihre komplette ausgelagerte IT-Abteilung &ndash; Server, Netzwerke, Drucker und Mitarbeiter-Support.</p>
+      <a class="bx-explore" href="/managed-it/"><span data-i18n="bxExplore">Entdecken</span> <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+  </div>
+</div>
+
 <footer class="site-footer">
   <svg class="footer-watermark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <rect x="0" y="0" width="28" height="28" rx="6" fill="#111114"/>
@@ -2629,6 +2980,15 @@ const I18N = {
     footerServiceDynamics: "Dynamics 365",
     footerServiceWebsite: "Website-Erstellung",
     footerServiceHome: "IT für Zuhause",
+    bxTitle: "Exklusiv für Geschäftskunden",
+    bxSub: "Drei leistungsstarke Lösungen für Unternehmen – von der CRM-Einführung bis zum kompletten IT-Outsourcing.",
+    bxCrmTitle: "Dynamics 365",
+    bxCrmBlurb: "Vertrieb, Service und Abläufe in einem System – von der ersten Anfrage bis zur bezahlten Rechnung.",
+    bxWbTitle: "Website-Erstellung",
+    bxWbBlurb: "Professionelle Websites, für Sie gebaut und live geschaltet – ohne dass Sie selbst etwas einrichten müssen.",
+    bxItopsTitle: "Managed IT",
+    bxItopsBlurb: "Ihre komplette ausgelagerte IT-Abteilung – Server, Netzwerke, Drucker und Mitarbeiter-Support.",
+    bxExplore: "Entdecken",
     footerLinksHeading: "Links",
     footerContactHeading: "Kontakt",
     serviceAreaTitle: "Wo sind wir für Sie im Einsatz?",
@@ -2823,6 +3183,15 @@ const I18N = {
     footerServiceDynamics: "Dynamics 365",
     footerServiceWebsite: "Website Builder",
     footerServiceHome: "Home IT",
+    bxTitle: "Exclusively for Businesses",
+    bxSub: "Three powerful solutions built for businesses – from CRM rollouts to full IT outsourcing.",
+    bxCrmTitle: "Dynamics 365",
+    bxCrmBlurb: "Sales, service and operations in one system – from first inquiry to paid invoice.",
+    bxWbTitle: "Website Builder",
+    bxWbBlurb: "Professional websites, built and launched for you – no setup required on your end.",
+    bxItopsTitle: "Managed IT",
+    bxItopsBlurb: "Your complete outsourced IT department – servers, networks, printers and employee support.",
+    bxExplore: "Explore",
     footerLinksHeading: "Links",
     footerContactHeading: "Contact",
     serviceAreaTitle: "Where are we available?",
