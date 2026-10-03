@@ -2685,6 +2685,12 @@ const I18N = {
     liabilityPoint10: "Unsere Leistungen umfassen die Konfiguration und den Anschluss von Geräten, jedoch keine Neuverkabelung, Bohrarbeiten oder sonstige bauliche Maßnahmen, sofern für die gebuchte Leistung nicht ausdrücklich etwas anderes angegeben ist.",
     liabilityPoint11Title: "Netzwerk- und WLAN-Leistung",
     liabilityPoint11: "Die Reichweite und Leistung von WLAN-Geräten, kabellosen Kameras, Smart-Home-Geräten und Sprachassistenten hängt von Ihrer vorhandenen Internetverbindung und den baulichen Gegebenheiten vor Ort ab und kann von uns nicht garantiert werden.",
+    liabilityPoint12Title: "Vom Kunden bereitzustellende Hardware",
+    liabilityPoint12: "Bei vielen Konfigurationsleistungen (z. B. Netzwerk-, WLAN-, Telefonanlagen- oder Speicherlösungen) gehen wir davon aus, dass die erforderliche Hardware bereits durch den Kunden bereitgestellt wird. Wir übernehmen keine Haftung für Verzögerungen oder Mehrkosten, die durch fehlende oder nicht kompatible Hardware entstehen.",
+    liabilityPoint13Title: "Backup-Verwaltungssoftware",
+    liabilityPoint13: "Bei Backup- und Speicherlösungen gehen wir davon aus, dass der Kunde über eine Backup-Verwaltungssoftware (Backup-Manager) verfügt. Die entsprechenden Details sind im letzten Schritt des Buchungsprozesses anzugeben; ohne diese Angaben kann sich die Einrichtung verzögern.",
+    liabilityPoint14Title: "Leistungsumfang und Mengenbegrenzungen",
+    liabilityPoint14: "Unsere Pakete beinhalten einen definierten Leistungsumfang (z. B. eine bestimmte Anzahl an Geräten, Postfächern, Boards, Access Points oder Telefonleitungen). Darüber hinausgehender Bedarf wird als separate, zusätzlich buchbare Leistung angeboten.",
     liabilityAcceptLabel: "Ich akzeptiere",
     liabilityAcceptClose: "Akzeptieren & schließen",
     liabilityConfirmed: "Bestätigt",
@@ -2870,6 +2876,12 @@ const I18N = {
     liabilityPoint10: "Our services cover configuring and connecting devices, not new cabling, drilling, or other structural work, unless explicitly stated for the booked service.",
     liabilityPoint11Title: "Network and WiFi performance",
     liabilityPoint11: "The range and performance of WiFi devices, wireless cameras, smart home devices, and voice assistants depend on your existing internet connection and on-site conditions, and cannot be guaranteed by us.",
+    liabilityPoint12Title: "Hardware provided by the customer",
+    liabilityPoint12: "For many configuration services (e.g. networking, WiFi, phone system, or storage solutions), we assume the required hardware is already provided by the customer. We accept no liability for delays or extra costs resulting from missing or incompatible hardware.",
+    liabilityPoint13Title: "Backup management software",
+    liabilityPoint13: "For backup and storage solutions, we assume the customer has backup management software (a backup manager) available. The relevant details must be provided in the last step of the booking process; without this information, setup may be delayed.",
+    liabilityPoint14Title: "Service scope and quantity limits",
+    liabilityPoint14: "Our packages include a defined scope of service (e.g. a specific number of devices, mailboxes, boards, access points, or telephone lines). Any requirements beyond this are offered as a separate, additionally bookable service.",
     liabilityAcceptLabel: "I accept",
     liabilityAcceptClose: "Accept & close",
     liabilityConfirmed: "Confirmed",
@@ -4002,7 +4014,7 @@ document.getElementById("f-consent").addEventListener("change", updateConsentGat
 function renderLiabilityPoints() {
   const list = document.getElementById("liability-points");
   if (!list) return;
-  const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
+  const points = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(n => `<li><b>${t("liabilityPoint" + n + "Title")}</b>${t("liabilityPoint" + n)}</li>`).join("");
   list.innerHTML = points;
 }
 // Shared "confirmation row" pill renderer: both the liability-notices row
