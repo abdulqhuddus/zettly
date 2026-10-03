@@ -10452,6 +10452,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             }
           },
@@ -10501,6 +10515,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             }
@@ -10552,6 +10580,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             }
           },
@@ -10601,6 +10643,20 @@
                     "duration": 120,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -10657,6 +10713,20 @@
                     "quote": true
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -10701,16 +10771,16 @@
                 {
                   "id": "setupNew",
                   "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
+                    "de": "Standalone-Server-Einrichtung mit Windows oder Linux",
+                    "en": "Standalone server setup with Windows or Linux"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
+                      "de": "Standalone-Server-Einrichtung mit Windows oder Linux",
+                      "en": "Standalone server setup with Windows or Linux"
                     },
-                    "price": 149,
+                    "price": 99,
                     "duration": 90,
                     "quote": false
                   }
@@ -10727,7 +10797,7 @@
                       "de": "Problem beheben",
                       "en": "Fix an issue"
                     },
-                    "price": 99,
+                    "price": 89,
                     "duration": 60,
                     "quote": false
                   }
@@ -10735,21 +10805,57 @@
                 {
                   "id": "maintenance",
                   "name": {
-                    "de": "Wartung & Gesundheitscheck",
-                    "en": "Maintenance & health check"
+                    "de": "Wartung & Updates",
+                    "en": "Maintenance & Updates"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Wartung & Gesundheitscheck",
-                      "en": "Maintenance & health check"
+                      "de": "Wartung & Updates",
+                      "en": "Maintenance & Updates"
                     },
                     "price": 89,
                     "duration": 60,
                     "quote": false
                   }
                 }
-              ]
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
+              ],
+              "explainer": {
+                "de": [
+                  "Auspacken und Sichtprüfung der Server-Hardware.",
+                  "Einbau zusätzlich bestellter Komponenten (RAM, Festplatten, Netzwerkkarten usw.), falls vorhanden.",
+                  "Einrichtung des von Ihnen gewünschten RAID-Levels.",
+                  "Installation des Betriebssystems (Windows oder Linux).",
+                  "Konfiguration der Netzwerkeinstellungen.",
+                  "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                  "Einspielen der neuesten Updates und Patches.",
+                  "Optional können noch ein paar weitere kleinere Konfigurationen enthalten sein, die im Buchungsprozess klar definiert sind."
+                ],
+                "en": [
+                  "Unpack and visually inspect the server hardware.",
+                  "Install any additional ordered components (RAM, drives, network cards, etc.), if any.",
+                  "Configure the RAID level of your choice.",
+                  "Install the operating system (Windows or Linux).",
+                  "Configure network settings.",
+                  "Set up backup management, if a backup solution is in place.",
+                  "Apply the latest updates and patches.",
+                  "A few other minor configurations can also be included, clearly defined during the booking process."
+                ]
+              }
             }
           },
           {
@@ -10815,6 +10921,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             }
@@ -10882,6 +11002,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -10954,6 +11088,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -11025,6 +11173,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -11095,6 +11257,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -11218,6 +11394,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         },
                         "desc": {
@@ -11288,6 +11478,20 @@
                                 "duration": 60,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         },
@@ -11360,6 +11564,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         },
                         "desc": {
@@ -11430,6 +11648,20 @@
                                 "duration": 60,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         },
@@ -11526,6 +11758,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -11596,6 +11842,20 @@
                                 "duration": 60,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -11668,6 +11928,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -11738,6 +12012,20 @@
                                 "duration": 60,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -11816,6 +12104,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -11887,6 +12189,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -11957,6 +12273,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             }
@@ -12046,6 +12376,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             }
           },
@@ -12112,6 +12456,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             }
@@ -12180,6 +12538,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             }
           },
@@ -12247,6 +12619,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             }
           },
@@ -12313,6 +12699,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -12384,6 +12784,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -12477,6 +12891,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -12547,6 +12975,20 @@
                     "duration": 30,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -12619,6 +13061,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -12690,6 +13146,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -12760,6 +13230,20 @@
                     "duration": 30,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -12853,6 +13337,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -12923,6 +13421,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -12995,6 +13507,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -13065,6 +13591,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -13181,6 +13721,20 @@
               "quoteKind": "consultation"
             }
           }
+        ],
+        "notice": [
+          {
+            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+          },
+          {
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+            "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+          }
         ]
       }
     },
@@ -13269,8 +13823,20 @@
         ],
         "notice": [
           {
+            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+          },
+          {
             "de": "Enterprise-Preise werden nach einer einmaligen kostenlosen Beratung erstellt.",
             "en": "Enterprise pricing is provided after a one-time free consultation."
+          },
+          {
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+            "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
           }
         ]
       }
@@ -13357,6 +13923,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -13428,6 +14008,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -13498,6 +14092,20 @@
                     "duration": 30,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -13591,6 +14199,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -13662,6 +14284,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             },
             "desc": {
@@ -13732,6 +14368,20 @@
                     "duration": 30,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             },
@@ -13834,6 +14484,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       }
@@ -13910,6 +14574,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -13959,6 +14637,20 @@
                                 "duration": 45,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -14036,6 +14728,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -14086,6 +14792,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -14135,6 +14855,20 @@
                                 "duration": 45,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -14212,6 +14946,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -14261,6 +15009,20 @@
                                 "duration": 45,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -14312,6 +15074,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -14361,6 +15137,20 @@
                                 "duration": 45,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -14438,6 +15228,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -14487,6 +15291,20 @@
                                 "duration": 45,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -14538,6 +15356,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -14588,6 +15420,20 @@
                                 "quote": false
                               }
                             }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            }
                           ]
                         }
                       },
@@ -14637,6 +15483,20 @@
                                 "duration": 45,
                                 "quote": false
                               }
+                            }
+                          ],
+                          "notice": [
+                            {
+                              "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                              "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                            },
+                            {
+                              "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                              "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                            },
+                            {
+                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                              "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ]
                         }
@@ -14734,6 +15594,20 @@
                           "quote": false
                         }
                       }
+                    ],
+                    "notice": [
+                      {
+                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                      },
+                      {
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                        "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                      }
                     ]
                   }
                 },
@@ -14800,6 +15674,20 @@
                           "duration": 45,
                           "quote": false
                         }
+                      }
+                    ],
+                    "notice": [
+                      {
+                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                      },
+                      {
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                        "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                       }
                     ]
                   }
@@ -14893,6 +15781,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             }
           },
@@ -14954,6 +15856,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             }
@@ -15017,6 +15933,20 @@
                     "quote": false
                   }
                 }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
               ]
             }
           },
@@ -15078,6 +16008,20 @@
                     "duration": 60,
                     "quote": false
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             }
@@ -15142,6 +16086,20 @@
                     "quote": true,
                     "quoteKind": "consultation"
                   }
+                }
+              ],
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ]
             }
@@ -15215,6 +16173,20 @@
               "quote": true,
               "quoteKind": "consultation"
             }
+          }
+        ],
+        "notice": [
+          {
+            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+          },
+          {
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht zu 100% garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+            "en": "Data/system recovery cannot be 100% guaranteed if the operating system is fully corrupted or in an irreversible state."
           }
         ]
       }
