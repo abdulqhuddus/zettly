@@ -676,6 +676,7 @@
     margin: 0.5rem 0 0.5rem;
     --bx-teal: #0d9488;
   }
+  .bx-exclusive.collapsed { display: none; }
   .bx-exclusive h2 {
     text-align: center;
     font-size: clamp(1.5rem, 3vw, 1.9rem);
@@ -711,12 +712,15 @@
   .bx-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.35rem; }
   .bx-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.45; margin-bottom: 1rem; flex: 1; }
   .bx-explore {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    font-weight: 700; font-size: 0.88rem; color: var(--accent);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-weight: 700; font-size: 0.9rem; color: #fff;
     text-decoration: none; align-self: flex-start;
-    transition: gap 0.2s ease;
+    background: linear-gradient(120deg, var(--brand-blue), var(--accent));
+    border-radius: 12px; padding: 0.75rem 1.3rem;
+    box-shadow: 0 10px 24px rgba(124,58,237,0.28);
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
   }
-  .bx-explore:hover { gap: 0.6rem; }
+  .bx-explore:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(124,58,237,0.36); }
   @media (max-width: 900px) {
     .bx-grid { grid-template-columns: 1fr; }
     .bx-card { max-width: 440px; margin: 0 auto; width: 100%; }
@@ -724,6 +728,7 @@
 
   /* --- Dynamics 365 CRM mini-diagram (bx-crm-*) --- */
   .bx-crm-mock { width: 100%; transform: scale(0.82); }
+  .bx-crm-logo { display: block; width: 30px; height: 30px; margin: 0 auto 0.5rem; }
   .bx-crm-board { position: relative; display: flex; gap: 0.3rem; margin-top: 46px; }
   .bx-crm-col {
     position: relative; z-index: 1; flex: 1; min-width: 0; border-radius: 12px;
@@ -2611,6 +2616,7 @@
     <div class="bx-card">
       <div class="bx-visual">
         <div class="bx-crm-mock" aria-hidden="true">
+          <img class="bx-crm-logo" src="/assets/dynamics-365-logo.png" alt="">
           <div class="bx-crm-board">
             <div class="bx-crm-deal-chip">
               <span class="bx-crm-avatar">AG</span>
@@ -3468,6 +3474,11 @@ function showStep(n) {
   // the location step, where it actually explains what's being asked.
   document.getElementById("service-area").classList.toggle("collapsed", n !== 0 && n !== 4);
   applyServiceAreaText();
+  // "Exclusively for Businesses" is a homepage teaser, not something to
+  // carry through the booking wizard: show it on the landing screen, and
+  // again below the success summary once a booking goes through, but
+  // collapse it for every step of the wizard itself.
+  document.getElementById("business-exclusive").classList.toggle("collapsed", n !== 0 && n !== 6);
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;

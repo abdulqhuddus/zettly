@@ -91,6 +91,7 @@
      marketing/legal page. Freelancers has no booking flow yet (same as
      the homepage's own nav), so it's shown but inert. */
   .nav-shortcuts { display: flex; align-items: center; gap: 0.5rem; }
+  @media (max-width: 640px) { .nav-chip.nav-chip-backhome { display: none; } }
   .nav-chip {
     display: flex; align-items: center;
     border: 1.5px solid var(--border); background: #fff; border-radius: 999px;
@@ -225,7 +226,7 @@
         <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3.3" stroke-width="1.7"/><path d="M5 20c0-4.1 3.1-6.8 7-6.8s7 2.7 7 6.8" stroke-width="1.7" stroke-linecap="round"/></svg></span>
         <span class="nav-chip-label" data-i18n="navFreelancers">Freelancer</span>
       </span>
-      <a class="nav-chip" href="/" style="--chip-color:var(--ink);">
+      <a class="nav-chip nav-chip-backhome" href="/" style="--chip-color:var(--ink);">
         <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 12H5M11 18l-6-6 6-6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span class="nav-chip-label" data-i18n="backHome">Zur Startseite</span>
       </a>
