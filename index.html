@@ -3424,22 +3424,12 @@ function renderTreeNotices(node) {
 // Icon per explainer step, reusing the site's existing inline-SVG icon
 // style (thin purple stroke, 24x24 viewBox) rather than introducing a new
 // icon set. Matched positionally to the fixed 7-point hardware process.
-const EXPLAINER_STEP_ICONS = [
-  // 1: inspection (magnifying glass)
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="#7C3AED" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg>`,
-  // 2: pickup (box/truck)
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7.5h11v9H3z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 10.5h3.5L21 13.5v3h-7z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.6" stroke="#7C3AED" stroke-width="1.6"/><circle cx="17.5" cy="18" r="1.6" stroke="#7C3AED" stroke-width="1.6"/></svg>`,
-  // 3: diagnosis (wrench/diagnostic)
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a4 4 0 00-5.4 4.9L4 16.5V20h3.5l5.3-5.3a4 4 0 004.9-5.4l-2.6 2.6-2.1-.6-.6-2.1 2.3-2.9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
-  // 4: cost/approval for component swap (document with check)
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="3.5" width="14" height="17" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg>`,
-  // 5: cost/approval for simple repair (handshake-style check badge)
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  // 6: proceeding with approved repair (checkmark)
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8.5" stroke="#7C3AED" stroke-width="1.6"/><path d="M8 12.3l2.6 2.6L16.3 9" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  // 7: returning hardware unchanged if declined (return arrow/box)
-  `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 13l-3-2.5v1.6H9v1.8h2.5v1.6z" fill="#7C3AED"/></svg>`
-];
+// Every "So läuft es ab" step card shows the same faint brand-mark shape
+// bleeding out of its bottom-right corner, instead of a per-step icon.
+// The old per-step icon set (magnifying glass, truck, wrench, etc.) implied
+// a specific hardware-repair workflow that doesn't fit most services, so
+// every step now gets this one neutral, generic mark instead.
+const EXPLAINER_GHOST_ICON = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="28" height="28" rx="6" fill="#7C3AED"/><rect x="36" y="0" width="64" height="64" rx="14" fill="#7C3AED"/><rect x="0" y="36" width="64" height="64" rx="14" fill="#7C3AED"/><rect x="72" y="72" width="28" height="28" rx="6" fill="#7C3AED"/></svg>`;
 
 function renderTreeExplainer(node) {
   const el = document.getElementById("tree-explainer");
@@ -3450,7 +3440,7 @@ function renderTreeExplainer(node) {
       <div class="tree-explainer-grid">
         ${node.explainer[lang].map((step, i) => `
           <div class="tree-explainer-step">
-            <div class="tree-explainer-ghost-icon" aria-hidden="true">${EXPLAINER_STEP_ICONS[i % EXPLAINER_STEP_ICONS.length]}</div>
+            <div class="tree-explainer-ghost-icon" aria-hidden="true">${EXPLAINER_GHOST_ICON}</div>
             <span class="tree-explainer-num-tag"><span class="tree-explainer-num">${i + 1}</span></span>
             <p>${step}</p>
           </div>
