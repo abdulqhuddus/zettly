@@ -459,15 +459,16 @@
   }
 
   /* "How it works" interactive marketing banner, shown above the booking flow.
-     Framed as one large card (not just a bare section) so it reads as its
-     own distinct block beneath the home/business picker. */
+     Framed as one large, wide card (not just a bare section) so it reads as
+     its own distinct block beneath the home/business picker. It lives
+     inside .stage (max-width 640px), so it breaks out of that width with
+     the margin-left/right calc trick below instead of being capped to it. */
   .how-it-works {
-    width: 100%;
-    max-width: 1180px;
-    margin: 1.75rem 0 1.25rem;
-    padding: 2.25rem 1.75rem 1.75rem;
-    background: #fff;
-    border: 1px solid var(--border);
+    width: auto;
+    max-width: 1320px;
+    margin: 1.75rem calc(50% - 50vw) 1.25rem;
+    padding: 2.25rem 2rem 1.75rem;
+    background: var(--accent-light);
     border-radius: 28px;
     box-shadow: 0 10px 32px rgba(17,17,20,0.06);
     transition: max-width 0.3s ease, opacity 0.25s ease, max-height 0.3s ease;
@@ -476,7 +477,7 @@
      content doesn't spill out as max-height shrinks to 0) — applying it
      unconditionally clipped the active step card's lift/glow shadow
      against this section's own box even when fully expanded. */
-  .how-it-works.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0; border-width: 0; pointer-events: none; overflow: hidden; }
+  .how-it-works.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0; pointer-events: none; overflow: hidden; }
   .how-it-works h2 {
     text-align: center;
     font-size: clamp(1.5rem, 3vw, 1.9rem);
@@ -489,8 +490,8 @@
   .hiw-track-wrap::before, .hiw-track-wrap::after {
     content: ''; position: absolute; top: 0; bottom: 12px; width: 32px; z-index: 2; pointer-events: none;
   }
-  .hiw-track-wrap::before { left: 0; background: linear-gradient(90deg, #fff, transparent); transition: opacity 0.2s ease; }
-  .hiw-track-wrap::after { right: 0; background: linear-gradient(270deg, #fff, transparent); transition: opacity 0.2s ease; }
+  .hiw-track-wrap::before { left: 0; background: linear-gradient(90deg, var(--accent-light), transparent); transition: opacity 0.2s ease; }
+  .hiw-track-wrap::after { right: 0; background: linear-gradient(270deg, var(--accent-light), transparent); transition: opacity 0.2s ease; }
   /* Only show each edge fade while there's actually more content to scroll
      to in that direction — toggled by JS based on the track's scroll
      position (see initHiwAutoplay/updateHiwEdgeFades). */
@@ -974,7 +975,7 @@
     .announce-bar { padding: 0.55rem 1rem; }
     .trust-strip { margin-bottom: 1.4rem; }
     .cta-banner { padding: 1.05rem 1.25rem; margin-bottom: 1.4rem; }
-    .how-it-works { padding: 1.5rem 1.1rem 0.6rem; margin: 1.1rem 0 0.2rem; border-radius: 20px; }
+    .how-it-works { padding: 1.5rem 1.25rem 0.6rem; margin: 1.1rem calc(50% - 50vw) 0.2rem; border-radius: 20px; }
     .how-it-works h2 { margin-bottom: 0.3rem; }
     .how-it-works .hiw-sub { margin-bottom: 1.1rem; }
     .subtitle { margin-bottom: 1.1rem; }
