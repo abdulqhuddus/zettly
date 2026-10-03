@@ -216,7 +216,8 @@
   .tier-name { font-size: 1.05rem; font-weight: 800; color: var(--ink); margin-bottom: 0.35rem; }
   .tier-price { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
   .tier-price small { font-size: 0.7rem; font-weight: 600; color: var(--muted); }
-  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 1rem; }
+  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 0.15rem; }
+  .tier-timeline { font-size: 0.75rem; font-weight: 700; color: var(--accent); margin: 0 0 1rem; }
   .tier-btn { width: 100%; justify-content: center; padding: 0.7rem 0.9rem; font-size: 0.85rem; }
   .tier-table tbody td {
     padding: 0.95rem 1.1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem;
@@ -475,42 +476,46 @@
           <th class="tier-feature-col"></th>
           <th>
             <div class="tier-name">Basic</div>
-            <div class="tier-price">79&nbsp;&euro;</div>
+            <div class="tier-price">299&nbsp;&euro;</div>
             <div class="tier-duration">45 Min. Kick-off</div>
+            <div class="tier-timeline">Projektdauer: ca. 10 Std.</div>
             <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Beliebt</span>
             <div class="tier-name">Standard</div>
-            <div class="tier-price">249&nbsp;&euro;</div>
+            <div class="tier-price">1.199&nbsp;&euro;</div>
             <div class="tier-duration">90 Min. Kick-off</div>
+            <div class="tier-timeline">Projektdauer: ca. 40 Std.</div>
             <a class="btn btn-primary tier-btn" href="/?book=dynamics">Buchen</a>
           </th>
           <th>
             <div class="tier-name">Premium</div>
-            <div class="tier-price">499&nbsp;&euro;</div>
+            <div class="tier-price">4.799&nbsp;&euro;</div>
             <div class="tier-duration">120 Min. Kick-off</div>
+            <div class="tier-timeline">Projektdauer: ca. 160 Std.</div>
             <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr><td>Beratung &amp; Bedarfsanalyse</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Standardprozesse (Entitäten, Formulare, Business Process Flow: Angebot&nbsp;&rarr;&nbsp;Rechnung)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Power Automate Workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Individuelle Business Process Flows</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Standardprozesse (Entitäten, Formulare, Produkte, Business Process Flow: Angebot&nbsp;&rarr;&nbsp;Rechnung, und PDF-Vorlagen)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Rollenbasierte Zugriffskontrolle (RBAC) &amp; Sicherheitsrollen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Individuelle Formular-UI</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom Workflows &amp; Business Rules</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom Entitäten &amp; Felder</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom Formulare</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Individuelle Angebote, Aufträge &amp; Rechnungen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Neue individuelle Entitäten &ndash; bis zu</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Neue individuelle Felder &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>
+        <tr><td>Neue individuelle Formulare &ndash; bis zu</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Individuelle Business Rules &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>3</td><td>10</td></tr>
+        <tr><td>Individuelle Workflows (Power Automate) &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>2</td><td>5</td></tr>
+        <tr><td>Individuelle Business Process Flows &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>7 Schritte</td><td>15 Schritte</td></tr>
+        <tr><td>Individuelle Angebots-, Auftrags- &amp; Rechnungsformulare</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Splitrechnung (Teilrechnungsstellung)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>E-Rechnung (E-Invoicing)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Systemintegration mit Drittanbietern</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Datenmigration (Altsystem &amp; Altbestände)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>E-Rechnung (XRechnung) &ndash; ZugFeRD wird zusätzlich berechnet</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Systemintegration mit Drittanbietern</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3 Operationen</td></tr>
+        <tr><td>Datenmigration (Excel zu Dynamics)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>Nur Schulung</td></tr>
         <tr><td>Dokumentation der Umsetzung</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>E-Mail-Support danach</td><td>3 Tage</td><td>10 Tage</td><td>30 Tage</td></tr>
+        <tr><td>E-Mail-Support danach</td><td>3 Tage</td><td>7 Tage</td><td>14 Tage</td></tr>
+        <tr><td>Optional: &bdquo;Wartung &amp; Support&ldquo;</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td></tr>
       </tbody>
     </table>
   </div>
@@ -548,12 +553,7 @@
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
       <h3>Laufende Betreuung</h3>
-      <p>Nach dem Go-Live nicht allein gelassen: kontinuierliche Anpassungen, Fehlerbehebung und Weiterentwicklung nach Bedarf.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8"/><path d="M7 9h6M7 13h10M7 17h4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Dataverse &amp; Kundenservice-Modul</h3>
-      <p>Datenmodelle in Dataverse, Case-Management-Prozesse und Konfiguration des Customer-Service-Moduls &ndash; für Support- und Kundenprozesse, die wirklich nachvollziehbar bleiben.</p>
+      <p>Nach dem Go-Live nicht allein gelassen: kontinuierliche Anpassungen, Fehlerbehebung und Weiterentwicklung nach Bedarf &ndash; im Rahmen eines laufenden Wartungsvertrags.</p>
     </div>
   </div>
 </section>
@@ -646,42 +646,46 @@
           <th class="tier-feature-col"></th>
           <th>
             <div class="tier-name">Basic</div>
-            <div class="tier-price">&euro;79</div>
+            <div class="tier-price">&euro;299</div>
             <div class="tier-duration">45 min. Kick Off</div>
+            <div class="tier-timeline">Project timeline: ~10 hrs</div>
             <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Popular</span>
             <div class="tier-name">Standard</div>
-            <div class="tier-price">&euro;249</div>
+            <div class="tier-price">&euro;1,199</div>
             <div class="tier-duration">90 min. Kick Off</div>
+            <div class="tier-timeline">Project timeline: ~40 hrs</div>
             <a class="btn btn-primary tier-btn" href="/?book=dynamics">Book</a>
           </th>
           <th>
             <div class="tier-name">Premium</div>
-            <div class="tier-price">&euro;499</div>
+            <div class="tier-price">&euro;4,799</div>
             <div class="tier-duration">120 min. Kick Off</div>
+            <div class="tier-timeline">Project timeline: ~160 hrs</div>
             <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr><td>Consultation &amp; needs analysis</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Standard processes (entities, forms, business process flow: quote&nbsp;&rarr;&nbsp;invoice)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Power Automate workflow</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom business process flows</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Standard processes (entities, forms, products, business process flow: quote&nbsp;&rarr;&nbsp;invoice, and PDF templates)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Role-based access control (RBAC) &amp; security roles</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom form UI</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom workflows &amp; business rules</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom entities &amp; fields</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom forms</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom quotes, orders &amp; invoices</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Custom new entities &ndash; up to</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Custom new fields &ndash; up to</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>
+        <tr><td>Custom new forms &ndash; up to</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Custom business rules &ndash; up to</td><td class="chk dash">&ndash;</td><td>3</td><td>10</td></tr>
+        <tr><td>Custom workflows (Power Automate) &ndash; up to</td><td class="chk dash">&ndash;</td><td>2</td><td>5</td></tr>
+        <tr><td>Custom business process flows &ndash; up to</td><td class="chk dash">&ndash;</td><td>7 steps</td><td>15 steps</td></tr>
+        <tr><td>Customized opportunity, quote, order &amp; invoice forms</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Split invoicing</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>E-invoicing</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Third-party system integration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Data migration (legacy systems &amp; records)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>E-invoicing (XRechnung) &ndash; ZugFeRD is charged separately</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Third-party system integration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3 operations</td></tr>
+        <tr><td>Data migration (Excel to Dynamics)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>Training only</td></tr>
         <tr><td>Documentation of the work</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Follow-up email support</td><td>3 days</td><td>10 days</td><td>30 days</td></tr>
+        <tr><td>Follow-up email support</td><td>3 days</td><td>7 days</td><td>14 days</td></tr>
+        <tr><td>Optional: "Maintenance &amp; Support"</td><td>Pricing upon request</td><td>Pricing upon request</td><td>Pricing upon request</td></tr>
       </tbody>
     </table>
   </div>
@@ -719,12 +723,7 @@
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
       <h3>Ongoing Support</h3>
-      <p>Not left alone after go-live: continued adjustments, troubleshooting, and further development as your needs evolve.</p>
-    </div>
-    <div class="service-card">
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.8"/><path d="M7 9h6M7 13h10M7 17h4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Dataverse &amp; Customer Service Module</h3>
-      <p>Data models in Dataverse, case-management processes, and Customer Service module configuration &ndash; for support and customer workflows that actually stay traceable.</p>
+      <p>Not left alone after go-live: continued adjustments, troubleshooting, and further development as your needs evolve &ndash; provided through an ongoing maintenance contract.</p>
     </div>
   </div>
 </section>

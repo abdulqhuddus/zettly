@@ -11549,6 +11549,69 @@
         },
         "options": [
           {
+            "id": "dynBasic",
+            "name": {
+              "de": "Basic",
+              "en": "Basic"
+            },
+            "desc": {
+              "de": "Projektdauer: ca. 10 Stunden",
+              "en": "Project timeline: ~10 hours"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Basic",
+                "en": "Basic"
+              },
+              "price": 299,
+              "duration": 30,
+              "quote": false
+            }
+          },
+          {
+            "id": "dynStandard",
+            "name": {
+              "de": "Standard",
+              "en": "Standard"
+            },
+            "desc": {
+              "de": "Projektdauer: ca. 40 Stunden",
+              "en": "Project timeline: ~40 hours"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Standard",
+                "en": "Standard"
+              },
+              "price": 1199,
+              "duration": 30,
+              "quote": false
+            }
+          },
+          {
+            "id": "dynPremium",
+            "name": {
+              "de": "Premium",
+              "en": "Premium"
+            },
+            "desc": {
+              "de": "Projektdauer: ca. 160 Stunden",
+              "en": "Project timeline: ~160 hours"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Premium",
+                "en": "Premium"
+              },
+              "price": 4799,
+              "duration": 30,
+              "quote": false
+            }
+          },
+          {
             "id": "generalConsult",
             "name": {
               "de": "Allgemeine Beratung (einmalig kostenlos)",
@@ -11567,72 +11630,6 @@
               "price": 0,
               "duration": 30,
               "quote": false
-            }
-          },
-          {
-            "id": "dynBasic",
-            "name": {
-              "de": "Basic",
-              "en": "Basic"
-            },
-            "desc": {
-              "de": "Preis nach kostenloser Erstberatung",
-              "en": "Pricing after a free consultation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Basic",
-                "en": "Basic"
-              },
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          },
-          {
-            "id": "dynStandard",
-            "name": {
-              "de": "Standard",
-              "en": "Standard"
-            },
-            "desc": {
-              "de": "Preis nach kostenloser Erstberatung",
-              "en": "Pricing after a free consultation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Standard",
-                "en": "Standard"
-              },
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          },
-          {
-            "id": "dynPremium",
-            "name": {
-              "de": "Premium",
-              "en": "Premium"
-            },
-            "desc": {
-              "de": "Preis nach kostenloser Erstberatung",
-              "en": "Pricing after a free consultation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Premium",
-                "en": "Premium"
-              },
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
             }
           }
         ],
