@@ -10635,7 +10635,7 @@
                       "en": "New setup"
                     },
                     "price": null,
-                    "duration": 120,
+                    "duration": 30,
                     "quote": true,
                     "quoteKind": "consultation"
                   }
@@ -13132,7 +13132,7 @@
                 "en": "Basic"
               },
               "price": null,
-              "duration": 60,
+              "duration": 30,
               "quote": true,
               "quoteKind": "consultation"
             }
@@ -13154,7 +13154,7 @@
                 "en": "Standard"
               },
               "price": null,
-              "duration": 90,
+              "duration": 30,
               "quote": true,
               "quoteKind": "consultation"
             }
@@ -13176,7 +13176,7 @@
                 "en": "Premium"
               },
               "price": null,
-              "duration": 120,
+              "duration": 30,
               "quote": true,
               "quoteKind": "consultation"
             }
@@ -13261,7 +13261,7 @@
                 "en": "Enterprise"
               },
               "price": null,
-              "duration": 90,
+              "duration": 30,
               "quote": true,
               "quoteKind": "consultation"
             }
