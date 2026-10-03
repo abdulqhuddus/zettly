@@ -210,87 +210,90 @@
     .trust-pill .trust-text b { font-size: 0.86rem; }
     .trust-pill .trust-text small { font-size: 0.68rem; }
   }
-  /* Each card gets its own soft gradient backdrop (an "image" without an
-     actual photo to source/license) so the row reads as four distinct
-     tiles rather than four identical white boxes, plus a short bold
-     headline with a one-line explanation underneath instead of a single
-     cramped label. */
+  /* Futuristic "HUD tile" treatment: near-black glass cards with a thin
+     animated gradient border (drawn as a padding-box/border-box double
+     background, since plain CSS borders can't be gradients + animated),
+     a monospace index/corner-bracket readout like a dashboard widget, and
+     a single glowing icon instead of the old two-icon "flow" metaphor. */
   .trust-pill {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    gap: 0.65rem;
-    background: linear-gradient(155deg, #ffffff 35%, var(--accent-light) 160%);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 1.3rem 1.15rem;
+    gap: 0.85rem;
+    background:
+      linear-gradient(155deg, #15131f 0%, #1d1830 60%, #241b3a 100%) padding-box,
+      linear-gradient(120deg, rgba(124,58,237,0.7), rgba(236,72,153,0.5), rgba(124,58,237,0.7)) border-box;
+    background-size: 100% 100%, 220% 220%;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    padding: 1.4rem 1.2rem 1.25rem;
     overflow: hidden;
-    box-shadow: 0 4px 18px rgba(17,17,20,0.05);
+    box-shadow: 0 12px 28px rgba(17,10,40,0.22);
     opacity: 0;
     transform: translateY(14px);
-    animation: pillIn 0.5s cubic-bezier(.2,.9,.3,1) forwards;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    animation: pillIn 0.5s cubic-bezier(.2,.9,.3,1) forwards, borderFlow 7s linear infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  /* A soft glowing orb bleeding off the top-right corner: the "background
-     image" treatment, done as a decorative gradient blob instead of a
-     photo. */
-  .trust-pill::after {
+  /* A faint grid/scanline texture + corner brackets sell the "HUD panel"
+     read without needing an actual background image. */
+  .trust-pill::before {
     content: "";
-    position: absolute; top: -30px; right: -30px;
-    width: 90px; height: 90px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(124,58,237,0.16), transparent 70%);
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 16px 16px;
+    -webkit-mask-image: radial-gradient(circle at 85% 0%, #000 0%, transparent 65%);
+    mask-image: radial-gradient(circle at 85% 0%, #000 0%, transparent 65%);
     pointer-events: none;
   }
-  .trust-pill:hover { transform: translateY(-5px); box-shadow: 0 16px 30px rgba(124,58,237,0.16); border-color: #e2d6fb; }
-  .trust-pill:nth-child(1) { animation-delay: 0.05s; }
-  .trust-pill:nth-child(2) { animation-delay: 0.2s; }
-  .trust-pill:nth-child(3) { animation-delay: 0.35s; }
-  .trust-pill:nth-child(2), .trust-pill:nth-child(4) { background: linear-gradient(155deg, #ffffff 35%, var(--violet-light) 160%); }
-  .trust-pill:nth-child(2):hover, .trust-pill:nth-child(4):hover { border-color: #ddd0fb; box-shadow: 0 16px 30px rgba(139,92,246,0.18); }
-  .trust-pill:nth-child(2)::after, .trust-pill:nth-child(4)::after { background: radial-gradient(circle, rgba(139,92,246,0.18), transparent 70%); }
-  /* Each card now tells a tiny two-step story: a "before" icon, a flowing
-     row of dots, and an "after" icon (e.g. clock -> flash for how fast a
-     slot turns around), instead of one static icon. */
-  .trust-pill .icon-flow { position: relative; z-index: 1; display: flex; align-items: center; gap: 0.4rem; }
+  .trust-pill::after {
+    content: "";
+    position: absolute; top: -40px; right: -40px;
+    width: 110px; height: 110px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%);
+    pointer-events: none;
+  }
+  .trust-pill:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(124,58,237,0.32); }
+  .trust-pill:nth-child(1) { animation-delay: 0.05s, 0s; }
+  .trust-pill:nth-child(2) { animation-delay: 0.2s, 0.4s; }
+  .trust-pill:nth-child(3) { animation-delay: 0.35s, 0.8s; }
+  .trust-pill:nth-child(4) { animation-delay: 0.5s, 1.2s; }
+  .trust-pill:nth-child(2)::after, .trust-pill:nth-child(4)::after { background: radial-gradient(circle, rgba(236,72,153,0.32), transparent 70%); }
+  /* Index readout, top-right, like a widget ID in a dashboard. */
+  .trust-pill .trust-index {
+    position: absolute; top: 0.85rem; right: 1rem; z-index: 1;
+    font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+    font-size: 0.65rem; letter-spacing: 0.08em; font-weight: 600;
+    color: rgba(255,255,255,0.3);
+  }
+  .trust-pill .icon-flow { position: relative; z-index: 1; display: flex; align-items: center; }
   .trust-pill .dot {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 40px; height: 40px; border-radius: 12px; flex: 0 0 auto;
-    background: radial-gradient(circle at 30% 30%, #fff, var(--accent-light));
-    box-shadow: 0 8px 18px rgba(124,58,237,0.18), inset 0 0 0 1px rgba(124,58,237,0.12);
-    animation: pillPulse 2.4s ease-in-out infinite;
+    width: 46px; height: 46px; border-radius: 13px; flex: 0 0 auto;
+    background: linear-gradient(145deg, rgba(124,58,237,0.35), rgba(124,58,237,0.08));
+    box-shadow: 0 0 0 1px rgba(124,58,237,0.35), 0 0 22px rgba(124,58,237,0.35);
+    animation: pillPulse 2.6s ease-in-out infinite;
   }
-  .trust-pill:nth-child(2) .dot {
-    animation-delay: 0.4s;
-    background: radial-gradient(circle at 30% 30%, #fff, var(--violet-light));
-    box-shadow: 0 8px 18px rgba(139,92,246,0.18), inset 0 0 0 1px rgba(139,92,246,0.14);
+  .trust-pill:nth-child(2) .dot, .trust-pill:nth-child(4) .dot {
+    background: linear-gradient(145deg, rgba(236,72,153,0.35), rgba(236,72,153,0.08));
+    box-shadow: 0 0 0 1px rgba(236,72,153,0.4), 0 0 22px rgba(236,72,153,0.35);
+    animation-delay: 0.5s;
   }
-  .trust-pill:nth-child(2) .dot svg *, .trust-pill:nth-child(4) .dot svg * { stroke: var(--violet) !important; }
-  .trust-pill:nth-child(3) .dot { animation-delay: 0.8s; }
-  .trust-pill:nth-child(4) .dot {
-    animation-delay: 1.2s;
-    background: radial-gradient(circle at 30% 30%, #fff, var(--violet-light));
-    box-shadow: 0 8px 18px rgba(139,92,246,0.18), inset 0 0 0 1px rgba(139,92,246,0.14);
-  }
-  .trust-pill .dot svg { width: 19px; height: 19px; }
-  /* The connecting dots between the two icons, pulsing in sequence like a
-     little flow/progress indicator. */
-  .trust-pill .dot-track { display: flex; align-items: center; gap: 4px; flex: 1 1 auto; justify-content: center; }
-  .trust-pill .dot-track i {
-    width: 5px; height: 5px; border-radius: 50%; display: block;
-    background: var(--accent); opacity: 0.3;
-    animation: dotFlow 1.6s ease-in-out infinite;
-  }
-  .trust-pill .dot-track i:nth-child(2) { animation-delay: 0.2s; }
-  .trust-pill .dot-track i:nth-child(3) { animation-delay: 0.4s; }
-  .trust-pill:nth-child(2) .dot-track i, .trust-pill:nth-child(4) .dot-track i { background: var(--violet); }
-  @keyframes dotFlow { 0%, 100% { opacity: 0.25; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
-  .trust-pill .trust-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.2rem; }
-  .trust-pill .trust-text b { font-size: 1rem; font-weight: 800; color: var(--ink); line-height: 1.25; }
-  .trust-pill .trust-text small { font-size: 0.76rem; font-weight: 500; color: var(--muted); line-height: 1.35; }
+  .trust-pill .dot svg { width: 21px; height: 21px; }
+  .trust-pill .dot svg * { stroke: #e9d8ff !important; }
+  .trust-pill:nth-child(2) .dot svg *, .trust-pill:nth-child(4) .dot svg * { stroke: #ffd6ec !important; }
+  .trust-pill .trust-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.25rem; }
+  .trust-pill .trust-text b { font-size: 1rem; font-weight: 800; color: #fff; line-height: 1.25; letter-spacing: 0.01em; }
+  .trust-pill .trust-text small { font-size: 0.76rem; font-weight: 500; color: rgba(255,255,255,0.55); line-height: 1.35; }
   @keyframes pillIn { to { opacity: 1; transform: translateY(0); } }
-  @keyframes pillPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  @keyframes pillPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  @keyframes borderFlow { 0% { background-position: 0% 0%, 0% 50%; } 100% { background-position: 0% 0%, 200% 50%; } }
+  @media (prefers-reduced-motion: reduce) {
+    .trust-pill, .trust-pill .dot { animation: none; opacity: 1; transform: none; }
+  }
 
   /* Bright CTA banner above the audience-selection section */
   .cta-banner {
@@ -1875,34 +1878,30 @@
 <p class="site-tagline" data-i18n="heroTagline"><span class="zettly-word">zett<span>ly</span></span>, <span class="grad">Ihr One Stop Partner f&uuml;r alles rund um IT</span></p>
 <div class="trust-strip">
   <span class="trust-pill">
+    <span class="trust-index">01</span>
     <span class="icon-flow">
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="1.8" fill="none"/><path stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M12 7v5l3.3 2"/></svg></span>
-      <span class="dot-track"><i></i><i></i><i></i></span>
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
+      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
     </span>
     <span class="trust-text"><b data-i18n="trustFastTitle">Schnelle Termine</b><small data-i18n="trustFastDesc">Kurzfristig verfügbar</small></span>
   </span>
   <span class="trust-pill">
+    <span class="trust-index">02</span>
     <span class="icon-flow">
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M14.6 8.3a4 4 0 100 7.4M8 11h5.2M8 13.2h4.4"/></svg></span>
-      <span class="dot-track"><i></i><i></i><i></i></span>
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="1.7" stroke-linejoin="round" fill="none" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M9.3 12.2l1.9 1.9 3.5-3.8"/></svg></span>
+      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-width="1.7" stroke-linejoin="round" fill="none" d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M9.3 12.2l1.9 1.9 3.5-3.8"/></svg></span>
     </span>
     <span class="trust-text"><b data-i18n="trustNoHiddenTitle">Faire Preise</b><small data-i18n="trustNoHiddenDesc">Keine versteckten Kosten</small></span>
   </span>
   <span class="trust-pill">
+    <span class="trust-index">03</span>
     <span class="icon-flow">
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="7.5" y="2.5" width="9" height="19" rx="2" stroke="#7C3AED" stroke-width="1.7" fill="none"/><path stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" d="M11 18.3h2"/></svg></span>
-      <span class="dot-track"><i></i><i></i><i></i></span>
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#7C3AED" stroke-width="2" fill="none"/><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M8 12.5l2.5 2.5L16 9"/></svg></span>
+      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="7.5" y="2.5" width="9" height="19" rx="2" stroke-width="1.7" fill="none"/><path stroke-width="1.7" stroke-linecap="round" d="M11 18.3h2"/><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M9 8.6l2.2 2.2L15.2 7"/></svg></span>
     </span>
     <span class="trust-text"><b data-i18n="trustOnlineTitle">Online buchen</b><small data-i18n="trustOnlineDesc">In wenigen Klicks</small></span>
   </span>
   <span class="trust-pill">
+    <span class="trust-index">04</span>
     <span class="icon-flow">
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M3.5 15.5l1.4-4.3A2.2 2.2 0 017 9.6h10a2.2 2.2 0 012.1 1.6l1.4 4.3"/><path stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M3.5 15.5h17v2.3a.9.9 0 01-.9.9h-1.4a.9.9 0 01-.9-.9v-1.1H6.7v1.1a.9.9 0 01-.9.9H4.4a.9.9 0 01-.9-.9v-2.3z"/><path stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" d="M6.3 12.6h11.4"/><circle cx="7.3" cy="15.6" r="1.05" fill="#7C3AED"/><circle cx="16.7" cy="15.6" r="1.05" fill="#7C3AED"/></svg></span>
-      <span class="dot-track"><i></i><i></i><i></i></span>
-      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M4 11.5L12 4l8 7.5M6 10v8a1 1 0 001 1h3v-5h4v5h3a1 1 0 001-1v-8"/></svg></span>
+      <span class="dot"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M4 11.5L12 4l8 7.5M6 10v8a1 1 0 001 1h3v-5h4v5h3a1 1 0 001-1v-8"/></svg></span>
     </span>
     <span class="trust-text"><b data-i18n="trustDoorstepTitle">Vor Ort</b><small data-i18n="trustDoorstepDesc">Service direkt bei Ihnen</small></span>
   </span>
