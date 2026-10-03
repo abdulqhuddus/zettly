@@ -126,7 +126,16 @@
     gap: 3rem;
     position: relative;
   }
-  @media (max-width: 860px) { .hero { flex-direction: column; text-align: center; padding-top: 0.5rem; } }
+  @media (max-width: 860px) {
+    .hero { flex-direction: column; text-align: center; padding-top: 0.5rem; }
+    /* In column mode .hero's align-items:center sizes children to their own
+       content width instead of stretching them - with the CRM mock's
+       flex columns using min-width:0 (so they can shrink to fit a narrow
+       screen), that let the whole hero-card collapse down to a sliver,
+       which is what was squeezing the column labels. Force it to use the
+       full available width instead. */
+    .hero-visual { width: 100%; }
+  }
   /* The glow is clipped to its own wrapper, sized to the hero, rather than
      the hero itself having overflow:hidden - that used to also clip any
      button's hover box-shadow that reached close to the hero's edge (e.g.
@@ -197,7 +206,7 @@
      draws in an animated checkmark once the chip reaches Invoice, before
      the whole board fades and loops. */
   .crm-mock { margin-top: 0.8rem; }
-  .crm-board { position: relative; display: flex; gap: 0.35rem; margin-top: 26px; }
+  .crm-board { position: relative; display: flex; gap: 0.35rem; margin-top: 46px; }
   .crm-col {
     position: relative; z-index: 1; flex: 1; min-width: 0; border-radius: 12px;
     padding: 1.7rem 0.15rem 0.6rem; text-align: center; background: var(--accent-light);
@@ -205,8 +214,8 @@
   .crm-col-icon { display: block; width: 18px; height: 18px; margin: 0 auto 0.3rem; color: var(--muted); }
   .crm-col-icon svg { width: 100%; height: 100%; display: block; }
   .crm-col-label {
-    font-size: 0.56rem; font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase;
-    color: var(--muted); line-height: 1.15;
+    font-size: 0.5rem; font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase;
+    color: var(--muted); line-height: 1.1; overflow-wrap: break-word;
   }
   .crm-col-1 { animation: crmCol1 16s ease-in-out infinite; }
   .crm-col-2 { animation: crmCol2 16s ease-in-out infinite; }
@@ -239,7 +248,7 @@
     100% { left: 100%; opacity: 0; }
   }
   .crm-deal-chip {
-    position: absolute; z-index: 2; top: -18px; left: 8.33%; transform: translateX(-50%);
+    position: absolute; z-index: 2; top: -34px; left: 8.33%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 0.6rem;
     background: #fff; border: 1px solid var(--border); border-radius: 16px;
     padding: 0.55rem 0.85rem; box-shadow: 0 10px 24px rgba(17,17,20,0.16);
@@ -321,9 +330,14 @@
     .crm-flow-dot { opacity: 0; }
   }
   @media (max-width: 420px) {
-    .crm-col-label { font-size: 0.5rem; }
-    .crm-col-icon { width: 15px; height: 15px; }
-    .crm-board { gap: 0.25rem; }
+    .crm-col-label { font-size: 0.34rem; letter-spacing: 0; overflow-wrap: break-word; }
+    .crm-col-icon { width: 14px; height: 14px; margin-bottom: 0.2rem; }
+    .crm-col { padding: 1.6rem 0.08rem 0.5rem; }
+    .crm-board { gap: 0.2rem; margin-top: 50px; }
+    .crm-deal-chip { top: -38px; padding: 0.45rem 0.7rem; gap: 0.45rem; }
+    .crm-deal-text { font-size: 0.66rem; }
+    .crm-deal-text b { font-size: 0.78rem; }
+    .crm-avatar { width: 24px; height: 24px; font-size: 0.6rem; }
   }
 
   /* ---- Sections ---- */
@@ -886,7 +900,7 @@
           </div>
           <div class="crm-col crm-col-2">
             <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.3"></circle></svg></span>
-            <span class="crm-col-label">Opportunity</span>
+            <span class="crm-col-label">Opport&shy;unity</span>
           </div>
           <div class="crm-col crm-col-3">
             <span class="crm-col-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.5l-8-8H6a2 2 0 0 0-2 2v6.5l8 8a2 2 0 0 0 2.8 0l5.7-5.7a2 2 0 0 0 0-2.8z"></path><circle cx="8.5" cy="8.5" r="1.1"></circle></svg></span>
