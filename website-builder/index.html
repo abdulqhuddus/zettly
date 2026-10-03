@@ -232,7 +232,8 @@
   .tier-name { font-size: 1.05rem; font-weight: 800; color: var(--ink); margin-bottom: 0.35rem; }
   .tier-price { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
   .tier-price small { font-size: 0.62rem; font-weight: 600; color: var(--muted); display: block; margin-top: 0.15rem; }
-  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 1rem; white-space: nowrap; }
+  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 0.15rem; white-space: nowrap; }
+  .tier-timeline { font-size: 0.75rem; font-weight: 700; color: var(--accent); margin: 0 0 1rem; }
   /* The button sits absolutely within the <th> (anchored to its own padding
      box) rather than relying on percentage-height flex layout, because a
      table-cell's height is never "definite" for percentage-height
@@ -519,6 +520,7 @@
             <div class="tier-name">Business Basic</div>
             <div class="tier-price">ab 349&nbsp;&euro;</div>
             <div class="tier-duration">60 Min. Erstgespräch</div>
+            <div class="tier-timeline">20 Std.</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder&amp;plan=basic">Projekt starten</a>
           </th>
           <th class="tier-col-hl">
@@ -526,18 +528,19 @@
             <div class="tier-name">Advance <small style="display:block;font-weight:600;color:var(--muted);">(eCommerce)</small></div>
             <div class="tier-price">ab 899&nbsp;&euro;</div>
             <div class="tier-duration">90 Min. Erstgespräch</div>
+            <div class="tier-timeline">60 Std.</div>
             <a class="btn btn-primary tier-btn" href="/?book=webbuilder&amp;plan=advance">Projekt starten</a>
           </th>
           <th>
             <div class="tier-name">Enterprise</div>
             <div class="tier-price">Auf Anfrage</div>
             <div class="tier-duration">30 Min. Beratung</div>
+            <div class="tier-timeline">nach Projektumfang</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder&amp;plan=enterprise">Projekt starten</a>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Lieferzeit</td><td>3 Tage</td><td>7&ndash;10 Tage</td><td>nach Projektumfang</td></tr>
         <tr><td>Responsives UI-Design</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Terminbuchungsfunktion</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Basic CMS (Inhalte &amp; Buchungen)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
@@ -550,6 +553,9 @@
         <tr><td>Individuelle API-Integrationen (1 inklusive, weitere gegen Aufpreis)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Datenmapping &amp; -migration (bis zu 10 Tabellen, 200 Spalten)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Enterprise-CMS (volle Eigenverwaltung)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Lieferzeit</td><td>3 Tage</td><td>7&ndash;10 Tage</td><td>nach Projektumfang</td></tr>
+        <tr><td>E-Mail-Support danach</td><td>3 Tage</td><td>7 Tage</td><td>14 Tage</td></tr>
+        <tr><td>Optional: &bdquo;Wartungsvertrag&ldquo;</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td></tr>
       </tbody>
     </table>
   </div>
@@ -716,6 +722,7 @@
             <div class="tier-name">Business Basic</div>
             <div class="tier-price">from &euro;349</div>
             <div class="tier-duration">60 min. kickoff call</div>
+            <div class="tier-timeline">20 hrs</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder&amp;plan=basic">Start project</a>
           </th>
           <th class="tier-col-hl">
@@ -723,18 +730,19 @@
             <div class="tier-name">Advance <small style="display:block;font-weight:600;color:var(--muted);">(eCommerce)</small></div>
             <div class="tier-price">from &euro;899</div>
             <div class="tier-duration">90 min. kickoff call</div>
+            <div class="tier-timeline">60 hrs</div>
             <a class="btn btn-primary tier-btn" href="/?book=webbuilder&amp;plan=advance">Start project</a>
           </th>
           <th>
             <div class="tier-name">Enterprise</div>
             <div class="tier-price">Custom quote</div>
             <div class="tier-duration">30 min. consultation</div>
+            <div class="tier-timeline">scope-dependent</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder&amp;plan=enterprise">Start project</a>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Delivery time</td><td>3 days</td><td>7&ndash;10 days</td><td>scope-dependent</td></tr>
         <tr><td>Responsive UI Design</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Booking functionality</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Basic CMS (content &amp; bookings)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
@@ -747,6 +755,9 @@
         <tr><td>Custom API integrations (1 included, additional integrations charged extra)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Data mapping &amp; migration (up to 10 tables, 200 columns)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Enterprise CMS (full self-management)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>Delivery time</td><td>3 days</td><td>7&ndash;10 days</td><td>scope-dependent</td></tr>
+        <tr><td>Follow-up email support</td><td>3 days</td><td>7 days</td><td>14 days</td></tr>
+        <tr><td>Optional: "Maintenance Contract"</td><td>Price on request</td><td>Price on request</td><td>Price on request</td></tr>
       </tbody>
     </table>
   </div>
