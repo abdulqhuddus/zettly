@@ -11133,273 +11133,613 @@
             "next": {
               "type": "branch",
               "prompt": {
-                "de": "Welche Plattform?",
-                "en": "Which platform?"
+                "de": "Cloud oder On-Premise?",
+                "en": "Cloud or on-premise?"
               },
               "options": [
                 {
-                  "id": "proxmox",
+                  "id": "onPremise",
                   "name": {
-                    "de": "Proxmox",
-                    "en": "Proxmox"
+                    "de": "On-Premise",
+                    "en": "On-Premise"
+                  },
+                  "desc": {
+                    "de": "Virtualisierung auf eigener Hardware.",
+                    "en": "Virtualization on your own hardware."
                   },
                   "next": {
                     "type": "branch",
                     "prompt": {
-                      "de": "Worum geht es?",
-                      "en": "What do you need?"
+                      "de": "Welche Plattform?",
+                      "en": "Which platform?"
                     },
                     "options": [
                       {
-                        "id": "setupNew",
+                        "id": "proxmox",
                         "name": {
-                          "de": "Neueinrichtung",
-                          "en": "New setup"
+                          "de": "Proxmox",
+                          "en": "Proxmox"
                         },
                         "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Neueinrichtung",
-                            "en": "New setup"
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
                           },
-                          "price": 149,
-                          "duration": 90,
-                          "quote": false
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
+                        },
+                        "desc": {
+                          "de": "Open-Source-Virtualisierung auf KVM-Basis.",
+                          "en": "Open-source virtualization built on KVM."
                         }
                       },
                       {
-                        "id": "fixIssue",
+                        "id": "vmware",
                         "name": {
-                          "de": "Problem beheben",
-                          "en": "Fix an issue"
+                          "de": "VMware",
+                          "en": "VMware"
                         },
                         "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Problem beheben",
-                            "en": "Fix an issue"
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
                           },
-                          "price": 99,
-                          "duration": 60,
-                          "quote": false
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
+                        },
+                        "desc": {
+                          "de": "Marktführende Virtualisierungsplattform für Unternehmen.",
+                          "en": "The market-leading enterprise virtualization platform."
                         }
                       },
                       {
-                        "id": "maintenance",
+                        "id": "hypervisor",
                         "name": {
-                          "de": "Wartung & Gesundheitscheck",
-                          "en": "Maintenance & health check"
+                          "de": "Hyper-V",
+                          "en": "Hyper-V"
                         },
                         "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Wartung & Gesundheitscheck",
-                            "en": "Maintenance & health check"
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
                           },
-                          "price": 89,
-                          "duration": 60,
-                          "quote": false
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
+                        },
+                        "desc": {
+                          "de": "Microsofts Virtualisierungsplattform für Windows Server.",
+                          "en": "Microsoft's virtualization platform for Windows Server."
+                        }
+                      },
+                      {
+                        "id": "citrixXen",
+                        "name": {
+                          "de": "Citrix Xen",
+                          "en": "Citrix Xen"
+                        },
+                        "next": {
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
+                          },
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
+                        },
+                        "desc": {
+                          "de": "Virtualisierung mit Fokus auf Desktops & Anwendungen.",
+                          "en": "Virtualization focused on desktops & applications."
                         }
                       }
                     ]
                   }
                 },
                 {
-                  "id": "vmware",
+                  "id": "cloud",
                   "name": {
-                    "de": "VMware",
-                    "en": "VMware"
+                    "de": "Cloud",
+                    "en": "Cloud"
+                  },
+                  "desc": {
+                    "de": "Virtualisierung bei einem Cloud-Anbieter.",
+                    "en": "Virtualization hosted with a cloud provider."
                   },
                   "next": {
                     "type": "branch",
                     "prompt": {
-                      "de": "Worum geht es?",
-                      "en": "What do you need?"
+                      "de": "Welcher Anbieter?",
+                      "en": "Which provider?"
                     },
                     "options": [
                       {
-                        "id": "setupNew",
+                        "id": "azure",
                         "name": {
-                          "de": "Neueinrichtung",
-                          "en": "New setup"
+                          "de": "Microsoft Azure",
+                          "en": "Microsoft Azure"
+                        },
+                        "desc": {
+                          "de": "Microsofts Cloud-Plattform.",
+                          "en": "Microsoft's cloud platform."
                         },
                         "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Neueinrichtung",
-                            "en": "New setup"
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
                           },
-                          "price": 149,
-                          "duration": 90,
-                          "quote": false
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
                         }
                       },
                       {
-                        "id": "fixIssue",
+                        "id": "aws",
                         "name": {
-                          "de": "Problem beheben",
-                          "en": "Fix an issue"
+                          "de": "Amazon AWS",
+                          "en": "Amazon AWS"
+                        },
+                        "desc": {
+                          "de": "Amazons Cloud-Plattform.",
+                          "en": "Amazon's cloud platform."
                         },
                         "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Problem beheben",
-                            "en": "Fix an issue"
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
                           },
-                          "price": 99,
-                          "duration": 60,
-                          "quote": false
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
                         }
                       },
                       {
-                        "id": "maintenance",
+                        "id": "ionos",
                         "name": {
-                          "de": "Wartung & Gesundheitscheck",
-                          "en": "Maintenance & health check"
+                          "de": "IONOS",
+                          "en": "IONOS"
+                        },
+                        "desc": {
+                          "de": "Deutscher Cloud- & Hosting-Anbieter.",
+                          "en": "A German cloud & hosting provider."
                         },
                         "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Wartung & Gesundheitscheck",
-                            "en": "Maintenance & health check"
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
                           },
-                          "price": 89,
-                          "duration": 60,
-                          "quote": false
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "hypervisor",
-                  "name": {
-                    "de": "Hypervisor",
-                    "en": "Hypervisor"
-                  },
-                  "next": {
-                    "type": "branch",
-                    "prompt": {
-                      "de": "Worum geht es?",
-                      "en": "What do you need?"
-                    },
-                    "options": [
-                      {
-                        "id": "setupNew",
-                        "name": {
-                          "de": "Neueinrichtung",
-                          "en": "New setup"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Neueinrichtung",
-                            "en": "New setup"
-                          },
-                          "price": 149,
-                          "duration": 90,
-                          "quote": false
-                        }
-                      },
-                      {
-                        "id": "fixIssue",
-                        "name": {
-                          "de": "Problem beheben",
-                          "en": "Fix an issue"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Problem beheben",
-                            "en": "Fix an issue"
-                          },
-                          "price": 99,
-                          "duration": 60,
-                          "quote": false
-                        }
-                      },
-                      {
-                        "id": "maintenance",
-                        "name": {
-                          "de": "Wartung & Gesundheitscheck",
-                          "en": "Maintenance & health check"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Wartung & Gesundheitscheck",
-                            "en": "Maintenance & health check"
-                          },
-                          "price": 89,
-                          "duration": 60,
-                          "quote": false
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "id": "citrixXen",
-                  "name": {
-                    "de": "Citrix Xen",
-                    "en": "Citrix Xen"
-                  },
-                  "next": {
-                    "type": "branch",
-                    "prompt": {
-                      "de": "Worum geht es?",
-                      "en": "What do you need?"
-                    },
-                    "options": [
-                      {
-                        "id": "setupNew",
-                        "name": {
-                          "de": "Neueinrichtung",
-                          "en": "New setup"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Neueinrichtung",
-                            "en": "New setup"
-                          },
-                          "price": 149,
-                          "duration": 90,
-                          "quote": false
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
                         }
                       },
                       {
-                        "id": "fixIssue",
+                        "id": "hetzner",
                         "name": {
-                          "de": "Problem beheben",
-                          "en": "Fix an issue"
+                          "de": "Hetzner",
+                          "en": "Hetzner"
+                        },
+                        "desc": {
+                          "de": "Deutscher Cloud- & Server-Anbieter.",
+                          "en": "A German cloud & server provider."
                         },
                         "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Problem beheben",
-                            "en": "Fix an issue"
+                          "type": "branch",
+                          "prompt": {
+                            "de": "Worum geht es?",
+                            "en": "What do you need?"
                           },
-                          "price": 99,
-                          "duration": 60,
-                          "quote": false
-                        }
-                      },
-                      {
-                        "id": "maintenance",
-                        "name": {
-                          "de": "Wartung & Gesundheitscheck",
-                          "en": "Maintenance & health check"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "Wartung & Gesundheitscheck",
-                            "en": "Maintenance & health check"
-                          },
-                          "price": 89,
-                          "duration": 60,
-                          "quote": false
+                          "options": [
+                            {
+                              "id": "setupNew",
+                              "name": {
+                                "de": "Neueinrichtung",
+                                "en": "New setup"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Neueinrichtung",
+                                  "en": "New setup"
+                                },
+                                "price": 149,
+                                "duration": 90,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "fixIssue",
+                              "name": {
+                                "de": "Problem beheben",
+                                "en": "Fix an issue"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Problem beheben",
+                                  "en": "Fix an issue"
+                                },
+                                "price": 99,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            },
+                            {
+                              "id": "maintenance",
+                              "name": {
+                                "de": "Wartung & Gesundheitscheck",
+                                "en": "Maintenance & health check"
+                              },
+                              "next": {
+                                "type": "leaf",
+                                "name": {
+                                  "de": "Wartung & Gesundheitscheck",
+                                  "en": "Maintenance & health check"
+                                },
+                                "price": 89,
+                                "duration": 60,
+                                "quote": false
+                              }
+                            }
+                          ]
                         }
                       }
                     ]
