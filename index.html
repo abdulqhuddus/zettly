@@ -416,10 +416,27 @@
     border: 1px solid var(--border);
     cursor: default;
     opacity: 0;
+    overflow: hidden;
     transform: translateY(14px);
     animation: hiwIn 0.55s cubic-bezier(.2,.9,.3,1) forwards;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.4s ease;
   }
+  /* Big ghost ICON bleeding out of the corner — same oversized, barely-
+     there flourish used on the trust-strip cards, but a large faded copy
+     of that step's own icon instead of its number, so each card tells
+     you what it's about even from the corner of your eye. */
+  .hiw-ghost-icon {
+    position: absolute; right: -0.9rem; bottom: -1rem; z-index: 0;
+    width: 92px; height: 92px;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .hiw-ghost-icon svg { width: 100%; height: 100%; }
+  .hiw-ghost-icon svg * { stroke: var(--accent-light) !important; }
+  .hiw-step:nth-child(odd) .hiw-ghost-icon svg * { stroke: var(--violet-light) !important; }
+  .hiw-step.active .hiw-ghost-icon svg * { stroke: rgba(255,255,255,0.08) !important; }
+  .hiw-step .hiw-ghost-icon, .hiw-step .hiw-icon-wrap, .hiw-step h4, .hiw-step p { position: relative; z-index: 1; }
+  .hiw-step .hiw-ghost-icon { z-index: 0; }
   .hiw-step:nth-child(1) { animation-delay: 0.02s; }
   .hiw-step:nth-child(2) { animation-delay: 0.08s; }
   .hiw-step:nth-child(3) { animation-delay: 0.14s; }
@@ -1907,43 +1924,50 @@
   <p class="hiw-sub" data-i18n="hiwSub">Transparent von der Buchung bis zur Bezahlung.</p>
   <div class="hiw-track-wrap">
   <div class="hiw-track">
-    <div class="hiw-step">
+    <div class="hiw-step" data-n="01">
+      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke-width="1.6" stroke-linecap="round"/></svg></div>
       <span class="hiw-num">1</span>
       <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="#7C3AED" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg></div>
       <h4 data-i18n="hiwStep1Title">Leistung wählen</h4>
       <p data-i18n="hiwStep1Desc">Sie wählen den passenden Service für Ihr Anliegen aus.</p>
     </div>
-    <div class="hiw-step">
+    <div class="hiw-step" data-n="02">
+      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <span class="hiw-num">2</span>
       <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h4 data-i18n="hiwStep2Title">Termin buchen</h4>
       <p data-i18n="hiwStep2Desc">Sie buchen online einen Termin, der Ihnen passt.</p>
     </div>
-    <div class="hiw-step">
+    <div class="hiw-step" data-n="03">
+      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke-width="1.6"/></svg></div>
       <span class="hiw-num">3</span>
       <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="#7C3AED" stroke-width="1.6"/></svg></div>
       <h4 data-i18n="hiwStep3Title">Wir kommen vorbei</h4>
       <p data-i18n="hiwStep3Desc">Wir kommen pünktlich zu Ihnen nach Hause oder ins Büro.</p>
     </div>
-    <div class="hiw-step">
+    <div class="hiw-step" data-n="04">
+      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke-width="1.6"/></svg></div>
       <span class="hiw-num">4</span>
       <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke="#7C3AED" stroke-width="1.6"/></svg></div>
       <h4 data-i18n="hiwStep4Title">Gerät im Ist-Zustand</h4>
       <p data-i18n="hiwStep4Desc">Wir fotografieren nur das betroffene Gerät zur Dokumentation: mit Ihrem Einverständnis.</p>
     </div>
-    <div class="hiw-step">
+    <div class="hiw-step" data-n="05">
+      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a3 3 0 0 0-4.1 3.9l-6.1 6.1a1.5 1.5 0 0 0 2.1 2.1l6.1-6.1a3 3 0 0 0 3.9-4.1l-2 2-2-1 1-2z" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
       <span class="hiw-num">5</span>
       <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a3 3 0 0 0-4.1 3.9l-6.1 6.1a1.5 1.5 0 0 0 2.1 2.1l6.1-6.1a3 3 0 0 0 3.9-4.1l-2 2-2-1 1-2z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
       <h4 data-i18n="hiwStep5Title">Service durchführen</h4>
       <p data-i18n="hiwStep5Desc">Wir erledigen die vereinbarte Leistung fachgerecht.</p>
     </div>
-    <div class="hiw-step">
+    <div class="hiw-step" data-n="06">
+      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.8 12.8l1.6 1.6 3-3.2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <span class="hiw-num">6</span>
       <div class="hiw-icon-wrap"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke="#7C3AED" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.8 12.8l1.6 1.6 3-3.2" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h4 data-i18n="hiwStep6Title">Gerät nach Abschluss</h4>
       <p data-i18n="hiwStep6Desc">Zum Abschluss ein Foto des reparierten Geräts als Nachweis der Leistung.</p>
     </div>
-    <div class="hiw-step">
+    <div class="hiw-step" data-n="07">
+      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="2" stroke-width="1.6"/><path d="M3 10.5h18" stroke-width="1.6"/><path d="M6.5 15h4" stroke-width="1.6" stroke-linecap="round"/></svg></div>
       <span class="hiw-num">7</span>
       <div class="hiw-icon-wrap">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#7C3AED" stroke-width="1.6"/><path d="M3 10.5h18" stroke="#7C3AED" stroke-width="1.6"/><path d="M6.5 15h4" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/></svg>
