@@ -15194,8 +15194,8 @@
           {
             "id": "harddisk",
             "name": {
-              "de": "Festplatte",
-              "en": "Hard disk"
+              "de": "Externe Festplatte",
+              "en": "External Disk"
             },
             "next": {
               "type": "branch",
@@ -15255,6 +15255,10 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über eine Backup-Verwaltungssoftware (Backup-Manager) verfügt. Bitte geben Sie die Details zum Backup-Manager im letzten Schritt des Buchungsprozesses an.",
+                  "en": "The customer is expected to have backup management software (a backup manager) available. Please provide the backup manager details in the last step of the booking process."
                 }
               ],
               "explainer": {
@@ -15327,6 +15331,27 @@
                     "duration": 60,
                     "quote": false
                   }
+                },
+                {
+                  "id": "nasToNasSync",
+                  "name": {
+                    "de": "NAS-zu-NAS-Synchronisierung",
+                    "en": "NAS to NAS sync"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "NAS-zu-NAS-Synchronisierung",
+                      "en": "NAS to NAS sync"
+                    },
+                    "price": 149,
+                    "duration": 90,
+                    "quote": false
+                  },
+                  "desc": {
+                    "de": "Automatisierte Synchronisierung der Daten zwischen zwei NAS-Systemen.",
+                    "en": "Automated synchronization of data between two NAS systems."
+                  }
                 }
               ],
               "notice": [
@@ -15345,6 +15370,10 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über eine Backup-Verwaltungssoftware (Backup-Manager) verfügt. Bitte geben Sie die Details zum Backup-Manager im letzten Schritt des Buchungsprozesses an.",
+                  "en": "The customer is expected to have backup management software (a backup manager) available. Please provide the backup manager details in the last step of the booking process."
                 }
               ],
               "explainer": {
@@ -15396,7 +15425,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 99,
+                    "price": 199,
                     "duration": 60,
                     "quote": false
                   }
@@ -15413,7 +15442,7 @@
                       "de": "Kapazität erweitern",
                       "en": "Expand capacity"
                     },
-                    "price": 109,
+                    "price": 299,
                     "duration": 60,
                     "quote": false
                   }
@@ -15435,6 +15464,10 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über eine Backup-Verwaltungssoftware (Backup-Manager) verfügt. Bitte geben Sie die Details zum Backup-Manager im letzten Schritt des Buchungsprozesses an.",
+                  "en": "The customer is expected to have backup management software (a backup manager) available. Please provide the backup manager details in the last step of the booking process."
                 }
               ],
               "explainer": {
@@ -15525,6 +15558,10 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Es wird davon ausgegangen, dass der Kunde über eine Backup-Verwaltungssoftware (Backup-Manager) verfügt. Bitte geben Sie die Details zum Backup-Manager im letzten Schritt des Buchungsprozesses an.",
+                  "en": "The customer is expected to have backup management software (a backup manager) available. Please provide the backup manager details in the last step of the booking process."
                 }
               ],
               "explainer": {
@@ -15891,6 +15928,28 @@
                     "duration": 30,
                     "quote": false
                   }
+                },
+                {
+                  "id": "addTrunk",
+                  "name": {
+                    "de": "Trunk zu bestehendem Controller hinzufügen",
+                    "en": "Add Trunk to existing Controller"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Trunk zu bestehendem Controller hinzufügen",
+                      "en": "Add Trunk to existing Controller"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  },
+                  "desc": {
+                    "de": "Hinzufügen einer weiteren Telefonleitung (Trunk) zu einem bereits eingerichteten System.",
+                    "en": "Adding another telephone line (trunk) to an already configured system."
+                  }
                 }
               ],
               "notice": [
@@ -15909,11 +15968,15 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Jede Einrichtung beinhaltet maximal eine Telefonleitung (Trunk). Für zusätzliche Leitungen buchen Sie bitte \"Trunk zu bestehendem Controller hinzufügen\".",
+                  "en": "Each configuration includes a maximum of one telephone line (trunk). For additional lines, please book \"Add Trunk to existing Controller\"."
                 }
               ],
               "explainer": {
                 "de": [
-                  "Prüfung Ihrer Netzwerkumgebung und Anforderungen an Microsoft Teams Telefonie.",
+                  "Konfiguration des Microsoft Teams Telefonie-Controllers entsprechend Ihren Anforderungen.",
                   "Installation und Grundkonfiguration von Microsoft Teams Telefonie.",
                   "Einrichtung von Nebenstellen, Rufgruppen und Anrufweiterleitungen.",
                   "Bei zusätzlichen Nebenstellen: Einrichtung und Zuweisung an die betroffenen Mitarbeiter.",
@@ -15921,7 +15984,7 @@
                   "Einspielen der neuesten Updates und Patches."
                 ],
                 "en": [
-                  "Review your network environment and requirements for Microsoft Teams calling.",
+                  "Configure the Microsoft Teams calling controller according to your requirements.",
                   "Install and do the basic configuration of Microsoft Teams calling.",
                   "Set up extensions, ring groups, and call forwarding.",
                   "For additional extensions: set them up and assign them to the relevant employees.",
@@ -15960,7 +16023,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 129,
+                    "price": 199,
                     "duration": 90,
                     "quote": false
                   }
@@ -15981,6 +16044,28 @@
                     "duration": 30,
                     "quote": false
                   }
+                },
+                {
+                  "id": "addTrunk",
+                  "name": {
+                    "de": "Trunk zu bestehendem Controller hinzufügen",
+                    "en": "Add Trunk to existing Controller"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Trunk zu bestehendem Controller hinzufügen",
+                      "en": "Add Trunk to existing Controller"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  },
+                  "desc": {
+                    "de": "Hinzufügen einer weiteren Telefonleitung (Trunk) zu einem bereits eingerichteten System.",
+                    "en": "Adding another telephone line (trunk) to an already configured system."
+                  }
                 }
               ],
               "notice": [
@@ -15999,11 +16084,15 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Jede Einrichtung beinhaltet maximal eine Telefonleitung (Trunk). Für zusätzliche Leitungen buchen Sie bitte \"Trunk zu bestehendem Controller hinzufügen\".",
+                  "en": "Each configuration includes a maximum of one telephone line (trunk). For additional lines, please book \"Add Trunk to existing Controller\"."
                 }
               ],
               "explainer": {
                 "de": [
-                  "Prüfung Ihrer Netzwerkumgebung und Anforderungen an die Yeastar-Telefonanlage.",
+                  "Konfiguration des Yeastar-Controllers entsprechend Ihren Anforderungen.",
                   "Installation und Grundkonfiguration von die Yeastar-Telefonanlage.",
                   "Einrichtung von Nebenstellen, Rufgruppen und Anrufweiterleitungen.",
                   "Bei zusätzlichen Nebenstellen: Einrichtung und Zuweisung an die betroffenen Mitarbeiter.",
@@ -16011,7 +16100,7 @@
                   "Einspielen der neuesten Updates und Patches."
                 ],
                 "en": [
-                  "Review your network environment and requirements for the Yeastar phone system.",
+                  "Configure the Yeastar controller according to your requirements.",
                   "Install and do the basic configuration of the Yeastar phone system.",
                   "Set up extensions, ring groups, and call forwarding.",
                   "For additional extensions: set them up and assign them to the relevant employees.",
@@ -16050,7 +16139,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 129,
+                    "price": 199,
                     "duration": 90,
                     "quote": false
                   }
@@ -16071,6 +16160,28 @@
                     "duration": 30,
                     "quote": false
                   }
+                },
+                {
+                  "id": "addTrunk",
+                  "name": {
+                    "de": "Trunk zu bestehendem Controller hinzufügen",
+                    "en": "Add Trunk to existing Controller"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Trunk zu bestehendem Controller hinzufügen",
+                      "en": "Add Trunk to existing Controller"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  },
+                  "desc": {
+                    "de": "Hinzufügen einer weiteren Telefonleitung (Trunk) zu einem bereits eingerichteten System.",
+                    "en": "Adding another telephone line (trunk) to an already configured system."
+                  }
                 }
               ],
               "notice": [
@@ -16089,11 +16200,15 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Jede Einrichtung beinhaltet maximal eine Telefonleitung (Trunk). Für zusätzliche Leitungen buchen Sie bitte \"Trunk zu bestehendem Controller hinzufügen\".",
+                  "en": "Each configuration includes a maximum of one telephone line (trunk). For additional lines, please book \"Add Trunk to existing Controller\"."
                 }
               ],
               "explainer": {
                 "de": [
-                  "Prüfung Ihrer Netzwerkumgebung und Anforderungen an Ihre VoIP-Telefonanlage.",
+                  "Konfiguration Ihres VoIP-Controllers entsprechend Ihren Anforderungen.",
                   "Installation und Grundkonfiguration von Ihre VoIP-Telefonanlage.",
                   "Einrichtung von Nebenstellen, Rufgruppen und Anrufweiterleitungen.",
                   "Bei zusätzlichen Nebenstellen: Einrichtung und Zuweisung an die betroffenen Mitarbeiter.",
@@ -16101,7 +16216,7 @@
                   "Einspielen der neuesten Updates und Patches."
                 ],
                 "en": [
-                  "Review your network environment and requirements for your VoIP phone system.",
+                  "Configure your VoIP controller according to your requirements.",
                   "Install and do the basic configuration of your VoIP phone system.",
                   "Set up extensions, ring groups, and call forwarding.",
                   "For additional extensions: set them up and assign them to the relevant employees.",
@@ -16182,6 +16297,28 @@
                     "duration": 30,
                     "quote": false
                   }
+                },
+                {
+                  "id": "additionalDeviceInstall",
+                  "name": {
+                    "de": "Installation auf weiteren Geräten",
+                    "en": "Additional Device Installation"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Installation auf weiteren Geräten",
+                      "en": "Additional Device Installation"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  },
+                  "desc": {
+                    "de": "Treiberinstallation auf zusätzlichen Arbeitsstationen über die inkludierten 5 Geräte hinaus.",
+                    "en": "Driver installation on additional workstations beyond the included 5 devices."
+                  }
                 }
               ],
               "notice": [
@@ -16200,6 +16337,10 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Jede Neueinrichtung beinhaltet die Treiberinstallation auf bis zu 5 Geräten. Für die Installation auf weiteren Geräten buchen Sie bitte \"Installation auf weiteren Geräten\" (Preis nach Beratung).",
+                  "en": "Every new setup includes driver installation on up to 5 devices. For installation on additional devices, please book \"Additional Device Installation\" (pricing after consultation)."
                 }
               ],
               "explainer": {
@@ -16253,7 +16394,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 79,
+                    "price": 69,
                     "duration": 30,
                     "quote": false
                   }
@@ -16274,6 +16415,28 @@
                     "duration": 30,
                     "quote": false
                   }
+                },
+                {
+                  "id": "additionalDeviceInstall",
+                  "name": {
+                    "de": "Installation auf weiteren Geräten",
+                    "en": "Additional Device Installation"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Installation auf weiteren Geräten",
+                      "en": "Additional Device Installation"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  },
+                  "desc": {
+                    "de": "Treiberinstallation auf zusätzlichen Arbeitsstationen über die inkludierten 5 Geräte hinaus.",
+                    "en": "Driver installation on additional workstations beyond the included 5 devices."
+                  }
                 }
               ],
               "notice": [
@@ -16292,6 +16455,10 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Jede Neueinrichtung beinhaltet die Treiberinstallation auf bis zu 5 Geräten. Für die Installation auf weiteren Geräten buchen Sie bitte \"Installation auf weiteren Geräten\" (Preis nach Beratung).",
+                  "en": "Every new setup includes driver installation on up to 5 devices. For installation on additional devices, please book \"Additional Device Installation\" (pricing after consultation)."
                 }
               ],
               "explainer": {
@@ -16366,6 +16533,28 @@
                     "duration": 30,
                     "quote": false
                   }
+                },
+                {
+                  "id": "additionalDeviceInstall",
+                  "name": {
+                    "de": "Installation auf weiteren Geräten",
+                    "en": "Additional Device Installation"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Installation auf weiteren Geräten",
+                      "en": "Additional Device Installation"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
+                  },
+                  "desc": {
+                    "de": "Treiberinstallation auf zusätzlichen Arbeitsstationen über die inkludierten 5 Geräte hinaus.",
+                    "en": "Driver installation on additional workstations beyond the included 5 devices."
+                  }
                 }
               ],
               "notice": [
@@ -16384,6 +16573,10 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
+                },
+                {
+                  "de": "Jede Neueinrichtung beinhaltet die Treiberinstallation auf bis zu 5 Geräten. Für die Installation auf weiteren Geräten buchen Sie bitte \"Installation auf weiteren Geräten\" (Preis nach Beratung).",
+                  "en": "Every new setup includes driver installation on up to 5 devices. For installation on additional devices, please book \"Additional Device Installation\" (pricing after consultation)."
                 }
               ],
               "explainer": {
@@ -16484,7 +16677,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 39,
+                                "price": 59,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -16581,7 +16774,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 39,
+                                "price": 59,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -16652,7 +16845,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 49,
+                                "price": 69,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -16749,7 +16942,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 39,
+                                "price": 59,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -16820,7 +17013,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 49,
+                                "price": 69,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -16891,7 +17084,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 59,
+                                "price": 79,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -16988,7 +17181,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 39,
+                                "price": 59,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17059,7 +17252,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 49,
+                                "price": 69,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17130,7 +17323,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 59,
+                                "price": 79,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17201,7 +17394,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 69,
+                                "price": 89,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17298,7 +17491,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 39,
+                                "price": 59,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17369,7 +17562,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 49,
+                                "price": 69,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17440,7 +17633,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 59,
+                                "price": 79,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17511,7 +17704,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 69,
+                                "price": 89,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17582,7 +17775,7 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 79,
+                                "price": 99,
                                 "duration": 60,
                                 "quote": false
                               }
@@ -17682,7 +17875,7 @@
                             "de": "1-2 Kameras",
                             "en": "1-2 cameras"
                           },
-                          "price": 39,
+                          "price": 59,
                           "duration": 45,
                           "quote": false
                         }
@@ -17699,7 +17892,7 @@
                             "de": "3-4 Kameras",
                             "en": "3-4 cameras"
                           },
-                          "price": 49,
+                          "price": 69,
                           "duration": 45,
                           "quote": false
                         }
@@ -17716,7 +17909,7 @@
                             "de": "5-10 Kameras",
                             "en": "5-10 cameras"
                           },
-                          "price": 99,
+                          "price": 119,
                           "duration": 45,
                           "quote": false
                         }
@@ -17825,7 +18018,7 @@
                       "de": "Onboarding (Komplettpaket)",
                       "en": "Onboarding full setup"
                     },
-                    "price": 149,
+                    "price": 99,
                     "duration": 90,
                     "quote": false
                   }
@@ -17872,7 +18065,7 @@
               ],
               "explainer": {
                 "de": [
-                  "Abstimmung mit Ihnen, ob es sich um ein Onboarding, ein Offboarding oder beides handelt, sowie über benötigte Konten und Geräte je Mitarbeiter.",
+                  "Abstimmung mit Ihnen über die benötigten Konten und Geräte je Mitarbeiter.",
                   "Beim Onboarding: Einrichtung von Benutzerkonten, Postfach und Arbeitsgeräten mit den benötigten Programmen und Berechtigungen.",
                   "Beim Offboarding: Sicherung relevanter Daten, Deaktivierung der Konten und Entzug der Zugriffsrechte.",
                   "Rücksetzung zurückgegebener Geräte für die Wiederverwendung, sofern zutreffend.",
@@ -17880,7 +18073,7 @@
                   "Übergabe mit kurzer Einweisung bzw. Übergabe der gesicherten Daten an die von Ihnen benannte Person."
                 ],
                 "en": [
-                  "Agree with you on whether this is an onboarding, an offboarding, or both, and on the accounts and devices each employee needs.",
+                  "Agree with you on the accounts and devices each employee needs.",
                   "For onboarding: set up user accounts, mailbox, and work devices with the required programs and permissions.",
                   "For offboarding: back up relevant data, deactivate accounts, and revoke access rights.",
                   "Reset returned devices for reuse, where applicable.",
@@ -17923,7 +18116,7 @@
                       "de": "Onboarding (Komplettpaket)",
                       "en": "Onboarding full setup"
                     },
-                    "price": 249,
+                    "price": 169,
                     "duration": 90,
                     "quote": false
                   }
@@ -17970,7 +18163,7 @@
               ],
               "explainer": {
                 "de": [
-                  "Abstimmung mit Ihnen, ob es sich um ein Onboarding, ein Offboarding oder beides handelt, sowie über benötigte Konten und Geräte je Mitarbeiter.",
+                  "Abstimmung mit Ihnen über die benötigten Konten und Geräte je Mitarbeiter.",
                   "Beim Onboarding: Einrichtung von Benutzerkonten, Postfach und Arbeitsgeräten mit den benötigten Programmen und Berechtigungen.",
                   "Beim Offboarding: Sicherung relevanter Daten, Deaktivierung der Konten und Entzug der Zugriffsrechte.",
                   "Rücksetzung zurückgegebener Geräte für die Wiederverwendung, sofern zutreffend.",
@@ -17978,7 +18171,7 @@
                   "Übergabe mit kurzer Einweisung bzw. Übergabe der gesicherten Daten an die von Ihnen benannte Person."
                 ],
                 "en": [
-                  "Agree with you on whether this is an onboarding, an offboarding, or both, and on the accounts and devices each employee needs.",
+                  "Agree with you on the accounts and devices each employee needs.",
                   "For onboarding: set up user accounts, mailbox, and work devices with the required programs and permissions.",
                   "For offboarding: back up relevant data, deactivate accounts, and revoke access rights.",
                   "Reset returned devices for reuse, where applicable.",
@@ -18021,7 +18214,7 @@
                       "de": "Onboarding (Komplettpaket)",
                       "en": "Onboarding full setup"
                     },
-                    "price": 399,
+                    "price": 269,
                     "duration": 90,
                     "quote": false
                   }
@@ -18068,7 +18261,7 @@
               ],
               "explainer": {
                 "de": [
-                  "Abstimmung mit Ihnen, ob es sich um ein Onboarding, ein Offboarding oder beides handelt, sowie über benötigte Konten und Geräte je Mitarbeiter.",
+                  "Abstimmung mit Ihnen über die benötigten Konten und Geräte je Mitarbeiter.",
                   "Beim Onboarding: Einrichtung von Benutzerkonten, Postfach und Arbeitsgeräten mit den benötigten Programmen und Berechtigungen.",
                   "Beim Offboarding: Sicherung relevanter Daten, Deaktivierung der Konten und Entzug der Zugriffsrechte.",
                   "Rücksetzung zurückgegebener Geräte für die Wiederverwendung, sofern zutreffend.",
@@ -18076,7 +18269,7 @@
                   "Übergabe mit kurzer Einweisung bzw. Übergabe der gesicherten Daten an die von Ihnen benannte Person."
                 ],
                 "en": [
-                  "Agree with you on whether this is an onboarding, an offboarding, or both, and on the accounts and devices each employee needs.",
+                  "Agree with you on the accounts and devices each employee needs.",
                   "For onboarding: set up user accounts, mailbox, and work devices with the required programs and permissions.",
                   "For offboarding: back up relevant data, deactivate accounts, and revoke access rights.",
                   "Reset returned devices for reuse, where applicable.",
@@ -18119,7 +18312,7 @@
                       "de": "Onboarding (Komplettpaket)",
                       "en": "Onboarding full setup"
                     },
-                    "price": 699,
+                    "price": 469,
                     "duration": 90,
                     "quote": false
                   }
@@ -18166,7 +18359,7 @@
               ],
               "explainer": {
                 "de": [
-                  "Abstimmung mit Ihnen, ob es sich um ein Onboarding, ein Offboarding oder beides handelt, sowie über benötigte Konten und Geräte je Mitarbeiter.",
+                  "Abstimmung mit Ihnen über die benötigten Konten und Geräte je Mitarbeiter.",
                   "Beim Onboarding: Einrichtung von Benutzerkonten, Postfach und Arbeitsgeräten mit den benötigten Programmen und Berechtigungen.",
                   "Beim Offboarding: Sicherung relevanter Daten, Deaktivierung der Konten und Entzug der Zugriffsrechte.",
                   "Rücksetzung zurückgegebener Geräte für die Wiederverwendung, sofern zutreffend.",
@@ -18174,7 +18367,7 @@
                   "Übergabe mit kurzer Einweisung bzw. Übergabe der gesicherten Daten an die von Ihnen benannte Person."
                 ],
                 "en": [
-                  "Agree with you on whether this is an onboarding, an offboarding, or both, and on the accounts and devices each employee needs.",
+                  "Agree with you on the accounts and devices each employee needs.",
                   "For onboarding: set up user accounts, mailbox, and work devices with the required programs and permissions.",
                   "For offboarding: back up relevant data, deactivate accounts, and revoke access rights.",
                   "Reset returned devices for reuse, where applicable.",
@@ -18266,7 +18459,7 @@
               ],
               "explainer": {
                 "de": [
-                  "Abstimmung mit Ihnen, ob es sich um ein Onboarding, ein Offboarding oder beides handelt, sowie über benötigte Konten und Geräte je Mitarbeiter.",
+                  "Abstimmung mit Ihnen über die benötigten Konten und Geräte je Mitarbeiter.",
                   "Beim Onboarding: Einrichtung von Benutzerkonten, Postfach und Arbeitsgeräten mit den benötigten Programmen und Berechtigungen.",
                   "Beim Offboarding: Sicherung relevanter Daten, Deaktivierung der Konten und Entzug der Zugriffsrechte.",
                   "Rücksetzung zurückgegebener Geräte für die Wiederverwendung, sofern zutreffend.",
@@ -18274,7 +18467,7 @@
                   "Übergabe mit kurzer Einweisung bzw. Übergabe der gesicherten Daten an die von Ihnen benannte Person."
                 ],
                 "en": [
-                  "Agree with you on whether this is an onboarding, an offboarding, or both, and on the accounts and devices each employee needs.",
+                  "Agree with you on the accounts and devices each employee needs.",
                   "For onboarding: set up user accounts, mailbox, and work devices with the required programs and permissions.",
                   "For offboarding: back up relevant data, deactivate accounts, and revoke access rights.",
                   "Reset returned devices for reuse, where applicable.",
