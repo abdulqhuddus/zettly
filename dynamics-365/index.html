@@ -170,10 +170,78 @@
     position: relative;
   }
   .hero-card img { width: 72px; height: 72px; display: block; margin: 0 auto 1.2rem; }
-  .hero-card .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 1.2rem; padding: 0.9rem 0; border-top: 1px dashed var(--border); font-size: 0.95rem; }
-  .hero-card .stat-row:first-of-type { border-top: none; }
-  .hero-card .stat-row b { color: var(--ink); }
-  .hero-card .stat-row span.label { color: var(--muted); }
+
+  /* A small looping "deal moving through the pipeline" animation in place
+     of a static price list - gives the hero card some life and reads as
+     an actual CRM at a glance, while the Dynamics 365 logo above it stays
+     put. Pure CSS (no JS): one keyframe animation slides the floating
+     deal chip across the three stage columns and fades it out before it
+     jumps back to the start, and three more keyframe animations
+     (sharing the same 9s timeline) light up each column's background in
+     turn so it reads as the chip "arriving" there. */
+  .crm-mock { margin-top: 0.6rem; }
+  .crm-board { position: relative; display: flex; gap: 0.5rem; margin-top: 22px; }
+  .crm-col {
+    flex: 1; min-width: 0; border-radius: 12px; padding: 1.5rem 0.3rem 0.7rem;
+    text-align: center; background: var(--accent-light);
+  }
+  .crm-col-label {
+    font-size: 0.64rem; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--muted); white-space: nowrap;
+  }
+  .crm-col-1 { animation: crmCol1 9s ease-in-out infinite; }
+  .crm-col-2 { animation: crmCol2 9s ease-in-out infinite; }
+  .crm-col-3 { animation: crmCol3 9s ease-in-out infinite; }
+  .crm-deal-chip {
+    position: absolute; top: -16px; left: 16.6%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 0.5rem;
+    background: #fff; border: 1px solid var(--border); border-radius: 14px;
+    padding: 0.45rem 0.7rem; box-shadow: 0 10px 22px rgba(17,17,20,0.14);
+    white-space: nowrap;
+    animation: crmMove 9s ease-in-out infinite;
+  }
+  .crm-avatar {
+    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    background: linear-gradient(135deg, var(--d365-blue), var(--accent));
+    color: #fff; font-size: 0.62rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .crm-deal-text { font-size: 0.68rem; color: var(--muted); line-height: 1.3; text-align: left; }
+  .crm-deal-text b { color: var(--ink); font-size: 0.8rem; }
+  .crm-deal-pulse {
+    width: 7px; height: 7px; border-radius: 50%; background: #16a34a; flex: 0 0 auto;
+    animation: crmPulse 1.6s ease-out infinite;
+  }
+  @keyframes crmPulse {
+    0% { box-shadow: 0 0 0 0 rgba(22,163,74,0.5); }
+    70% { box-shadow: 0 0 0 7px rgba(22,163,74,0); }
+    100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
+  }
+  @keyframes crmMove {
+    0%, 26% { left: 16.6%; opacity: 1; }
+    33%, 59% { left: 50%; opacity: 1; }
+    66%, 88% { left: 83.3%; opacity: 1; }
+    94% { opacity: 0; }
+    100% { left: 16.6%; opacity: 0; }
+  }
+  @keyframes crmCol1 {
+    0%, 26% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(0,120,212,0.35); }
+    33%, 100% { background: var(--accent-light); box-shadow: none; }
+  }
+  @keyframes crmCol2 {
+    0%, 26% { background: var(--accent-light); box-shadow: none; }
+    33%, 59% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
+    66%, 100% { background: var(--accent-light); box-shadow: none; }
+  }
+  @keyframes crmCol3 {
+    0%, 59% { background: var(--accent-light); box-shadow: none; }
+    66%, 88% { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(236,72,153,0.35); }
+    96%, 100% { background: var(--accent-light); box-shadow: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .crm-deal-chip, .crm-col-1, .crm-col-2, .crm-col-3, .crm-deal-pulse { animation: none; }
+    .crm-col-2 { background: #fff; box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.35); }
+  }
 
   /* ---- Sections ---- */
   section.block { width: 100%; max-width: 1180px; padding: 3.2rem clamp(1.25rem, 4vw, 2rem); }
@@ -200,7 +268,12 @@
 
   /* ---- Packages: a Fiverr-style tier comparison table ---- */
   .tier-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 10px 30px rgba(17,17,20,0.06); }
-  .tier-table { width: 100%; min-width: 680px; border-collapse: collapse; }
+  /* table-layout:fixed plus the <colgroup> widths in the markup below is
+     what keeps all three price columns the same width - without a fixed
+     layout, the browser sizes columns from their content, and the
+     feature column's long labels left too little room for the others,
+     wrapping "45 Min. Kick-off" onto two lines. */
+  .tier-table { width: 100%; min-width: 680px; border-collapse: collapse; table-layout: fixed; }
   .tier-table thead th {
     background: #faf9fc; padding: 1.5rem 1.1rem 4.6rem; border-bottom: 2px solid var(--border);
     vertical-align: top; text-align: center; font-weight: 400;
@@ -235,7 +308,7 @@
   .tier-name { font-size: 1.05rem; font-weight: 800; color: var(--ink); margin-bottom: 0.35rem; }
   .tier-price { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; color: var(--ink); }
   .tier-price small { font-size: 0.7rem; font-weight: 600; color: var(--muted); }
-  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 0.15rem; }
+  .tier-duration { font-size: 0.75rem; color: var(--muted); margin: 0.25rem 0 0.15rem; white-space: nowrap; }
   .tier-timeline { font-size: 0.75rem; font-weight: 700; color: var(--accent); margin: 0 0 1rem; }
   .tier-btn { width: 100%; justify-content: center; padding: 0.7rem 0.9rem; font-size: 0.85rem; }
   .tier-table tbody td {
@@ -243,7 +316,11 @@
     text-align: center; color: var(--ink);
   }
   .tier-table tbody tr:last-child td { border-bottom: none; }
-  .tier-table tbody td:first-child { text-align: left; font-weight: 600; white-space: nowrap; color: var(--ink); }
+  /* table-layout:fixed (see .tier-table above) gives this column a fixed
+     34% share instead of growing to fit its content, so long feature
+     labels need to wrap onto a second line rather than staying on one -
+     the previous nowrap relied on the column auto-sizing around them. */
+  .tier-table tbody td:first-child { text-align: left; font-weight: 600; color: var(--ink); }
   .tier-table tbody td:nth-child(3), .tier-table thead th.tier-col-hl { background: var(--accent-light); }
   .tier-table tbody td:first-child, .tier-table thead th.tier-feature-col { background: #fff; }
   .chk { color: #16a34a; font-weight: 800; font-size: 1.05rem; }
@@ -260,6 +337,11 @@
   @media (max-width: 860px) { .why-wrap { flex-direction: column; text-align: center; gap: 1.6rem; } }
   .why-wrap .why-content { flex: 1.2; }
   .why-wrap h2 { text-align: left; color: #fff; }
+  /* .zettly-word defaults "zett" to var(--ink) (near-black) for use on
+     light backgrounds - on this section's dark gradient that made it
+     disappear entirely, leaving only the purple "ly". Whenever the brand
+     name sits on a dark background, "zett" needs to be forced white. */
+  .why-wrap .zettly-word { color: #fff; }
   @media (max-width: 860px) { .why-wrap h2 { text-align: center; } }
   .why-wrap p.lead2 { color: rgba(255,255,255,0.72); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.4rem; }
   .why-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
@@ -477,10 +559,18 @@
   <div class="hero-visual">
     <div class="hero-card">
       <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
-      <div class="stat-row"><span class="label">Basic</span><b>299&nbsp;&euro;</b></div>
-      <div class="stat-row"><span class="label">Standard</span><b>1.199&nbsp;&euro;</b></div>
-      <div class="stat-row"><span class="label">Premium</span><b>4.799&nbsp;&euro;</b></div>
-      <div class="stat-row"><span class="label">Einsatzgebiet</span><b>München, 100&nbsp;km</b></div>
+      <div class="crm-mock" aria-hidden="true">
+        <div class="crm-board">
+          <div class="crm-deal-chip">
+            <span class="crm-avatar">AG</span>
+            <span class="crm-deal-text">Acme GmbH<br><b>12.400&nbsp;&euro;</b></span>
+            <span class="crm-deal-pulse"></span>
+          </div>
+          <div class="crm-col crm-col-1"><span class="crm-col-label">Lead</span></div>
+          <div class="crm-col crm-col-2"><span class="crm-col-label">Qualifiziert</span></div>
+          <div class="crm-col crm-col-3"><span class="crm-col-label">Gewonnen</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -490,6 +580,12 @@
   <p class="sub">Transparent von Anfang an. Jedes Paket lässt sich direkt online buchen &ndash; größere Integrationen besprechen wir vorab im Detail.</p>
   <div class="tier-wrap">
     <table class="tier-table">
+      <colgroup>
+        <col style="width: 34%;">
+        <col style="width: 22%;">
+        <col style="width: 22%;">
+        <col style="width: 22%;">
+      </colgroup>
       <thead>
         <tr>
           <th class="tier-feature-col"></th>
@@ -539,6 +635,7 @@
         <tr><td>Systemintegration mit Drittanbietern</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3 Operationen</td></tr>
         <tr><td>Datenmigration (Excel zu Dynamics)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>Nur Schulung</td></tr>
         <tr><td>Dokumentation der Umsetzung</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Lieferzeit</td><td>3 Tage</td><td>10 Tage</td><td>30 Tage</td></tr>
         <tr><td>E-Mail-Support danach</td><td>3 Tage</td><td>7 Tage</td><td>14 Tage</td></tr>
         <tr><td>Optional: &bdquo;Wartungsvertrag&ldquo;</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td></tr>
       </tbody>
@@ -657,10 +754,18 @@
   <div class="hero-visual">
     <div class="hero-card">
       <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
-      <div class="stat-row"><span class="label">Basic</span><b>&euro;299</b></div>
-      <div class="stat-row"><span class="label">Standard</span><b>&euro;1,199</b></div>
-      <div class="stat-row"><span class="label">Premium</span><b>&euro;4,799</b></div>
-      <div class="stat-row"><span class="label">Coverage</span><b>Munich, 100&nbsp;km</b></div>
+      <div class="crm-mock" aria-hidden="true">
+        <div class="crm-board">
+          <div class="crm-deal-chip">
+            <span class="crm-avatar">AG</span>
+            <span class="crm-deal-text">Acme Inc.<br><b>&euro;12,400</b></span>
+            <span class="crm-deal-pulse"></span>
+          </div>
+          <div class="crm-col crm-col-1"><span class="crm-col-label">Lead</span></div>
+          <div class="crm-col crm-col-2"><span class="crm-col-label">Qualified</span></div>
+          <div class="crm-col crm-col-3"><span class="crm-col-label">Won</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -670,6 +775,12 @@
   <p class="sub">Transparent from the start. Every package can be booked directly online &ndash; larger integrations we scope together beforehand.</p>
   <div class="tier-wrap">
     <table class="tier-table">
+      <colgroup>
+        <col style="width: 34%;">
+        <col style="width: 22%;">
+        <col style="width: 22%;">
+        <col style="width: 22%;">
+      </colgroup>
       <thead>
         <tr>
           <th class="tier-feature-col"></th>
@@ -719,6 +830,7 @@
         <tr><td>Third-party system integration</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3 operations</td></tr>
         <tr><td>Data migration (Excel to Dynamics)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>Training only</td></tr>
         <tr><td>Documentation of the work</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Delivery time</td><td>3 days</td><td>10 days</td><td>30 days</td></tr>
         <tr><td>Follow-up email support</td><td>3 days</td><td>7 days</td><td>14 days</td></tr>
         <tr><td>Optional: "Maintenance Contract"</td><td>Pricing upon request</td><td>Pricing upon request</td><td>Pricing upon request</td></tr>
       </tbody>

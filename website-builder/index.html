@@ -170,6 +170,11 @@
   @media (max-width: 860px) { .why-wrap { flex-direction: column; text-align: center; gap: 1.6rem; } }
   .why-wrap .why-content { flex: 1.2; }
   .why-wrap h2 { text-align: left; color: #fff; }
+  /* .zettly-word defaults "zett" to var(--ink) (near-black) for use on
+     light backgrounds - on this section's dark gradient that made it
+     disappear entirely, leaving only the purple "ly". Whenever the brand
+     name sits on a dark background, "zett" needs to be forced white. */
+  .why-wrap .zettly-word { color: #fff; }
   @media (max-width: 860px) { .why-wrap h2 { text-align: center; } }
   .why-wrap p.lead2 { color: rgba(255,255,255,0.72); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.4rem; }
   .why-list { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
