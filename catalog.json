@@ -11531,6 +11531,385 @@
   ],
   "business": [
     {
+      "id": "dynamics",
+      "icon": "dynamics",
+      "name": {
+        "de": "Dynamics 365",
+        "en": "Dynamics 365"
+      },
+      "desc": {
+        "de": "Beratung, Workflows, individuelle Integrationen",
+        "en": "Consulting, workflows, custom integrations"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Paket auswählen",
+          "en": "Choose your package"
+        },
+        "options": [
+          {
+            "id": "generalConsult",
+            "name": {
+              "de": "Allgemeine Beratung (einmalig kostenlos)",
+              "en": "General Consultation (one-time free)"
+            },
+            "desc": {
+              "de": "Unverbindliches Erstgespräch",
+              "en": "No-obligation first conversation"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Allgemeine Beratung",
+                "en": "General Consultation"
+              },
+              "price": 0,
+              "duration": 30,
+              "quote": false
+            }
+          },
+          {
+            "id": "dynBasic",
+            "name": {
+              "de": "Basic",
+              "en": "Basic"
+            },
+            "desc": {
+              "de": "Preis nach kostenloser Erstberatung",
+              "en": "Pricing after a free consultation"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Basic",
+                "en": "Basic"
+              },
+              "price": null,
+              "duration": 30,
+              "quote": true,
+              "quoteKind": "consultation"
+            }
+          },
+          {
+            "id": "dynStandard",
+            "name": {
+              "de": "Standard",
+              "en": "Standard"
+            },
+            "desc": {
+              "de": "Preis nach kostenloser Erstberatung",
+              "en": "Pricing after a free consultation"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Standard",
+                "en": "Standard"
+              },
+              "price": null,
+              "duration": 30,
+              "quote": true,
+              "quoteKind": "consultation"
+            }
+          },
+          {
+            "id": "dynPremium",
+            "name": {
+              "de": "Premium",
+              "en": "Premium"
+            },
+            "desc": {
+              "de": "Preis nach kostenloser Erstberatung",
+              "en": "Pricing after a free consultation"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Premium",
+                "en": "Premium"
+              },
+              "price": null,
+              "duration": 30,
+              "quote": true,
+              "quoteKind": "consultation"
+            }
+          }
+        ],
+        "notice": [
+          {
+            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+          },
+          {
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+            "en": "The customer is assumed to have the required licenses available."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+            "en": "The customer is expected to have the required hardware available."
+          }
+        ],
+        "explainer": {
+          "de": [
+            "Kostenloses Erstgespräch zur Aufnahme Ihrer Geschäftsprozesse und Anforderungen.",
+            "Erstellung eines Konzepts, welche Dynamics-365-Module und Anpassungen zu Ihrem Tier passen.",
+            "Einrichtung bzw. Konfiguration der gebuchten Dynamics-365-Umgebung.",
+            "Anpassung von Workflows, Formularen und Power-Automate-Abläufen nach Ihren Vorgaben.",
+            "Einrichtung von Benutzerrollen und Zugriffsrechten.",
+            "Funktionstest der wichtigsten Abläufe gemeinsam mit Ihnen.",
+            "Übergabe mit kurzer Einweisung in die eingerichteten Funktionen."
+          ],
+          "en": [
+            "Free initial consultation to capture your business processes and requirements.",
+            "Draft a concept of which Dynamics 365 modules and customizations fit your chosen tier.",
+            "Set up or configure the booked Dynamics 365 environment.",
+            "Customize workflows, forms, and Power Automate flows to your specifications.",
+            "Set up user roles and access permissions.",
+            "Test the key processes together with you.",
+            "Hand over the setup with a short walkthrough of the configured features."
+          ]
+        }
+      }
+    },
+    {
+      "id": "webbuilder",
+      "icon": "webbuilder",
+      "name": {
+        "de": "Website-Erstellung",
+        "en": "Website Builder"
+      },
+      "desc": {
+        "de": "Moderne Websites mit CMS, Shop & Integrationen",
+        "en": "Modern websites with CMS, shop & integrations"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Paket auswählen",
+          "en": "Choose your package"
+        },
+        "options": [
+          {
+            "id": "basic",
+            "name": {
+              "de": "Business Basic (Startup)",
+              "en": "Business Basic (Startup)"
+            },
+            "desc": {
+              "de": "Website mit Buchung & CMS",
+              "en": "Website with booking & CMS"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Business Basic",
+                "en": "Business Basic"
+              },
+              "price": 349,
+              "duration": 60,
+              "quote": false
+            }
+          },
+          {
+            "id": "advance",
+            "name": {
+              "de": "Advance (eCommerce)",
+              "en": "Advance (eCommerce)"
+            },
+            "desc": {
+              "de": "Shop, Kundenportal & Zahlungen",
+              "en": "Shop, customer portal & payments"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Advance (eCommerce)",
+                "en": "Advance (eCommerce)"
+              },
+              "price": 899,
+              "duration": 90,
+              "quote": false
+            }
+          },
+          {
+            "id": "enterprise",
+            "name": {
+              "de": "Enterprise",
+              "en": "Enterprise"
+            },
+            "desc": {
+              "de": "Individuelle Integrationen & Eigenverwaltung",
+              "en": "Custom integrations & full control"
+            },
+            "next": {
+              "type": "leaf",
+              "name": {
+                "de": "Enterprise",
+                "en": "Enterprise"
+              },
+              "price": null,
+              "duration": 30,
+              "quote": true,
+              "quoteKind": "consultation"
+            }
+          }
+        ],
+        "notice": [
+          {
+            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+          },
+          {
+            "de": "Enterprise-Preise werden nach einer einmaligen kostenlosen Beratung erstellt.",
+            "en": "Enterprise pricing is provided after a one-time free consultation."
+          },
+          {
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+            "en": "The customer is assumed to have the required licenses available."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+            "en": "The customer is expected to have the required hardware available."
+          }
+        ],
+        "explainer": {
+          "de": [
+            "Aufnahme Ihrer Anforderungen zu Inhalt, Design und gewünschten Funktionen.",
+            "Einrichtung von Domain und Hosting entsprechend Ihrem gewählten Paket.",
+            "Aufbau der Website bzw. des Shops mit den vereinbarten Seiten und Funktionen.",
+            "Bei eCommerce: Einrichtung von Produktkatalog, Zahlungsanbindung und Versandoptionen.",
+            "Einbindung von SEO-Grundeinstellungen und Kontaktformularen.",
+            "Funktionstest aller Seiten, Formulare und Verlinkungen.",
+            "Übergabe mit kurzer Einweisung in die Pflege der Website."
+          ],
+          "en": [
+            "Capture your requirements for content, design, and the features you need.",
+            "Set up the domain and hosting according to your chosen package.",
+            "Build the website or shop with the agreed pages and features.",
+            "For eCommerce: set up the product catalog, payment integration, and shipping options.",
+            "Add basic SEO settings and contact forms.",
+            "Run a functional test of all pages, forms, and links.",
+            "Hand over the site with a short walkthrough of how to maintain it."
+          ]
+        }
+      }
+    },
+    {
+      "id": "support",
+      "icon": "handshake",
+      "name": {
+        "de": "IT-Support-Vertrag / Managed IT",
+        "en": "IT Support Contract / Managed IT"
+      },
+      "desc": {
+        "de": "Monatliche Betreuung: individuelles Angebot",
+        "en": "Monthly support: custom quote"
+      },
+      "root": {
+        "type": "branch",
+        "prompt": {
+          "de": "Welches Paket interessiert Sie?",
+          "en": "Which tier interests you?"
+        },
+        "sub": {
+          "de": "Wir melden uns mit einem individuellen Angebot für Ihr Unternehmen.",
+          "en": "We'll follow up with a custom quote for your business."
+        },
+        "options": [
+          {
+            "id": "basic",
+            "name": {
+              "de": "Basic",
+              "en": "Basic"
+            },
+            "next": {
+              "type": "leaf",
+              "name": null,
+              "price": null,
+              "duration": 30,
+              "quote": true,
+              "quoteKind": "consultation"
+            }
+          },
+          {
+            "id": "standard",
+            "name": {
+              "de": "Standard",
+              "en": "Standard"
+            },
+            "next": {
+              "type": "leaf",
+              "name": null,
+              "price": null,
+              "duration": 30,
+              "quote": true,
+              "quoteKind": "consultation"
+            }
+          },
+          {
+            "id": "premium",
+            "name": {
+              "de": "Premium",
+              "en": "Premium"
+            },
+            "next": {
+              "type": "leaf",
+              "name": null,
+              "price": null,
+              "duration": 30,
+              "quote": true,
+              "quoteKind": "consultation"
+            }
+          }
+        ],
+        "notice": [
+          {
+            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+          },
+          {
+            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+            "en": "The customer is assumed to have the required licenses available."
+          },
+          {
+            "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+            "en": "The customer is expected to have the required hardware available."
+          }
+        ],
+        "explainer": {
+          "de": [
+            "Kostenloses Erstgespräch zur Aufnahme Ihrer IT-Umgebung und Ihres Unterstützungsbedarfs.",
+            "Festlegung des Leistungsumfangs entsprechend des gewählten Vertragspakets (Basic, Standard oder Premium).",
+            "Einrichtung der vereinbarten Überwachung und Erreichbarkeit (Remote- und/oder Vor-Ort-Support).",
+            "Laufende Betreuung Ihrer Systeme: Störungsbehebung, Updates und präventive Wartung.",
+            "Regelmäßige Berichterstattung über durchgeführte Arbeiten, je nach Vertragspaket.",
+            "Ansprechpartner für Rückfragen und Eskalationen während der Vertragslaufzeit."
+          ],
+          "en": [
+            "Free initial consultation to capture your IT environment and support needs.",
+            "Define the scope of service according to your chosen contract tier (Basic, Standard, or Premium).",
+            "Set up the agreed monitoring and availability (remote and/or on-site support).",
+            "Ongoing care of your systems: fixing issues, applying updates, and preventive maintenance.",
+            "Regular reporting on work carried out, depending on your contract tier.",
+            "A point of contact for questions and escalations for the duration of the contract."
+          ]
+        }
+      }
+    },
+    {
       "id": "computers",
       "icon": "computer",
       "name": {
@@ -15592,279 +15971,6 @@
       }
     },
     {
-      "id": "dynamics",
-      "icon": "dynamics",
-      "name": {
-        "de": "Dynamics 365",
-        "en": "Dynamics 365"
-      },
-      "desc": {
-        "de": "Beratung, Workflows, individuelle Integrationen",
-        "en": "Consulting, workflows, custom integrations"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Paket auswählen",
-          "en": "Choose your package"
-        },
-        "options": [
-          {
-            "id": "generalConsult",
-            "name": {
-              "de": "Allgemeine Beratung (einmalig kostenlos)",
-              "en": "General Consultation (one-time free)"
-            },
-            "desc": {
-              "de": "Unverbindliches Erstgespräch",
-              "en": "No-obligation first conversation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Allgemeine Beratung",
-                "en": "General Consultation"
-              },
-              "price": 0,
-              "duration": 30,
-              "quote": false
-            }
-          },
-          {
-            "id": "dynBasic",
-            "name": {
-              "de": "Basic",
-              "en": "Basic"
-            },
-            "desc": {
-              "de": "Preis nach kostenloser Erstberatung",
-              "en": "Pricing after a free consultation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Basic",
-                "en": "Basic"
-              },
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          },
-          {
-            "id": "dynStandard",
-            "name": {
-              "de": "Standard",
-              "en": "Standard"
-            },
-            "desc": {
-              "de": "Preis nach kostenloser Erstberatung",
-              "en": "Pricing after a free consultation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Standard",
-                "en": "Standard"
-              },
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          },
-          {
-            "id": "dynPremium",
-            "name": {
-              "de": "Premium",
-              "en": "Premium"
-            },
-            "desc": {
-              "de": "Preis nach kostenloser Erstberatung",
-              "en": "Pricing after a free consultation"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Premium",
-                "en": "Premium"
-              },
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          }
-        ],
-        "notice": [
-          {
-            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
-            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
-          },
-          {
-            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
-          },
-          {
-            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
-            "en": "The customer is assumed to have the required licenses available."
-          },
-          {
-            "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
-            "en": "The customer is expected to have the required hardware available."
-          }
-        ],
-        "explainer": {
-          "de": [
-            "Kostenloses Erstgespräch zur Aufnahme Ihrer Geschäftsprozesse und Anforderungen.",
-            "Erstellung eines Konzepts, welche Dynamics-365-Module und Anpassungen zu Ihrem Tier passen.",
-            "Einrichtung bzw. Konfiguration der gebuchten Dynamics-365-Umgebung.",
-            "Anpassung von Workflows, Formularen und Power-Automate-Abläufen nach Ihren Vorgaben.",
-            "Einrichtung von Benutzerrollen und Zugriffsrechten.",
-            "Funktionstest der wichtigsten Abläufe gemeinsam mit Ihnen.",
-            "Übergabe mit kurzer Einweisung in die eingerichteten Funktionen."
-          ],
-          "en": [
-            "Free initial consultation to capture your business processes and requirements.",
-            "Draft a concept of which Dynamics 365 modules and customizations fit your chosen tier.",
-            "Set up or configure the booked Dynamics 365 environment.",
-            "Customize workflows, forms, and Power Automate flows to your specifications.",
-            "Set up user roles and access permissions.",
-            "Test the key processes together with you.",
-            "Hand over the setup with a short walkthrough of the configured features."
-          ]
-        }
-      }
-    },
-    {
-      "id": "webbuilder",
-      "icon": "webbuilder",
-      "name": {
-        "de": "Website-Erstellung",
-        "en": "Website Builder"
-      },
-      "desc": {
-        "de": "Moderne Websites mit CMS, Shop & Integrationen",
-        "en": "Modern websites with CMS, shop & integrations"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Paket auswählen",
-          "en": "Choose your package"
-        },
-        "options": [
-          {
-            "id": "basic",
-            "name": {
-              "de": "Business Basic (Startup)",
-              "en": "Business Basic (Startup)"
-            },
-            "desc": {
-              "de": "Website mit Buchung & CMS",
-              "en": "Website with booking & CMS"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Business Basic",
-                "en": "Business Basic"
-              },
-              "price": 349,
-              "duration": 60,
-              "quote": false
-            }
-          },
-          {
-            "id": "advance",
-            "name": {
-              "de": "Advance (eCommerce)",
-              "en": "Advance (eCommerce)"
-            },
-            "desc": {
-              "de": "Shop, Kundenportal & Zahlungen",
-              "en": "Shop, customer portal & payments"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Advance (eCommerce)",
-                "en": "Advance (eCommerce)"
-              },
-              "price": 899,
-              "duration": 90,
-              "quote": false
-            }
-          },
-          {
-            "id": "enterprise",
-            "name": {
-              "de": "Enterprise",
-              "en": "Enterprise"
-            },
-            "desc": {
-              "de": "Individuelle Integrationen & Eigenverwaltung",
-              "en": "Custom integrations & full control"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Enterprise",
-                "en": "Enterprise"
-              },
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          }
-        ],
-        "notice": [
-          {
-            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
-            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
-          },
-          {
-            "de": "Enterprise-Preise werden nach einer einmaligen kostenlosen Beratung erstellt.",
-            "en": "Enterprise pricing is provided after a one-time free consultation."
-          },
-          {
-            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
-          },
-          {
-            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
-            "en": "The customer is assumed to have the required licenses available."
-          },
-          {
-            "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
-            "en": "The customer is expected to have the required hardware available."
-          }
-        ],
-        "explainer": {
-          "de": [
-            "Aufnahme Ihrer Anforderungen zu Inhalt, Design und gewünschten Funktionen.",
-            "Einrichtung von Domain und Hosting entsprechend Ihrem gewählten Paket.",
-            "Aufbau der Website bzw. des Shops mit den vereinbarten Seiten und Funktionen.",
-            "Bei eCommerce: Einrichtung von Produktkatalog, Zahlungsanbindung und Versandoptionen.",
-            "Einbindung von SEO-Grundeinstellungen und Kontaktformularen.",
-            "Funktionstest aller Seiten, Formulare und Verlinkungen.",
-            "Übergabe mit kurzer Einweisung in die Pflege der Website."
-          ],
-          "en": [
-            "Capture your requirements for content, design, and the features you need.",
-            "Set up the domain and hosting according to your chosen package.",
-            "Build the website or shop with the agreed pages and features.",
-            "For eCommerce: set up the product catalog, payment integration, and shipping options.",
-            "Add basic SEO settings and contact forms.",
-            "Run a functional test of all pages, forms, and links.",
-            "Hand over the site with a short walkthrough of how to maintain it."
-          ]
-        }
-      }
-    },
-    {
       "id": "voip",
       "icon": "phone",
       "name": {
@@ -18478,112 +18584,6 @@
             }
           }
         ]
-      }
-    },
-    {
-      "id": "support",
-      "icon": "handshake",
-      "name": {
-        "de": "IT-Support-Vertrag / Managed IT",
-        "en": "IT Support Contract / Managed IT"
-      },
-      "desc": {
-        "de": "Monatliche Betreuung: individuelles Angebot",
-        "en": "Monthly support: custom quote"
-      },
-      "root": {
-        "type": "branch",
-        "prompt": {
-          "de": "Welches Paket interessiert Sie?",
-          "en": "Which tier interests you?"
-        },
-        "sub": {
-          "de": "Wir melden uns mit einem individuellen Angebot für Ihr Unternehmen.",
-          "en": "We'll follow up with a custom quote for your business."
-        },
-        "options": [
-          {
-            "id": "basic",
-            "name": {
-              "de": "Basic",
-              "en": "Basic"
-            },
-            "next": {
-              "type": "leaf",
-              "name": null,
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          },
-          {
-            "id": "standard",
-            "name": {
-              "de": "Standard",
-              "en": "Standard"
-            },
-            "next": {
-              "type": "leaf",
-              "name": null,
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          },
-          {
-            "id": "premium",
-            "name": {
-              "de": "Premium",
-              "en": "Premium"
-            },
-            "next": {
-              "type": "leaf",
-              "name": null,
-              "price": null,
-              "duration": 30,
-              "quote": true,
-              "quoteKind": "consultation"
-            }
-          }
-        ],
-        "notice": [
-          {
-            "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
-            "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
-          },
-          {
-            "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-            "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
-          },
-          {
-            "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
-            "en": "The customer is assumed to have the required licenses available."
-          },
-          {
-            "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
-            "en": "The customer is expected to have the required hardware available."
-          }
-        ],
-        "explainer": {
-          "de": [
-            "Kostenloses Erstgespräch zur Aufnahme Ihrer IT-Umgebung und Ihres Unterstützungsbedarfs.",
-            "Festlegung des Leistungsumfangs entsprechend des gewählten Vertragspakets (Basic, Standard oder Premium).",
-            "Einrichtung der vereinbarten Überwachung und Erreichbarkeit (Remote- und/oder Vor-Ort-Support).",
-            "Laufende Betreuung Ihrer Systeme: Störungsbehebung, Updates und präventive Wartung.",
-            "Regelmäßige Berichterstattung über durchgeführte Arbeiten, je nach Vertragspaket.",
-            "Ansprechpartner für Rückfragen und Eskalationen während der Vertragslaufzeit."
-          ],
-          "en": [
-            "Free initial consultation to capture your IT environment and support needs.",
-            "Define the scope of service according to your chosen contract tier (Basic, Standard, or Premium).",
-            "Set up the agreed monitoring and availability (remote and/or on-site support).",
-            "Ongoing care of your systems: fixing issues, applying updates, and preventive maintenance.",
-            "Regular reporting on work carried out, depending on your contract tier.",
-            "A point of contact for questions and escalations for the duration of the contract."
-          ]
-        }
       }
     }
   ]

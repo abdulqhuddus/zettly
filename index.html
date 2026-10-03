@@ -458,19 +458,25 @@
     font-weight: 500;
   }
 
-  /* "How it works" interactive marketing banner, shown above the booking flow */
+  /* "How it works" interactive marketing banner, shown above the booking flow.
+     Framed as one large card (not just a bare section) so it reads as its
+     own distinct block beneath the home/business picker. */
   .how-it-works {
     width: 100%;
     max-width: 1180px;
-    padding: 1.5rem 1.25rem 0.5rem;
-    margin-bottom: 0.5rem;
+    margin: 1.75rem 0 1.25rem;
+    padding: 2.25rem 1.75rem 1.75rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: 0 10px 32px rgba(17,17,20,0.06);
     transition: max-width 0.3s ease, opacity 0.25s ease, max-height 0.3s ease;
   }
   /* overflow:hidden only while collapsing/collapsed (needed so the
      content doesn't spill out as max-height shrinks to 0) — applying it
      unconditionally clipped the active step card's lift/glow shadow
      against this section's own box even when fully expanded. */
-  .how-it-works.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; pointer-events: none; overflow: hidden; }
+  .how-it-works.collapsed { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0; border-width: 0; pointer-events: none; overflow: hidden; }
   .how-it-works h2 {
     text-align: center;
     font-size: clamp(1.5rem, 3vw, 1.9rem);
@@ -968,7 +974,7 @@
     .announce-bar { padding: 0.55rem 1rem; }
     .trust-strip { margin-bottom: 1.4rem; }
     .cta-banner { padding: 1.05rem 1.25rem; margin-bottom: 1.4rem; }
-    .how-it-works { padding: 0.9rem 1.1rem 0.3rem; margin-bottom: 0.2rem; }
+    .how-it-works { padding: 1.5rem 1.1rem 0.6rem; margin: 1.1rem 0 0.2rem; border-radius: 20px; }
     .how-it-works h2 { margin-bottom: 0.3rem; }
     .how-it-works .hiw-sub { margin-bottom: 1.1rem; }
     .subtitle { margin-bottom: 1.1rem; }
@@ -2074,58 +2080,6 @@
   </span>
 </div>
 
-<div class="how-it-works" id="how-it-works">
-  <h2 data-i18n="hiwTitle">So läuft Ihr Termin ab</h2>
-  <p class="hiw-sub" data-i18n="hiwSub">Transparent von der Buchung bis zur Bezahlung.</p>
-  <div class="hiw-track-wrap">
-  <div class="hiw-track">
-    <div class="hiw-step" data-n="01">
-      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <span class="hiw-num-tag"><span class="hiw-num">1</span></span>
-      <h4 data-i18n="hiwStep1Title">Leistung wählen</h4>
-      <p data-i18n="hiwStep1Desc">Sie wählen den passenden Service für Ihr Anliegen aus.</p>
-    </div>
-    <div class="hiw-step" data-n="02">
-      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="hiw-num-tag"><span class="hiw-num">2</span></span>
-      <h4 data-i18n="hiwStep2Title">Termin buchen</h4>
-      <p data-i18n="hiwStep2Desc">Sie buchen online einen Termin, der Ihnen passt.</p>
-    </div>
-    <div class="hiw-step" data-n="03">
-      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke-width="1.6"/></svg></div>
-      <span class="hiw-num-tag"><span class="hiw-num">3</span></span>
-      <h4 data-i18n="hiwStep3Title">Wir kommen vorbei</h4>
-      <p data-i18n="hiwStep3Desc">Wir kommen pünktlich zu Ihnen nach Hause oder ins Büro.</p>
-    </div>
-    <div class="hiw-step" data-n="04">
-      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke-width="1.6"/></svg></div>
-      <span class="hiw-num-tag"><span class="hiw-num">4</span></span>
-      <h4 data-i18n="hiwStep4Title">Gerät im Ist-Zustand</h4>
-      <p data-i18n="hiwStep4Desc">Wir fotografieren nur das betroffene Gerät zur Dokumentation: mit Ihrem Einverständnis.</p>
-    </div>
-    <div class="hiw-step" data-n="05">
-      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a3 3 0 0 0-4.1 3.9l-6.1 6.1a1.5 1.5 0 0 0 2.1 2.1l6.1-6.1a3 3 0 0 0 3.9-4.1l-2 2-2-1 1-2z" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
-      <span class="hiw-num-tag"><span class="hiw-num">5</span></span>
-      <h4 data-i18n="hiwStep5Title">Service durchführen</h4>
-      <p data-i18n="hiwStep5Desc">Wir erledigen die vereinbarte Leistung fachgerecht.</p>
-    </div>
-    <div class="hiw-step" data-n="06">
-      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.8 12.8l1.6 1.6 3-3.2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="hiw-num-tag"><span class="hiw-num">6</span></span>
-      <h4 data-i18n="hiwStep6Title">Gerät nach Abschluss</h4>
-      <p data-i18n="hiwStep6Desc">Zum Abschluss ein Foto des reparierten Geräts als Nachweis der Leistung.</p>
-    </div>
-    <div class="hiw-step hiw-step-done" data-n="07">
-      <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="2" stroke-width="1.6"/><path d="M3 10.5h18" stroke-width="1.6"/><path d="M6.5 15h4" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <span class="hiw-num-tag"><span class="hiw-num">7</span></span>
-      <span class="hiw-done-badge" aria-hidden="true"><svg viewBox="2.5 4.5 19 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <h4 data-i18n="hiwStep7Title">Bezahlen</h4>
-      <p data-i18n="hiwStep7Desc">Sie zahlen bequem online oder bar vor Ort.</p>
-    </div>
-  </div>
-  </div>
-</div>
-
 <div class="stage">
 
   <div class="cta-banner" id="cta-banner">
@@ -2181,6 +2135,58 @@
           <span data-i18n="tapToSelect">Antippen zum Auswählen</span>
         </span>
       </div>
+    </div>
+  </div>
+
+  <div class="how-it-works" id="how-it-works">
+    <h2 data-i18n="hiwTitle">So läuft Ihr Termin ab</h2>
+    <p class="hiw-sub" data-i18n="hiwSub">Transparent von der Buchung bis zur Bezahlung.</p>
+    <div class="hiw-track-wrap">
+    <div class="hiw-track">
+      <div class="hiw-step" data-n="01">
+        <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <span class="hiw-num-tag"><span class="hiw-num">1</span></span>
+        <h4 data-i18n="hiwStep1Title">Leistung wählen</h4>
+        <p data-i18n="hiwStep1Desc">Sie wählen den passenden Service für Ihr Anliegen aus.</p>
+      </div>
+      <div class="hiw-step" data-n="02">
+        <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="hiw-num-tag"><span class="hiw-num">2</span></span>
+        <h4 data-i18n="hiwStep2Title">Termin buchen</h4>
+        <p data-i18n="hiwStep2Desc">Sie buchen online einen Termin, der Ihnen passt.</p>
+      </div>
+      <div class="hiw-step" data-n="03">
+        <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke-width="1.6"/></svg></div>
+        <span class="hiw-num-tag"><span class="hiw-num">3</span></span>
+        <h4 data-i18n="hiwStep3Title">Wir kommen vorbei</h4>
+        <p data-i18n="hiwStep3Desc">Wir kommen pünktlich zu Ihnen nach Hause oder ins Büro.</p>
+      </div>
+      <div class="hiw-step" data-n="04">
+        <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke-width="1.6"/></svg></div>
+        <span class="hiw-num-tag"><span class="hiw-num">4</span></span>
+        <h4 data-i18n="hiwStep4Title">Gerät im Ist-Zustand</h4>
+        <p data-i18n="hiwStep4Desc">Wir fotografieren nur das betroffene Gerät zur Dokumentation: mit Ihrem Einverständnis.</p>
+      </div>
+      <div class="hiw-step" data-n="05">
+        <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a3 3 0 0 0-4.1 3.9l-6.1 6.1a1.5 1.5 0 0 0 2.1 2.1l6.1-6.1a3 3 0 0 0 3.9-4.1l-2 2-2-1 1-2z" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+        <span class="hiw-num-tag"><span class="hiw-num">5</span></span>
+        <h4 data-i18n="hiwStep5Title">Service durchführen</h4>
+        <p data-i18n="hiwStep5Desc">Wir erledigen die vereinbarte Leistung fachgerecht.</p>
+      </div>
+      <div class="hiw-step" data-n="06">
+        <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.8 12.8l1.6 1.6 3-3.2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span class="hiw-num-tag"><span class="hiw-num">6</span></span>
+        <h4 data-i18n="hiwStep6Title">Gerät nach Abschluss</h4>
+        <p data-i18n="hiwStep6Desc">Zum Abschluss ein Foto des reparierten Geräts als Nachweis der Leistung.</p>
+      </div>
+      <div class="hiw-step hiw-step-done" data-n="07">
+        <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="2" stroke-width="1.6"/><path d="M3 10.5h18" stroke-width="1.6"/><path d="M6.5 15h4" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <span class="hiw-num-tag"><span class="hiw-num">7</span></span>
+        <span class="hiw-done-badge" aria-hidden="true"><svg viewBox="2.5 4.5 19 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h4 data-i18n="hiwStep7Title">Bezahlen</h4>
+        <p data-i18n="hiwStep7Desc">Sie zahlen bequem online oder bar vor Ort.</p>
+      </div>
+    </div>
     </div>
   </div>
 
@@ -2565,7 +2571,7 @@ const I18N = {
     footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
     footerServicesHeading: "Leistungen",
     footerSpecialtyBadge: "Schwerpunkt",
-    dynamicsFeaturedBadge: "Unser Schwerpunkt",
+    dynamicsFeaturedBadge: "Enterprise CRM",
     dynamicsLearnMore: "Mehr über unseren Dynamics 365 Service erfahren",
     dynamicsFeatureLinkSub: "Referenzen, Leistungen & mehr auf unserer Dynamics-365-Seite",
     webbuilderFeaturedBadge: "Digitaler Auftritt",
@@ -2760,7 +2766,7 @@ const I18N = {
     footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
     footerServicesHeading: "Services",
     footerSpecialtyBadge: "Specialty",
-    dynamicsFeaturedBadge: "Our specialty",
+    dynamicsFeaturedBadge: "Enterprise CRM",
     dynamicsLearnMore: "Learn more about our Dynamics 365 service",
     dynamicsFeatureLinkSub: "References, services & more on our Dynamics 365 page",
     webbuilderFeaturedBadge: "Digital presence",
