@@ -332,11 +332,15 @@
   }
   .site-footer .service-item.highlight {
     color: var(--accent); font-weight: 700; gap: 0.5rem;
+    background: var(--accent-light); border-radius: 10px;
+    padding: 0 0.6rem; margin-left: -0.6rem;
     flex-wrap: nowrap; white-space: nowrap;
   }
   .site-footer .service-item .badge {
-    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--accent);
+    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+    background: linear-gradient(120deg, var(--mit-teal), var(--accent));
+    box-shadow: 0 4px 10px rgba(124,58,237,0.28);
+    color: #fff; padding: 0.2rem 0.5rem; border-radius: 999px;
     flex: 0 0 auto;
   }
   .site-footer .footer-bottom-bar {
@@ -804,11 +808,8 @@
       <a class="service-item highlight" href="/managed-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceManagedIt">Managed IT</span></a>
       <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
       <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
-      <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
-      <span class="service-item" data-i18n="footerServiceSmartHome">Smart Home &amp; Sicherheit</span>
-      <span class="service-item" data-i18n="footerServiceBizInfra">Workstations, Server &amp; Rechenzentrum</span>
-      <span class="service-item" data-i18n="footerServiceBizOps">Netzwerke, Cloud &amp; Backup</span>
-      <span class="service-item" data-i18n="footerServiceBizExtra">Drucker, VOIP, Kameras &amp; Onboarding</span>
+      <span class="service-item" data-i18n="footerServiceComputers">Computer, Netzwerke &amp; Smart Home</span>
+      <span class="service-item" data-i18n="footerServiceBusiness">IT-Support für Unternehmen</span>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerLinksHeading">Links</h5>
@@ -834,11 +835,8 @@
       footerServiceManagedIt: "Managed IT",
       footerServiceDynamics: "Dynamics 365",
       footerServiceWebsite: "Website-Erstellung",
-      footerServiceComputers: "Computer & Netzwerke",
-      footerServiceSmartHome: "Smart Home & Sicherheit",
-      footerServiceBizInfra: "Workstations, Server & Rechenzentrum",
-      footerServiceBizOps: "Netzwerke, Cloud & Backup",
-      footerServiceBizExtra: "Drucker, VOIP, Kameras & Onboarding",
+      footerServiceComputers: "Computer, Netzwerke & Smart Home",
+      footerServiceBusiness: "IT-Support für Unternehmen",
       footerLinksHeading: "Links",
       footerContactHeading: "Kontakt",
       announceHead: "Wir befinden uns im Aufbau ·",
@@ -849,11 +847,8 @@
       footerServiceManagedIt: "Managed IT",
       footerServiceDynamics: "Dynamics 365",
       footerServiceWebsite: "Website Builder",
-      footerServiceComputers: "Computers & Networks",
-      footerServiceSmartHome: "Smart Home & Security",
-      footerServiceBizInfra: "Workstations, Servers & Data Center",
-      footerServiceBizOps: "Networking, Cloud & Backup",
-      footerServiceBizExtra: "Printers, VoIP, Cameras & Onboarding",
+      footerServiceComputers: "Computers, Networking & Smart Home",
+      footerServiceBusiness: "Business IT Support",
       footerLinksHeading: "Links",
       footerContactHeading: "Contact",
       announceHead: "We're under construction ·",
