@@ -10636,7 +10636,8 @@
                     },
                     "price": null,
                     "duration": 120,
-                    "quote": true
+                    "quote": true,
+                    "quoteKind": "consultation"
                   }
                 },
                 {
@@ -12792,7 +12793,8 @@
               },
               "price": null,
               "duration": 60,
-              "quote": true
+              "quote": true,
+              "quoteKind": "consultation"
             }
           },
           {
@@ -12813,7 +12815,8 @@
               },
               "price": null,
               "duration": 90,
-              "quote": true
+              "quote": true,
+              "quoteKind": "consultation"
             }
           },
           {
@@ -12834,7 +12837,8 @@
               },
               "price": null,
               "duration": 120,
-              "quote": true
+              "quote": true,
+              "quoteKind": "consultation"
             }
           }
         ]
@@ -12918,7 +12922,8 @@
               },
               "price": null,
               "duration": 90,
-              "quote": true
+              "quote": true,
+              "quoteKind": "consultation"
             }
           }
         ],
@@ -14567,7 +14572,8 @@
               "name": null,
               "price": null,
               "duration": 30,
-              "quote": true
+              "quote": true,
+              "quoteKind": "consultation"
             }
           },
           {
@@ -14581,7 +14587,8 @@
               "name": null,
               "price": null,
               "duration": 30,
-              "quote": true
+              "quote": true,
+              "quoteKind": "consultation"
             }
           },
           {
@@ -14595,7 +14602,8 @@
               "name": null,
               "price": null,
               "duration": 30,
-              "quote": true
+              "quote": true,
+              "quoteKind": "consultation"
             }
           }
         ]

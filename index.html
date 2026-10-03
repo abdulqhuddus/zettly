@@ -2333,6 +2333,7 @@ const I18N = {
     step0Sub: "Wählen Sie einen Bereich: wir zeigen Ihnen die passenden Pakete.",
     back: "Zurück",
     priceOnRequest: "Preis nach Diagnose",
+    priceOnConsultation: "Preis nach Beratung",
     hwExplainerTitle: "So läuft die Hardware-Reparatur ab",
     trustFastTitle: "Schnelle Termine",
     trustFastDesc: "Kurzfristig verfügbar",
@@ -2509,6 +2510,7 @@ const I18N = {
     step0Sub: "Pick a path and we'll show you the right packages.",
     back: "Back",
     priceOnRequest: "Price after diagnosis",
+    priceOnConsultation: "Price after consultation",
     hwExplainerTitle: "How the hardware repair process works",
     trustFastTitle: "Fast Slots",
     trustFastDesc: "Available at short notice",
@@ -2695,7 +2697,7 @@ let CATALOG = { home: [], business: [] };
 
 function t(key) { return I18N[lang][key]; }
 function fmtEuro(n) { return "€" + n; }
-function fmtPrice(svc) { return svc.quote ? t("priceOnRequest") : fmtEuro(svc.price); }
+function fmtPrice(svc) { return svc.quote ? (svc.quoteKind === "consultation" ? t("priceOnConsultation") : t("priceOnRequest")) : fmtEuro(svc.price); }
 
 function applyStaticTranslations() {
   document.documentElement.lang = lang;
@@ -3197,7 +3199,7 @@ function renderTreeStep() {
           <div class="service-top-row">
             <h3>${o.name[lang]}</h3>
             <div class="service-price">
-              <div class="amount${leaf.quote ? " amount-quote" : ""}">${leaf.quote ? t("priceOnRequest") : fmtEuro(leaf.price)}</div>
+              <div class="amount${leaf.quote ? " amount-quote" : ""}">${leaf.quote ? (leaf.quoteKind === "consultation" ? t("priceOnConsultation") : t("priceOnRequest")) : fmtEuro(leaf.price)}</div>
               <div class="duration">${leaf.duration} ${t("minLabel")}</div>
             </div>
           </div>
