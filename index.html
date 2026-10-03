@@ -171,7 +171,7 @@
     transition: opacity 0.2s ease 0.05s;
   }
   .nav-chip:hover, .nav-chip:focus-visible {
-    width: 132px;
+    width: 176px;
     background: var(--chip-color);
     border-color: var(--chip-color);
     box-shadow: 0 8px 18px color-mix(in srgb, var(--chip-color) 35%, transparent);
@@ -1936,15 +1936,15 @@
   </a>
   <div class="topbar-right">
     <nav class="nav-shortcuts" aria-label="Quick links">
-      <button type="button" class="nav-chip" data-nav-audience="home" style="--chip-color:#2563eb;">
+      <button type="button" class="nav-chip" data-nav-audience="home" style="--chip-color:var(--accent);">
         <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 11.5L12 4l8 7.5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span class="nav-chip-label" data-i18n="navHome">Zuhause</span>
       </button>
-      <button type="button" class="nav-chip" data-nav-audience="business" style="--chip-color:#7C3AED;">
+      <button type="button" class="nav-chip" data-nav-audience="business" style="--chip-color:var(--violet);">
         <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="16" height="12" rx="1.5" stroke-width="1.7"/><path d="M9 8V6a3 3 0 013-3v0a3 3 0 013 3v2" stroke-width="1.7" stroke-linecap="round"/><path d="M4 13h16" stroke-width="1.7"/></svg></span>
         <span class="nav-chip-label" data-i18n="navBusiness">Unternehmen</span>
       </button>
-      <button type="button" class="nav-chip nav-chip-soon" data-nav-audience="freelancers" title="Bald verfügbar" style="--chip-color:#0d9488;">
+      <button type="button" class="nav-chip nav-chip-soon" data-nav-audience="freelancers" title="Bald verfügbar" style="--chip-color:var(--pink);">
         <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3.3" stroke-width="1.7"/><path d="M5 20c0-4.1 3.1-6.8 7-6.8s7 2.7 7 6.8" stroke-width="1.7" stroke-linecap="round"/></svg></span>
         <span class="nav-chip-label" data-i18n="navFreelancers">Freelancer</span>
       </button>
@@ -2449,8 +2449,8 @@ const I18N = {
     audienceHomeDesc: "Privatpersonen & Homeoffice.",
     audienceBizTitle: "Unternehmen",
     audienceBizDesc: "Kleine, mittlere & Großunternehmen.",
-    navHome: "Zuhause",
-    navBusiness: "Unternehmen",
+    navHome: "Zuhause-Services",
+    navBusiness: "Business-Services",
     navFreelancers: "Freelancer",
     tapToSelect: "Antippen zum Auswählen",
     audiencePausedNote: "Aktuell keine Buchungen möglich",
@@ -2634,8 +2634,8 @@ const I18N = {
     audienceHomeDesc: "Individuals & home offices.",
     audienceBizTitle: "Business",
     audienceBizDesc: "Small, medium & enterprise businesses.",
-    navHome: "Home",
-    navBusiness: "Business",
+    navHome: "Home Services",
+    navBusiness: "Business Services",
     navFreelancers: "Freelancers",
     tapToSelect: "Tap to select",
     audiencePausedNote: "Not accepting bookings right now",
