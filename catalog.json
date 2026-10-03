@@ -9479,27 +9479,6 @@
             }
           },
           {
-            "id": "fixIssue",
-            "name": {
-              "de": "Verbindungsproblem beheben",
-              "en": "Fix a connectivity issue"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Verbindungsproblem beheben",
-                "en": "Fix a connectivity issue"
-              },
-              "price": 49,
-              "duration": 30,
-              "quote": false
-            },
-            "desc": {
-              "de": "Wir diagnostizieren WAN, LAN, WLAN, DHCP und weitere mögliche Ursachen und beheben das Problem.",
-              "en": "We diagnose WAN, LAN, WiFi, DHCP and other possible causes, and fix the issue."
-            }
-          },
-          {
             "id": "upgrade",
             "name": {
               "de": "Router ersetzen/aufrüsten",
@@ -9536,7 +9515,6 @@
             "Prüfung Ihres Internetanschlusses und der vorhandenen Netzwerkumgebung.",
             "Anschluss und Grundkonfiguration des Routers (Internetverbindung, WLAN-Name und Passwort).",
             "Einrichtung von Sicherheitseinstellungen wie Firewall und Gastnetzwerk, falls gewünscht.",
-            "Bei Verbindungsproblemen: Diagnose, ob die Ursache beim Router, der Verkabelung oder dem Anbieter liegt, und Behebung.",
             "Bei einem Austausch: Übernahme der bisherigen Einstellungen auf den neuen Router, soweit möglich.",
             "Funktionstest mit Ihren Geräten.",
             "Einspielen der neuesten Firmware-Updates."
@@ -9545,7 +9523,6 @@
             "Check your internet connection and the existing network setup.",
             "Connect and do the basic configuration of the router (internet connection, WiFi name, and password).",
             "Set up security settings such as a firewall and a guest network, if requested.",
-            "For connectivity issues: diagnose whether the cause lies with the router, the cabling, or the provider, and fix it.",
             "For a replacement: carry over the previous settings to the new router, where possible.",
             "Run a functional test with your devices.",
             "Apply the latest firmware updates."
@@ -9593,27 +9570,6 @@
             }
           },
           {
-            "id": "fixIssue",
-            "name": {
-              "de": "Empfangsproblem beheben",
-              "en": "Fix a coverage issue"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Empfangsproblem beheben",
-                "en": "Fix a coverage issue"
-              },
-              "price": 49,
-              "duration": 30,
-              "quote": false
-            },
-            "desc": {
-              "de": "Wir prüfen Signalstärke, Kanalüberschneidungen, Platzierung und weitere mögliche Ursachen und beheben das Problem.",
-              "en": "We check signal strength, channel interference, placement and other possible causes, and fix the issue."
-            }
-          },
-          {
             "id": "extenderSetup",
             "name": {
               "de": "WLAN-Extender einrichten",
@@ -9651,7 +9607,6 @@
             "Platzierung und Anschluss des Access Points oder Extenders an einer geeigneten Stelle.",
             "Konfiguration von Netzwerkname (SSID), Passwort und Sicherheitseinstellungen.",
             "Bei mehreren Access Points: Einrichtung eines einheitlichen Netzwerks (ggf. Mesh) für nahtloses Roaming.",
-            "Bei Abdeckungsproblemen: Messung der Signalstärke und Anpassung von Standort oder Kanalwahl.",
             "Funktionstest mit Ihren Geräten in verschiedenen Bereichen.",
             "Einspielen der neuesten Firmware-Updates."
           ],
@@ -9660,7 +9615,6 @@
             "Position and connect the access point or extender in a suitable location.",
             "Configure the network name (SSID), password, and security settings.",
             "For multiple access points: set up a unified network (mesh, if applicable) for seamless roaming.",
-            "For coverage issues: measure signal strength and adjust placement or channel selection.",
             "Run a functional test with your devices in different areas.",
             "Apply the latest firmware updates."
           ]
@@ -9716,23 +9670,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Druckproblem beheben",
-                    "en": "Fix a printing issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Druckproblem beheben",
-                      "en": "Fix a printing issue"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "network",
                   "name": {
                     "de": "Netzwerkdrucker (WLAN) einrichten",
@@ -9770,7 +9707,6 @@
                   "Installation der Treiber und Software auf Ihren Geräten.",
                   "Einrichtung der Verbindung per USB oder Netzwerk (WLAN), je nach Wunsch.",
                   "Konfiguration von Grundeinstellungen wie Papierformat und Standarddrucker.",
-                  "Bei Problemen: Diagnose von Druckqualität, Papierstau oder Verbindungsfehlern und Behebung.",
                   "Funktionstest mit einem Probedruck oder -scan.",
                   "Einspielen der neuesten Treiber- und Firmware-Updates."
                 ],
@@ -9779,7 +9715,6 @@
                   "Install the drivers and software on your devices.",
                   "Set up the connection via USB or network (WiFi), as requested.",
                   "Configure basic settings such as paper size and default printer.",
-                  "For issues: diagnose print quality, paper jams, or connection errors, and fix them.",
                   "Run a functional test with a sample print or scan.",
                   "Apply the latest driver and firmware updates."
                 ]
@@ -9817,23 +9752,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Druckproblem beheben",
-                    "en": "Fix a printing issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Druckproblem beheben",
-                      "en": "Fix a printing issue"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "network",
                   "name": {
                     "de": "Netzwerkdrucker (WLAN) einrichten",
@@ -9871,7 +9789,6 @@
                   "Installation der Treiber und Software auf Ihren Geräten.",
                   "Einrichtung der Verbindung per USB oder Netzwerk (WLAN), je nach Wunsch.",
                   "Konfiguration von Grundeinstellungen wie Papierformat und Standarddrucker.",
-                  "Bei Problemen: Diagnose von Druckqualität, Papierstau oder Verbindungsfehlern und Behebung.",
                   "Funktionstest mit einem Probedruck oder -scan.",
                   "Einspielen der neuesten Treiber- und Firmware-Updates."
                 ],
@@ -9880,7 +9797,6 @@
                   "Install the drivers and software on your devices.",
                   "Set up the connection via USB or network (WiFi), as requested.",
                   "Configure basic settings such as paper size and default printer.",
-                  "For issues: diagnose print quality, paper jams, or connection errors, and fix them.",
                   "Run a functional test with a sample print or scan.",
                   "Apply the latest driver and firmware updates."
                 ]
@@ -9922,23 +9838,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Druckproblem beheben",
-                    "en": "Fix a printing issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Druckproblem beheben",
-                      "en": "Fix a printing issue"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "network",
                   "name": {
                     "de": "Netzwerkdrucker (WLAN) einrichten",
@@ -9976,7 +9875,6 @@
                   "Installation der Treiber und Software auf Ihren Geräten.",
                   "Einrichtung der Verbindung per USB oder Netzwerk (WLAN), je nach Wunsch.",
                   "Konfiguration von Grundeinstellungen wie Papierformat und Standarddrucker.",
-                  "Bei Problemen: Diagnose von Druckqualität, Papierstau oder Verbindungsfehlern und Behebung.",
                   "Funktionstest mit einem Probedruck oder -scan.",
                   "Einspielen der neuesten Treiber- und Firmware-Updates."
                 ],
@@ -9985,7 +9883,6 @@
                   "Install the drivers and software on your devices.",
                   "Set up the connection via USB or network (WiFi), as requested.",
                   "Configure basic settings such as paper size and default printer.",
-                  "For issues: diagnose print quality, paper jams, or connection errors, and fix them.",
                   "Run a functional test with a sample print or scan.",
                   "Apply the latest driver and firmware updates."
                 ]
@@ -10031,23 +9928,6 @@
             }
           },
           {
-            "id": "fixIssue",
-            "name": {
-              "de": "Zugriffsproblem beheben",
-              "en": "Fix an access issue"
-            },
-            "next": {
-              "type": "leaf",
-              "name": {
-                "de": "Zugriffsproblem beheben",
-                "en": "Fix an access issue"
-              },
-              "price": 49,
-              "duration": 30,
-              "quote": false
-            }
-          },
-          {
             "id": "expand",
             "name": {
               "de": "Speicher erweitern",
@@ -10081,7 +9961,6 @@
             "Einbau der Festplatten und Einrichtung des gewünschten RAID-Levels, falls zutreffend.",
             "Installation und Grundkonfiguration des NAS-Betriebssystems.",
             "Anlegen von Freigaben, Benutzern und Zugriffsrechten.",
-            "Bei Zugriffsproblemen: Diagnose von Netzwerk-, Berechtigungs- oder Konfigurationsfehlern und Behebung.",
             "Bei Erweiterung: Einbau zusätzlicher Festplatten und Anpassung des Speicherpools.",
             "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
             "Einspielen der neuesten Updates und Patches."
@@ -10091,7 +9970,6 @@
             "Install the drives and set up the requested RAID level, if applicable.",
             "Install and do the basic configuration of the NAS operating system.",
             "Create shares, users, and access permissions.",
-            "For access issues: diagnose network, permission, or configuration errors, and fix them.",
             "For expansion: install additional drives and adjust the storage pool.",
             "Set up backup management, if a backup solution is in place.",
             "Apply the latest updates and patches."
@@ -10172,23 +10050,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10198,7 +10059,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10208,7 +10068,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10270,23 +10129,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10296,7 +10138,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10306,7 +10147,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10342,23 +10182,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10368,7 +10191,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10378,7 +10200,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10440,23 +10261,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10466,7 +10270,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10476,7 +10279,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10512,23 +10314,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10538,7 +10323,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10548,7 +10332,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10584,23 +10367,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10610,7 +10376,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10620,7 +10385,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10682,23 +10446,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10708,7 +10455,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10718,7 +10464,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10754,23 +10499,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10780,7 +10508,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10790,7 +10517,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10826,23 +10552,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10852,7 +10561,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10862,7 +10570,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10898,23 +10605,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 79,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -10924,7 +10614,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -10934,7 +10623,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -10996,23 +10684,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -11022,7 +10693,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -11032,7 +10702,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -11068,23 +10737,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -11094,7 +10746,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -11104,7 +10755,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -11140,23 +10790,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -11166,7 +10799,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -11176,7 +10808,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -11212,23 +10843,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 79,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -11238,7 +10852,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -11248,7 +10861,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -11284,23 +10896,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 89,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "explainer": {
@@ -11310,7 +10905,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -11320,7 +10914,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -11438,93 +11031,6 @@
                         "Configure motion detection, notifications, and recording (local or cloud).",
                         "Set up remote access for viewing while you're away.",
                         "Run a functional test of all cameras from the app.",
-                        "Apply the latest firmware updates."
-                      ]
-                    }
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Konfigurationsproblem beheben",
-                    "en": "Fix a configuration issue"
-                  },
-                  "next": {
-                    "type": "branch",
-                    "prompt": {
-                      "de": "Wie viele Kameras?",
-                      "en": "How many cameras?"
-                    },
-                    "options": [
-                      {
-                        "id": "qty_1_2",
-                        "name": {
-                          "de": "1-2 Kameras",
-                          "en": "1-2 cameras"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "1-2 Kameras",
-                            "en": "1-2 cameras"
-                          },
-                          "price": 49,
-                          "duration": 45,
-                          "quote": false
-                        }
-                      },
-                      {
-                        "id": "qty_3_4",
-                        "name": {
-                          "de": "3-4 Kameras",
-                          "en": "3-4 cameras"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "3-4 Kameras",
-                            "en": "3-4 cameras"
-                          },
-                          "price": 59,
-                          "duration": 45,
-                          "quote": false
-                        }
-                      },
-                      {
-                        "id": "qty_5_10",
-                        "name": {
-                          "de": "5-10 Kameras",
-                          "en": "5-10 cameras"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "5-10 Kameras",
-                            "en": "5-10 cameras"
-                          },
-                          "price": 109,
-                          "duration": 45,
-                          "quote": false
-                        }
-                      }
-                    ],
-                    "explainer": {
-                      "de": [
-                        "Entgegennahme der Fehlerbeschreibung für die betroffenen Kameras.",
-                        "Überprüfung der WLAN-Verbindung und Signalstärke an den Kamerastandorten.",
-                        "Diagnose von App-, Konto- oder Konfigurationsproblemen.",
-                        "Behebung von Problemen mit Bewegungserkennung, Benachrichtigungen oder Aufzeichnung.",
-                        "Anpassung der Kamera- oder Routerposition, falls die Ursache in der Signalqualität liegt.",
-                        "Funktionstest aller betroffenen Kameras aus der App.",
-                        "Einspielen der neuesten Firmware-Updates."
-                      ],
-                      "en": [
-                        "Note down the symptoms for the affected cameras.",
-                        "Check the WiFi connection and signal strength at the camera locations.",
-                        "Diagnose app, account, or configuration issues.",
-                        "Fix problems with motion detection, notifications, or recording.",
-                        "Adjust camera or router placement, if the cause lies in signal quality.",
-                        "Run a functional test of all affected cameras from the app.",
                         "Apply the latest firmware updates."
                       ]
                     }
@@ -11732,23 +11238,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "automations",
                   "name": {
                     "de": "Automatisierungen & Szenen einrichten",
@@ -11771,7 +11260,6 @@
                   "Prüfung Ihres WLAN-Netzwerks und der zugehörigen App für Smart-Steckdose.",
                   "Verbindung des/der Smart-Steckdose mit Ihrem WLAN und Ihrem Konto.",
                   "Einrichtung von Namen, Räumen und Grundfunktionen in der App.",
-                  "Bei Verbindungsproblemen: Diagnose von WLAN-, Konto- oder Geräteproblemen und Behebung.",
                   "Bei Automationen: Einrichtung von Szenen, Zeitplänen und Verknüpfungen mit anderen Geräten.",
                   "Funktionstest über die App oder Sprachsteuerung.",
                   "Einspielen der neuesten Firmware-Updates."
@@ -11780,7 +11268,6 @@
                   "Check your WiFi network and the associated app for the smart plug.",
                   "Connect the smart plug to your WiFi and your account.",
                   "Set up naming, rooms, and basic functions in the app.",
-                  "For connectivity issues: diagnose WiFi, account, or device problems, and fix them.",
                   "For automations: set up scenes, schedules, and links with other devices.",
                   "Run a functional test via the app or voice control.",
                   "Apply the latest firmware updates."
@@ -11819,23 +11306,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "automations",
                   "name": {
                     "de": "Automatisierungen & Szenen einrichten",
@@ -11858,7 +11328,6 @@
                   "Prüfung Ihres WLAN-Netzwerks und der zugehörigen App für Smart-Lampe.",
                   "Verbindung des/der Smart-Lampe mit Ihrem WLAN und Ihrem Konto.",
                   "Einrichtung von Namen, Räumen und Grundfunktionen in der App.",
-                  "Bei Verbindungsproblemen: Diagnose von WLAN-, Konto- oder Geräteproblemen und Behebung.",
                   "Bei Automationen: Einrichtung von Szenen, Zeitplänen und Verknüpfungen mit anderen Geräten.",
                   "Funktionstest über die App oder Sprachsteuerung.",
                   "Einspielen der neuesten Firmware-Updates."
@@ -11867,7 +11336,6 @@
                   "Check your WiFi network and the associated app for the smart bulb.",
                   "Connect the smart bulb to your WiFi and your account.",
                   "Set up naming, rooms, and basic functions in the app.",
-                  "For connectivity issues: diagnose WiFi, account, or device problems, and fix them.",
                   "For automations: set up scenes, schedules, and links with other devices.",
                   "Run a functional test via the app or voice control.",
                   "Apply the latest firmware updates."
@@ -11906,23 +11374,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "automations",
                   "name": {
                     "de": "Automatisierungen & Szenen einrichten",
@@ -11945,7 +11396,6 @@
                   "Prüfung Ihres WLAN-Netzwerks und der zugehörigen App für Thermostat.",
                   "Verbindung des/der Thermostat mit Ihrem WLAN und Ihrem Konto.",
                   "Einrichtung von Namen, Räumen und Grundfunktionen in der App.",
-                  "Bei Verbindungsproblemen: Diagnose von WLAN-, Konto- oder Geräteproblemen und Behebung.",
                   "Bei Automationen: Einrichtung von Szenen, Zeitplänen und Verknüpfungen mit anderen Geräten.",
                   "Funktionstest über die App oder Sprachsteuerung.",
                   "Einspielen der neuesten Firmware-Updates."
@@ -11954,7 +11404,6 @@
                   "Check your WiFi network and the associated app for the thermostat.",
                   "Connect the thermostat to your WiFi and your account.",
                   "Set up naming, rooms, and basic functions in the app.",
-                  "For connectivity issues: diagnose WiFi, account, or device problems, and fix them.",
                   "For automations: set up scenes, schedules, and links with other devices.",
                   "Run a functional test via the app or voice control.",
                   "Apply the latest firmware updates."
@@ -11993,23 +11442,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "automations",
                   "name": {
                     "de": "Automatisierungen & Szenen einrichten",
@@ -12032,7 +11464,6 @@
                   "Prüfung Ihres WLAN-Netzwerks und der zugehörigen App für Sensor.",
                   "Verbindung des/der Sensor mit Ihrem WLAN und Ihrem Konto.",
                   "Einrichtung von Namen, Räumen und Grundfunktionen in der App.",
-                  "Bei Verbindungsproblemen: Diagnose von WLAN-, Konto- oder Geräteproblemen und Behebung.",
                   "Bei Automationen: Einrichtung von Szenen, Zeitplänen und Verknüpfungen mit anderen Geräten.",
                   "Funktionstest über die App oder Sprachsteuerung.",
                   "Einspielen der neuesten Firmware-Updates."
@@ -12041,7 +11472,6 @@
                   "Check your WiFi network and the associated app for the sensor.",
                   "Connect the sensor to your WiFi and your account.",
                   "Set up naming, rooms, and basic functions in the app.",
-                  "For connectivity issues: diagnose WiFi, account, or device problems, and fix them.",
                   "For automations: set up scenes, schedules, and links with other devices.",
                   "Run a functional test via the app or voice control.",
                   "Apply the latest firmware updates."
@@ -12080,23 +11510,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 39,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "automations",
                   "name": {
                     "de": "Automatisierungen & Routinen einrichten",
@@ -12119,7 +11532,6 @@
                   "Prüfung Ihres WLAN-Netzwerks und der Alexa-App.",
                   "Einrichtung des Alexa-Geräts mit Ihrem Amazon-Konto und WLAN.",
                   "Verknüpfung weiterer Smart-Home-Geräte mit Alexa, sofern vorhanden.",
-                  "Bei Verbindungsproblemen: Diagnose von WLAN-, Konto- oder Geräteproblemen und Behebung.",
                   "Bei Routinen: Einrichtung von Sprachroutinen und Zeitplänen nach Ihren Wünschen.",
                   "Funktionstest per Sprachsteuerung.",
                   "Einspielen der neuesten Firmware-Updates."
@@ -12128,7 +11540,6 @@
                   "Check your WiFi network and the Alexa app.",
                   "Set up the Alexa device with your Amazon account and WiFi.",
                   "Link other smart home devices to Alexa, if you have any.",
-                  "For connectivity issues: diagnose WiFi, account, or device problems, and fix them.",
                   "For routines: set up voice routines and schedules to your liking.",
                   "Run a functional test via voice control.",
                   "Apply the latest firmware updates."
@@ -15266,23 +14677,6 @@
                     "duration": 90,
                     "quote": false
                   }
-                },
-                {
-                  "id": "access",
-                  "name": {
-                    "de": "Zugriffsproblem beheben",
-                    "en": "Fix an access issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Zugriffsproblem beheben",
-                      "en": "Fix access issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
-                    "quote": false
-                  }
                 }
               ],
               "notice": [
@@ -15314,7 +14708,6 @@
                   "Konfiguration der Grundeinstellungen für Microsoft 365 nach Ihren Vorgaben.",
                   "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Bei Zugriffsproblemen: Diagnose von Konto-, Lizenz- oder Berechtigungsfehlern und Behebung.",
                   "Funktionstest mit einem Beispielkonto."
                 ],
                 "en": [
@@ -15323,7 +14716,6 @@
                   "Configure the basic settings for Microsoft 365 as you specify.",
                   "For a migration: transfer existing data or mailboxes, checking for completeness.",
                   "Set up user accounts, groups, and access permissions.",
-                  "For access issues: diagnose account, license, or permission errors, and fix them.",
                   "Run a functional test with a sample account."
                 ]
               }
@@ -15379,23 +14771,6 @@
                     "duration": 90,
                     "quote": false
                   }
-                },
-                {
-                  "id": "access",
-                  "name": {
-                    "de": "Zugriffsproblem beheben",
-                    "en": "Fix an access issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Zugriffsproblem beheben",
-                      "en": "Fix access issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
-                    "quote": false
-                  }
                 }
               ],
               "notice": [
@@ -15427,7 +14802,6 @@
                   "Konfiguration der Grundeinstellungen für Exchange Online / E-Mail nach Ihren Vorgaben.",
                   "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Bei Zugriffsproblemen: Diagnose von Konto-, Lizenz- oder Berechtigungsfehlern und Behebung.",
                   "Funktionstest mit einem Beispielkonto."
                 ],
                 "en": [
@@ -15436,7 +14810,6 @@
                   "Configure the basic settings for Exchange Online / email as you specify.",
                   "For a migration: transfer existing data or mailboxes, checking for completeness.",
                   "Set up user accounts, groups, and access permissions.",
-                  "For access issues: diagnose account, license, or permission errors, and fix them.",
                   "Run a functional test with a sample account."
                 ]
               }
@@ -15492,23 +14865,6 @@
                     "duration": 90,
                     "quote": false
                   }
-                },
-                {
-                  "id": "access",
-                  "name": {
-                    "de": "Zugriffsproblem beheben",
-                    "en": "Fix an access issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Zugriffsproblem beheben",
-                      "en": "Fix access issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
-                    "quote": false
-                  }
                 }
               ],
               "notice": [
@@ -15540,7 +14896,6 @@
                   "Konfiguration der Grundeinstellungen für SharePoint nach Ihren Vorgaben.",
                   "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Bei Zugriffsproblemen: Diagnose von Konto-, Lizenz- oder Berechtigungsfehlern und Behebung.",
                   "Funktionstest mit einem Beispielkonto."
                 ],
                 "en": [
@@ -15549,7 +14904,6 @@
                   "Configure the basic settings for SharePoint as you specify.",
                   "For a migration: transfer existing data or mailboxes, checking for completeness.",
                   "Set up user accounts, groups, and access permissions.",
-                  "For access issues: diagnose account, license, or permission errors, and fix them.",
                   "Run a functional test with a sample account."
                 ]
               }
@@ -15605,23 +14959,6 @@
                     "duration": 90,
                     "quote": false
                   }
-                },
-                {
-                  "id": "access",
-                  "name": {
-                    "de": "Zugriffsproblem beheben",
-                    "en": "Fix an access issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Zugriffsproblem beheben",
-                      "en": "Fix access issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
-                    "quote": false
-                  }
                 }
               ],
               "notice": [
@@ -15653,7 +14990,6 @@
                   "Konfiguration der Grundeinstellungen für Intune / Geräteverwaltung (MDM) nach Ihren Vorgaben.",
                   "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Bei Zugriffsproblemen: Diagnose von Konto-, Lizenz- oder Berechtigungsfehlern und Behebung.",
                   "Funktionstest mit einem Beispielkonto."
                 ],
                 "en": [
@@ -15662,7 +14998,6 @@
                   "Configure the basic settings for Intune / device management (MDM) as you specify.",
                   "For a migration: transfer existing data or mailboxes, checking for completeness.",
                   "Set up user accounts, groups, and access permissions.",
-                  "For access issues: diagnose account, license, or permission errors, and fix them.",
                   "Run a functional test with a sample account."
                 ]
               }
@@ -15718,23 +15053,6 @@
                     "duration": 90,
                     "quote": false
                   }
-                },
-                {
-                  "id": "access",
-                  "name": {
-                    "de": "Zugriffsproblem beheben",
-                    "en": "Fix an access issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Zugriffsproblem beheben",
-                      "en": "Fix access issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
-                    "quote": false
-                  }
                 }
               ],
               "notice": [
@@ -15766,7 +15084,6 @@
                   "Konfiguration der Grundeinstellungen für Monday.com nach Ihren Vorgaben.",
                   "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Bei Zugriffsproblemen: Diagnose von Konto-, Lizenz- oder Berechtigungsfehlern und Behebung.",
                   "Funktionstest mit einem Beispielkonto."
                 ],
                 "en": [
@@ -15775,7 +15092,6 @@
                   "Configure the basic settings for Monday.com as you specify.",
                   "For a migration: transfer existing data or mailboxes, checking for completeness.",
                   "Set up user accounts, groups, and access permissions.",
-                  "For access issues: diagnose account, license, or permission errors, and fix them.",
                   "Run a functional test with a sample account."
                 ]
               }
@@ -15837,23 +15153,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 59,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "expand",
                   "name": {
                     "de": "Kapazität erweitern",
@@ -15899,7 +15198,6 @@
                   "Installation und Anschluss des/der die externe Festplatte.",
                   "Konfiguration von Backup-Jobs, Zeitplänen und Aufbewahrungsfristen.",
                   "Testlauf einer Sicherung und Überprüfung der Wiederherstellbarkeit.",
-                  "Bei Störungen: Diagnose von fehlgeschlagenen Sicherungen und Behebung der Ursache.",
                   "Bei Erweiterung: Einbau zusätzlicher Kapazität und Anpassung der Backup-Jobs.",
                   "Einspielen der neuesten Updates und Patches."
                 ],
@@ -15908,7 +15206,6 @@
                   "Install and connect the external hard disk.",
                   "Configure backup jobs, schedules, and retention periods.",
                   "Run a test backup and verify it can be restored.",
-                  "For issues: diagnose failed backups and fix the underlying cause.",
                   "For expansion: install additional capacity and adjust the backup jobs.",
                   "Apply the latest updates and patches."
                 ]
@@ -15946,23 +15243,6 @@
                     },
                     "price": 99,
                     "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 59,
-                    "duration": 30,
                     "quote": false
                   }
                 },
@@ -16012,7 +15292,6 @@
                   "Installation und Anschluss des/der den NAS-Speicher.",
                   "Konfiguration von Backup-Jobs, Zeitplänen und Aufbewahrungsfristen.",
                   "Testlauf einer Sicherung und Überprüfung der Wiederherstellbarkeit.",
-                  "Bei Störungen: Diagnose von fehlgeschlagenen Sicherungen und Behebung der Ursache.",
                   "Bei Erweiterung: Einbau zusätzlicher Kapazität und Anpassung der Backup-Jobs.",
                   "Einspielen der neuesten Updates und Patches."
                 ],
@@ -16021,7 +15300,6 @@
                   "Install and connect the NAS storage.",
                   "Configure backup jobs, schedules, and retention periods.",
                   "Run a test backup and verify it can be restored.",
-                  "For issues: diagnose failed backups and fix the underlying cause.",
                   "For expansion: install additional capacity and adjust the backup jobs.",
                   "Apply the latest updates and patches."
                 ]
@@ -16059,23 +15337,6 @@
                     },
                     "price": 99,
                     "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 59,
-                    "duration": 30,
                     "quote": false
                   }
                 },
@@ -16125,7 +15386,6 @@
                   "Installation und Anschluss des/der das SAN-Speichersystem.",
                   "Konfiguration von Backup-Jobs, Zeitplänen und Aufbewahrungsfristen.",
                   "Testlauf einer Sicherung und Überprüfung der Wiederherstellbarkeit.",
-                  "Bei Störungen: Diagnose von fehlgeschlagenen Sicherungen und Behebung der Ursache.",
                   "Bei Erweiterung: Einbau zusätzlicher Kapazität und Anpassung der Backup-Jobs.",
                   "Einspielen der neuesten Updates und Patches."
                 ],
@@ -16134,7 +15394,6 @@
                   "Install and connect the SAN storage system.",
                   "Configure backup jobs, schedules, and retention periods.",
                   "Run a test backup and verify it can be restored.",
-                  "For issues: diagnose failed backups and fix the underlying cause.",
                   "For expansion: install additional capacity and adjust the backup jobs.",
                   "Apply the latest updates and patches."
                 ]
@@ -16172,23 +15431,6 @@
                     },
                     "price": 99,
                     "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 59,
-                    "duration": 30,
                     "quote": false
                   }
                 },
@@ -16238,7 +15480,6 @@
                   "Installation und Anschluss des/der den Autoloader.",
                   "Konfiguration von Backup-Jobs, Zeitplänen und Aufbewahrungsfristen.",
                   "Testlauf einer Sicherung und Überprüfung der Wiederherstellbarkeit.",
-                  "Bei Störungen: Diagnose von fehlgeschlagenen Sicherungen und Behebung der Ursache.",
                   "Bei Erweiterung: Einbau zusätzlicher Kapazität und Anpassung der Backup-Jobs.",
                   "Einspielen der neuesten Updates und Patches."
                 ],
@@ -16247,7 +15488,6 @@
                   "Install and connect the auto loader.",
                   "Configure backup jobs, schedules, and retention periods.",
                   "Run a test backup and verify it can be restored.",
-                  "For issues: diagnose failed backups and fix the underlying cause.",
                   "For expansion: install additional capacity and adjust the backup jobs.",
                   "Apply the latest updates and patches."
                 ]
@@ -16591,23 +15831,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Anrufqualität verbessern",
-                    "en": "Fix a call quality issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Anrufqualität verbessern",
-                      "en": "Fix a call quality issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "extensions",
                   "name": {
                     "de": "Nebenstellen hinzufügen",
@@ -16652,7 +15875,6 @@
                   "Prüfung Ihrer Netzwerkumgebung und Anforderungen an Microsoft Teams Telefonie.",
                   "Installation und Grundkonfiguration von Microsoft Teams Telefonie.",
                   "Einrichtung von Nebenstellen, Rufgruppen und Anrufweiterleitungen.",
-                  "Bei Qualitätsproblemen: Diagnose von Netzwerk-, Bandbreiten- oder Konfigurationsursachen und Behebung.",
                   "Bei zusätzlichen Nebenstellen: Einrichtung und Zuweisung an die betroffenen Mitarbeiter.",
                   "Funktionstest mit Testanrufen.",
                   "Einspielen der neuesten Updates und Patches."
@@ -16661,7 +15883,6 @@
                   "Review your network environment and requirements for Microsoft Teams calling.",
                   "Install and do the basic configuration of Microsoft Teams calling.",
                   "Set up extensions, ring groups, and call forwarding.",
-                  "For quality issues: diagnose network, bandwidth, or configuration causes, and fix them.",
                   "For additional extensions: set them up and assign them to the relevant employees.",
                   "Run a functional test with test calls.",
                   "Apply the latest updates and patches."
@@ -16700,23 +15921,6 @@
                     },
                     "price": 129,
                     "duration": 90,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Anrufqualität verbessern",
-                    "en": "Fix a call quality issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Anrufqualität verbessern",
-                      "en": "Fix a call quality issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
                     "quote": false
                   }
                 },
@@ -16765,7 +15969,6 @@
                   "Prüfung Ihrer Netzwerkumgebung und Anforderungen an die Yeastar-Telefonanlage.",
                   "Installation und Grundkonfiguration von die Yeastar-Telefonanlage.",
                   "Einrichtung von Nebenstellen, Rufgruppen und Anrufweiterleitungen.",
-                  "Bei Qualitätsproblemen: Diagnose von Netzwerk-, Bandbreiten- oder Konfigurationsursachen und Behebung.",
                   "Bei zusätzlichen Nebenstellen: Einrichtung und Zuweisung an die betroffenen Mitarbeiter.",
                   "Funktionstest mit Testanrufen.",
                   "Einspielen der neuesten Updates und Patches."
@@ -16774,7 +15977,6 @@
                   "Review your network environment and requirements for the Yeastar phone system.",
                   "Install and do the basic configuration of the Yeastar phone system.",
                   "Set up extensions, ring groups, and call forwarding.",
-                  "For quality issues: diagnose network, bandwidth, or configuration causes, and fix them.",
                   "For additional extensions: set them up and assign them to the relevant employees.",
                   "Run a functional test with test calls.",
                   "Apply the latest updates and patches."
@@ -16813,23 +16015,6 @@
                     },
                     "price": 129,
                     "duration": 90,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Anrufqualität verbessern",
-                    "en": "Fix a call quality issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Anrufqualität verbessern",
-                      "en": "Fix a call quality issue"
-                    },
-                    "price": 69,
-                    "duration": 30,
                     "quote": false
                   }
                 },
@@ -16878,7 +16063,6 @@
                   "Prüfung Ihrer Netzwerkumgebung und Anforderungen an Ihre VoIP-Telefonanlage.",
                   "Installation und Grundkonfiguration von Ihre VoIP-Telefonanlage.",
                   "Einrichtung von Nebenstellen, Rufgruppen und Anrufweiterleitungen.",
-                  "Bei Qualitätsproblemen: Diagnose von Netzwerk-, Bandbreiten- oder Konfigurationsursachen und Behebung.",
                   "Bei zusätzlichen Nebenstellen: Einrichtung und Zuweisung an die betroffenen Mitarbeiter.",
                   "Funktionstest mit Testanrufen.",
                   "Einspielen der neuesten Updates und Patches."
@@ -16887,7 +16071,6 @@
                   "Review your network environment and requirements for your VoIP phone system.",
                   "Install and do the basic configuration of your VoIP phone system.",
                   "Set up extensions, ring groups, and call forwarding.",
-                  "For quality issues: diagnose network, bandwidth, or configuration causes, and fix them.",
                   "For additional extensions: set them up and assign them to the relevant employees.",
                   "Run a functional test with test calls.",
                   "Apply the latest updates and patches."
@@ -16951,23 +16134,6 @@
                   }
                 },
                 {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 49,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
                   "id": "network",
                   "name": {
                     "de": "Für Netzwerkfreigabe einrichten",
@@ -17013,7 +16179,6 @@
                   "Installation der Treiber und Software auf den betroffenen Arbeitsstationen.",
                   "Einrichtung der Verbindung per USB oder Netzwerk, je nach Wunsch.",
                   "Konfiguration von Grundeinstellungen wie Papierformat und Standarddrucker.",
-                  "Bei Problemen: Diagnose von Druckqualität, Papierstau oder Verbindungsfehlern und Behebung.",
                   "Bei gemeinsamer Nutzung: Freigabe im Netzwerk und Einrichtung auf allen gewünschten Arbeitsplätzen.",
                   "Funktionstest mit einem Probedruck oder -scan.",
                   "Einspielen der neuesten Treiber- und Firmware-Updates."
@@ -17023,7 +16188,6 @@
                   "Install the drivers and software on the affected workstations.",
                   "Set up the connection via USB or network, as requested.",
                   "Configure basic settings such as paper size and default printer.",
-                  "For issues: diagnose print quality, paper jams, or connection errors, and fix them.",
                   "For shared use: set up network sharing and configure it on all requested workstations.",
                   "Run a functional test with a sample print or scan.",
                   "Apply the latest driver and firmware updates."
@@ -17061,23 +16225,6 @@
                       "en": "New setup"
                     },
                     "price": 79,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 59,
                     "duration": 30,
                     "quote": false
                   }
@@ -17128,7 +16275,6 @@
                   "Installation der Treiber und Software auf den betroffenen Arbeitsstationen.",
                   "Einrichtung der Verbindung per USB oder Netzwerk, je nach Wunsch.",
                   "Konfiguration von Grundeinstellungen wie Papierformat und Standarddrucker.",
-                  "Bei Problemen: Diagnose von Druckqualität, Papierstau oder Verbindungsfehlern und Behebung.",
                   "Bei gemeinsamer Nutzung: Freigabe im Netzwerk und Einrichtung auf allen gewünschten Arbeitsplätzen.",
                   "Funktionstest mit einem Probedruck oder -scan.",
                   "Einspielen der neuesten Treiber- und Firmware-Updates."
@@ -17138,7 +16284,6 @@
                   "Install the drivers and software on the affected workstations.",
                   "Set up the connection via USB or network, as requested.",
                   "Configure basic settings such as paper size and default printer.",
-                  "For issues: diagnose print quality, paper jams, or connection errors, and fix them.",
                   "For shared use: set up network sharing and configure it on all requested workstations.",
                   "Run a functional test with a sample print or scan.",
                   "Apply the latest driver and firmware updates."
@@ -17176,23 +16321,6 @@
                       "en": "New setup"
                     },
                     "price": 99,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 69,
                     "duration": 30,
                     "quote": false
                   }
@@ -17243,7 +16371,6 @@
                   "Installation der Treiber und Software auf den betroffenen Arbeitsstationen.",
                   "Einrichtung der Verbindung per USB oder Netzwerk, je nach Wunsch.",
                   "Konfiguration von Grundeinstellungen wie Papierformat und Standarddrucker.",
-                  "Bei Problemen: Diagnose von Druckqualität, Papierstau oder Verbindungsfehlern und Behebung.",
                   "Bei gemeinsamer Nutzung: Freigabe im Netzwerk und Einrichtung auf allen gewünschten Arbeitsplätzen.",
                   "Funktionstest mit einem Probedruck oder -scan.",
                   "Einspielen der neuesten Treiber- und Firmware-Updates."
@@ -17253,7 +16380,6 @@
                   "Install the drivers and software on the affected workstations.",
                   "Set up the connection via USB or network, as requested.",
                   "Configure basic settings such as paper size and default printer.",
-                  "For issues: diagnose print quality, paper jams, or connection errors, and fix them.",
                   "For shared use: set up network sharing and configure it on all requested workstations.",
                   "Run a functional test with a sample print or scan.",
                   "Apply the latest driver and firmware updates."
@@ -17341,23 +16467,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -17376,10 +16485,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -17389,7 +16494,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -17399,7 +16503,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -17461,23 +16564,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -17496,10 +16582,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -17509,7 +16591,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -17519,7 +16600,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -17555,23 +16635,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -17590,10 +16653,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -17603,7 +16662,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -17613,7 +16671,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -17675,23 +16732,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -17710,10 +16750,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -17723,7 +16759,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -17733,7 +16768,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -17769,23 +16803,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -17804,10 +16821,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -17817,7 +16830,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -17827,7 +16839,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -17863,23 +16874,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -17898,10 +16892,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -17911,7 +16901,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -17921,7 +16910,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -17983,23 +16971,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18018,10 +16989,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18031,7 +16998,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18041,7 +17007,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18077,23 +17042,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18112,10 +17060,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18125,7 +17069,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18135,7 +17078,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18171,23 +17113,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18206,10 +17131,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18219,7 +17140,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18229,7 +17149,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18265,23 +17184,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 79,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18300,10 +17202,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18313,7 +17211,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18323,7 +17220,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18385,23 +17281,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 49,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18420,10 +17299,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18433,7 +17308,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18443,7 +17317,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18479,23 +17352,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 59,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18514,10 +17370,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18527,7 +17379,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18537,7 +17388,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18573,23 +17423,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 69,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18608,10 +17441,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18621,7 +17450,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18631,7 +17459,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18667,23 +17494,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 79,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18702,10 +17512,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18715,7 +17521,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18725,7 +17530,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18761,23 +17565,6 @@
                                 "duration": 60,
                                 "quote": false
                               }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Konfigurationsproblem beheben",
-                                "en": "Fix a configuration issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Konfigurationsproblem beheben",
-                                  "en": "Fix a configuration issue"
-                                },
-                                "price": 89,
-                                "duration": 45,
-                                "quote": false
-                              }
                             }
                           ],
                           "notice": [
@@ -18796,10 +17583,6 @@
                             {
                               "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                               "en": "The customer is expected to have the required hardware available."
-                            },
-                            {
-                              "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                              "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                             }
                           ],
                           "explainer": {
@@ -18809,7 +17592,6 @@
                               "Installation und Grundkonfiguration des Rekorders (Kanäle, Aufzeichnungsmodus, Speicher).",
                               "Einrichtung des Netzwerkzugriffs für die Fernansicht per App oder Browser.",
                               "Konfiguration von Bewegungserkennung und Benachrichtigungen, falls gewünscht.",
-                              "Bei Konfigurationsproblemen: Diagnose von Bild-, Verbindungs- oder Aufzeichnungsfehlern und Behebung.",
                               "Funktionstest aller Kanäle und der Fernansicht.",
                               "Einspielen der neuesten Firmware-Updates."
                             ],
@@ -18819,7 +17601,6 @@
                               "Install and do the basic configuration of the recorder (channels, recording mode, storage).",
                               "Set up network access for remote viewing via app or browser.",
                               "Configure motion detection and notifications, if requested.",
-                              "For configuration issues: diagnose image, connection, or recording errors, and fix them.",
                               "Run a functional test of all channels and remote viewing.",
                               "Apply the latest firmware updates."
                             ]
@@ -18959,115 +17740,6 @@
                         "Configure motion detection, notifications, and recording (local or cloud).",
                         "Set up remote access for viewing while you're away.",
                         "Run a functional test of all cameras from the app.",
-                        "Apply the latest firmware updates."
-                      ]
-                    }
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Konfigurationsproblem beheben",
-                    "en": "Fix a configuration issue"
-                  },
-                  "next": {
-                    "type": "branch",
-                    "prompt": {
-                      "de": "Wie viele Kameras?",
-                      "en": "How many cameras?"
-                    },
-                    "options": [
-                      {
-                        "id": "qty_1_2",
-                        "name": {
-                          "de": "1-2 Kameras",
-                          "en": "1-2 cameras"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "1-2 Kameras",
-                            "en": "1-2 cameras"
-                          },
-                          "price": 49,
-                          "duration": 45,
-                          "quote": false
-                        }
-                      },
-                      {
-                        "id": "qty_3_4",
-                        "name": {
-                          "de": "3-4 Kameras",
-                          "en": "3-4 cameras"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "3-4 Kameras",
-                            "en": "3-4 cameras"
-                          },
-                          "price": 59,
-                          "duration": 45,
-                          "quote": false
-                        }
-                      },
-                      {
-                        "id": "qty_5_10",
-                        "name": {
-                          "de": "5-10 Kameras",
-                          "en": "5-10 cameras"
-                        },
-                        "next": {
-                          "type": "leaf",
-                          "name": {
-                            "de": "5-10 Kameras",
-                            "en": "5-10 cameras"
-                          },
-                          "price": 109,
-                          "duration": 45,
-                          "quote": false
-                        }
-                      }
-                    ],
-                    "notice": [
-                      {
-                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
-                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
-                      },
-                      {
-                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
-                      },
-                      {
-                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
-                        "en": "The customer is assumed to have the required licenses available."
-                      },
-                      {
-                        "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
-                        "en": "The customer is expected to have the required hardware available."
-                      },
-                      {
-                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                        "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
-                      }
-                    ],
-                    "explainer": {
-                      "de": [
-                        "Entgegennahme der Fehlerbeschreibung für die betroffenen Kameras.",
-                        "Überprüfung der WLAN-Verbindung und Signalstärke an den Kamerastandorten.",
-                        "Diagnose von App-, Konto- oder Konfigurationsproblemen.",
-                        "Behebung von Problemen mit Bewegungserkennung, Benachrichtigungen oder Aufzeichnung.",
-                        "Anpassung der Kamera- oder Routerposition, falls die Ursache in der Signalqualität liegt.",
-                        "Funktionstest aller betroffenen Kameras aus der App.",
-                        "Einspielen der neuesten Firmware-Updates."
-                      ],
-                      "en": [
-                        "Note down the symptoms for the affected cameras.",
-                        "Check the WiFi connection and signal strength at the camera locations.",
-                        "Diagnose app, account, or configuration issues.",
-                        "Fix problems with motion detection, notifications, or recording.",
-                        "Adjust camera or router placement, if the cause lies in signal quality.",
-                        "Run a functional test of all affected cameras from the app.",
                         "Apply the latest firmware updates."
                       ]
                     }
