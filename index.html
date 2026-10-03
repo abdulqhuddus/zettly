@@ -1138,7 +1138,25 @@
 
   .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .path-grid.audience-grid { grid-template-columns: 1fr 1fr; }
-  @media (max-width: 560px) { .path-grid.audience-grid { grid-template-columns: 1fr; gap: 0.9rem; } }
+  /* Keep these two cards side by side even on narrow phones, rather than
+     stacking into a tall single column - scale down the padding, icon,
+     and text instead so both still fit comfortably in one row. */
+  @media (max-width: 560px) {
+    .path-grid.audience-grid { gap: 0.6rem; }
+    .audience-grid .path-card { padding: 1.1rem 0.9rem 1rem; }
+    .audience-grid .path-card .icon { width: 42px; height: 42px; border-radius: 13px; margin-bottom: 0.7rem; }
+    .audience-grid .path-card .icon svg { width: 20px; height: 20px; }
+    .audience-grid .path-card .body { margin-bottom: 0.8rem; }
+    .audience-grid .path-card h3 { font-size: 0.98rem; }
+    .audience-grid .path-card p { font-size: 0.76rem; line-height: 1.4; }
+    .audience-grid .path-card .tap-hint { font-size: 0.68rem; gap: 0.35rem; padding-top: 0.65rem; }
+    .audience-grid .path-card .tap-hint svg { width: 15px; height: 15px; }
+  }
+  @media (max-width: 360px) {
+    .audience-grid .path-card h3 { font-size: 0.9rem; }
+    .audience-grid .path-card p { font-size: 0.7rem; }
+    .audience-grid .path-card .tap-hint { font-size: 0.62rem; }
+  }
   /* Audience cards (Zuhause / Unternehmen): vertical layout with the tap
      affordance as its own row at the bottom instead of a small arrow icon,
      so the card reads clearly at any width instead of cramming icon, title,
