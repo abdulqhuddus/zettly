@@ -1142,6 +1142,55 @@
   .featured-info-link:hover { background: var(--accent); color: #fff; transform: scale(1.1); }
   .path-card.featured-card:hover .featured-info-link { background: rgba(255,255,255,0.12); color: #fff; }
 
+  /* Banner on a category's package-selection step, pointing to its full
+     marketing page (e.g. /dynamics-365/, /website-builder/). Reuses the
+     featured-card gradient treatment for visual consistency. */
+  .tree-feature-link {
+    display: flex; align-items: center; gap: 0.9rem;
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(#fff, #fff) padding-box,
+      linear-gradient(135deg, #7C3AED, #a855f7 45%, #EC4899) border-box;
+    border-radius: 16px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.14);
+    text-decoration: none;
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+  .tree-feature-link:hover {
+    box-shadow: 0 14px 30px rgba(124,58,237,0.3);
+    transform: translateY(-1px);
+  }
+  .tree-feature-link .tfl-icon {
+    flex: none;
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #7C3AED, #a855f7 60%, #EC4899);
+    color: #fff;
+  }
+  .tree-feature-link .tfl-icon svg { width: 20px; height: 20px; }
+  .tree-feature-link .tfl-body { flex: 1 1 auto; min-width: 0; }
+  .tree-feature-link .tfl-title {
+    font-weight: 700; font-size: 0.95rem; color: var(--ink);
+  }
+  .tree-feature-link .tfl-sub {
+    font-size: 0.82rem; color: var(--muted); margin-top: 0.1rem;
+  }
+  .tree-feature-link .tfl-arrow {
+    flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .tree-feature-link:hover .tfl-arrow { background: var(--accent); color: #fff; transform: translateX(3px); }
+  @media (max-width: 560px) {
+    .tree-feature-link { padding: 0.8rem 0.9rem; gap: 0.7rem; }
+    .tree-feature-link .tfl-title { font-size: 0.88rem; }
+    .tree-feature-link .tfl-sub { font-size: 0.78rem; }
+  }
+
   /* Category grid: vertical feature-card layout so titles never truncate, no arrow needed */
   .category-grid .path-card {
     flex-direction: column;
@@ -1987,6 +2036,7 @@
   <div class="step" data-step="2">
     <h1 id="tree-title"></h1>
     <p class="subtitle" id="tree-sub"></p>
+    <div id="tree-feature-link"></div>
     <div id="tree-notices"></div>
     <div id="tree-grid"></div>
     <div id="tree-explainer"></div>
@@ -2352,8 +2402,10 @@ const I18N = {
     footerSpecialtyBadge: "Schwerpunkt",
     dynamicsFeaturedBadge: "Unser Schwerpunkt",
     dynamicsLearnMore: "Mehr über unseren Dynamics 365 Service erfahren",
+    dynamicsFeatureLinkSub: "Referenzen, Leistungen & mehr auf unserer Dynamics-365-Seite",
     webbuilderFeaturedBadge: "Digitaler Auftritt",
     webbuilderLearnMore: "Mehr über unseren Website-Service erfahren",
+    webbuilderFeatureLinkSub: "Beispiele, Pakete & mehr auf unserer Website-Seite",
     footerServiceDynamics: "Dynamics 365",
     footerServiceWebsite: "Website-Erstellung",
     footerServiceComputers: "Computer & Netzwerke",
@@ -2529,8 +2581,10 @@ const I18N = {
     footerSpecialtyBadge: "Specialty",
     dynamicsFeaturedBadge: "Our specialty",
     dynamicsLearnMore: "Learn more about our Dynamics 365 service",
+    dynamicsFeatureLinkSub: "References, services & more on our Dynamics 365 page",
     webbuilderFeaturedBadge: "Digital presence",
     webbuilderLearnMore: "Learn more about our website service",
+    webbuilderFeatureLinkSub: "Examples, packages & more on our website page",
     footerServiceDynamics: "Dynamics 365",
     footerServiceWebsite: "Website Builder",
     footerServiceComputers: "Computers & Networks",
@@ -3086,9 +3140,29 @@ function nodeIsTerminal(node) {
 // opens that page, instead of the plain grid card every other category
 // gets. Keyed by catalog category id.
 const FEATURED_CATEGORIES = {
-  dynamics: { url: "/dynamics-365/", badgeKey: "dynamicsFeaturedBadge", linkKey: "dynamicsLearnMore" },
-  webbuilder: { url: "/website-builder/", badgeKey: "webbuilderFeaturedBadge", linkKey: "webbuilderLearnMore" },
+  dynamics: { url: "/dynamics-365/", badgeKey: "dynamicsFeaturedBadge", linkKey: "dynamicsLearnMore", subKey: "dynamicsFeatureLinkSub" },
+  webbuilder: { url: "/website-builder/", badgeKey: "webbuilderFeaturedBadge", linkKey: "webbuilderLearnMore", subKey: "webbuilderFeatureLinkSub" },
 };
+
+const FEATURE_LINK_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.8" r="1.1" fill="currentColor"/></svg>`;
+const FEATURE_LINK_ARROW = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function renderTreeFeatureLink(node) {
+  const el = document.getElementById("tree-feature-link");
+  const featured = state.category && FEATURED_CATEGORIES[state.category.id];
+  const isRootStep = state.treePath.length === 0;
+  if (!featured || !isRootStep) { el.innerHTML = ""; return; }
+  el.innerHTML = `
+    <a class="tree-feature-link" href="${featured.url}" target="_blank" rel="noopener">
+      <span class="tfl-icon">${FEATURE_LINK_ICON}</span>
+      <span class="tfl-body">
+        <span class="tfl-title">${t(featured.linkKey)}</span>
+        <span class="tfl-sub">${t(featured.subKey)}</span>
+      </span>
+      <span class="tfl-arrow">${FEATURE_LINK_ARROW}</span>
+    </a>
+  `;
+}
 
 function renderCategoryGrid() {
   const grid = document.getElementById("category-grid");
@@ -3182,6 +3256,7 @@ function renderTreeStep() {
   renderProgressCrumbs();
   document.getElementById("tree-title").textContent = (node.prompt && node.prompt[lang]) || state.category.name[lang];
   document.getElementById("tree-sub").textContent = (node.sub && node.sub[lang]) || "";
+  renderTreeFeatureLink(node);
   renderTreeNotices(node);
   renderTreeExplainer(node);
   const container = document.getElementById("tree-grid");
