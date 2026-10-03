@@ -332,15 +332,11 @@
   }
   .site-footer .service-item.highlight {
     color: var(--accent); font-weight: 700; gap: 0.5rem;
-    background: var(--accent-light); border-radius: 10px;
-    padding: 0 0.6rem; margin-left: -0.6rem;
     flex-wrap: nowrap; white-space: nowrap;
   }
   .site-footer .service-item .badge {
-    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
-    background: linear-gradient(120deg, var(--mit-teal), var(--accent));
-    box-shadow: 0 4px 10px rgba(124,58,237,0.28);
-    color: #fff; padding: 0.2rem 0.5rem; border-radius: 999px;
+    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--accent);
     flex: 0 0 auto;
   }
   .site-footer .footer-bottom-bar {
@@ -534,18 +530,6 @@
       <h3>Backup-Lösungen</h3>
       <p>Festplatte, NAS-Speicher, SAN-Speicher und Autoloader &ndash; damit Ihre Daten immer gesichert sind.</p>
     </div>
-    <div class="service-card spotlight">
-      <span class="spotlight-tag">Schwerpunkt</span>
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 8v4l2.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Dynamics 365</h3>
-      <p>Beratung, Workflow-Automatisierung und individuelle Integrationen &ndash; <a href="/dynamics-365/">mehr auf unserer Dynamics-365-Seite</a>.</p>
-    </div>
-    <div class="service-card spotlight">
-      <span class="spotlight-tag">Schwerpunkt</span>
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" stroke-width="1.6"/></svg></div>
-      <h3>Website-Erstellung</h3>
-      <p>Moderne Websites mit CMS, Shop &amp; Integrationen &ndash; <a href="/website-builder/">mehr auf unserer Website-Seite</a>.</p>
-    </div>
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
       <h3>VoIP &amp; Telefonanlagen</h3>
@@ -726,18 +710,6 @@
       <h3>Backup Solutions</h3>
       <p>Hard disk, NAS storage, SAN storage, and auto loader &ndash; so your data is always protected.</p>
     </div>
-    <div class="service-card spotlight">
-      <span class="spotlight-tag">Specialty</span>
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M12 8v4l2.5 2" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-      <h3>Dynamics 365</h3>
-      <p>Consulting, workflow automation, and custom integrations &ndash; <a href="/dynamics-365/">more on our Dynamics 365 page</a>.</p>
-    </div>
-    <div class="service-card spotlight">
-      <span class="spotlight-tag">Specialty</span>
-      <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke-width="1.8"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" stroke-width="1.6"/></svg></div>
-      <h3>Website Builder</h3>
-      <p>Modern websites with CMS, shop &amp; integrations &ndash; <a href="/website-builder/">more on our website page</a>.</p>
-    </div>
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
       <h3>VoIP &amp; Phone Systems</h3>
@@ -834,7 +806,9 @@
       <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
       <span class="service-item" data-i18n="footerServiceComputers">Computer &amp; Netzwerke</span>
       <span class="service-item" data-i18n="footerServiceSmartHome">Smart Home &amp; Sicherheit</span>
-      <span class="service-item" data-i18n="footerServiceBusiness">IT-Support für Unternehmen</span>
+      <span class="service-item" data-i18n="footerServiceBizInfra">Workstations, Server &amp; Rechenzentrum</span>
+      <span class="service-item" data-i18n="footerServiceBizOps">Netzwerke, Cloud &amp; Backup</span>
+      <span class="service-item" data-i18n="footerServiceBizExtra">Drucker, VOIP, Kameras &amp; Onboarding</span>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerLinksHeading">Links</h5>
@@ -862,7 +836,9 @@
       footerServiceWebsite: "Website-Erstellung",
       footerServiceComputers: "Computer & Netzwerke",
       footerServiceSmartHome: "Smart Home & Sicherheit",
-      footerServiceBusiness: "IT-Support für Unternehmen",
+      footerServiceBizInfra: "Workstations, Server & Rechenzentrum",
+      footerServiceBizOps: "Netzwerke, Cloud & Backup",
+      footerServiceBizExtra: "Drucker, VOIP, Kameras & Onboarding",
       footerLinksHeading: "Links",
       footerContactHeading: "Kontakt",
       announceHead: "Wir befinden uns im Aufbau ·",
@@ -875,7 +851,9 @@
       footerServiceWebsite: "Website Builder",
       footerServiceComputers: "Computers & Networks",
       footerServiceSmartHome: "Smart Home & Security",
-      footerServiceBusiness: "Business IT Support",
+      footerServiceBizInfra: "Workstations, Servers & Data Center",
+      footerServiceBizOps: "Networking, Cloud & Backup",
+      footerServiceBizExtra: "Printers, VoIP, Cameras & Onboarding",
       footerLinksHeading: "Links",
       footerContactHeading: "Contact",
       announceHead: "We're under construction ·",
