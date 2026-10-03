@@ -202,8 +202,27 @@
   .tier-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 10px 30px rgba(17,17,20,0.06); }
   .tier-table { width: 100%; min-width: 680px; border-collapse: collapse; }
   .tier-table thead th {
-    background: #faf9fc; padding: 1.5rem 1.1rem 1.2rem; border-bottom: 2px solid var(--border);
+    background: #faf9fc; padding: 1.5rem 1.1rem 4.6rem; border-bottom: 2px solid var(--border);
     vertical-align: top; text-align: center; font-weight: 400;
+    position: relative;
+  }
+  /* Each header cell's content (name, price, kick-off time, timeline,
+     Book button) used to just flow top-to-bottom, so a taller cell (the
+     highlighted Standard column, with its "Popular" ribbon) pushed its
+     Book button lower than the other two - the buttons never lined up.
+     A flex column with height:100% looks like the fix, but a <th> is a
+     table-cell, and per spec a table-cell's height is never "definite"
+     for percentage-height purposes even though the table visually
+     stretches it to match its row - so height:100% silently falls back
+     to each cell's own content height instead of the shared row height,
+     and the misalignment doesn't go away. Positioning the button
+     absolutely against the <th> itself sidesteps that: position:relative
+     on the <th> makes it the button's containing block directly, with no
+     percentage-height resolution involved, so "bottom" anchors to the
+     same spot in every column regardless of how much text sits above. */
+  .tier-head .tier-btn {
+    position: absolute; left: 1.1rem; right: 1.1rem; bottom: 1.2rem;
+    width: auto; margin-top: 0;
   }
   .tier-table thead th.tier-feature-col { background: #fff; }
   .tier-table thead th.tier-col-hl { background: linear-gradient(180deg, var(--accent-light), #fff); position: relative; }
@@ -458,9 +477,9 @@
   <div class="hero-visual">
     <div class="hero-card">
       <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
-      <div class="stat-row"><span class="label">Beratung</span><b>ab 79&nbsp;&euro;</b></div>
-      <div class="stat-row"><span class="label">Workflow-Erstellung</span><b>ab 249&nbsp;&euro;</b></div>
-      <div class="stat-row"><span class="label">Individuelle Integration</span><b>ab 499&nbsp;&euro;</b></div>
+      <div class="stat-row"><span class="label">Basic</span><b>299&nbsp;&euro;</b></div>
+      <div class="stat-row"><span class="label">Standard</span><b>1.199&nbsp;&euro;</b></div>
+      <div class="stat-row"><span class="label">Premium</span><b>4.799&nbsp;&euro;</b></div>
       <div class="stat-row"><span class="label">Einsatzgebiet</span><b>München, 100&nbsp;km</b></div>
     </div>
   </div>
@@ -475,26 +494,32 @@
         <tr>
           <th class="tier-feature-col"></th>
           <th>
-            <div class="tier-name">Basic</div>
-            <div class="tier-price">299&nbsp;&euro;</div>
-            <div class="tier-duration">45 Min. Kick-off</div>
-            <div class="tier-timeline">Projektdauer: ca. 10 Std.</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+            <div class="tier-head">
+              <div class="tier-name">Basic</div>
+              <div class="tier-price">299&nbsp;&euro;</div>
+              <div class="tier-duration">45 Min. Kick-off</div>
+              <div class="tier-timeline">10 Std.</div>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+            </div>
           </th>
           <th class="tier-col-hl">
-            <span class="tier-pop">Beliebt</span>
-            <div class="tier-name">Standard</div>
-            <div class="tier-price">1.199&nbsp;&euro;</div>
-            <div class="tier-duration">90 Min. Kick-off</div>
-            <div class="tier-timeline">Projektdauer: ca. 40 Std.</div>
-            <a class="btn btn-primary tier-btn" href="/?book=dynamics">Buchen</a>
+            <div class="tier-head">
+              <span class="tier-pop">Beliebt</span>
+              <div class="tier-name">Standard</div>
+              <div class="tier-price">1.199&nbsp;&euro;</div>
+              <div class="tier-duration">90 Min. Kick-off</div>
+              <div class="tier-timeline">40 Std.</div>
+              <a class="btn btn-primary tier-btn" href="/?book=dynamics">Buchen</a>
+            </div>
           </th>
           <th>
-            <div class="tier-name">Premium</div>
-            <div class="tier-price">4.799&nbsp;&euro;</div>
-            <div class="tier-duration">120 Min. Kick-off</div>
-            <div class="tier-timeline">Projektdauer: ca. 160 Std.</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+            <div class="tier-head">
+              <div class="tier-name">Premium</div>
+              <div class="tier-price">4.799&nbsp;&euro;</div>
+              <div class="tier-duration">120 Min. Kick-off</div>
+              <div class="tier-timeline">160 Std.</div>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Buchen</a>
+            </div>
           </th>
         </tr>
       </thead>
@@ -502,12 +527,12 @@
         <tr><td>Beratung &amp; Bedarfsanalyse</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Standardprozesse (Entitäten, Formulare, Produkte, Business Process Flow: Angebot&nbsp;&rarr;&nbsp;Rechnung, und PDF-Vorlagen)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Rollenbasierte Zugriffskontrolle (RBAC) &amp; Sicherheitsrollen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Neue individuelle Entitäten &ndash; bis zu</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
-        <tr><td>Neue individuelle Felder &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>
-        <tr><td>Neue individuelle Formulare &ndash; bis zu</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
-        <tr><td>Individuelle Business Rules &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>3</td><td>10</td></tr>
-        <tr><td>Individuelle Workflows (Power Automate) &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>2</td><td>5</td></tr>
-        <tr><td>Individuelle Business Process Flows &ndash; bis zu</td><td class="chk dash">&ndash;</td><td>7 Schritte</td><td>15 Schritte</td></tr>
+        <tr><td>Neue individuelle Entitäten</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Neue individuelle Felder</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>
+        <tr><td>Neue individuelle Formulare</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Individuelle Business Rules</td><td class="chk dash">&ndash;</td><td>3</td><td>10</td></tr>
+        <tr><td>Individuelle Workflows (Power Automate)</td><td class="chk dash">&ndash;</td><td>2</td><td>5</td></tr>
+        <tr><td>Individuelle Business Process Flows</td><td class="chk dash">&ndash;</td><td>7 Schritte</td><td>15 Schritte</td></tr>
         <tr><td>Individuelle Angebots-, Auftrags- &amp; Rechnungsformulare</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Splitrechnung (Teilrechnungsstellung)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>E-Rechnung (XRechnung) &ndash; ZugFeRD wird zusätzlich berechnet</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
@@ -515,7 +540,7 @@
         <tr><td>Datenmigration (Excel zu Dynamics)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>Nur Schulung</td></tr>
         <tr><td>Dokumentation der Umsetzung</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>E-Mail-Support danach</td><td>3 Tage</td><td>7 Tage</td><td>14 Tage</td></tr>
-        <tr><td>Optional: &bdquo;Wartung &amp; Support&ldquo;</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td></tr>
+        <tr><td>Optional: &bdquo;Wartungsvertrag&ldquo;</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td></tr>
       </tbody>
     </table>
   </div>
@@ -587,6 +612,10 @@
       <p>Nein. In der Beratung klären wir gemeinsam, welche Lizenzform und welche Module zu Ihrem Betrieb passen, bevor Sie etwas kaufen.</p>
     </details>
     <details class="faq-item">
+      <summary>Welche Lizenzen werden für Dynamics 365 benötigt?</summary>
+      <p>Für den allgemeinen CRM-Einsatz wird mindestens eine Dynamics&nbsp;365&nbsp;Sales&nbsp;Enterprise-Lizenz benötigt, dazu Dynamics&nbsp;365&nbsp;Team-Member-Lizenzen je nach Anzahl Ihrer Nutzer sowie mindestens eine Power&nbsp;Automate-Pro-Lizenz. Den genauen Lizenzbedarf für Ihren Fall klären wir gemeinsam im kostenlosen Erstgespräch.</p>
+    </details>
+    <details class="faq-item">
       <summary>Kann ein bestehendes System erweitert werden, statt neu aufzusetzen?</summary>
       <p>In den meisten Fällen ja. Individuelle Integrationen und Workflows lassen sich in der Regel auf ein bestehendes D365-System aufsetzen, ohne bei null anzufangen.</p>
     </details>
@@ -628,9 +657,9 @@
   <div class="hero-visual">
     <div class="hero-card">
       <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
-      <div class="stat-row"><span class="label">Consultation</span><b>from &euro;79</b></div>
-      <div class="stat-row"><span class="label">Workflow build</span><b>from &euro;249</b></div>
-      <div class="stat-row"><span class="label">Custom integration</span><b>from &euro;499</b></div>
+      <div class="stat-row"><span class="label">Basic</span><b>&euro;299</b></div>
+      <div class="stat-row"><span class="label">Standard</span><b>&euro;1,199</b></div>
+      <div class="stat-row"><span class="label">Premium</span><b>&euro;4,799</b></div>
       <div class="stat-row"><span class="label">Coverage</span><b>Munich, 100&nbsp;km</b></div>
     </div>
   </div>
@@ -645,26 +674,32 @@
         <tr>
           <th class="tier-feature-col"></th>
           <th>
-            <div class="tier-name">Basic</div>
-            <div class="tier-price">&euro;299</div>
-            <div class="tier-duration">45 min. Kick Off</div>
-            <div class="tier-timeline">Project timeline: ~10 hrs</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+            <div class="tier-head">
+              <div class="tier-name">Basic</div>
+              <div class="tier-price">&euro;299</div>
+              <div class="tier-duration">45 min. Kick Off</div>
+              <div class="tier-timeline">10 hrs</div>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+            </div>
           </th>
           <th class="tier-col-hl">
-            <span class="tier-pop">Popular</span>
-            <div class="tier-name">Standard</div>
-            <div class="tier-price">&euro;1,199</div>
-            <div class="tier-duration">90 min. Kick Off</div>
-            <div class="tier-timeline">Project timeline: ~40 hrs</div>
-            <a class="btn btn-primary tier-btn" href="/?book=dynamics">Book</a>
+            <div class="tier-head">
+              <span class="tier-pop">Popular</span>
+              <div class="tier-name">Standard</div>
+              <div class="tier-price">&euro;1,199</div>
+              <div class="tier-duration">90 min. Kick Off</div>
+              <div class="tier-timeline">40 hrs</div>
+              <a class="btn btn-primary tier-btn" href="/?book=dynamics">Book</a>
+            </div>
           </th>
           <th>
-            <div class="tier-name">Premium</div>
-            <div class="tier-price">&euro;4,799</div>
-            <div class="tier-duration">120 min. Kick Off</div>
-            <div class="tier-timeline">Project timeline: ~160 hrs</div>
-            <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+            <div class="tier-head">
+              <div class="tier-name">Premium</div>
+              <div class="tier-price">&euro;4,799</div>
+              <div class="tier-duration">120 min. Kick Off</div>
+              <div class="tier-timeline">160 hrs</div>
+              <a class="btn btn-ghost tier-btn" href="/?book=dynamics">Book</a>
+            </div>
           </th>
         </tr>
       </thead>
@@ -672,12 +707,12 @@
         <tr><td>Consultation &amp; needs analysis</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Standard processes (entities, forms, products, business process flow: quote&nbsp;&rarr;&nbsp;invoice, and PDF templates)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Role-based access control (RBAC) &amp; security roles</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Custom new entities &ndash; up to</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
-        <tr><td>Custom new fields &ndash; up to</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>
-        <tr><td>Custom new forms &ndash; up to</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
-        <tr><td>Custom business rules &ndash; up to</td><td class="chk dash">&ndash;</td><td>3</td><td>10</td></tr>
-        <tr><td>Custom workflows (Power Automate) &ndash; up to</td><td class="chk dash">&ndash;</td><td>2</td><td>5</td></tr>
-        <tr><td>Custom business process flows &ndash; up to</td><td class="chk dash">&ndash;</td><td>7 steps</td><td>15 steps</td></tr>
+        <tr><td>Custom new entities</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Custom new fields</td><td class="chk dash">&ndash;</td><td>10</td><td>30</td></tr>
+        <tr><td>Custom new forms</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>3</td></tr>
+        <tr><td>Custom business rules</td><td class="chk dash">&ndash;</td><td>3</td><td>10</td></tr>
+        <tr><td>Custom workflows (Power Automate)</td><td class="chk dash">&ndash;</td><td>2</td><td>5</td></tr>
+        <tr><td>Custom business process flows</td><td class="chk dash">&ndash;</td><td>7 steps</td><td>15 steps</td></tr>
         <tr><td>Customized opportunity, quote, order &amp; invoice forms</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Split invoicing</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>E-invoicing (XRechnung) &ndash; ZugFeRD is charged separately</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
@@ -685,7 +720,7 @@
         <tr><td>Data migration (Excel to Dynamics)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td>Training only</td></tr>
         <tr><td>Documentation of the work</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Follow-up email support</td><td>3 days</td><td>7 days</td><td>14 days</td></tr>
-        <tr><td>Optional: "Maintenance &amp; Support"</td><td>Pricing upon request</td><td>Pricing upon request</td><td>Pricing upon request</td></tr>
+        <tr><td>Optional: "Maintenance Contract"</td><td>Pricing upon request</td><td>Pricing upon request</td><td>Pricing upon request</td></tr>
       </tbody>
     </table>
   </div>
@@ -755,6 +790,10 @@
     <details class="faq-item" open>
       <summary>Do I already need a Dynamics 365 license?</summary>
       <p>No. In the consultation we figure out together which license type and modules fit your business, before you buy anything.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Which licenses are required for Dynamics 365?</summary>
+      <p>For general CRM use you'll need a minimum of one Dynamics&nbsp;365&nbsp;Sales&nbsp;Enterprise license, plus Dynamics&nbsp;365&nbsp;Team&nbsp;Member licenses based on your number of users, and a minimum of one Power&nbsp;Automate&nbsp;Pro license. We work out the exact licensing needs for your case together in the free initial consultation.</p>
     </details>
     <details class="faq-item">
       <summary>Can an existing system be extended instead of rebuilt?</summary>
