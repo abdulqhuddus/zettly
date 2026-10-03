@@ -6,8 +6,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title data-i18n-title>Zettly | Dynamics 365</title>
-<meta name="description" content="Microsoft Dynamics 365 Beratung, Workflow-Automatisierung und individuelle Integrationen aus München.">
+<title data-i18n-title>Zettly | Dynamics 365 CRM</title>
+<meta name="description" content="Microsoft Dynamics 365 CRM Beratung, Workflow-Automatisierung und individuelle Integrationen aus München.">
 <link rel="stylesheet" href="/assets/fonts/plus-jakarta-sans.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -241,7 +241,7 @@
 
   /* A small looping "deal moving through the pipeline" animation in place
      of a static price list - gives the hero card some life and reads as
-     an actual CRM at a glance, while the Dynamics 365 logo above it stays
+     an actual CRM at a glance, while the Dynamics 365 CRM logo above it stays
      put. Pure CSS (no JS): one keyframe animation slides the floating
      deal chip across the five stage columns (the full D365 Sales flow:
      Lead -> Opportunity -> Offer -> Order -> Invoice), a dashed connector
@@ -622,10 +622,10 @@
   /* ---- Mobile responsiveness ---- */
   .tier-wrap { -webkit-overflow-scrolling: touch; }
   @media (max-width: 640px) {
-    .topbar { padding: 1rem 1.1rem; gap: 0.6rem; flex-wrap: wrap; }
+    .topbar { padding: 1rem 1.1rem; gap: 0.6rem; }
     .brand-text { font-size: 1.55rem; }
     .brand-mark { width: 36px; height: 36px; }
-    .topbar-right { gap: 0.7rem; flex-wrap: wrap; justify-content: flex-end; row-gap: 0.4rem; }
+    .topbar-right { gap: 0.7rem; }
     .lang-switch button { padding: 0.3rem 0.55rem; font-size: 0.7rem; }
     .announce-bar { font-size: 0.72rem; padding: 0.55rem 0.8rem; gap: 0.4rem; line-height: 1.3; }
     section.block { padding: 2.2rem 1.1rem; }
@@ -646,8 +646,11 @@
     .faq-item summary { font-size: 0.88rem; }
   }
   @media (max-width: 420px) {
+    .topbar { padding: 1.1rem 1rem; gap: 0.5rem; }
+    .brand { gap: 0.5rem; }
+    .brand-mark { width: 38px; height: 38px; }
     .brand-text { font-size: 1.3rem; }
-    .topbar-right { width: 100%; justify-content: space-between; }
+    .topbar-right { gap: 0.5rem; }
     .hero-eyebrow { font-size: 0.68rem; padding: 0.35rem 0.7rem; }
     .btn { padding: 0.85rem 1.3rem; font-size: 0.88rem; }
   }
@@ -705,9 +708,9 @@
 <section class="hero">
   <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
-    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
-    <h1>Dynamics 365, das <span class="grad">wirklich zu Ihrem Betrieb passt</span></h1>
-    <p class="lead">Beratung, Workflow-Automatisierung und individuelle Integrationen für Microsoft Dynamics 365 &ndash; damit Ihr CRM nicht nur eingerichtet wird, sondern im Tagesgeschäft zuverlässig läuft.</p>
+    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365 CRM</span>
+    <h1>Dynamics 365 CRM, das <span class="grad">wirklich zu Ihrem Betrieb passt</span></h1>
+    <p class="lead">Beratung, Workflow-Automatisierung und individuelle Integrationen für Microsoft Dynamics 365 CRM &ndash; damit Ihr CRM nicht nur eingerichtet wird, sondern im Tagesgeschäft zuverlässig läuft.</p>
     <div class="hero-ctas">
       <a class="btn btn-primary" href="/?book=dynamics">Beratung buchen &rarr;</a>
       <a class="btn btn-ghost" href="#pakete-de">Pakete ansehen</a>
@@ -715,7 +718,7 @@
   </div>
   <div class="hero-visual">
     <div class="hero-card">
-      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
+      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365 CRM">
       <div class="crm-mock" aria-hidden="true">
         <div class="crm-board">
           <div class="crm-deal-chip">
@@ -843,7 +846,7 @@
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="2" stroke-width="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" stroke-width="1.8"/><path d="M11 7h4a2 2 0 012 2v4M13 17H9a2 2 0 01-2-2v-4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
       <h3>Individuelle Integrationen</h3>
-      <p>Dynamics 365 verbunden mit Ihren anderen Systemen &ndash; Buchhaltung, Kundenportale, Drittanbieter-APIs &ndash; sauber und wartbar aufgesetzt.</p>
+      <p>Dynamics 365 CRM verbunden mit Ihren anderen Systemen &ndash; Buchhaltung, Kundenportale, Drittanbieter-APIs &ndash; sauber und wartbar aufgesetzt.</p>
     </div>
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
@@ -866,8 +869,8 @@
 <section class="block">
   <div class="why-wrap">
     <div class="why-content">
-      <h2>Warum <span class="zettly-word">zett<span>ly</span></span> für Dynamics 365?</h2>
-      <p class="lead2">Mein beruflicher Schwerpunkt liegt seit Jahren in der IT- und Netzwerkadministration &ndash; mit einem klaren Fokus auf Microsoft Dynamics 365: individuelle Entwicklung, Workflow-Automatisierung und Systemintegrationen. Diese Erfahrung bringe ich direkt zu Ihnen, ohne Umwege über ein großes Beraterteam.</p>
+      <h2>Warum <span class="zettly-word">zett<span>ly</span></span> für Dynamics 365 CRM?</h2>
+      <p class="lead2">Mein beruflicher Schwerpunkt liegt seit Jahren in der IT- und Netzwerkadministration &ndash; mit einem klaren Fokus auf Microsoft Dynamics 365 CRM: individuelle Entwicklung, Workflow-Automatisierung und Systemintegrationen. Diese Erfahrung bringe ich direkt zu Ihnen, ohne Umwege über ein großes Beraterteam.</p>
       <ul class="why-list">
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Hands-on Erfahrung aus dem täglichen Betrieb echter Unternehmenssysteme &ndash; nicht nur aus Schulungen.</li>
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Ein fester Ansprechpartner von der Beratung bis zur Umsetzung &ndash; keine wechselnden Kontakte.</li>
@@ -888,11 +891,11 @@
   <h2>Häufige Fragen</h2>
   <div class="faq-wrap">
     <details class="faq-item" open>
-      <summary>Brauche ich bereits eine Dynamics 365-Lizenz?</summary>
+      <summary>Brauche ich bereits eine Dynamics 365 CRM-Lizenz?</summary>
       <p>Nein. In der Beratung klären wir gemeinsam, welche Lizenzform und welche Module zu Ihrem Betrieb passen, bevor Sie etwas kaufen.</p>
     </details>
     <details class="faq-item">
-      <summary>Welche Lizenzen werden für Dynamics 365 benötigt?</summary>
+      <summary>Welche Lizenzen werden für Dynamics 365 CRM benötigt?</summary>
       <p>Für den allgemeinen CRM-Einsatz wird mindestens eine Dynamics&nbsp;365&nbsp;Sales&nbsp;Enterprise-Lizenz benötigt, dazu Dynamics&nbsp;365&nbsp;Team-Member-Lizenzen je nach Anzahl Ihrer Nutzer sowie mindestens eine Power&nbsp;Automate-Pro-Lizenz. Den genauen Lizenzbedarf für Ihren Fall klären wir gemeinsam im kostenlosen Erstgespräch.</p>
     </details>
     <details class="faq-item">
@@ -912,7 +915,7 @@
 
 <section class="block">
   <div class="cta-banner">
-    <h2>Bereit, Dynamics 365 wirklich für sich arbeiten zu lassen?</h2>
+    <h2>Bereit, Dynamics 365 CRM wirklich für sich arbeiten zu lassen?</h2>
     <p>Buchen Sie ein unverbindliches Beratungsgespräch &ndash; wir klären in 45 Minuten, wo der größte Hebel für Ihren Betrieb liegt.</p>
     <a class="btn btn-primary" href="/?book=dynamics">Beratung jetzt buchen &rarr;</a>
   </div>
@@ -926,9 +929,9 @@
 <section class="hero">
   <div class="hero-glow-clip"><div class="hero-glow"></div></div>
   <div class="hero-content">
-    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365</span>
-    <h1>Dynamics 365 that <span class="grad">actually fits your business</span></h1>
-    <p class="lead">Consulting, workflow automation, and custom integrations for Microsoft Dynamics 365 &ndash; so your CRM isn't just set up once, but runs reliably day to day.</p>
+    <span class="hero-eyebrow"><img src="/assets/dynamics-365-logo.png" alt="">Microsoft Dynamics 365 CRM</span>
+    <h1>Dynamics 365 CRM that <span class="grad">actually fits your business</span></h1>
+    <p class="lead">Consulting, workflow automation, and custom integrations for Microsoft Dynamics 365 CRM &ndash; so your CRM isn't just set up once, but runs reliably day to day.</p>
     <div class="hero-ctas">
       <a class="btn btn-primary" href="/?book=dynamics">Book a consultation &rarr;</a>
       <a class="btn btn-ghost" href="#pakete-en">View packages</a>
@@ -936,7 +939,7 @@
   </div>
   <div class="hero-visual">
     <div class="hero-card">
-      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">
+      <img src="/assets/dynamics-365-logo.png" alt="Dynamics 365 CRM">
       <div class="crm-mock" aria-hidden="true">
         <div class="crm-board">
           <div class="crm-deal-chip">
@@ -1064,7 +1067,7 @@
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="2" stroke-width="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" stroke-width="1.8"/><path d="M11 7h4a2 2 0 012 2v4M13 17H9a2 2 0 01-2-2v-4" stroke-width="1.8" stroke-linecap="round"/></svg></div>
       <h3>Custom Integrations</h3>
-      <p>Dynamics 365 connected to your other systems &ndash; accounting, customer portals, third-party APIs &ndash; built clean and maintainable.</p>
+      <p>Dynamics 365 CRM connected to your other systems &ndash; accounting, customer portals, third-party APIs &ndash; built clean and maintainable.</p>
     </div>
     <div class="service-card">
       <div class="ico"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
@@ -1087,8 +1090,8 @@
 <section class="block">
   <div class="why-wrap">
     <div class="why-content">
-      <h2>Why <span class="zettly-word">zett<span>ly</span></span> for Dynamics 365?</h2>
-      <p class="lead2">My professional focus for years has been IT and network administration &ndash; with a clear specialty in Microsoft Dynamics 365: custom development, workflow automation, and system integrations. I bring that experience directly to you, without routing it through a large consulting team.</p>
+      <h2>Why <span class="zettly-word">zett<span>ly</span></span> for Dynamics 365 CRM?</h2>
+      <p class="lead2">My professional focus for years has been IT and network administration &ndash; with a clear specialty in Microsoft Dynamics 365 CRM: custom development, workflow automation, and system integrations. I bring that experience directly to you, without routing it through a large consulting team.</p>
       <ul class="why-list">
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Hands-on experience running real enterprise systems day to day &ndash; not just training courses.</li>
         <li><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>One point of contact from consulting through delivery &ndash; no rotating account managers.</li>
@@ -1100,7 +1103,7 @@
       <div class="why-stat"><div class="num">3</div><div class="lbl">Service packages to choose from</div></div>
       <div class="why-stat"><div class="num">100km</div><div class="lbl">On-site radius from Munich</div></div>
       <div class="why-stat"><div class="num">1:1</div><div class="lbl">Direct, personal support</div></div>
-      <div class="why-stat"><div class="num">DE/EN</div><div class="lbl">Fluent in German &amp; English</div></div>
+      <div class="why-stat"><div class="num">DE/EN</div><div class="lbl">Fluent English, conversational German</div></div>
     </div>
   </div>
 </section>
@@ -1109,11 +1112,11 @@
   <h2>Frequently asked questions</h2>
   <div class="faq-wrap">
     <details class="faq-item" open>
-      <summary>Do I already need a Dynamics 365 license?</summary>
+      <summary>Do I already need a Dynamics 365 CRM license?</summary>
       <p>No. In the consultation we figure out together which license type and modules fit your business, before you buy anything.</p>
     </details>
     <details class="faq-item">
-      <summary>Which licenses are required for Dynamics 365?</summary>
+      <summary>Which licenses are required for Dynamics 365 CRM?</summary>
       <p>For general CRM use you'll need a minimum of one Dynamics&nbsp;365&nbsp;Sales&nbsp;Enterprise license, plus Dynamics&nbsp;365&nbsp;Team&nbsp;Member licenses based on your number of users, and a minimum of one Power&nbsp;Automate&nbsp;Pro license. We work out the exact licensing needs for your case together in the free initial consultation.</p>
     </details>
     <details class="faq-item">
@@ -1133,7 +1136,7 @@
 
 <section class="block">
   <div class="cta-banner">
-    <h2>Ready to make Dynamics 365 actually work for you?</h2>
+    <h2>Ready to make Dynamics 365 CRM actually work for you?</h2>
     <p>Book a no-obligation consultation &ndash; in 45 minutes we'll find where the biggest lever is for your business.</p>
     <a class="btn btn-primary" href="/?book=dynamics">Book a consultation &rarr;</a>
   </div>
@@ -1151,12 +1154,12 @@
   <div class="footer-inner">
     <div class="footer-col footer-about">
       <div class="footer-brand">zett<span>ly</span></div>
-      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
+      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 CRM Entwicklung, Workflows und Integrationen für Unternehmen.</p>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
       <a class="service-item highlight" href="/managed-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceManagedIt">Managed IT</span></a>
-      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
+      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365 CRM</span></a>
       <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
       <a class="service-item highlight" href="/home-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceHome">IT für Zuhause</span></a>
     </div>
@@ -1178,11 +1181,11 @@
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly | Dynamics 365", back: "Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerCoverage: "Abdeckungsgebiet", footerPrivacy: "Datenschutz", footerLiability: "Haftungshinweise", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+    de: { title: "Zettly | Dynamics 365 CRM", back: "Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerCoverage: "Abdeckungsgebiet", footerPrivacy: "Datenschutz", footerLiability: "Haftungshinweise", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 CRM Entwicklung, Workflows und Integrationen für Unternehmen.",
       footerServicesHeading: "Leistungen",
       footerSpecialtyBadge: "Schwerpunkt",
       footerServiceManagedIt: "Managed IT",
-      footerServiceDynamics: "Dynamics 365",
+      footerServiceDynamics: "Dynamics 365 CRM",
       footerServiceWebsite: "Website-Erstellung",
       footerServiceHome: "IT für Zuhause",
       footerLinksHeading: "Links",
@@ -1192,11 +1195,11 @@
       navFreelancers: "Freelancer",
       announceHead: "Wir befinden uns im Aufbau ·",
       announceTail: "Buchungen sind derzeit nicht möglich" },
-    en: { title: "Zettly | Dynamics 365", back: "Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+    en: { title: "Zettly | Dynamics 365 CRM", back: "Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 CRM development, workflows, and integrations for businesses.",
       footerServicesHeading: "Services",
       footerSpecialtyBadge: "Specialty",
       footerServiceManagedIt: "Managed IT",
-      footerServiceDynamics: "Dynamics 365",
+      footerServiceDynamics: "Dynamics 365 CRM",
       footerServiceWebsite: "Website Builder",
       footerServiceHome: "Home IT",
       footerLinksHeading: "Links",

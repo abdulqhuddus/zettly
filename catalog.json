@@ -11534,8 +11534,8 @@
       "id": "dynamics",
       "icon": "dynamics",
       "name": {
-        "de": "Dynamics 365",
-        "en": "Dynamics 365"
+        "de": "Dynamics 365 CRM",
+        "en": "Dynamics 365 CRM"
       },
       "desc": {
         "de": "Beratung, Workflows, individuelle Integrationen",
@@ -11663,8 +11663,8 @@
           ],
           "en": [
             "Free initial consultation to capture your business processes and requirements.",
-            "Draft a concept of which Dynamics 365 modules and customizations fit your chosen tier.",
-            "Set up or configure the booked Dynamics 365 environment.",
+            "Draft a concept of which Dynamics 365 CRM modules and customizations fit your chosen tier.",
+            "Set up or configure the booked Dynamics 365 CRM environment.",
             "Customize workflows, forms, and Power Automate flows to your specifications.",
             "Set up user roles and access permissions.",
             "Test the key processes together with you.",

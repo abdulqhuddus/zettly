@@ -28,7 +28,11 @@ CREATE TABLE IF NOT EXISTS bookings (
   phone_consultation INTEGER NOT NULL DEFAULT 0, -- 1 if the customer asked for a consultation-type booking to be held by phone instead of in person
   liability_accepted_at TEXT,   -- set at booking time; the UI can't submit without accepting the liability notices
   privacy_accepted_at TEXT,     -- set at booking time; the UI can't submit without accepting the privacy policy (#f-consent)
-  quantity INTEGER NOT NULL DEFAULT 1  -- devices/units covered; `price` already includes this multiplier, the call-out fee never does
+  quantity INTEGER NOT NULL DEFAULT 1,  -- devices/units covered; `price` already includes this multiplier, the call-out fee never does
+  attachment_data TEXT,         -- optional customer-provided photo, base64-encoded (no data: prefix); capped well under D1's 2MB row limit
+  attachment_filename TEXT,
+  attachment_content_type TEXT,
+  attachment_size INTEGER       -- original (pre-base64) byte size, for display only
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);

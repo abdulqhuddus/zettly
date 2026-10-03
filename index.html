@@ -290,7 +290,7 @@
   .trust-strip.wide { max-width: 1180px; }
   /* One-line intro tagline sitting above the trust-pill row: plain
      background (no colored banner box), the punch comes entirely from the
-     gradient-text treatment reused from the Dynamics 365 hero heading. */
+     gradient-text treatment reused from the Dynamics 365 CRM hero heading. */
   .site-tagline {
     text-align: center;
     max-width: 900px;
@@ -667,7 +667,7 @@
   .hiw-step p { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
 
   /* "Business Exclusive" section: showcases the three animated hero
-     diagrams from Dynamics 365, Website Builder and Managed IT as a
+     diagrams from Dynamics 365 CRM, Website Builder and Managed IT as a
      teaser grid linking out to each dedicated page. */
   .bx-exclusive {
     width: 100%;
@@ -702,7 +702,7 @@
   }
   .bx-visual {
     position: relative;
-    height: 210px;
+    height: 222px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -728,7 +728,7 @@
 
   /* --- Dynamics 365 CRM mini-diagram (bx-crm-*) --- */
   .bx-crm-mock { width: 100%; transform: scale(0.82); }
-  .bx-crm-logo { display: block; width: 30px; height: 30px; margin: 0 auto 0.5rem; }
+  .bx-crm-logo { display: block; width: 52px; height: 52px; margin: 0 auto 0.6rem; }
   .bx-crm-board { position: relative; display: flex; gap: 0.3rem; margin-top: 46px; }
   .bx-crm-col {
     position: relative; z-index: 1; flex: 1; min-width: 0; border-radius: 12px;
@@ -810,7 +810,7 @@
   @keyframes bxWbClickDot { 0%, 10% { transform: scale(1); } 15% { transform: scale(0.6); } 25%, 100% { transform: scale(1); } }
 
   /* --- Managed IT mini-diagram (bx-itops-*) --- */
-  .bx-itops-stage { position: relative; width: 100%; height: 195px; transform: scale(0.95); }
+  .bx-itops-stage { position: relative; width: 100%; height: 214px; transform: scale(0.95); }
   .bx-itops-pulse {
     position: absolute; top: 2px; left: 50%; width: 60px; height: 60px; margin-left: -30px;
     border-radius: 50%; background: radial-gradient(circle, rgba(13,148,136,0.3), transparent 72%);
@@ -1469,7 +1469,7 @@
   }
   .path-card:hover .go-btn { background: #fff; color: #000; transform: translateX(3px); }
 
-  /* Dynamics 365 card: called out as our specialty with a gradient border,
+  /* Dynamics 365 CRM card: called out as our specialty with a gradient border,
      glow, a corner ribbon, and a small info link to its own detail page. */
   .path-card.featured-card {
     border: 1.5px solid transparent;
@@ -1940,6 +1940,27 @@
   }
   .field input:focus, .field textarea:focus { border-color: var(--accent); }
   .field textarea { resize: vertical; min-height: 80px; }
+
+  .attachment-field input[type="file"] {
+    width: 100%; padding: 0.6rem 0.75rem; border: 1.5px dashed var(--border); border-radius: 10px;
+    font-size: 0.85rem; font-family: inherit; background: #fafafb; cursor: pointer;
+  }
+  .attachment-field input[type="file"]::file-selector-button {
+    border: none; border-radius: 8px; padding: 0.5rem 0.9rem; margin-right: 0.8rem;
+    background: var(--accent-light); color: var(--accent); font-weight: 700; font-size: 0.82rem; cursor: pointer;
+  }
+  .field-hint { font-size: 0.76rem; color: var(--muted); margin-top: 0.4rem; }
+  .attachment-error { font-size: 0.8rem; color: #c2185b; margin-top: 0.4rem; }
+  .attachment-preview {
+    display: flex; align-items: center; gap: 0.7rem; margin-top: 0.6rem;
+    padding: 0.5rem 0.7rem; border: 1px solid var(--border); border-radius: 10px; background: #fff;
+  }
+  .attachment-preview img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex: 0 0 auto; }
+  .attachment-preview-name { flex: 1; min-width: 0; font-size: 0.82rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .attachment-remove-btn {
+    border: none; background: none; color: var(--muted); font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: underline; flex: 0 0 auto;
+  }
+  .attachment-remove-btn:hover { color: #c2185b; }
 
   .summary {
     background: linear-gradient(160deg, #fff, var(--accent-light) 140%);
@@ -2553,6 +2574,17 @@
           <label data-i18n="notes">Was sollten wir wissen? (optional)</label>
           <textarea id="f-notes" data-i18n-placeholder="notesPlaceholder" placeholder="Kurze Beschreibung des Anliegens" required></textarea>
         </div>
+        <div class="field attachment-field">
+          <label data-i18n="attachmentLabel">Foto anhängen (optional)</label>
+          <input type="file" id="f-attachment" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" />
+          <div class="attachment-preview" id="attachment-preview" style="display:none;">
+            <img id="attachment-preview-img" alt="" />
+            <span class="attachment-preview-name" id="attachment-preview-name"></span>
+            <button type="button" class="attachment-remove-btn" id="attachment-remove-btn" data-i18n="attachmentRemove" aria-label="Anhang entfernen">Entfernen</button>
+          </div>
+          <p class="field-hint" id="attachment-hint" data-i18n="attachmentHint">Max. 1,2&nbsp;MB &ndash; hilft uns, uns auf Ihren Termin vorzubereiten.</p>
+          <p class="attachment-error" id="attachment-error" style="display:none;"></p>
+        </div>
         <label class="liability-row privacy-consent-row" id="privacy-row" for="f-consent">
           <input type="checkbox" id="f-consent" class="privacy-row-checkbox" />
           <span class="liability-row-label" data-i18n="consentLabel">Ich habe die <a href="#" id="privacy-modal-link" rel="noopener">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine Angaben zur Bearbeitung meiner Buchung gespeichert und verarbeitet werden.</span>
@@ -2655,7 +2687,7 @@
           </div>
         </div>
       </div>
-      <h3 data-i18n="bxCrmTitle">Dynamics 365</h3>
+      <h3 data-i18n="bxCrmTitle">Dynamics 365 CRM</h3>
       <p data-i18n="bxCrmBlurb">Vertrieb, Service und Abläufe in einem System &ndash; von der ersten Anfrage bis zur bezahlten Rechnung.</p>
       <a class="bx-explore" href="/dynamics-365/"><span data-i18n="bxExplore">Entdecken</span> <span aria-hidden="true">&rarr;</span></a>
     </div>
@@ -2781,12 +2813,12 @@
         <rect x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
         <rect x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
       </svg>
-      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.</p>
+      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 CRM Entwicklung, Workflows und Integrationen für Unternehmen.</p>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
       <a class="service-item highlight" href="/managed-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceManagedIt">Managed IT</span></a>
-      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
+      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365 CRM</span></a>
       <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
       <a class="service-item highlight" href="/home-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceHome">IT für Zuhause</span></a>
     </div>
@@ -2970,11 +3002,11 @@ const I18N = {
     footerLiability: "Haftungshinweise",
     footerHome: "Startseite",
     footerCoverage: "Abdeckungsgebiet",
-    footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 Entwicklung, Workflows und Integrationen für Unternehmen.",
+    footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 CRM Entwicklung, Workflows und Integrationen für Unternehmen.",
     footerServicesHeading: "Leistungen",
     footerSpecialtyBadge: "Schwerpunkt",
     dynamicsFeaturedBadge: "Enterprise CRM",
-    dynamicsLearnMore: "Mehr über unseren Dynamics 365 Service erfahren",
+    dynamicsLearnMore: "Mehr über unseren Dynamics 365 CRM Service erfahren",
     dynamicsFeatureLinkSub: "Referenzen, Leistungen & mehr auf unserer Dynamics-365-Seite",
     webbuilderFeaturedBadge: "Digitaler Auftritt",
     webbuilderLearnMore: "Mehr über unseren Website-Service erfahren",
@@ -2983,12 +3015,12 @@ const I18N = {
     supportLearnMore: "Mehr über unseren Managed-IT-Service erfahren",
     supportFeatureLinkSub: "Stundenpakete, Leistungen & mehr auf unserer Managed-IT-Seite",
     footerServiceManagedIt: "Managed IT",
-    footerServiceDynamics: "Dynamics 365",
+    footerServiceDynamics: "Dynamics 365 CRM",
     footerServiceWebsite: "Website-Erstellung",
     footerServiceHome: "IT für Zuhause",
     bxTitle: "Exklusiv für Geschäftskunden",
     bxSub: "Drei leistungsstarke Lösungen für Unternehmen – von der CRM-Einführung bis zum kompletten IT-Outsourcing.",
-    bxCrmTitle: "Dynamics 365",
+    bxCrmTitle: "Dynamics 365 CRM",
     bxCrmBlurb: "Vertrieb, Service und Abläufe in einem System – von der ersten Anfrage bis zur bezahlten Rechnung.",
     bxWbTitle: "Website-Erstellung",
     bxWbBlurb: "Professionelle Websites, für Sie gebaut und live geschaltet – ohne dass Sie selbst etwas einrichten müssen.",
@@ -3118,6 +3150,11 @@ const I18N = {
     fillLiability: "Bitte bestätigen Sie die Haftungshinweise, um fortzufahren.",
     notes: "Was sollten wir wissen?",
     notesPlaceholder: "Kurze Beschreibung des Anliegens",
+    attachmentLabel: "Foto anhängen (optional)",
+    attachmentHint: "Max. 1,2 MB – hilft uns, uns auf Ihren Termin vorzubereiten.",
+    attachmentRemove: "Entfernen",
+    attachmentTooLarge: "Die Datei ist zu groß (max. 1,2 MB).",
+    attachmentInvalidType: "Bitte wählen Sie ein Foto (JPEG, PNG, WebP oder HEIC).",
     phoneConsultationLabel: "Ich möchte diese Beratung lieber telefonisch statt vor Ort.",
     confirmBooking: "Buchung bestätigen",
     successTitle: "Sie sind gebucht!",
@@ -3173,12 +3210,12 @@ const I18N = {
     footerLiability: "Liability Notices",
     footerHome: "Home",
     footerCoverage: "Coverage",
-    footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 development, workflows, and integrations for businesses.",
+    footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 CRM development, workflows, and integrations for businesses.",
     footerServicesHeading: "Services",
     footerSpecialtyBadge: "Specialty",
     dynamicsFeaturedBadge: "Enterprise CRM",
-    dynamicsLearnMore: "Learn more about our Dynamics 365 service",
-    dynamicsFeatureLinkSub: "References, services & more on our Dynamics 365 page",
+    dynamicsLearnMore: "Learn more about our Dynamics 365 CRM service",
+    dynamicsFeatureLinkSub: "References, services & more on our Dynamics 365 CRM page",
     webbuilderFeaturedBadge: "Digital presence",
     webbuilderLearnMore: "Learn more about our website service",
     webbuilderFeatureLinkSub: "Examples, packages & more on our website page",
@@ -3186,12 +3223,12 @@ const I18N = {
     supportLearnMore: "Learn more about our Managed IT service",
     supportFeatureLinkSub: "Hour packages, services & more on our Managed IT page",
     footerServiceManagedIt: "Managed IT",
-    footerServiceDynamics: "Dynamics 365",
+    footerServiceDynamics: "Dynamics 365 CRM",
     footerServiceWebsite: "Website Builder",
     footerServiceHome: "Home IT",
     bxTitle: "Exclusively for Businesses",
     bxSub: "Three powerful solutions built for businesses – from CRM rollouts to full IT outsourcing.",
-    bxCrmTitle: "Dynamics 365",
+    bxCrmTitle: "Dynamics 365 CRM",
     bxCrmBlurb: "Sales, service and operations in one system – from first inquiry to paid invoice.",
     bxWbTitle: "Website Builder",
     bxWbBlurb: "Professional websites, built and launched for you – no setup required on your end.",
@@ -3321,6 +3358,11 @@ const I18N = {
     fillLiability: "Please confirm the liability notices to continue.",
     notes: "Anything we should know?",
     notesPlaceholder: "Briefly describe your requirement",
+    attachmentLabel: "Attach a photo (optional)",
+    attachmentHint: "Max 1.2 MB – helps us prepare for your appointment.",
+    attachmentRemove: "Remove",
+    attachmentTooLarge: "That file is too large (max 1.2 MB).",
+    attachmentInvalidType: "Please choose a photo (JPEG, PNG, WebP, or HEIC).",
     phoneConsultationLabel: "I'd prefer this consultation to be held over the phone instead of in person.",
     confirmBooking: "Confirm booking",
     successTitle: "You're booked!",
@@ -3363,8 +3405,12 @@ const state = {
   // scales with it -- the call-out fee is for one visit regardless of how
   // many devices get worked on during it, so it's never multiplied.
   quantity: 1,
+  // Optional photo attached on the final details step: { dataUrl, filename }
+  // once a valid file has been read, otherwise null. Sent as-is to /api/book.
+  attachment: null,
 };
 const MAX_BOOKING_QUANTITY = 10;
+const MAX_ATTACHMENT_BYTES = 1_200_000;
 let CATALOG = { home: [], business: [] };
 
 function t(key) { return I18N[lang][key]; }
@@ -3533,7 +3579,7 @@ const CATEGORY_ICONS = {
   mail: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect ${ICON_STROKE} x="2.5" y="5" width="19" height="14" rx="2"/><path ${ICON_STROKE} d="M3 6.5l9 6.5 9-6.5"/></svg>`,
   // Office 365's own brand colors (not a reproduction of the Microsoft
   // logo mark itself) on a rounded document/cloud shape, so the card reads
-  // as "Office 365" at a glance the same way the Dynamics 365 card's own
+  // as "Office 365" at a glance the same way the Dynamics 365 CRM card's own
   // logo image does.
   office365: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3.2l6.5 2.4v6.1c0 4.3-2.7 7.2-6.5 8.8-3.8-1.6-6.5-4.5-6.5-8.8V5.6L12 3.2z" fill="#EB3C00"/><path d="M12 3.2l6.5 2.4v6.1c0 4.3-2.7 7.2-6.5 8.8V3.2z" fill="#0078D4"/><path d="M9.3 9.2h5.4v1.7H9.3zM9.3 12.1h5.4v1.7H9.3zM9.3 15h3.6v1.7H9.3z" fill="#fff"/></svg>`,
   // Plain cloud outline for the "Cloud Services" category card — this
@@ -3544,10 +3590,10 @@ const CATEGORY_ICONS = {
   shield: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>`,
   phone: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z"/></svg>`,
   user: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="8" r="3.5"/><path ${ICON_STROKE} d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`,
-  dynamics: `<img src="/assets/dynamics-365-logo.png" alt="Dynamics 365">`,
+  dynamics: `<img src="/assets/dynamics-365-logo.png" alt="Dynamics 365 CRM">`,
   // A browser window with a code-bracket accent, in a blue/pink gradient so
   // it reads as its own distinct "digital service" alongside Office 365 and
-  // Dynamics 365 rather than blending into the hardware/network icon set.
+  // Dynamics 365 CRM rather than blending into the hardware/network icon set.
   webbuilder: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="4" width="19" height="16" rx="2.5" stroke="url(#wbGrad)" stroke-width="1.7"/><path d="M2.5 8.5h19" stroke="url(#wbGrad)" stroke-width="1.7"/><circle cx="5.3" cy="6.2" r="0.55" fill="#7C3AED"/><circle cx="7.1" cy="6.2" r="0.55" fill="#a855f7"/><path d="M9 13l-2 2 2 2M15 13l2 2-2 2M13 12.5l-2 7" stroke="url(#wbGrad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="wbGrad" x1="0" y1="0" x2="24" y2="24"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#EC4899"/></linearGradient></defs></svg>`,
   handshake: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M2.5 12l4-4 4 3-2 2.5M21.5 12l-4-4-4 3 2 2.5"/><path ${ICON_STROKE} d="M8.5 13.5l3 2.5 3-2.5"/></svg>`,
 };
@@ -3640,7 +3686,7 @@ const OPTION_ICONS = {
   basic: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>`,
   standard: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>`,
   premium: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>`,
-  // Dynamics 365 packages
+  // Dynamics 365 CRM packages
   consult: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="10.5" cy="10.5" r="6.5"/><path ${ICON_STROKE} d="M15.3 15.3L20 20"/></svg>`,
   workflow: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path ${ICON_STROKE} d="M18 3v4h-4M6 21v-4h4"/></svg>`,
   integration: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M9 7V4M15 7V4M9 20v-3M15 20v-3"/><rect ${ICON_STROKE} x="7" y="7" width="10" height="10" rx="2"/></svg>`,
@@ -4548,6 +4594,67 @@ updateLiabilityStatusPill();
 updatePrivacyStatusPill();
 updateConsentGate();
 
+// Optional photo attachment on the final details step: read client-side as
+// a data URL (no upload endpoint -- it just rides along in the /api/book
+// payload), with the same size/type limits the server enforces so a bad
+// file is rejected immediately rather than after a round-trip.
+const ALLOWED_ATTACHMENT_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
+const attachmentInput = document.getElementById("f-attachment");
+const attachmentPreview = document.getElementById("attachment-preview");
+const attachmentPreviewImg = document.getElementById("attachment-preview-img");
+const attachmentPreviewName = document.getElementById("attachment-preview-name");
+const attachmentError = document.getElementById("attachment-error");
+const attachmentHint = document.getElementById("attachment-hint");
+
+function clearAttachment() {
+  state.attachment = null;
+  attachmentInput.value = "";
+  attachmentPreview.style.display = "none";
+  attachmentPreviewImg.src = "";
+  attachmentHint.style.display = "";
+}
+
+function showAttachmentError(msg) {
+  attachmentError.textContent = msg;
+  attachmentError.style.display = "block";
+}
+
+attachmentInput.addEventListener("change", () => {
+  const file = attachmentInput.files && attachmentInput.files[0];
+  attachmentError.style.display = "none";
+  if (!file) return;
+
+  if (!ALLOWED_ATTACHMENT_TYPES.includes(file.type)) {
+    showAttachmentError(t("attachmentInvalidType"));
+    clearAttachment();
+    return;
+  }
+  if (file.size > MAX_ATTACHMENT_BYTES) {
+    showAttachmentError(t("attachmentTooLarge"));
+    clearAttachment();
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    state.attachment = { dataUrl: reader.result, filename: file.name };
+    attachmentPreviewImg.src = reader.result;
+    attachmentPreviewName.textContent = file.name;
+    attachmentPreview.style.display = "flex";
+    attachmentHint.style.display = "none";
+  };
+  reader.onerror = () => {
+    showAttachmentError(t("genericError"));
+    clearAttachment();
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("attachment-remove-btn").addEventListener("click", () => {
+  attachmentError.style.display = "none";
+  clearAttachment();
+});
+
 document.getElementById("submit-booking").addEventListener("click", async () => {
   const firstName = document.getElementById("f-firstname").value.trim();
   const lastName = document.getElementById("f-lastname").value.trim();
@@ -4608,6 +4715,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         liabilityAccepted: !!state.liabilityAccepted,
         privacyAccepted: !!document.getElementById("f-consent").checked,
         quantity: state.quantity || 1,
+        attachment: state.attachment || null,
       }),
     });
     const data = await res.json();
@@ -4978,7 +5086,7 @@ initHiwAutoplay();
 applyStaticTranslations();
 showStep(0);
 
-// Deep link from a featured category's detail page (e.g. the Dynamics 365
+// Deep link from a featured category's detail page (e.g. the Dynamics 365 CRM
 // or Website Builder page's "Book" buttons, ?book=dynamics /
 // ?book=webbuilder): jump straight past the audience/category picker into
 // that category's own tree, as if the visitor had clicked through
@@ -4988,7 +5096,7 @@ showStep(0);
 // A package-specific "Book" button on that marketing page (one of its
 // pricing-table tiers) can also pass &plan=<optionId>, matching one of
 // that category's root.options ids (e.g. dynBasic/dynStandard/dynPremium
-// for Dynamics 365) - when present and valid, we go one step further and
+// for Dynamics 365 CRM) - when present and valid, we go one step further and
 // select that option immediately, which for a tier that books directly
 // (no deeper sub-choices) lands the visitor straight on the calendar step
 // with that package already chosen, instead of making them pick it again.

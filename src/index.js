@@ -37,6 +37,35 @@ const CANCEL_LINK_TTL_MS = 90 * 24 * 60 * 60 * 1000;
 // actually enforced.
 const MAX_BOOKING_QUANTITY = 10;
 
+// Optional customer-provided photo on the booking form, stored inline in
+// the D1 row as base64 (see migrations/0011). Capped well under D1's
+// 2,000,000-byte row-size limit even with base64's ~37% overhead, and
+// restricted to a small set of image types since it's meant for a photo of
+// the device/issue, not general file storage.
+const MAX_ATTACHMENT_BYTES = 1_200_000; // original (pre-base64) size
+const ALLOWED_ATTACHMENT_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
+
+// Parses a data URL ("data:image/png;base64,AAAA...") sent by the booking
+// form into its parts, validating type and size along the way. Returns
+// null for anything missing/invalid/oversized so the caller can just skip
+// storing an attachment rather than failing the whole booking over it --
+// this field is optional and best-effort.
+function parseAttachment(attachment) {
+  if (!attachment || typeof attachment !== "object") return null;
+  const { dataUrl, filename } = attachment;
+  if (typeof dataUrl !== "string") return null;
+  const match = dataUrl.match(/^data:([^;,]+);base64,(.+)$/s);
+  if (!match) return null;
+  const [, contentType, base64] = match;
+  if (!ALLOWED_ATTACHMENT_TYPES.includes(contentType)) return null;
+  // Decoded size from the base64 length, without actually decoding it --
+  // cheap upper-bound check before we commit to storing it.
+  const approxBytes = Math.floor((base64.length * 3) / 4);
+  if (approxBytes > MAX_ATTACHMENT_BYTES) return null;
+  const safeFilename = typeof filename === "string" ? filename.trim().slice(0, 150) : null;
+  return { base64, contentType, filename: safeFilename || null, size: approxBytes };
+}
+
 function resolveLeaf(audience, categoryId, path) {
   return resolveLeafFromCatalog(catalog, audience, categoryId, path);
 }
@@ -419,8 +448,12 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang, attachment: rawAttachment } = body;
   const lang = rawLang === "en" ? "en" : "de";
+  // Optional, and silently dropped rather than rejected if it's missing,
+  // oversized, or an unsupported type -- a bad photo shouldn't block an
+  // otherwise-valid booking.
+  const attachment = parseAttachment(rawAttachment);
   const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
 
   if (!audience || !categoryId || !date || !time || !name || !email || !address || !zip || !(notes || "").trim()) {
@@ -537,8 +570,8 @@ async function handleBook(request, env) {
   const acceptedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at, quantity)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at, quantity, attachment_data, attachment_filename, attachment_content_type, attachment_size)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
       id,
@@ -558,7 +591,11 @@ async function handleBook(request, env) {
       wantsPhoneConsultation ? 1 : 0,
       acceptedAt,
       acceptedAt,
-      quantity
+      quantity,
+      attachment ? attachment.base64 : null,
+      attachment ? attachment.filename : null,
+      attachment ? attachment.contentType : null,
+      attachment ? attachment.size : null
     )
     .run();
 

@@ -155,7 +155,7 @@
   .home-status .dot { width: 7px; height: 7px; border-radius: 50%; background: #16a34a; flex: 0 0 auto; animation: homeBlinkDot 1.8s ease-in-out infinite; }
   @keyframes homeBlinkDot { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(22,163,74,0.45); } 50% { opacity: 0.55; box-shadow: 0 0 0 5px rgba(22,163,74,0); } }
 
-  .home-stage { position: relative; height: 232px; }
+  .home-stage { position: relative; height: 256px; }
   .home-pulse {
     position: absolute; top: 2px; left: 50%; width: 72px; height: 72px; margin-left: -36px; border-radius: 50%;
     background: radial-gradient(circle, rgba(37,99,235,0.3), transparent 72%); animation: homePulseRing 2.6s ease-out infinite;
@@ -195,7 +195,7 @@
 
   @media (max-width: 480px) {
     .hero-card { max-width: 500px; padding: 1.6rem 0.9rem 1.2rem; }
-    .home-stage { height: 204px; }
+    .home-stage { height: 218px; }
     .home-node-ico { width: 44px; height: 44px; border-radius: 12px; }
     .home-node-ico svg { width: 19px; height: 19px; }
     .home-hub .home-node-ico { width: 56px; height: 56px; border-radius: 15px; }
@@ -274,10 +274,10 @@
     .site-footer .service-item:not(.highlight) { position: static; }
     .site-footer .service-item:not(.highlight)::before { position: static; transform: none; margin-right: 0.55rem; flex: 0 0 auto; }
 
-    .topbar { padding: 1rem 1.1rem; gap: 0.6rem; flex-wrap: wrap; }
+    .topbar { padding: 1rem 1.1rem; gap: 0.6rem; }
     .brand-text { font-size: 1.55rem; }
     .brand-mark { width: 36px; height: 36px; }
-    .topbar-right { gap: 0.7rem; flex-wrap: wrap; justify-content: flex-end; row-gap: 0.4rem; }
+    .topbar-right { gap: 0.7rem; }
     .lang-switch button { padding: 0.3rem 0.55rem; font-size: 0.7rem; }
     .announce-bar { font-size: 0.72rem; padding: 0.55rem 0.8rem; gap: 0.4rem; line-height: 1.3; }
     section.block { padding: 2rem 1.1rem; }
@@ -285,8 +285,11 @@
     .cta-banner { padding: 2.2rem 1.3rem; border-radius: 20px; }
   }
   @media (max-width: 420px) {
+    .topbar { padding: 1.1rem 1rem; gap: 0.5rem; }
+    .brand { gap: 0.5rem; }
+    .brand-mark { width: 38px; height: 38px; }
     .brand-text { font-size: 1.3rem; }
-    .topbar-right { width: 100%; justify-content: space-between; }
+    .topbar-right { gap: 0.5rem; }
     .hero-eyebrow { font-size: 0.68rem; padding: 0.35rem 0.7rem; }
     .btn { padding: 0.85rem 1.3rem; font-size: 0.88rem; }
   }
@@ -626,12 +629,12 @@
   <div class="footer-inner">
     <div class="footer-col footer-about">
       <div class="footer-brand">zett<span>ly</span></div>
-      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Managed IT, Microsoft Dynamics 365 und Website-Erstellung für Unternehmen.</p>
+      <p class="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Managed IT, Microsoft Dynamics 365 CRM und Website-Erstellung für Unternehmen.</p>
     </div>
     <div class="footer-col">
       <h5 data-i18n="footerServicesHeading">Leistungen</h5>
       <a class="service-item highlight" href="/managed-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceManagedIt">Managed IT</span></a>
-      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365</span></a>
+      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365 CRM</span></a>
       <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
       <a class="service-item highlight" href="/home-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceHome">IT für Zuhause</span></a>
     </div>
@@ -653,11 +656,11 @@
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly | IT für Zuhause", back: "Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerCoverage: "Abdeckungsgebiet", footerPrivacy: "Datenschutz", footerLiability: "Haftungshinweise", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Managed IT, Microsoft Dynamics 365 und Website-Erstellung für Unternehmen.",
+    de: { title: "Zettly | IT für Zuhause", back: "Zur Startseite", home: "Startseite", privacy: "Datenschutz", footerHome: "Startseite", footerCoverage: "Abdeckungsgebiet", footerPrivacy: "Datenschutz", footerLiability: "Haftungshinweise", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Managed IT, Microsoft Dynamics 365 CRM und Website-Erstellung für Unternehmen.",
       footerServicesHeading: "Leistungen",
       footerSpecialtyBadge: "Schwerpunkt",
       footerServiceManagedIt: "Managed IT",
-      footerServiceDynamics: "Dynamics 365",
+      footerServiceDynamics: "Dynamics 365 CRM",
       footerServiceWebsite: "Website-Erstellung",
       footerServiceHome: "IT für Zuhause",
       footerLinksHeading: "Links",
@@ -667,11 +670,11 @@
       navFreelancers: "Freelancer",
       announceHead: "Wir befinden uns im Aufbau ·",
       announceTail: "Buchungen sind derzeit nicht möglich" },
-    en: { title: "Zettly | Home IT", back: "Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Managed IT, Microsoft Dynamics 365, and website building for businesses.",
+    en: { title: "Zettly | Home IT", back: "Back to home", home: "Home", privacy: "Privacy", footerHome: "Home", footerCoverage: "Coverage", footerPrivacy: "Privacy", footerLiability: "Liability Notices", footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Managed IT, Microsoft Dynamics 365 CRM, and website building for businesses.",
       footerServicesHeading: "Services",
       footerSpecialtyBadge: "Specialty",
       footerServiceManagedIt: "Managed IT",
-      footerServiceDynamics: "Dynamics 365",
+      footerServiceDynamics: "Dynamics 365 CRM",
       footerServiceWebsite: "Website Builder",
       footerServiceHome: "Home IT",
       footerLinksHeading: "Links",
