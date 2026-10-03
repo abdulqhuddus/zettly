@@ -3087,6 +3087,11 @@ const CATEGORY_ICONS = {
   // as "Office 365" at a glance the same way the Dynamics 365 card's own
   // logo image does.
   office365: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3.2l6.5 2.4v6.1c0 4.3-2.7 7.2-6.5 8.8-3.8-1.6-6.5-4.5-6.5-8.8V5.6L12 3.2z" fill="#EB3C00"/><path d="M12 3.2l6.5 2.4v6.1c0 4.3-2.7 7.2-6.5 8.8V3.2z" fill="#0078D4"/><path d="M9.3 9.2h5.4v1.7H9.3zM9.3 12.1h5.4v1.7H9.3zM9.3 15h3.6v1.7H9.3z" fill="#fff"/></svg>`,
+  // Plain cloud outline for the "Cloud Services" category card — this
+  // covers Office 365, Exchange, SharePoint, Intune and Monday.com, so a
+  // single brand's logo (the old Office-365 "shield") read oddly here;
+  // a generic cloud fits a multi-service category better.
+  cloudServices: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M7 18h10.5a3.5 3.5 0 000-7 5.5 5.5 0 00-10.6-1.7A4 4 0 007 18z"/></svg>`,
   shield: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>`,
   phone: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path ${ICON_STROKE} d="M5 4h3l1.5 4-2 1.5a11 11 0 005.5 5.5l1.5-2 4 1.5v3a2 2 0 01-2.2 2A16 16 0 013 6.2 2 2 0 015 4z"/></svg>`,
   user: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle ${ICON_STROKE} cx="12" cy="8" r="3.5"/><path ${ICON_STROKE} d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`,

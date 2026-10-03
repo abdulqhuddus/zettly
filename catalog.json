@@ -13722,7 +13722,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 299,
+                    "price": 399,
                     "duration": 90,
                     "quote": false
                   }
@@ -13806,7 +13806,7 @@
                             "de": "Neueinrichtung",
                             "en": "New setup"
                           },
-                          "price": 299,
+                          "price": 399,
                           "duration": 90,
                           "quote": false
                         }
@@ -13898,7 +13898,7 @@
                             "de": "Neueinrichtung",
                             "en": "New setup"
                           },
-                          "price": 299,
+                          "price": 399,
                           "duration": 90,
                           "quote": false
                         }
@@ -14034,8 +14034,8 @@
                     "en": "Includes up to 5 access points."
                   },
                   "priceHint": {
-                    "de": "ab 299 €",
-                    "en": "from €299"
+                    "de": "ab 399 €",
+                    "en": "from €399"
                   },
                   "next": {
                     "type": "leaf",
@@ -14043,7 +14043,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 299,
+                    "price": 399,
                     "duration": 90,
                     "quote": false
                   }
@@ -14191,7 +14191,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 299,
+                    "price": 399,
                     "duration": 90,
                     "quote": false
                   }
@@ -14277,7 +14277,7 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 299,
+                    "price": 399,
                     "duration": 90,
                     "quote": false
                   }
@@ -14384,7 +14384,7 @@
                             "de": "Neueinrichtung",
                             "en": "New setup"
                           },
-                          "price": 299,
+                          "price": 399,
                           "duration": 90,
                           "quote": false
                         }
@@ -14474,7 +14474,7 @@
                             "de": "Neueinrichtung",
                             "en": "New setup"
                           },
-                          "price": 299,
+                          "price": 399,
                           "duration": 90,
                           "quote": false
                         }
@@ -14547,7 +14547,7 @@
     },
     {
       "id": "m365",
-      "icon": "office365",
+      "icon": "cloudServices",
       "name": {
         "de": "Cloud-Services",
         "en": "Cloud Services"
@@ -14579,35 +14579,87 @@
                 {
                   "id": "newTenant",
                   "name": {
-                    "de": "Neues Tenant einrichten",
-                    "en": "New tenant setup"
+                    "de": "Neues Tenant einrichten (bis zu 2 Domains)",
+                    "en": "New Tenant Setup (up to 2 domains)"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Neues Tenant einrichten",
-                      "en": "New tenant setup"
+                      "de": "Neues Tenant einrichten (bis zu 2 Domains)",
+                      "en": "New Tenant Setup (up to 2 domains)"
                     },
-                    "price": 129,
+                    "price": 99,
+                    "duration": 60,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "migrateGoogle",
+                  "name": {
+                    "de": "Google-zu-Office-Migration (bis zu 5 Postfächer)",
+                    "en": "Google to Office Migration (up to 5 Mailboxes)"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Google-zu-Office-Migration (bis zu 5 Postfächer)",
+                      "en": "Google to Office Migration (up to 5 Mailboxes)"
+                    },
+                    "price": 169,
                     "duration": 90,
                     "quote": false
                   }
                 },
                 {
-                  "id": "migrate",
+                  "id": "migrateUpTo10",
                   "name": {
-                    "de": "Bestehende Postfächer migrieren",
-                    "en": "Migrate existing mailboxes"
+                    "de": "Zusätzlich bis zu 10 Postfächer",
+                    "en": "Additional up to 10 Mailboxes"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Postfächer migrieren",
-                      "en": "Migrate mailboxes"
+                      "de": "Zusätzlich bis zu 10 Postfächer",
+                      "en": "Additional up to 10 Mailboxes"
                     },
-                    "price": 149,
-                    "duration": 90,
+                    "price": 299,
+                    "duration": 120,
                     "quote": false
+                  }
+                },
+                {
+                  "id": "migrateUpTo20",
+                  "name": {
+                    "de": "Zusätzlich bis zu 20 Postfächer",
+                    "en": "Additional up to 20 Mailboxes"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Zusätzlich bis zu 20 Postfächer",
+                      "en": "Additional up to 20 Mailboxes"
+                    },
+                    "price": 499,
+                    "duration": 180,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "migrateOther",
+                  "name": {
+                    "de": "Andere Migrationsquelle",
+                    "en": "Other Migration Source"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Andere Migrationsquelle",
+                      "en": "Other Migration Source"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
                   }
                 }
               ],
@@ -14632,17 +14684,17 @@
               "explainer": {
                 "de": [
                   "Prüfung Ihrer bestehenden Umgebung und Anforderungen für Microsoft 365.",
-                  "Einrichtung eines neuen Mandanten (Tenant) oder Anbindung an Ihren bestehenden Mandanten.",
+                  "Einrichtung eines neuen Mandanten (Tenant) inklusive bis zu 2 Domains, oder Migration bestehender Postfächer von Google Workspace.",
                   "Konfiguration der Grundeinstellungen für Microsoft 365 nach Ihren Vorgaben.",
-                  "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
+                  "Bei Migration: Übertragung der Postfächer, Kalender und Kontakte mit Überprüfung auf Vollständigkeit.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
                   "Funktionstest mit einem Beispielkonto."
                 ],
                 "en": [
                   "Review your existing environment and requirements for Microsoft 365.",
-                  "Set up a new tenant, or connect to your existing tenant.",
+                  "Set up a new tenant including up to 2 domains, or migrate existing mailboxes from Google Workspace.",
                   "Configure the basic settings for Microsoft 365 as you specify.",
-                  "For a migration: transfer existing data or mailboxes, checking for completeness.",
+                  "For a migration: transfer mailboxes, calendars, and contacts, checking for completeness.",
                   "Set up user accounts, groups, and access permissions.",
                   "Run a functional test with a sample account."
                 ]
@@ -14669,35 +14721,87 @@
                 {
                   "id": "newTenant",
                   "name": {
-                    "de": "Neues Tenant einrichten",
-                    "en": "New tenant setup"
+                    "de": "Neues Tenant einrichten (bis zu 2 Domains)",
+                    "en": "New Tenant Setup (up to 2 domains)"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Neues Tenant einrichten",
-                      "en": "New tenant setup"
+                      "de": "Neues Tenant einrichten (bis zu 2 Domains)",
+                      "en": "New Tenant Setup (up to 2 domains)"
                     },
-                    "price": 129,
+                    "price": 99,
+                    "duration": 60,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "migrateGoogle",
+                  "name": {
+                    "de": "Google-zu-Office-Migration (bis zu 5 Postfächer)",
+                    "en": "Google to Office Migration (up to 5 Mailboxes)"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Google-zu-Office-Migration (bis zu 5 Postfächer)",
+                      "en": "Google to Office Migration (up to 5 Mailboxes)"
+                    },
+                    "price": 169,
                     "duration": 90,
                     "quote": false
                   }
                 },
                 {
-                  "id": "migrate",
+                  "id": "migrateUpTo10",
                   "name": {
-                    "de": "Bestehende Postfächer migrieren",
-                    "en": "Migrate existing mailboxes"
+                    "de": "Zusätzlich bis zu 10 Postfächer",
+                    "en": "Additional up to 10 Mailboxes"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Postfächer migrieren",
-                      "en": "Migrate mailboxes"
+                      "de": "Zusätzlich bis zu 10 Postfächer",
+                      "en": "Additional up to 10 Mailboxes"
                     },
-                    "price": 149,
-                    "duration": 90,
+                    "price": 299,
+                    "duration": 120,
                     "quote": false
+                  }
+                },
+                {
+                  "id": "migrateUpTo20",
+                  "name": {
+                    "de": "Zusätzlich bis zu 20 Postfächer",
+                    "en": "Additional up to 20 Mailboxes"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Zusätzlich bis zu 20 Postfächer",
+                      "en": "Additional up to 20 Mailboxes"
+                    },
+                    "price": 499,
+                    "duration": 180,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "migrateOther",
+                  "name": {
+                    "de": "Andere Migrationsquelle",
+                    "en": "Other Migration Source"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Andere Migrationsquelle",
+                      "en": "Other Migration Source"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
                   }
                 }
               ],
@@ -14722,17 +14826,17 @@
               "explainer": {
                 "de": [
                   "Prüfung Ihrer bestehenden Umgebung und Anforderungen für Exchange Online / E-Mail.",
-                  "Einrichtung eines neuen Mandanten (Tenant) oder Anbindung an Ihren bestehenden Mandanten.",
+                  "Einrichtung eines neuen Mandanten (Tenant) inklusive bis zu 2 Domains, oder Migration bestehender Postfächer von Google Workspace.",
                   "Konfiguration der Grundeinstellungen für Exchange Online / E-Mail nach Ihren Vorgaben.",
-                  "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
+                  "Bei Migration: Übertragung der Postfächer, Kalender und Kontakte mit Überprüfung auf Vollständigkeit.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
                   "Funktionstest mit einem Beispielkonto."
                 ],
                 "en": [
                   "Review your existing environment and requirements for Exchange Online / email.",
-                  "Set up a new tenant, or connect to your existing tenant.",
+                  "Set up a new tenant including up to 2 domains, or migrate existing mailboxes from Google Workspace.",
                   "Configure the basic settings for Exchange Online / email as you specify.",
-                  "For a migration: transfer existing data or mailboxes, checking for completeness.",
+                  "For a migration: transfer mailboxes, calendars, and contacts, checking for completeness.",
                   "Set up user accounts, groups, and access permissions.",
                   "Run a functional test with a sample account."
                 ]
@@ -14757,37 +14861,72 @@
               },
               "options": [
                 {
-                  "id": "newTenant",
+                  "id": "setupNew",
                   "name": {
-                    "de": "Neues Tenant einrichten",
-                    "en": "New tenant setup"
+                    "de": "Neueinrichtung mit 5 Dokument-/Listensites",
+                    "en": "New setup with 5 Document/List sites"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Neues Tenant einrichten",
-                      "en": "New tenant setup"
+                      "de": "Neueinrichtung mit 5 Dokument-/Listensites",
+                      "en": "New setup with 5 Document/List sites"
                     },
-                    "price": 129,
+                    "price": 169,
                     "duration": 90,
                     "quote": false
                   }
                 },
                 {
-                  "id": "migrate",
+                  "id": "additionalUpTo10",
                   "name": {
-                    "de": "Bestehende Postfächer migrieren",
-                    "en": "Migrate existing mailboxes"
+                    "de": "Zusätzlich bis zu 10 Sites",
+                    "en": "Additional up to 10 Sites"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Postfächer migrieren",
-                      "en": "Migrate mailboxes"
+                      "de": "Zusätzlich bis zu 10 Sites",
+                      "en": "Additional up to 10 Sites"
                     },
-                    "price": 149,
-                    "duration": 90,
+                    "price": 299,
+                    "duration": 120,
                     "quote": false
+                  }
+                },
+                {
+                  "id": "additionalUpTo20",
+                  "name": {
+                    "de": "Zusätzlich bis zu 20 Sites",
+                    "en": "Additional up to 20 Sites"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Zusätzlich bis zu 20 Sites",
+                      "en": "Additional up to 20 Sites"
+                    },
+                    "price": 499,
+                    "duration": 180,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "customWork",
+                  "name": {
+                    "de": "Individuelles Site-Design, Automatisierungen, Drittanbieter-Integrationen",
+                    "en": "Custom site UI, Automations, third party Integrations"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Individuelles Site-Design, Automatisierungen, Drittanbieter-Integrationen",
+                      "en": "Custom site UI, Automations, third party Integrations"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
                   }
                 }
               ],
@@ -14812,19 +14951,19 @@
               "explainer": {
                 "de": [
                   "Prüfung Ihrer bestehenden Umgebung und Anforderungen für SharePoint.",
-                  "Einrichtung eines neuen Mandanten (Tenant) oder Anbindung an Ihren bestehenden Mandanten.",
-                  "Konfiguration der Grundeinstellungen für SharePoint nach Ihren Vorgaben.",
-                  "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
+                  "Einrichtung der SharePoint-Umgebung mit den gebuchten Dokument-/Listensites.",
+                  "Konfiguration der Grundeinstellungen, Berechtigungen und Navigation nach Ihren Vorgaben.",
                   "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Funktionstest mit einem Beispielkonto."
+                  "Funktionstest mit einem Beispielkonto.",
+                  "Individuelles Site-Design, Automatisierungen und Drittanbieter-Integrationen werden gesondert nach einem kostenlosen Beratungsgespräch angeboten."
                 ],
                 "en": [
                   "Review your existing environment and requirements for SharePoint.",
-                  "Set up a new tenant, or connect to your existing tenant.",
-                  "Configure the basic settings for SharePoint as you specify.",
-                  "For a migration: transfer existing data or mailboxes, checking for completeness.",
+                  "Set up the SharePoint environment with the booked number of document/list sites.",
+                  "Configure the basic settings, permissions, and navigation as you specify.",
                   "Set up user accounts, groups, and access permissions.",
-                  "Run a functional test with a sample account."
+                  "Run a functional test with a sample account.",
+                  "Custom site UI, automations, and third-party integrations are offered separately after a free consultation."
                 ]
               }
             },
@@ -14847,35 +14986,18 @@
               },
               "options": [
                 {
-                  "id": "newTenant",
+                  "id": "setupNew",
                   "name": {
-                    "de": "Neues Tenant einrichten",
-                    "en": "New tenant setup"
+                    "de": "Neueinrichtung",
+                    "en": "New setup"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Neues Tenant einrichten",
-                      "en": "New tenant setup"
+                      "de": "Neueinrichtung",
+                      "en": "New setup"
                     },
-                    "price": 129,
-                    "duration": 90,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "migrate",
-                  "name": {
-                    "de": "Bestehende Postfächer migrieren",
-                    "en": "Migrate existing mailboxes"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Postfächer migrieren",
-                      "en": "Migrate mailboxes"
-                    },
-                    "price": 149,
+                    "price": 299,
                     "duration": 90,
                     "quote": false
                   }
@@ -14904,17 +15026,17 @@
                   "Prüfung Ihrer bestehenden Umgebung und Anforderungen für Intune / Geräteverwaltung (MDM).",
                   "Einrichtung eines neuen Mandanten (Tenant) oder Anbindung an Ihren bestehenden Mandanten.",
                   "Konfiguration der Grundeinstellungen für Intune / Geräteverwaltung (MDM) nach Ihren Vorgaben.",
-                  "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
-                  "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Funktionstest mit einem Beispielkonto."
+                  "Einrichtung von Geräterichtlinien, Compliance-Regeln und Zugriffsrechten.",
+                  "Einbindung der Firmengeräte in die Geräteverwaltung.",
+                  "Funktionstest mit einem Beispielgerät."
                 ],
                 "en": [
                   "Review your existing environment and requirements for Intune / device management (MDM).",
                   "Set up a new tenant, or connect to your existing tenant.",
                   "Configure the basic settings for Intune / device management (MDM) as you specify.",
-                  "For a migration: transfer existing data or mailboxes, checking for completeness.",
-                  "Set up user accounts, groups, and access permissions.",
-                  "Run a functional test with a sample account."
+                  "Set up device policies, compliance rules, and access permissions.",
+                  "Enroll company devices into device management.",
+                  "Run a functional test with a sample device."
                 ]
               }
             },
@@ -14937,37 +15059,72 @@
               },
               "options": [
                 {
-                  "id": "newTenant",
+                  "id": "setupNew",
                   "name": {
-                    "de": "Neues Tenant einrichten",
-                    "en": "New tenant setup"
+                    "de": "Neueinrichtung mit 5 Boards und einem Dashboard",
+                    "en": "New setup with 5 Boards and a Dashboard"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Neues Tenant einrichten",
-                      "en": "New tenant setup"
+                      "de": "Neueinrichtung mit 5 Boards und einem Dashboard",
+                      "en": "New setup with 5 Boards and a Dashboard"
                     },
-                    "price": 129,
+                    "price": 199,
                     "duration": 90,
                     "quote": false
                   }
                 },
                 {
-                  "id": "migrate",
+                  "id": "additionalUpTo10",
                   "name": {
-                    "de": "Bestehende Postfächer migrieren",
-                    "en": "Migrate existing mailboxes"
+                    "de": "Zusätzlich bis zu 10 Boards",
+                    "en": "Additional up to 10 Boards"
                   },
                   "next": {
                     "type": "leaf",
                     "name": {
-                      "de": "Postfächer migrieren",
-                      "en": "Migrate mailboxes"
+                      "de": "Zusätzlich bis zu 10 Boards",
+                      "en": "Additional up to 10 Boards"
                     },
-                    "price": 149,
-                    "duration": 90,
+                    "price": 299,
+                    "duration": 120,
                     "quote": false
+                  }
+                },
+                {
+                  "id": "additionalUpTo20",
+                  "name": {
+                    "de": "Zusätzlich bis zu 20 Boards",
+                    "en": "Additional up to 20 Boards"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Zusätzlich bis zu 20 Boards",
+                      "en": "Additional up to 20 Boards"
+                    },
+                    "price": 499,
+                    "duration": 180,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "customWork",
+                  "name": {
+                    "de": "Individuelle Automatisierungen, Drittanbieter-Integrationen",
+                    "en": "Custom Automations, third party Integrations"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Individuelle Automatisierungen, Drittanbieter-Integrationen",
+                      "en": "Custom Automations, third party Integrations"
+                    },
+                    "price": null,
+                    "duration": 30,
+                    "quote": true,
+                    "quoteKind": "consultation"
                   }
                 }
               ],
@@ -14992,19 +15149,19 @@
               "explainer": {
                 "de": [
                   "Prüfung Ihrer bestehenden Umgebung und Anforderungen für Monday.com.",
-                  "Einrichtung eines neuen Mandanten (Tenant) oder Anbindung an Ihren bestehenden Mandanten.",
-                  "Konfiguration der Grundeinstellungen für Monday.com nach Ihren Vorgaben.",
-                  "Bei Migration: Übertragung bestehender Daten bzw. Postfächer mit Überprüfung auf Vollständigkeit.",
-                  "Einrichtung von Benutzerkonten, Gruppen und Zugriffsrechten.",
-                  "Funktionstest mit einem Beispielkonto."
+                  "Einrichtung des Monday.com-Kontos mit den gebuchten Boards und einem Dashboard.",
+                  "Konfiguration der Grundeinstellungen, Spalten und Automatisierungen nach Ihren Vorgaben.",
+                  "Einrichtung von Benutzerkonten, Teams und Zugriffsrechten.",
+                  "Funktionstest mit einem Beispiel-Board.",
+                  "Individuelle Automatisierungen und Drittanbieter-Integrationen werden gesondert nach einem kostenlosen Beratungsgespräch angeboten."
                 ],
                 "en": [
                   "Review your existing environment and requirements for Monday.com.",
-                  "Set up a new tenant, or connect to your existing tenant.",
-                  "Configure the basic settings for Monday.com as you specify.",
-                  "For a migration: transfer existing data or mailboxes, checking for completeness.",
-                  "Set up user accounts, groups, and access permissions.",
-                  "Run a functional test with a sample account."
+                  "Set up the Monday.com account with the booked boards and a dashboard.",
+                  "Configure the basic settings, columns, and automations as you specify.",
+                  "Set up user accounts, teams, and access permissions.",
+                  "Run a functional test with a sample board.",
+                  "Custom automations and third-party integrations are offered separately after a free consultation."
                 ]
               }
             },
