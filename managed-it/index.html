@@ -236,7 +236,7 @@
      (network/connectivity, team workstations, printer) float gently, and
      animated dots travel along the connecting wires to suggest live,
      always-on monitoring rather than a static icon. */
-  .hero-card.itops-card { padding: 1.9rem 1.5rem 1.4rem; overflow: hidden; }
+  .hero-card.itops-card { padding: 1.9rem 1.5rem 1.4rem; overflow: hidden; max-width: 480px; }
   .itops-status {
     display: inline-flex; align-items: center; gap: 0.45rem;
     font-size: 0.68rem; font-weight: 800; color: var(--mit-teal); letter-spacing: 0.02em;
@@ -280,23 +280,29 @@
   @keyframes itopsLed { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
   .itops-leaf { top: 172px; }
-  .itops-leaf-a { left: 10%; transform: translateX(-50%); }
-  .itops-leaf-b { left: 50%; transform: translateX(-50%); }
-  .itops-leaf-c { left: 90%; transform: translateX(-50%); }
-  .itops-leaf-a .itops-node-ico { animation-delay: 0.15s; }
+  .itops-leaf-a { left: 7%; transform: translateX(-50%); }
+  .itops-leaf-b { left: 36%; transform: translateX(-50%); }
+  .itops-leaf-c { left: 64%; transform: translateX(-50%); }
+  .itops-leaf-d { left: 93%; transform: translateX(-50%); }
+  .itops-leaf-a .itops-node-ico { animation-delay: 0.1s; }
   .itops-leaf-a .itops-node-ico svg { stroke: var(--accent); }
-  .itops-leaf-b .itops-node-ico { animation-delay: 0.55s; }
+  .itops-leaf-b .itops-node-ico { animation-delay: 0.4s; }
   .itops-leaf-b .itops-node-ico svg { stroke: #7C3AED; }
-  .itops-leaf-c .itops-node-ico { animation-delay: 0.95s; }
+  .itops-leaf-c .itops-node-ico { animation-delay: 0.7s; }
   .itops-leaf-c .itops-node-ico svg { stroke: var(--pink); }
+  .itops-leaf-d .itops-node-ico { animation-delay: 1s; }
+  .itops-leaf-d .itops-node-ico svg { stroke: #2563eb; }
+
+  @media (max-width: 860px) { .hero-visual { width: 100%; } }
 
   @media (max-width: 480px) {
+    .hero-card.itops-card { max-width: 500px; padding: 1.6rem 0.9rem 1.2rem; }
     .itops-stage { height: 204px; }
-    .itops-node-ico { width: 48px; height: 48px; border-radius: 13px; }
-    .itops-node-ico svg { width: 21px; height: 21px; }
-    .itops-dc .itops-node-ico { width: 58px; height: 58px; border-radius: 16px; }
-    .itops-dc .itops-node-ico svg { width: 27px; height: 27px; }
-    .itops-node-label { font-size: 0.58rem; }
+    .itops-node-ico { width: 44px; height: 44px; border-radius: 12px; }
+    .itops-node-ico svg { width: 19px; height: 19px; }
+    .itops-dc .itops-node-ico { width: 56px; height: 56px; border-radius: 15px; }
+    .itops-dc .itops-node-ico svg { width: 26px; height: 26px; }
+    .itops-node-label { font-size: 0.52rem; }
     .itops-leaf { top: 150px; }
   }
 
@@ -628,17 +634,21 @@
       <div class="itops-stage">
         <div class="itops-pulse"></div>
         <svg class="itops-wires" viewBox="0 0 360 230" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="wire" d="M180,74 C180,120 90,120 36,172"/>
-          <path class="wire" d="M180,74 L180,172"/>
-          <path class="wire" d="M180,74 C180,120 270,120 324,172"/>
+          <path class="wire" d="M180,74 C180,120 60,120 25,172"/>
+          <path class="wire" d="M180,74 C180,120 150,130 130,172"/>
+          <path class="wire" d="M180,74 C180,120 210,130 230,172"/>
+          <path class="wire" d="M180,74 C180,120 300,120 335,172"/>
           <circle class="wire-dot wire-dot-a" r="3.4" fill="#0d9488">
-            <animateMotion dur="2.6s" repeatCount="indefinite" path="M180,74 C180,120 90,120 36,172"/>
+            <animateMotion dur="2.6s" repeatCount="indefinite" path="M180,74 C180,120 60,120 25,172"/>
           </circle>
           <circle class="wire-dot wire-dot-b" r="3.4" fill="#7C3AED">
-            <animateMotion dur="2.2s" repeatCount="indefinite" path="M180,74 L180,172"/>
+            <animateMotion dur="2.1s" repeatCount="indefinite" path="M180,74 C180,120 150,130 130,172"/>
           </circle>
           <circle class="wire-dot wire-dot-c" r="3.4" fill="#EC4899">
-            <animateMotion dur="3s" repeatCount="indefinite" path="M180,74 C180,120 270,120 324,172"/>
+            <animateMotion dur="2.4s" repeatCount="indefinite" path="M180,74 C180,120 210,130 230,172"/>
+          </circle>
+          <circle class="wire-dot wire-dot-d" r="3.4" fill="#2563eb">
+            <animateMotion dur="3s" repeatCount="indefinite" path="M180,74 C180,120 300,120 335,172"/>
           </circle>
         </svg>
         <div class="itops-node itops-dc">
@@ -662,9 +672,9 @@
         </div>
         <div class="itops-node itops-leaf itops-leaf-b">
           <div class="itops-node-ico">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.7"/><path d="M8 20h8M12 16v4" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.6"/><circle cx="12" cy="8.6" r="1.8" stroke-width="1.5"/><path d="M8.3 13c0.6-1.7 2-2.4 3.7-2.4s3.1 0.7 3.7 2.4" stroke-width="1.5" stroke-linecap="round"/><path d="M8 20h8M12 16v4" stroke-width="1.6" stroke-linecap="round"/></svg>
           </div>
-          <span class="itops-node-label">Mitarbeiter</span>
+          <span class="itops-node-label">Nutzer</span>
         </div>
         <div class="itops-node itops-leaf itops-leaf-c">
           <div class="itops-node-ico">
@@ -672,14 +682,20 @@
           </div>
           <span class="itops-node-label">Drucker</span>
         </div>
+        <div class="itops-node itops-leaf itops-leaf-d">
+          <div class="itops-node-ico">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="12" height="9" rx="2" stroke-width="1.7"/><path d="M16 8.5l4-2v8l-4-2" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="itops-node-label">Sicherheit</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="block" id="pakete-de">
-  <h2>Pakete &amp; Wochenstunden</h2>
-  <p class="sub">Jedes Paket deckt unser gesamtes Leistungsspektrum ab &ndash; der Unterschied liegt in den wöchentlichen Stunden, der Reaktionszeit und den inkludierten Vor-Ort-Terminen. Der genaue Preis wird im kostenlosen Beratungsgespräch auf Ihr Unternehmen zugeschnitten.</p>
+  <h2>Pakete &amp; Stundensätze</h2>
+  <p class="sub">Jedes Paket hat einen festen Stundensatz &ndash; der Unterschied liegt im Leistungsumfang, der Reaktionszeit und den inkludierten Vor-Ort-Terminen. Abgerechnet wird monatlich, die benötigte Stundenzahl legen wir gemeinsam im kostenlosen Beratungsgespräch fest.</p>
   <div class="tier-wrap">
     <table class="tier-table">
       <colgroup>
@@ -693,31 +709,30 @@
           <th class="tier-feature-col"></th>
           <th>
             <div class="tier-name">Basic</div>
-            <div class="tier-hours">5<small>&nbsp;Std./Woche</small></div>
-            <div class="tier-price">Preis nach Beratung</div>
+            <div class="tier-hours">120&nbsp;&euro;<small>/Std.</small></div>
+            <div class="tier-price">Monatliche Abrechnung &middot; Stunden nach Beratung</div>
             <a class="btn btn-ghost tier-btn" href="/?book=support&amp;plan=basic">Anfragen</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Beliebt</span>
             <div class="tier-name">Standard</div>
-            <div class="tier-hours">10<small>&nbsp;Std./Woche</small></div>
-            <div class="tier-price">Preis nach Beratung</div>
+            <div class="tier-hours">180&nbsp;&euro;<small>/Std.</small></div>
+            <div class="tier-price">Monatliche Abrechnung &middot; Stunden nach Beratung</div>
             <a class="btn btn-primary tier-btn" href="/?book=support&amp;plan=standard">Anfragen</a>
           </th>
           <th>
             <div class="tier-name">Premium</div>
-            <div class="tier-hours">12,5<small>&nbsp;Std./Woche</small></div>
-            <div class="tier-price">Preis nach Beratung</div>
+            <div class="tier-hours">250&nbsp;&euro;<small>/Std.</small></div>
+            <div class="tier-price">Monatliche Abrechnung &middot; Stunden nach Beratung</div>
             <a class="btn btn-ghost tier-btn" href="/?book=support&amp;plan=premium">Anfragen</a>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Remote-Support-Stunden pro Woche</td><td>5</td><td>10</td><td>12,5</td></tr>
         <tr><td>Reaktionszeit</td><td>Nächster Werktag</td><td>Am selben Tag</td><td>Innerhalb von 4 Stunden</td></tr>
         <tr><td>Vor-Ort-Einsätze</td><td>1&times; / Monat inklusive</td><td>1&times; / Woche inklusive</td><td>2&times; / Woche inklusive</td></tr>
         <tr><td>Fester Ansprechpartner</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Alle Leistungen aus unserem Katalog</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Leistungsumfang</td><td>Workstations, Cloud-Services, Drucker, Überwachungskameras, Mitarbeiter-Offboarding</td><td>Alles aus Basic zzgl. Server, Backup &amp; Netzwerke</td><td>Alle Leistungen aus unserem Katalog</td></tr>
         <tr><td>Mitarbeiter-Onboarding &amp; -Offboarding</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Priorisierung bei Störungen</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Monatlicher Status- &amp; Wartungsbericht</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
@@ -884,17 +899,21 @@
       <div class="itops-stage">
         <div class="itops-pulse"></div>
         <svg class="itops-wires" viewBox="0 0 360 230" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path class="wire" d="M180,74 C180,120 90,120 36,172"/>
-          <path class="wire" d="M180,74 L180,172"/>
-          <path class="wire" d="M180,74 C180,120 270,120 324,172"/>
+          <path class="wire" d="M180,74 C180,120 60,120 25,172"/>
+          <path class="wire" d="M180,74 C180,120 150,130 130,172"/>
+          <path class="wire" d="M180,74 C180,120 210,130 230,172"/>
+          <path class="wire" d="M180,74 C180,120 300,120 335,172"/>
           <circle class="wire-dot wire-dot-a" r="3.4" fill="#0d9488">
-            <animateMotion dur="2.6s" repeatCount="indefinite" path="M180,74 C180,120 90,120 36,172"/>
+            <animateMotion dur="2.6s" repeatCount="indefinite" path="M180,74 C180,120 60,120 25,172"/>
           </circle>
           <circle class="wire-dot wire-dot-b" r="3.4" fill="#7C3AED">
-            <animateMotion dur="2.2s" repeatCount="indefinite" path="M180,74 L180,172"/>
+            <animateMotion dur="2.1s" repeatCount="indefinite" path="M180,74 C180,120 150,130 130,172"/>
           </circle>
           <circle class="wire-dot wire-dot-c" r="3.4" fill="#EC4899">
-            <animateMotion dur="3s" repeatCount="indefinite" path="M180,74 C180,120 270,120 324,172"/>
+            <animateMotion dur="2.4s" repeatCount="indefinite" path="M180,74 C180,120 210,130 230,172"/>
+          </circle>
+          <circle class="wire-dot wire-dot-d" r="3.4" fill="#2563eb">
+            <animateMotion dur="3s" repeatCount="indefinite" path="M180,74 C180,120 300,120 335,172"/>
           </circle>
         </svg>
         <div class="itops-node itops-dc">
@@ -918,9 +937,9 @@
         </div>
         <div class="itops-node itops-leaf itops-leaf-b">
           <div class="itops-node-ico">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.7"/><path d="M8 20h8M12 16v4" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="2" stroke-width="1.6"/><circle cx="12" cy="8.6" r="1.8" stroke-width="1.5"/><path d="M8.3 13c0.6-1.7 2-2.4 3.7-2.4s3.1 0.7 3.7 2.4" stroke-width="1.5" stroke-linecap="round"/><path d="M8 20h8M12 16v4" stroke-width="1.6" stroke-linecap="round"/></svg>
           </div>
-          <span class="itops-node-label">Team</span>
+          <span class="itops-node-label">Users</span>
         </div>
         <div class="itops-node itops-leaf itops-leaf-c">
           <div class="itops-node-ico">
@@ -928,14 +947,20 @@
           </div>
           <span class="itops-node-label">Printer</span>
         </div>
+        <div class="itops-node itops-leaf itops-leaf-d">
+          <div class="itops-node-ico">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="12" height="9" rx="2" stroke-width="1.7"/><path d="M16 8.5l4-2v8l-4-2" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="itops-node-label">Security</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="block" id="pakete-en">
-  <h2>Packages &amp; Weekly Hours</h2>
-  <p class="sub">Every package covers our full range of services &ndash; the difference is the weekly hours, the response time, and the included on-site visits. The exact price is scoped to your business during a free consultation.</p>
+  <h2>Packages &amp; Hourly Rates</h2>
+  <p class="sub">Every package has a fixed hourly rate &ndash; the difference is the service scope, the response time, and the included on-site visits. Billing is monthly, and we agree the number of hours together during a free consultation.</p>
   <div class="tier-wrap">
     <table class="tier-table">
       <colgroup>
@@ -949,31 +974,30 @@
           <th class="tier-feature-col"></th>
           <th>
             <div class="tier-name">Basic</div>
-            <div class="tier-hours">5<small>&nbsp;hrs/week</small></div>
-            <div class="tier-price">Price after consultation</div>
+            <div class="tier-hours">&euro;120<small>/hr</small></div>
+            <div class="tier-price">Billed monthly &middot; hours set during consultation</div>
             <a class="btn btn-ghost tier-btn" href="/?book=support&amp;plan=basic">Enquire</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Popular</span>
             <div class="tier-name">Standard</div>
-            <div class="tier-hours">10<small>&nbsp;hrs/week</small></div>
-            <div class="tier-price">Price after consultation</div>
+            <div class="tier-hours">&euro;180<small>/hr</small></div>
+            <div class="tier-price">Billed monthly &middot; hours set during consultation</div>
             <a class="btn btn-primary tier-btn" href="/?book=support&amp;plan=standard">Enquire</a>
           </th>
           <th>
             <div class="tier-name">Premium</div>
-            <div class="tier-hours">12.5<small>&nbsp;hrs/week</small></div>
-            <div class="tier-price">Price after consultation</div>
+            <div class="tier-hours">&euro;250<small>/hr</small></div>
+            <div class="tier-price">Billed monthly &middot; hours set during consultation</div>
             <a class="btn btn-ghost tier-btn" href="/?book=support&amp;plan=premium">Enquire</a>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Remote support hours per week</td><td>5</td><td>10</td><td>12.5</td></tr>
         <tr><td>Response time</td><td>Next business day</td><td>Same day</td><td>Within 4 hours</td></tr>
         <tr><td>On-site visits</td><td>Once a month included</td><td>Once a week included</td><td>Twice a week included</td></tr>
         <tr><td>Dedicated point of contact</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Every service in our catalog</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
+        <tr><td>Service scope</td><td>Workstations, Cloud Services, Printers, Security Cameras, Employee Offboarding</td><td>Everything from Basic plus Servers, Backup &amp; Networking</td><td>Every service in our catalog</td></tr>
         <tr><td>Employee onboarding &amp; offboarding</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Priority on incidents</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Monthly status &amp; maintenance report</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>

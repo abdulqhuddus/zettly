@@ -174,26 +174,37 @@
   }
   .hero-browser { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 1.4rem; }
   .hero-browser .bar { display: flex; gap: 0.35rem; padding: 0.6rem 0.7rem; background: #f4f3f7; }
-  .hero-browser .bar span { width: 8px; height: 8px; border-radius: 50%; background: #d8d6df; }
+  .hero-browser .bar span { width: 8px; height: 8px; border-radius: 50%; background: #d8d6df; animation: wbTrafficPulse 2.6s ease-in-out infinite; }
+  .hero-browser .bar span:nth-child(1) { background: #ff6159; animation-delay: 0s; }
+  .hero-browser .bar span:nth-child(2) { background: #ffbd2e; animation-delay: 0.3s; }
+  .hero-browser .bar span:nth-child(3) { background: #28c940; animation-delay: 0.6s; }
+  /* The screen keeps the SVG fully in view ("meet" rather than "slice") so
+     a narrower mobile card never crops the right-hand nav items off the
+     edge - "slice" scales the mock to cover the box and was cutting off
+     whichever side didn't match the box's aspect ratio. */
   .hero-browser .screen { height: 168px; background: linear-gradient(135deg, var(--accent-light), #e7edfd); overflow: hidden; }
   .hero-browser .screen svg { width: 100%; height: 100%; display: block; }
-  /* Small bits of life in the hero mock browser: the nav dot blinks like a
-     live indicator, the chart line keeps re-drawing itself, its end point
-     pulses, and the CTA button inside the mock "gets clicked" on a loop
-     (a ripple expands from it) - together it reads as an active site
-     rather than a static screenshot. */
+  /* Small bits of life in the hero mock browser: the traffic-light dots
+     breathe in sequence, the nav dot blinks like a live indicator, the
+     active menu pill glows, the chart line keeps re-drawing itself, its
+     end point pulses, and the CTA button inside the mock "gets clicked"
+     on a loop (a ripple expands from it) - together it reads as an
+     active site rather than a static screenshot. */
   .wb-nav-dot { animation: wbNavPulse 2.4s ease-in-out infinite; }
+  .wb-nav-pill-active { transform-box: fill-box; transform-origin: 50% 50%; animation: wbPillGlow 2.4s ease-in-out infinite; }
   .wb-chart-line { stroke-dasharray: 160; stroke-dashoffset: 160; animation: wbChartDraw 3s ease-in-out infinite; }
   .wb-chart-dot { transform-box: fill-box; transform-origin: 50% 50%; animation: wbDotPulse 1.8s ease-in-out infinite; }
   .wb-click-ripple { fill: #fff; fill-opacity: 0.55; transform-box: fill-box; transform-origin: 50% 50%; animation: wbRipple 2.2s ease-out infinite; }
   .wb-click-dot { transform-box: fill-box; transform-origin: 50% 50%; animation: wbClickDot 2.2s ease-in-out infinite; }
+  @keyframes wbTrafficPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
   @keyframes wbNavPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+  @keyframes wbPillGlow { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.85; } }
   @keyframes wbChartDraw { 0% { stroke-dashoffset: 160; } 55%, 100% { stroke-dashoffset: 0; } }
   @keyframes wbDotPulse { 0%, 100% { transform: scale(1); opacity: 0.75; } 50% { transform: scale(1.3); opacity: 1; } }
   @keyframes wbRipple { 0%, 15% { transform: scale(1); opacity: 0.7; } 85%, 100% { transform: scale(4.5); opacity: 0; } }
   @keyframes wbClickDot { 0%, 10% { transform: scale(1); } 15% { transform: scale(0.6); } 25%, 100% { transform: scale(1); } }
   @media (prefers-reduced-motion: reduce) {
-    .wb-nav-dot, .wb-chart-line, .wb-chart-dot, .wb-click-ripple, .wb-click-dot, .hero-card-live-dot { animation: none; }
+    .hero-browser .bar span, .wb-nav-dot, .wb-nav-pill-active, .wb-chart-line, .wb-chart-dot, .wb-click-ripple, .wb-click-dot, .hero-card-live-dot { animation: none; }
   }
   .hero-card-cta { width: 100%; justify-content: center; }
 
@@ -472,7 +483,7 @@
       <div class="hero-browser">
         <div class="bar"><span></span><span></span><span></span></div>
         <div class="screen">
-          <svg viewBox="0 0 380 170" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 380 170" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <linearGradient id="wbHeroBtn" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0" stop-color="#0078D4"/>
@@ -484,7 +495,7 @@
             <rect x="26" y="8.5" width="34" height="5" rx="2.5" fill="#111114" fill-opacity="0.5"/>
             <rect x="260" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
             <rect x="294" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
-            <rect x="328" y="8" width="34" height="6" rx="3" fill="#0078D4" fill-opacity="0.35"/>
+            <rect class="wb-nav-pill-active" x="328" y="8" width="34" height="6" rx="3" fill="#0078D4" fill-opacity="0.35"/>
             <rect x="22" y="40" width="58" height="6" rx="3" fill="#0078D4" fill-opacity="0.55"/>
             <rect x="22" y="56" width="150" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
             <rect x="22" y="74" width="112" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
@@ -520,16 +531,16 @@
           <th>
             <div class="tier-name">Business Basic</div>
             <div class="tier-price">ab 349&nbsp;&euro;</div>
-            <div class="tier-duration">60 Min. Erstgespräch</div>
-            <div class="tier-timeline">20 Std.</div>
+            <div class="tier-duration">30 Min. Kick-off</div>
+            <div class="tier-timeline">10 Std.</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder&amp;plan=basic">Projekt starten</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Beliebt</span>
             <div class="tier-name">Advance <small style="display:block;font-weight:600;color:var(--muted);">(eCommerce)</small></div>
-            <div class="tier-price">ab 899&nbsp;&euro;</div>
-            <div class="tier-duration">90 Min. Erstgespräch</div>
-            <div class="tier-timeline">60 Std.</div>
+            <div class="tier-price">ab 999&nbsp;&euro;</div>
+            <div class="tier-duration">45 Min. Kick-off</div>
+            <div class="tier-timeline">20 Std.</div>
             <a class="btn btn-primary tier-btn" href="/?book=webbuilder&amp;plan=advance">Projekt starten</a>
           </th>
           <th>
@@ -544,16 +555,14 @@
       <tbody>
         <tr><td>Responsives UI-Design</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Terminbuchungsfunktion</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Basic CMS (Inhalte &amp; Buchungen)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Kontaktformular</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Kundenportal (Audience Portal)</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Zahlungsintegration &amp; Checkout</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Live-Chat für Besucher</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Analytics-Dashboard</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Advanced CMS (dynamische Inhaltsverwaltung)</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Individuelle API-Integrationen (1 inklusive, weitere gegen Aufpreis)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Datenmapping &amp; -migration (bis zu 10 Tabellen, 200 Spalten)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Enterprise-CMS (volle Eigenverwaltung)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>CMS (Dynamische Inhaltsverwaltung)</td><td>Basic</td><td>Advance</td><td>Full</td></tr>
         <tr><td>Lieferzeit</td><td>3 Tage</td><td>7&ndash;10 Tage</td><td>nach Projektumfang</td></tr>
         <tr><td>E-Mail-Support danach</td><td>3 Tage</td><td>7 Tage</td><td>14 Tage</td></tr>
         <tr><td>Optional: &bdquo;Wartungsvertrag&ldquo;</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td><td>Preis auf Anfrage</td></tr>
@@ -674,7 +683,7 @@
       <div class="hero-browser">
         <div class="bar"><span></span><span></span><span></span></div>
         <div class="screen">
-          <svg viewBox="0 0 380 170" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg viewBox="0 0 380 170" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <linearGradient id="wbHeroBtn2" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0" stop-color="#0078D4"/>
@@ -686,7 +695,7 @@
             <rect x="26" y="8.5" width="34" height="5" rx="2.5" fill="#111114" fill-opacity="0.5"/>
             <rect x="260" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
             <rect x="294" y="8" width="24" height="6" rx="3" fill="#111114" fill-opacity="0.18"/>
-            <rect x="328" y="8" width="34" height="6" rx="3" fill="#0078D4" fill-opacity="0.35"/>
+            <rect class="wb-nav-pill-active" x="328" y="8" width="34" height="6" rx="3" fill="#0078D4" fill-opacity="0.35"/>
             <rect x="22" y="40" width="58" height="6" rx="3" fill="#0078D4" fill-opacity="0.55"/>
             <rect x="22" y="56" width="150" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
             <rect x="22" y="74" width="112" height="12" rx="4" fill="#111114" fill-opacity="0.82"/>
@@ -722,16 +731,16 @@
           <th>
             <div class="tier-name">Business Basic</div>
             <div class="tier-price">from &euro;349</div>
-            <div class="tier-duration">60 min. kickoff call</div>
-            <div class="tier-timeline">20 hrs</div>
+            <div class="tier-duration">30 min. kickoff call</div>
+            <div class="tier-timeline">10 hrs</div>
             <a class="btn btn-ghost tier-btn" href="/?book=webbuilder&amp;plan=basic">Start project</a>
           </th>
           <th class="tier-col-hl">
             <span class="tier-pop">Popular</span>
             <div class="tier-name">Advance <small style="display:block;font-weight:600;color:var(--muted);">(eCommerce)</small></div>
-            <div class="tier-price">from &euro;899</div>
-            <div class="tier-duration">90 min. kickoff call</div>
-            <div class="tier-timeline">60 hrs</div>
+            <div class="tier-price">from &euro;999</div>
+            <div class="tier-duration">45 min. kickoff call</div>
+            <div class="tier-timeline">20 hrs</div>
             <a class="btn btn-primary tier-btn" href="/?book=webbuilder&amp;plan=advance">Start project</a>
           </th>
           <th>
@@ -746,16 +755,14 @@
       <tbody>
         <tr><td>Responsive UI Design</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Booking functionality</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Basic CMS (content &amp; bookings)</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Contact form</td><td class="chk">&check;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Audience portal</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Payment Integration &amp; Checkout</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Live chat for visitors</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Analytics dashboard</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
-        <tr><td>Advanced CMS (dynamic content management)</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td><td class="chk">&check;</td></tr>
         <tr><td>Custom API integrations (1 included, additional integrations charged extra)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
         <tr><td>Data mapping &amp; migration (up to 10 tables, 200 columns)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
-        <tr><td>Enterprise CMS (full self-management)</td><td class="chk dash">&ndash;</td><td class="chk dash">&ndash;</td><td class="chk">&check;</td></tr>
+        <tr><td>CMS (Dynamic content management)</td><td>Basic</td><td>Advance</td><td>Full</td></tr>
         <tr><td>Delivery time</td><td>3 days</td><td>7&ndash;10 days</td><td>scope-dependent</td></tr>
         <tr><td>Follow-up email support</td><td>3 days</td><td>7 days</td><td>14 days</td></tr>
         <tr><td>Optional: "Maintenance Contract"</td><td>Price on request</td><td>Price on request</td><td>Price on request</td></tr>
