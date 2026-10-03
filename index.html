@@ -486,7 +486,11 @@
     letter-spacing: -0.01em;
   }
   .how-it-works .hiw-sub { text-align: center; color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
-  .hiw-track-wrap { position: relative; }
+  /* The outer .how-it-works box is full-bleed (edge to edge), but its
+     content shouldn't stretch that wide — cap and center the track here
+     so the step row sits in the middle of the tinted background instead
+     of hugging the left edge on wide viewports. */
+  .hiw-track-wrap { position: relative; max-width: 1180px; margin: 0 auto; }
   .hiw-track-wrap::before, .hiw-track-wrap::after {
     content: ''; position: absolute; top: 0; bottom: 12px; width: 32px; z-index: 2; pointer-events: none;
   }
