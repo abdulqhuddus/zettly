@@ -3433,7 +3433,30 @@ function renderTreeExplainer(node) {
       </div>
     </div>
   `;
+  // Grid rows size independently, so two cards side by side with very
+  // different text lengths otherwise end up visibly different heights.
+  // Measure the tallest card's natural height and apply it to every card
+  // so the whole grid reads as one even row of matching tiles.
+  requestAnimationFrame(equalizeExplainerCardHeights);
 }
+
+function equalizeExplainerCardHeights() {
+  const cards = document.querySelectorAll("#tree-explainer .tree-explainer-step");
+  if (!cards.length) return;
+  cards.forEach(c => { c.style.minHeight = ""; });
+  let max = 0;
+  cards.forEach(c => { max = Math.max(max, c.offsetHeight); });
+  cards.forEach(c => { c.style.minHeight = max + "px"; });
+}
+
+// The grid's column count changes at the 560px/420px breakpoints, which
+// reflows card text and can change the tallest card — re-measure after
+// the viewport is done resizing instead of leaving stale heights behind.
+let explainerResizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(explainerResizeTimer);
+  explainerResizeTimer = setTimeout(equalizeExplainerCardHeights, 150);
+});
 
 function renderTreeStep() {
   const node = state.currentNode;

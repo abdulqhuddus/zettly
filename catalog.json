@@ -14347,42 +14347,8 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "expand",
-                  "name": {
-                    "de": "Abdeckung erweitern",
-                    "en": "Expand coverage"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Abdeckung erweitern",
-                      "en": "Expand coverage"
-                    },
-                    "price": 109,
-                    "duration": 60,
+                    "price": 299,
+                    "duration": 90,
                     "quote": false
                   }
                 }
@@ -14403,10 +14369,6 @@
                 {
                   "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
                   "en": "The customer is expected to have the required hardware available."
-                },
-                {
-                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                  "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
               ],
               "explainer": {
@@ -14414,8 +14376,6 @@
                   "Prüfung Ihrer Netzwerkumgebung und Anforderungen an den Router.",
                   "Installation und Grundkonfiguration des/der den Router.",
                   "Einrichtung von Sicherheitsregeln und Zugriffsrechten.",
-                  "Bei Verbindungsproblemen: Diagnose der Ursache (Gerät, Verkabelung, Provider) und Behebung.",
-                  "Bei Erweiterung der Abdeckung: Anpassung der Konfiguration für die zusätzliche Reichweite oder Kapazität.",
                   "Funktionstest mit Ihren Geräten.",
                   "Einspielen der neuesten Firmware-Updates."
                 ],
@@ -14423,8 +14383,6 @@
                   "Review your network environment and requirements for the router.",
                   "Install and do the basic configuration of the router.",
                   "Set up security rules and access permissions.",
-                  "For connectivity issues: diagnose the cause (device, cabling, provider) and fix it.",
-                  "For expanding coverage: adjust the configuration for the added range or capacity.",
                   "Run a functional test with your devices.",
                   "Apply the latest firmware updates."
                 ]
@@ -14440,111 +14398,214 @@
             "next": {
               "type": "branch",
               "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
+                "de": "Proprietär oder Open Source?",
+                "en": "Proprietary or open source?"
               },
               "options": [
                 {
-                  "id": "setupNew",
+                  "id": "proprietary",
                   "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
+                    "de": "Proprietär",
+                    "en": "Proprietary"
+                  },
+                  "desc": {
+                    "de": "Kommerzielle Firewall-Lösungen, z. B. Fortinet, SonicWall, Sophos.",
+                    "en": "Commercial firewall appliances, e.g. Fortinet, SonicWall, Sophos."
                   },
                   "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
                     },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 299,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "expand",
+                        "name": {
+                          "de": "Regeln anpassen",
+                          "en": "Adjust rules"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Regeln anpassen",
+                            "en": "Adjust rules"
+                          },
+                          "price": 109,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ],
+                    "notice": [
+                      {
+                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                      },
+                      {
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                        "en": "The customer is assumed to have the required licenses available."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+                        "en": "The customer is expected to have the required hardware available."
+                      },
+                      {
+                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                        "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                      }
+                    ],
+                    "explainer": {
+                      "de": [
+                        "Prüfung Ihrer Netzwerkumgebung und Sicherheitsanforderungen.",
+                        "Installation und Grundkonfiguration der Firewall.",
+                        "Einrichtung von Sicherheitsregeln, VLANs und Zugriffsrechten nach Ihren Vorgaben.",
+                        "Bei Verbindungsproblemen: Diagnose der Ursache und Behebung.",
+                        "Bei Regelanpassungen: Überprüfung und Änderung bestehender Firewall-Regeln.",
+                        "Funktionstest der Verbindung und der konfigurierten Regeln.",
+                        "Einspielen der neuesten Firmware-Updates."
+                      ],
+                      "en": [
+                        "Review your network environment and security requirements.",
+                        "Install and do the basic configuration of the firewall.",
+                        "Set up security rules, VLANs, and access permissions as you specify.",
+                        "For connectivity issues: diagnose the cause and fix it.",
+                        "For rule adjustments: review and change existing firewall rules.",
+                        "Run a functional test of the connection and the configured rules.",
+                        "Apply the latest firmware updates."
+                      ]
+                    }
                   }
                 },
                 {
-                  "id": "fixIssue",
+                  "id": "openSource",
                   "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
+                    "de": "Open Source",
+                    "en": "Open Source"
+                  },
+                  "desc": {
+                    "de": "Open-Source-Firewall-Plattformen, z. B. pfSense, OPNsense.",
+                    "en": "Open-source firewall platforms, e.g. pfSense, OPNsense."
                   },
                   "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
                     },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "expand",
-                  "name": {
-                    "de": "Regeln anpassen",
-                    "en": "Adjust rules"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Regeln anpassen",
-                      "en": "Adjust rules"
-                    },
-                    "price": 109,
-                    "duration": 60,
-                    "quote": false
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 299,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "expand",
+                        "name": {
+                          "de": "Regeln anpassen",
+                          "en": "Adjust rules"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Regeln anpassen",
+                            "en": "Adjust rules"
+                          },
+                          "price": 109,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ],
+                    "notice": [
+                      {
+                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                      },
+                      {
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                        "en": "The customer is assumed to have the required licenses available."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+                        "en": "The customer is expected to have the required hardware available."
+                      },
+                      {
+                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                        "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                      }
+                    ],
+                    "explainer": {
+                      "de": [
+                        "Prüfung Ihrer Netzwerkumgebung und Sicherheitsanforderungen.",
+                        "Installation und Grundkonfiguration der Firewall.",
+                        "Einrichtung von Sicherheitsregeln, VLANs und Zugriffsrechten nach Ihren Vorgaben.",
+                        "Bei Verbindungsproblemen: Diagnose der Ursache und Behebung.",
+                        "Bei Regelanpassungen: Überprüfung und Änderung bestehender Firewall-Regeln.",
+                        "Funktionstest der Verbindung und der konfigurierten Regeln.",
+                        "Einspielen der neuesten Firmware-Updates."
+                      ],
+                      "en": [
+                        "Review your network environment and security requirements.",
+                        "Install and do the basic configuration of the firewall.",
+                        "Set up security rules, VLANs, and access permissions as you specify.",
+                        "For connectivity issues: diagnose the cause and fix it.",
+                        "For rule adjustments: review and change existing firewall rules.",
+                        "Run a functional test of the connection and the configured rules.",
+                        "Apply the latest firmware updates."
+                      ]
+                    }
                   }
                 }
-              ],
-              "notice": [
-                {
-                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
-                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
-                },
-                {
-                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
-                },
-                {
-                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
-                  "en": "The customer is assumed to have the required licenses available."
-                },
-                {
-                  "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
-                  "en": "The customer is expected to have the required hardware available."
-                },
-                {
-                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                  "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
-                }
-              ],
-              "explainer": {
-                "de": [
-                  "Prüfung Ihrer Netzwerkumgebung und Sicherheitsanforderungen.",
-                  "Installation und Grundkonfiguration der Firewall.",
-                  "Einrichtung von Sicherheitsregeln, VLANs und Zugriffsrechten nach Ihren Vorgaben.",
-                  "Bei Verbindungsproblemen: Diagnose der Ursache und Behebung.",
-                  "Bei Regelanpassungen: Überprüfung und Änderung bestehender Firewall-Regeln.",
-                  "Funktionstest der Verbindung und der konfigurierten Regeln.",
-                  "Einspielen der neuesten Firmware-Updates."
-                ],
-                "en": [
-                  "Review your network environment and security requirements.",
-                  "Install and do the basic configuration of the firewall.",
-                  "Set up security rules, VLANs, and access permissions as you specify.",
-                  "For connectivity issues: diagnose the cause and fix it.",
-                  "For rule adjustments: review and change existing firewall rules.",
-                  "Run a functional test of the connection and the configured rules.",
-                  "Apply the latest firmware updates."
-                ]
-              }
+              ]
             }
           },
           {
-            "id": "accessPoints",
+            "id": "wirelessController",
             "name": {
-              "de": "Access Points",
-              "en": "Access points"
+              "de": "WLAN-Controller",
+              "en": "Wireless Controller"
+            },
+            "desc": {
+              "de": "Zentrale WLAN-Verwaltung, z. B. Cambium, Cisco Meraki oder ähnliche Systeme.",
+              "en": "Centralized WiFi management, e.g. Cambium, Cisco Meraki, or similar systems."
             },
             "next": {
               "type": "branch",
@@ -14552,59 +14613,6 @@
                 "de": "Worum geht es?",
                 "en": "What do you need?"
               },
-              "options": [
-                {
-                  "id": "setupNew",
-                  "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "expand",
-                  "name": {
-                    "de": "Abdeckung erweitern",
-                    "en": "Expand coverage"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Abdeckung erweitern",
-                      "en": "Expand coverage"
-                    },
-                    "price": 109,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ],
               "notice": [
                 {
                   "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
@@ -14625,28 +14633,178 @@
                 {
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                },
+                {
+                  "de": "In der Neueinrichtung sind standardmäßig bis zu 5 Access Points enthalten. Weitere Access Points können zusätzlich über \"Access Point zu bestehendem Controller hinzufügen\" gebucht werden.",
+                  "en": "New Setup includes up to 5 access points by default. Additional access points can be booked separately via \"Add Access Point to existing Controller\"."
                 }
               ],
               "explainer": {
                 "de": [
-                  "Prüfung Ihrer Netzwerkumgebung und Anforderungen an die Access Points.",
-                  "Installation und Grundkonfiguration des/der die Access Points.",
-                  "Einrichtung von Sicherheitsregeln und Zugriffsrechten.",
-                  "Bei Verbindungsproblemen: Diagnose der Ursache (Gerät, Verkabelung, Provider) und Behebung.",
-                  "Bei Erweiterung der Abdeckung: Anpassung der Konfiguration für die zusätzliche Reichweite oder Kapazität.",
+                  "Prüfung Ihrer Netzwerkumgebung und Anforderungen an den WLAN-Controller.",
+                  "Installation und Grundkonfiguration des WLAN-Controllers (z. B. Cambium, Cisco Meraki oder ähnliche Systeme).",
+                  "Einbindung von bis zu 5 Access Points in den Controller.",
+                  "Einrichtung von WLAN-Netzwerken (SSIDs), Sicherheitsrichtlinien und Zugriffsrechten.",
+                  "Konfiguration von Roaming zwischen den Access Points.",
                   "Funktionstest mit Ihren Geräten.",
                   "Einspielen der neuesten Firmware-Updates."
                 ],
                 "en": [
-                  "Review your network environment and requirements for the access points.",
-                  "Install and do the basic configuration of the access points.",
-                  "Set up security rules and access permissions.",
-                  "For connectivity issues: diagnose the cause (device, cabling, provider) and fix it.",
-                  "For expanding coverage: adjust the configuration for the added range or capacity.",
+                  "Review your network environment and requirements for the wireless controller.",
+                  "Install and do the basic configuration of the wireless controller (e.g. Cambium, Cisco Meraki, or similar systems).",
+                  "Enroll up to 5 access points into the controller.",
+                  "Set up WiFi networks (SSIDs), security policies, and access permissions.",
+                  "Configure roaming between the access points.",
                   "Run a functional test with your devices.",
                   "Apply the latest firmware updates."
                 ]
-              }
+              },
+              "options": [
+                {
+                  "id": "setupNew",
+                  "name": {
+                    "de": "Neueinrichtung",
+                    "en": "New setup"
+                  },
+                  "desc": {
+                    "de": "Inklusive bis zu 5 Access Points.",
+                    "en": "Includes up to 5 access points."
+                  },
+                  "priceHint": {
+                    "de": "ab 299 €",
+                    "en": "from €299"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Neueinrichtung",
+                      "en": "New setup"
+                    },
+                    "price": 299,
+                    "duration": 90,
+                    "quote": false
+                  }
+                },
+                {
+                  "id": "addAccessPoint",
+                  "name": {
+                    "de": "Access Point zu bestehendem Controller hinzufügen",
+                    "en": "Add Access Point to existing Controller"
+                  },
+                  "desc": {
+                    "de": "Erweiterung eines bereits vorhandenen WLAN-Controllers um zusätzliche Access Points.",
+                    "en": "Expand an existing wireless controller with additional access points."
+                  },
+                  "priceHint": {
+                    "de": "ab 69 €",
+                    "en": "from €69"
+                  },
+                  "next": {
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Wie viele zusätzliche Access Points?",
+                      "en": "How many additional access points?"
+                    },
+                    "notice": [
+                      {
+                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                      },
+                      {
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                        "en": "The customer is assumed to have the required licenses available."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+                        "en": "The customer is expected to have the required hardware available."
+                      },
+                      {
+                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                        "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                      },
+                      {
+                        "de": "Dieser Service kann nur in Verbindung mit einem WLAN-Controller von Zettly gebucht werden.",
+                        "en": "This service can only be booked together with a Wireless Controller set up by Zettly."
+                      }
+                    ],
+                    "explainer": {
+                      "de": [
+                        "Prüfung des bestehenden WLAN-Controllers und der aktuellen Access-Point-Konfiguration.",
+                        "Einbindung der zusätzlichen Access Points in den vorhandenen Controller.",
+                        "Übernahme der bestehenden WLAN-Netzwerke (SSIDs) und Sicherheitsrichtlinien auf die neuen Access Points.",
+                        "Platzierung und Konfiguration für optimale Abdeckung und Roaming.",
+                        "Funktionstest mit Ihren Geräten.",
+                        "Einspielen der neuesten Firmware-Updates."
+                      ],
+                      "en": [
+                        "Review the existing wireless controller and current access point configuration.",
+                        "Enroll the additional access points into the existing controller.",
+                        "Apply the existing WiFi networks (SSIDs) and security policies to the new access points.",
+                        "Placement and configuration for optimal coverage and roaming.",
+                        "Run a functional test with your devices.",
+                        "Apply the latest firmware updates."
+                      ]
+                    },
+                    "options": [
+                      {
+                        "id": "qty_1_2",
+                        "name": {
+                          "de": "1–2 Access Points",
+                          "en": "1–2 access points"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "1–2 Access Points",
+                            "en": "1–2 access points"
+                          },
+                          "price": 69,
+                          "duration": 45,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "qty_3_5",
+                        "name": {
+                          "de": "3–5 Access Points",
+                          "en": "3–5 access points"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "3–5 Access Points",
+                            "en": "3–5 access points"
+                          },
+                          "price": 119,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "qty_6_10",
+                        "name": {
+                          "de": "6–10 Access Points",
+                          "en": "6–10 access points"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "6–10 Access Points",
+                            "en": "6–10 access points"
+                          },
+                          "price": 199,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           },
           {
@@ -14674,25 +14832,8 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 69,
-                    "duration": 45,
+                    "price": 299,
+                    "duration": 90,
                     "quote": false
                   }
                 },
@@ -14741,7 +14882,6 @@
                   "Prüfung Ihrer Netzwerkumgebung und Anforderungen an die Switches.",
                   "Installation und Grundkonfiguration des/der die Switches.",
                   "Einrichtung von Sicherheitsregeln und Zugriffsrechten.",
-                  "Bei Verbindungsproblemen: Diagnose der Ursache (Gerät, Verkabelung, Provider) und Behebung.",
                   "Bei Erweiterung der Abdeckung: Anpassung der Konfiguration für die zusätzliche Reichweite oder Kapazität.",
                   "Funktionstest mit Ihren Geräten.",
                   "Einspielen der neuesten Firmware-Updates."
@@ -14750,7 +14890,6 @@
                   "Review your network environment and requirements for the switches.",
                   "Install and do the basic configuration of the switches.",
                   "Set up security rules and access permissions.",
-                  "For connectivity issues: diagnose the cause (device, cabling, provider) and fix it.",
                   "For expanding coverage: adjust the configuration for the added range or capacity.",
                   "Run a functional test with your devices.",
                   "Apply the latest firmware updates."
@@ -14783,25 +14922,8 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
-                    },
-                    "price": 69,
-                    "duration": 45,
+                    "price": 299,
+                    "duration": 90,
                     "quote": false
                   }
                 },
@@ -14850,7 +14972,6 @@
                   "Prüfung Ihrer Netzwerkumgebung und Anforderungen an das WLAN-Netzwerk.",
                   "Installation und Grundkonfiguration des/der das WLAN-Netzwerk.",
                   "Einrichtung von Sicherheitsregeln und Zugriffsrechten.",
-                  "Bei Verbindungsproblemen: Diagnose der Ursache (Gerät, Verkabelung, Provider) und Behebung.",
                   "Bei Erweiterung der Abdeckung: Anpassung der Konfiguration für die zusätzliche Reichweite oder Kapazität.",
                   "Funktionstest mit Ihren Geräten.",
                   "Einspielen der neuesten Firmware-Updates."
@@ -14859,7 +14980,6 @@
                   "Review your network environment and requirements for the wireless network.",
                   "Install and do the basic configuration of the wireless network.",
                   "Set up security rules and access permissions.",
-                  "For connectivity issues: diagnose the cause (device, cabling, provider) and fix it.",
                   "For expanding coverage: adjust the configuration for the added range or capacity.",
                   "Run a functional test with your devices.",
                   "Apply the latest firmware updates."
@@ -14880,104 +15000,199 @@
             "next": {
               "type": "branch",
               "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
+                "de": "Proprietär oder OpenVPN?",
+                "en": "Proprietary or OpenVPN?"
               },
               "options": [
                 {
-                  "id": "setupNew",
+                  "id": "proprietary",
                   "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
+                    "de": "Proprietär",
+                    "en": "Proprietary"
+                  },
+                  "desc": {
+                    "de": "Kommerzielle VPN-Lösungen, z. B. Cisco AnyConnect, FortiClient.",
+                    "en": "Commercial VPN solutions, e.g. Cisco AnyConnect, FortiClient."
                   },
                   "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
                     },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 299,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "expand",
+                        "name": {
+                          "de": "Zugänge ergänzen",
+                          "en": "Add more access"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Zugänge ergänzen",
+                            "en": "Add more access"
+                          },
+                          "price": 99,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ],
+                    "notice": [
+                      {
+                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                      },
+                      {
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                        "en": "The customer is assumed to have the required licenses available."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+                        "en": "The customer is expected to have the required hardware available."
+                      },
+                      {
+                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                        "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                      }
+                    ],
+                    "explainer": {
+                      "de": [
+                        "Prüfung Ihrer Netzwerkumgebung und Anforderungen an den Fernzugriff.",
+                        "Installation und Grundkonfiguration der VPN-Lösung.",
+                        "Einrichtung von Benutzerzugängen und Zugriffsrechten.",
+                        "Bei zusätzlichem Zugriff: Einrichtung weiterer Benutzer oder Standorte.",
+                        "Funktionstest der VPN-Verbindung von einem Client aus.",
+                        "Einspielen der neuesten Firmware-Updates."
+                      ],
+                      "en": [
+                        "Review your network environment and remote access requirements.",
+                        "Install and do the basic configuration of the VPN solution.",
+                        "Set up user accounts and access permissions.",
+                        "For added access: set up additional users or sites.",
+                        "Run a functional test of the VPN connection from a client.",
+                        "Apply the latest firmware updates."
+                      ]
+                    }
                   }
                 },
                 {
-                  "id": "fixIssue",
+                  "id": "openVpn",
                   "name": {
-                    "de": "Verbindungsproblem beheben",
-                    "en": "Fix a connectivity issue"
+                    "de": "OpenVPN",
+                    "en": "OpenVPN"
+                  },
+                  "desc": {
+                    "de": "Quelloffene VPN-Lösung auf Basis von OpenVPN.",
+                    "en": "Open-source VPN solution based on OpenVPN."
                   },
                   "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Verbindungsproblem beheben",
-                      "en": "Fix a connectivity issue"
+                    "type": "branch",
+                    "prompt": {
+                      "de": "Worum geht es?",
+                      "en": "What do you need?"
                     },
-                    "price": 69,
-                    "duration": 45,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "expand",
-                  "name": {
-                    "de": "Zugänge ergänzen",
-                    "en": "Add more access"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Zugänge ergänzen",
-                      "en": "Add more access"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
+                    "options": [
+                      {
+                        "id": "setupNew",
+                        "name": {
+                          "de": "Neueinrichtung",
+                          "en": "New setup"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Neueinrichtung",
+                            "en": "New setup"
+                          },
+                          "price": 299,
+                          "duration": 90,
+                          "quote": false
+                        }
+                      },
+                      {
+                        "id": "expand",
+                        "name": {
+                          "de": "Zugänge ergänzen",
+                          "en": "Add more access"
+                        },
+                        "next": {
+                          "type": "leaf",
+                          "name": {
+                            "de": "Zugänge ergänzen",
+                            "en": "Add more access"
+                          },
+                          "price": 99,
+                          "duration": 60,
+                          "quote": false
+                        }
+                      }
+                    ],
+                    "notice": [
+                      {
+                        "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                        "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                      },
+                      {
+                        "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                        "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
+                        "en": "The customer is assumed to have the required licenses available."
+                      },
+                      {
+                        "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
+                        "en": "The customer is expected to have the required hardware available."
+                      },
+                      {
+                        "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                        "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                      }
+                    ],
+                    "explainer": {
+                      "de": [
+                        "Prüfung Ihrer Netzwerkumgebung und Anforderungen an den Fernzugriff.",
+                        "Installation und Grundkonfiguration der VPN-Lösung.",
+                        "Einrichtung von Benutzerzugängen und Zugriffsrechten.",
+                        "Bei zusätzlichem Zugriff: Einrichtung weiterer Benutzer oder Standorte.",
+                        "Funktionstest der VPN-Verbindung von einem Client aus.",
+                        "Einspielen der neuesten Firmware-Updates."
+                      ],
+                      "en": [
+                        "Review your network environment and remote access requirements.",
+                        "Install and do the basic configuration of the VPN solution.",
+                        "Set up user accounts and access permissions.",
+                        "For added access: set up additional users or sites.",
+                        "Run a functional test of the VPN connection from a client.",
+                        "Apply the latest firmware updates."
+                      ]
+                    }
                   }
                 }
-              ],
-              "notice": [
-                {
-                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
-                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
-                },
-                {
-                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
-                },
-                {
-                  "de": "Es wird davon ausgegangen, dass der Kunde über die erforderlichen Lizenzen verfügt.",
-                  "en": "The customer is assumed to have the required licenses available."
-                },
-                {
-                  "de": "Es wird davon ausgegangen, dass die erforderliche Hardware durch den Kunden bereitgestellt wird.",
-                  "en": "The customer is expected to have the required hardware available."
-                },
-                {
-                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                  "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
-                }
-              ],
-              "explainer": {
-                "de": [
-                  "Prüfung Ihrer Netzwerkumgebung und Anforderungen an den Fernzugriff.",
-                  "Installation und Grundkonfiguration der VPN-Lösung.",
-                  "Einrichtung von Benutzerzugängen und Zugriffsrechten.",
-                  "Bei Verbindungsproblemen: Diagnose der Ursache (Gerät, Verkabelung, Provider) und Behebung.",
-                  "Bei zusätzlichem Zugriff: Einrichtung weiterer Benutzer oder Standorte.",
-                  "Funktionstest der VPN-Verbindung von einem Client aus.",
-                  "Einspielen der neuesten Firmware-Updates."
-                ],
-                "en": [
-                  "Review your network environment and remote access requirements.",
-                  "Install and do the basic configuration of the VPN solution.",
-                  "Set up user accounts and access permissions.",
-                  "For connectivity issues: diagnose the cause (device, cabling, provider) and fix it.",
-                  "For added access: set up additional users or sites.",
-                  "Run a functional test of the VPN connection from a client.",
-                  "Apply the latest firmware updates."
-                ]
-              }
+              ]
             },
             "desc": {
               "de": "Sicherer Fernzugriff auf das Firmennetzwerk.",
