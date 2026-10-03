@@ -10859,6 +10859,75 @@
             }
           },
           {
+            "id": "virtualMachine",
+            "name": {
+              "de": "Virtuelle Maschine",
+              "en": "Virtual Machine"
+            },
+            "desc": {
+              "de": "Bereitstellung einer einzelnen virtuellen Maschine auf vorhandener Infrastruktur.",
+              "en": "Provisioning of a single virtual machine on existing infrastructure."
+            },
+            "next": {
+              "type": "branch",
+              "prompt": {
+                "de": "Worum geht es?",
+                "en": "What do you need?"
+              },
+              "notice": [
+                {
+                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
+                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
+                },
+                {
+                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
+                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
+                },
+                {
+                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
+                  "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                }
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung Ihrer Anforderungen (Betriebssystem, Ressourcen, Netzwerk).",
+                  "Erstellung der virtuellen Maschine auf dem vorhandenen Hypervisor oder Host.",
+                  "Zuweisung von CPU-, RAM- und Speicherressourcen.",
+                  "Installation des gewünschten Betriebssystems.",
+                  "Konfiguration der Netzwerkeinstellungen.",
+                  "Einspielen der neuesten Updates und Patches."
+                ],
+                "en": [
+                  "Review of your requirements (operating system, resources, network).",
+                  "Creation of the virtual machine on the existing hypervisor or host.",
+                  "Allocation of CPU, RAM, and storage resources.",
+                  "Installation of the requested operating system.",
+                  "Configuration of network settings.",
+                  "Apply the latest updates and patches."
+                ]
+              },
+              "options": [
+                {
+                  "id": "setupNew",
+                  "name": {
+                    "de": "Neueinrichtung",
+                    "en": "New setup"
+                  },
+                  "next": {
+                    "type": "leaf",
+                    "name": {
+                      "de": "Neueinrichtung",
+                      "en": "New setup"
+                    },
+                    "price": 69,
+                    "duration": 30,
+                    "quote": false
+                  }
+                }
+              ]
+            }
+          },
+          {
             "id": "domain",
             "name": {
               "de": "Domain-Controller / ADC",
@@ -11400,8 +11469,8 @@
         "en": "Data Center (Cloud / On-Premise)"
       },
       "desc": {
-        "de": "Virtualisierung, NAS, Infrastruktur",
-        "en": "Virtualization, NAS, infrastructure"
+        "de": "Virtualisierung, SAN-Speicher, Failover-Cluster",
+        "en": "Virtualization, SAN storage, failover clusters"
       },
       "root": {
         "type": "branch",
@@ -11465,42 +11534,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -11517,8 +11552,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung der vorhandenen Hardware- und Netzwerkumgebung sowie Ihrer Anforderungen.",
+                              "Installation und Konfiguration von Proxmox VE auf dem Hostserver.",
+                              "Konfiguration von Speicher (lokal oder shared) und virtuellem Netzwerk (Switches/Bridges).",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation der gewünschten Betriebssysteme auf den virtuellen Maschinen.",
+                              "Zuweisung von CPU-, RAM- und Speicherressourcen je VM.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of the existing hardware and network environment and your requirements.",
+                              "Installation and configuration of Proxmox VE on the host server.",
+                              "Configuration of storage (local or shared) and virtual networking (switches/bridges).",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation of the requested operating systems on the virtual machines.",
+                              "Allocation of CPU, RAM, and disk resources per VM.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         },
                         "desc": {
                           "de": "Open-Source-Virtualisierung auf KVM-Basis.",
@@ -11550,42 +11611,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -11602,8 +11629,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung der vorhandenen Hardware- und Netzwerkumgebung sowie Ihrer Anforderungen.",
+                              "Installation und Konfiguration von VMware (vSphere/ESXi) auf dem Hostserver.",
+                              "Konfiguration von Speicher (lokal oder shared) und virtuellem Netzwerk (Switches/Bridges).",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation der gewünschten Betriebssysteme auf den virtuellen Maschinen.",
+                              "Zuweisung von CPU-, RAM- und Speicherressourcen je VM.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of the existing hardware and network environment and your requirements.",
+                              "Installation and configuration of VMware (vSphere/ESXi) on the host server.",
+                              "Configuration of storage (local or shared) and virtual networking (switches/bridges).",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation of the requested operating systems on the virtual machines.",
+                              "Allocation of CPU, RAM, and disk resources per VM.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         },
                         "desc": {
                           "de": "Marktführende Virtualisierungsplattform für Unternehmen.",
@@ -11635,42 +11688,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -11687,8 +11706,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung der vorhandenen Hardware- und Netzwerkumgebung sowie Ihrer Anforderungen.",
+                              "Installation und Konfiguration von Hyper-V auf dem Hostserver.",
+                              "Konfiguration von Speicher (lokal oder shared) und virtuellem Netzwerk (Switches/Bridges).",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation der gewünschten Betriebssysteme auf den virtuellen Maschinen.",
+                              "Zuweisung von CPU-, RAM- und Speicherressourcen je VM.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of the existing hardware and network environment and your requirements.",
+                              "Installation and configuration of Hyper-V on the host server.",
+                              "Configuration of storage (local or shared) and virtual networking (switches/bridges).",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation of the requested operating systems on the virtual machines.",
+                              "Allocation of CPU, RAM, and disk resources per VM.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         },
                         "desc": {
                           "de": "Microsofts Virtualisierungsplattform für Windows Server.",
@@ -11720,42 +11765,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -11772,8 +11783,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung der vorhandenen Hardware- und Netzwerkumgebung sowie Ihrer Anforderungen.",
+                              "Installation und Konfiguration von Citrix Hypervisor (XenServer) auf dem Hostserver.",
+                              "Konfiguration von Speicher (lokal oder shared) und virtuellem Netzwerk (Switches/Bridges).",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation der gewünschten Betriebssysteme auf den virtuellen Maschinen.",
+                              "Zuweisung von CPU-, RAM- und Speicherressourcen je VM.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of the existing hardware and network environment and your requirements.",
+                              "Installation and configuration of Citrix Hypervisor (XenServer) on the host server.",
+                              "Configuration of storage (local or shared) and virtual networking (switches/bridges).",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation of the requested operating systems on the virtual machines.",
+                              "Allocation of CPU, RAM, and disk resources per VM.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         },
                         "desc": {
                           "de": "Virtualisierung mit Fokus auf Desktops & Anwendungen.",
@@ -11829,42 +11866,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -11881,8 +11884,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung Ihrer Anforderungen und Einrichtung des Microsoft Azure-Kontos/Abonnements (falls noch nicht vorhanden).",
+                              "Konfiguration des virtuellen Netzwerks, der Subnetze sowie der Sicherheitsgruppen/Firewall-Regeln.",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation und Konfiguration der gewünschten Betriebssysteme auf den VMs.",
+                              "Konfiguration von Speicher (Disks/Volumes) für jede VM.",
+                              "Einrichtung der Zugriffsverwaltung (IAM/Benutzer/Rollen) und des Fernzugriffs.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of your requirements and setup of the Microsoft Azure account/subscription (if not already available).",
+                              "Configuration of the virtual network, subnets, and security groups/firewall rules.",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation and configuration of the requested operating systems on the VMs.",
+                              "Configuration of storage (disks/volumes) for each VM.",
+                              "Setup of access management (IAM/users/roles) and remote access.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         }
                       },
                       {
@@ -11914,42 +11943,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -11966,8 +11961,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung Ihrer Anforderungen und Einrichtung des Amazon AWS-Kontos/Abonnements (falls noch nicht vorhanden).",
+                              "Konfiguration des virtuellen Netzwerks, der Subnetze sowie der Sicherheitsgruppen/Firewall-Regeln.",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation und Konfiguration der gewünschten Betriebssysteme auf den VMs.",
+                              "Konfiguration von Speicher (Disks/Volumes) für jede VM.",
+                              "Einrichtung der Zugriffsverwaltung (IAM/Benutzer/Rollen) und des Fernzugriffs.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of your requirements and setup of the Amazon AWS account/subscription (if not already available).",
+                              "Configuration of the virtual network, subnets, and security groups/firewall rules.",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation and configuration of the requested operating systems on the VMs.",
+                              "Configuration of storage (disks/volumes) for each VM.",
+                              "Setup of access management (IAM/users/roles) and remote access.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         }
                       },
                       {
@@ -11999,42 +12020,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -12051,8 +12038,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung Ihrer Anforderungen und Einrichtung des IONOS Cloud-Kontos/Abonnements (falls noch nicht vorhanden).",
+                              "Konfiguration des virtuellen Netzwerks, der Subnetze sowie der Sicherheitsgruppen/Firewall-Regeln.",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation und Konfiguration der gewünschten Betriebssysteme auf den VMs.",
+                              "Konfiguration von Speicher (Disks/Volumes) für jede VM.",
+                              "Einrichtung der Zugriffsverwaltung (IAM/Benutzer/Rollen) und des Fernzugriffs.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of your requirements and setup of the IONOS Cloud account/subscription (if not already available).",
+                              "Configuration of the virtual network, subnets, and security groups/firewall rules.",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation and configuration of the requested operating systems on the VMs.",
+                              "Configuration of storage (disks/volumes) for each VM.",
+                              "Setup of access management (IAM/users/roles) and remote access.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         }
                       },
                       {
@@ -12084,42 +12097,8 @@
                                   "de": "Neueinrichtung",
                                   "en": "New setup"
                                 },
-                                "price": 149,
-                                "duration": 90,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "fixIssue",
-                              "name": {
-                                "de": "Problem beheben",
-                                "en": "Fix an issue"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Problem beheben",
-                                  "en": "Fix an issue"
-                                },
-                                "price": 99,
-                                "duration": 60,
-                                "quote": false
-                              }
-                            },
-                            {
-                              "id": "maintenance",
-                              "name": {
-                                "de": "Wartung & Gesundheitscheck",
-                                "en": "Maintenance & health check"
-                              },
-                              "next": {
-                                "type": "leaf",
-                                "name": {
-                                  "de": "Wartung & Gesundheitscheck",
-                                  "en": "Maintenance & health check"
-                                },
-                                "price": 89,
-                                "duration": 60,
+                                "price": 499,
+                                "duration": 120,
                                 "quote": false
                               }
                             }
@@ -12136,8 +12115,34 @@
                             {
                               "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                               "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
+                            },
+                            {
+                              "de": "Dieser Service beinhaltet die Erstellung von bis zu 5 virtuellen Maschinen. Weitere VMs können zusätzlich angefragt werden.",
+                              "en": "This service includes the creation of up to 5 virtual machines. Additional VMs beyond that can be requested separately."
                             }
-                          ]
+                          ],
+                          "explainer": {
+                            "de": [
+                              "Prüfung Ihrer Anforderungen und Einrichtung des Hetzner Cloud-Kontos/Abonnements (falls noch nicht vorhanden).",
+                              "Konfiguration des virtuellen Netzwerks, der Subnetze sowie der Sicherheitsgruppen/Firewall-Regeln.",
+                              "Erstellung von 5 virtuellen Maschinen nach Ihren Vorgaben; weitere VMs können zusätzlich angefragt werden.",
+                              "Installation und Konfiguration der gewünschten Betriebssysteme auf den VMs.",
+                              "Konfiguration von Speicher (Disks/Volumes) für jede VM.",
+                              "Einrichtung der Zugriffsverwaltung (IAM/Benutzer/Rollen) und des Fernzugriffs.",
+                              "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                              "Einspielen der neuesten Updates und Patches."
+                            ],
+                            "en": [
+                              "Review of your requirements and setup of the Hetzner Cloud account/subscription (if not already available).",
+                              "Configuration of the virtual network, subnets, and security groups/firewall rules.",
+                              "Creation of 5 virtual machines according to your specifications; additional VMs can be requested separately.",
+                              "Installation and configuration of the requested operating systems on the VMs.",
+                              "Configuration of storage (disks/volumes) for each VM.",
+                              "Setup of access management (IAM/users/roles) and remote access.",
+                              "Setup of backup management, if a backup solution is in place.",
+                              "Apply the latest updates and patches."
+                            ]
+                          }
                         }
                       }
                     ]
@@ -12175,42 +12180,8 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 149,
-                    "duration": 90,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "maintenance",
-                  "name": {
-                    "de": "Wartung & Gesundheitscheck",
-                    "en": "Maintenance & health check"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Wartung & Gesundheitscheck",
-                      "en": "Maintenance & health check"
-                    },
-                    "price": 89,
-                    "duration": 60,
+                    "price": 499,
+                    "duration": 120,
                     "quote": false
                   }
                 }
@@ -12228,7 +12199,29 @@
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
-              ]
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung der vorhandenen Server- und Netzwerkinfrastruktur.",
+                  "Installation und Konfiguration des SAN-Speichersystems.",
+                  "Konfiguration von Storage-Pools, LUNs und RAID-Leveln.",
+                  "Einrichtung von Multipathing und Anbindung an das Storage-Netzwerk (iSCSI/Fibre Channel).",
+                  "Zuordnung (Mapping) der LUNs zu den entsprechenden Servern oder Virtualisierungs-Hosts.",
+                  "Konfiguration von Zugriffsrechten und Zoning.",
+                  "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                  "Einspielen der neuesten Updates und Patches."
+                ],
+                "en": [
+                  "Review of the existing server and network infrastructure.",
+                  "Installation and configuration of the SAN storage system.",
+                  "Configuration of storage pools, LUNs, and RAID levels.",
+                  "Setup of multipathing and connection to the storage network (iSCSI/Fibre Channel).",
+                  "Mapping of LUNs to the relevant servers or virtualization hosts.",
+                  "Configuration of access permissions and zoning.",
+                  "Setup of backup management, if a backup solution is in place.",
+                  "Apply the latest updates and patches."
+                ]
+              }
             },
             "desc": {
               "de": "Hochverfügbarer Speicher im Unternehmensnetzwerk.",
@@ -12260,42 +12253,8 @@
                       "de": "Neueinrichtung",
                       "en": "New setup"
                     },
-                    "price": 149,
-                    "duration": 90,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Problem beheben",
-                    "en": "Fix an issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Problem beheben",
-                      "en": "Fix an issue"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "maintenance",
-                  "name": {
-                    "de": "Wartung & Gesundheitscheck",
-                    "en": "Maintenance & health check"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Wartung & Gesundheitscheck",
-                      "en": "Maintenance & health check"
-                    },
-                    "price": 89,
-                    "duration": 60,
+                    "price": 499,
+                    "duration": 120,
                     "quote": false
                   }
                 }
@@ -12313,92 +12272,33 @@
                   "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
                   "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
                 }
-              ]
+              ],
+              "explainer": {
+                "de": [
+                  "Prüfung der vorhandenen Server- und Netzwerkinfrastruktur.",
+                  "Installation der Cluster-Rolle/des Clusterdienstes auf allen Knoten.",
+                  "Konfiguration des gemeinsamen Speichers (Shared Storage) und des Cluster-Quorums.",
+                  "Erstellung und Validierung des Failover-Clusters über alle Knoten hinweg.",
+                  "Konfiguration der geclusterten Rollen/Dienste für automatisches Failover.",
+                  "Testen von Failover-Szenarien zwischen den Knoten.",
+                  "Einrichtung der Backup-Verwaltung, sofern eine Backup-Lösung vorhanden ist.",
+                  "Einspielen der neuesten Updates und Patches."
+                ],
+                "en": [
+                  "Review of the existing server and network infrastructure.",
+                  "Installation of the clustering role/service on all nodes.",
+                  "Configuration of shared storage and the cluster quorum.",
+                  "Creation and validation of the failover cluster across all nodes.",
+                  "Configuration of the clustered roles/services for automatic failover.",
+                  "Testing of failover scenarios between nodes.",
+                  "Setup of backup management, if a backup solution is in place.",
+                  "Apply the latest updates and patches."
+                ]
+              }
             },
             "desc": {
               "de": "Automatische Übernahme bei Serverausfall.",
               "en": "Automatic takeover if a server fails."
-            }
-          },
-          {
-            "id": "nas",
-            "name": {
-              "de": "NAS",
-              "en": "NAS"
-            },
-            "next": {
-              "type": "branch",
-              "prompt": {
-                "de": "Worum geht es?",
-                "en": "What do you need?"
-              },
-              "options": [
-                {
-                  "id": "setupNew",
-                  "name": {
-                    "de": "Neueinrichtung",
-                    "en": "New setup"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Neueinrichtung",
-                      "en": "New setup"
-                    },
-                    "price": 99,
-                    "duration": 60,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "fixIssue",
-                  "name": {
-                    "de": "Zugriffsproblem beheben",
-                    "en": "Fix an access issue"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Zugriffsproblem beheben",
-                      "en": "Fix an access issue"
-                    },
-                    "price": 59,
-                    "duration": 30,
-                    "quote": false
-                  }
-                },
-                {
-                  "id": "expand",
-                  "name": {
-                    "de": "Speicher erweitern",
-                    "en": "Expand storage"
-                  },
-                  "next": {
-                    "type": "leaf",
-                    "name": {
-                      "de": "Speicher erweitern",
-                      "en": "Expand storage"
-                    },
-                    "price": 109,
-                    "duration": 60,
-                    "quote": false
-                  }
-                }
-              ],
-              "notice": [
-                {
-                  "de": "Dieser Service umfasst ausschließlich Software- und Konfigurationsarbeiten. Physische Hardwaredefekte werden von Zettly nicht repariert.",
-                  "en": "This service covers software and configuration work only. Zettly does not repair physical hardware faults."
-                },
-                {
-                  "de": "Wie bei jeder Konfiguration oder Reparatur gehen wir davon aus, dass beim Gerät selbst kein Hardwaredefekt vorliegt.",
-                  "en": "As with any configuration or fix, we assume that the device itself has no hardware fault."
-                },
-                {
-                  "de": "Eine vollständige Wiederherstellung von Daten/System kann nicht vollständig garantiert werden, wenn das Betriebssystem vollständig beschädigt oder in einem nicht umkehrbaren Zustand ist.",
-                  "en": "Data/system recovery cannot be fully guaranteed if the operating system is fully corrupted or in an irreversible state."
-                }
-              ]
             }
           }
         ]
