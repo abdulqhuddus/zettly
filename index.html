@@ -405,12 +405,14 @@
     scroll-snap-align: start;
     flex: 1 1 155px;
     min-width: 130px;
+    min-height: 236px;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 1.6rem 0.9rem 1.3rem;
+    padding: 2.5rem 1.1rem 1.6rem;
     border-radius: 20px;
     background: #fff;
     border: 1px solid var(--border);
@@ -457,30 +459,35 @@
   }
   .hiw-step.active h4 { color: #fff; }
   .hiw-step.active p { color: rgba(255,255,255,0.72); }
-  .hiw-step.active .hiw-num {
-    background: linear-gradient(120deg, var(--accent), #a855f7 45%, var(--pink));
+  .hiw-step.active .hiw-num-tag {
+    background: linear-gradient(135deg, var(--accent), #a855f7 60%, var(--pink));
     background-size: 200% 200%;
     animation: ctaShift 2s ease-in-out infinite;
-    box-shadow: 0 0 0 5px rgba(255,255,255,0.14), 0 4px 10px rgba(0,0,0,0.4);
   }
-  /* Step counter reads lighter -> darker purple left to right, matching
-     progress rather than an arbitrary two-tone alternation. */
+  /* Step counter now lives inside a dark wedge filling the card's own
+     top-left corner (clip-path triangle) instead of a small circle
+     floating on the border — reads like a torn corner/stamp rather than
+     a badge bolted on top of the card. */
+  .hiw-num-tag {
+    position: absolute; top: 0; left: 0; z-index: 1;
+    width: 58px; height: 58px;
+    background: linear-gradient(135deg, #342050, #1b1023);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    transition: background 0.4s ease;
+  }
   .hiw-num {
-    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-    width: 26px; height: 26px; border-radius: 50%;
-    background: #c4b5fd;
+    position: absolute; top: 0.45rem; left: 0.5rem;
     color: #fff;
-    font-size: 0.7rem; font-weight: 800;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 10px rgba(124,58,237,0.35);
+    font-size: 0.95rem; font-weight: 800; font-style: normal;
+    line-height: 1;
   }
-  .hiw-step:nth-child(1) .hiw-num { background: #c4b5fd; }
-  .hiw-step:nth-child(2) .hiw-num { background: #b09cec; }
-  .hiw-step:nth-child(3) .hiw-num { background: #9c82da; }
-  .hiw-step:nth-child(4) .hiw-num { background: #8869c9; }
-  .hiw-step:nth-child(5) .hiw-num { background: #7450b8; }
-  .hiw-step:nth-child(6) .hiw-num { background: #6036a6; }
-  .hiw-step:nth-child(7) .hiw-num { background: #4c1d95; }
+  .hiw-step:nth-child(1) .hiw-num-tag { background: linear-gradient(135deg, #a78bfa, #7C3AED); }
+  .hiw-step:nth-child(2) .hiw-num-tag { background: linear-gradient(135deg, #9574ec, #6b2fd6); }
+  .hiw-step:nth-child(3) .hiw-num-tag { background: linear-gradient(135deg, #8560db, #5a26bd); }
+  .hiw-step:nth-child(4) .hiw-num-tag { background: linear-gradient(135deg, #754cc9, #4e1fa5); }
+  .hiw-step:nth-child(5) .hiw-num-tag { background: linear-gradient(135deg, #6539b4, #421a8d); }
+  .hiw-step:nth-child(6) .hiw-num-tag { background: linear-gradient(135deg, #55279f, #361576); }
+  .hiw-step:nth-child(7) .hiw-num-tag { background: linear-gradient(135deg, #45177f, #2c1060); }
   /* The ghost icon itself stands in for the old icon-wrap's hover/active
      motion: it grows and drifts slightly toward full opacity instead of
      the card holding a second, separate icon badge. */
@@ -1880,43 +1887,43 @@
   <div class="hiw-track">
     <div class="hiw-step" data-n="01">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke-width="1.6"/><path d="M15.5 15.5L21 21" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <span class="hiw-num">1</span>
+      <span class="hiw-num-tag"><span class="hiw-num">1</span></span>
       <h4 data-i18n="hiwStep1Title">Leistung wählen</h4>
       <p data-i18n="hiwStep1Desc">Sie wählen den passenden Service für Ihr Anliegen aus.</p>
     </div>
     <div class="hiw-step" data-n="02">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5" width="16" height="15" rx="2" stroke-width="1.6"/><path d="M4 9.5h16M8 3v3.5M16 3v3.5" stroke-width="1.6" stroke-linecap="round"/><path d="M9 13.5l2 2 4-4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="hiw-num">2</span>
+      <span class="hiw-num-tag"><span class="hiw-num">2</span></span>
       <h4 data-i18n="hiwStep2Title">Termin buchen</h4>
       <p data-i18n="hiwStep2Desc">Sie buchen online einen Termin, der Ihnen passt.</p>
     </div>
     <div class="hiw-step" data-n="03">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke-width="1.6"/></svg></div>
-      <span class="hiw-num">3</span>
+      <span class="hiw-num-tag"><span class="hiw-num">3</span></span>
       <h4 data-i18n="hiwStep3Title">Wir kommen vorbei</h4>
       <p data-i18n="hiwStep3Desc">Wir kommen pünktlich zu Ihnen nach Hause oder ins Büro.</p>
     </div>
     <div class="hiw-step" data-n="04">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.2" stroke-width="1.6"/></svg></div>
-      <span class="hiw-num">4</span>
+      <span class="hiw-num-tag"><span class="hiw-num">4</span></span>
       <h4 data-i18n="hiwStep4Title">Gerät im Ist-Zustand</h4>
       <p data-i18n="hiwStep4Desc">Wir fotografieren nur das betroffene Gerät zur Dokumentation: mit Ihrem Einverständnis.</p>
     </div>
     <div class="hiw-step" data-n="05">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a3 3 0 0 0-4.1 3.9l-6.1 6.1a1.5 1.5 0 0 0 2.1 2.1l6.1-6.1a3 3 0 0 0 3.9-4.1l-2 2-2-1 1-2z" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
-      <span class="hiw-num">5</span>
+      <span class="hiw-num-tag"><span class="hiw-num">5</span></span>
       <h4 data-i18n="hiwStep5Title">Service durchführen</h4>
       <p data-i18n="hiwStep5Desc">Wir erledigen die vereinbarte Leistung fachgerecht.</p>
     </div>
     <div class="hiw-step" data-n="06">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8.5a1.5 1.5 0 0 1 1.5-1.5h2l1-1.5h7l1 1.5h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9z" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.8 12.8l1.6 1.6 3-3.2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="hiw-num">6</span>
+      <span class="hiw-num-tag"><span class="hiw-num">6</span></span>
       <h4 data-i18n="hiwStep6Title">Gerät nach Abschluss</h4>
       <p data-i18n="hiwStep6Desc">Zum Abschluss ein Foto des reparierten Geräts als Nachweis der Leistung.</p>
     </div>
     <div class="hiw-step" data-n="07">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="2" stroke-width="1.6"/><path d="M3 10.5h18" stroke-width="1.6"/><path d="M6.5 15h4" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <span class="hiw-num">7</span>
+      <span class="hiw-num-tag"><span class="hiw-num">7</span></span>
       <h4 data-i18n="hiwStep7Title">Bezahlen</h4>
       <p data-i18n="hiwStep7Desc">Sie zahlen bequem online oder bar vor Ort.</p>
     </div>
