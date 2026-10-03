@@ -138,6 +138,67 @@
   .back-link { display: inline-block; margin-top: 1.2rem; padding: 0.85rem 1.7rem; border-radius: 10px; background: var(--accent); color: #fff; font-size: 0.95rem; font-weight: 600; text-decoration: none; white-space: nowrap; transition: transform 0.15s, background 0.2s; }
   .back-link:hover { background: #6d2fe0; color: #fff; transform: translateY(-1px); }
 
+  /* Icon-only quick links to jump straight into an audience's full
+     service list, sitting on the same row as the language switch. Each
+     chip is a small circle at rest; hovering (or focusing, for keyboard
+     use) grows it into a pill that reveals the label and switches to
+     that link's own color, instead of a plain text nav. */
+  .nav-shortcuts { display: flex; align-items: center; gap: 0.5rem; }
+  .nav-chip {
+    display: flex; align-items: center;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    border-radius: 999px;
+    width: 36px; height: 36px;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: width 0.3s cubic-bezier(.2,.9,.3,1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, padding 0.3s ease;
+  }
+  .nav-chip-icon {
+    width: 36px; height: 36px; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-chip-icon svg { width: 17px; height: 17px; }
+  .nav-chip-icon svg * { stroke: var(--chip-color); transition: stroke 0.25s ease; }
+  .nav-chip-label {
+    font-size: 0.8rem; font-weight: 700;
+    color: #fff;
+    opacity: 0;
+    margin-right: 0;
+    transition: opacity 0.2s ease 0.05s;
+  }
+  .nav-chip:hover, .nav-chip:focus-visible {
+    width: 132px;
+    background: var(--chip-color);
+    border-color: var(--chip-color);
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--chip-color) 35%, transparent);
+  }
+  .nav-chip-soon:hover, .nav-chip-soon:focus-visible { width: 150px; }
+  .nav-chip:hover .nav-chip-icon svg *, .nav-chip:focus-visible .nav-chip-icon svg * { stroke: #fff; }
+  .nav-chip:hover .nav-chip-label, .nav-chip:focus-visible .nav-chip-label { opacity: 1; margin-right: 0.9rem; }
+  @media (max-width: 720px) {
+    .nav-chip-label { display: none; }
+    .nav-chip:hover, .nav-chip:focus-visible { width: 36px; background: #fff; border-color: var(--border); box-shadow: none; }
+    .nav-chip:hover .nav-chip-icon svg *, .nav-chip:focus-visible .nav-chip-icon svg * { stroke: var(--chip-color); }
+  }
+  /* Shrink the brand mark/wordmark and the nav chips together on narrow
+     phones — without this the three chips plus the DE/EN switch no
+     longer fit beside the full-size wordmark and the language toggle
+     got pushed off the edge of the screen. */
+  @media (max-width: 420px) {
+    .topbar { padding: 1.1rem 1rem; margin-bottom: 1.6rem; gap: 0.5rem; }
+    .brand { gap: 0.5rem; }
+    .brand-mark { width: 38px; height: 38px; }
+    .brand-text { font-size: 1.5rem; }
+    .topbar-right { gap: 0.5rem; }
+    .nav-shortcuts { gap: 0.35rem; }
+    .nav-chip, .nav-chip-icon { width: 30px; height: 30px; }
+    .nav-chip-icon svg { width: 14px; height: 14px; }
+  }
+
   .lang-switch {
     display: flex;
     border: 1.5px solid var(--border);
@@ -1874,6 +1935,20 @@
     <span class="brand-text">zett<span>ly</span></span>
   </a>
   <div class="topbar-right">
+    <nav class="nav-shortcuts" aria-label="Quick links">
+      <button type="button" class="nav-chip" data-nav-audience="home" style="--chip-color:#2563eb;">
+        <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 11.5L12 4l8 7.5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="nav-chip-label" data-i18n="navHome">Zuhause</span>
+      </button>
+      <button type="button" class="nav-chip" data-nav-audience="business" style="--chip-color:#7C3AED;">
+        <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="8" width="16" height="12" rx="1.5" stroke-width="1.7"/><path d="M9 8V6a3 3 0 013-3v0a3 3 0 013 3v2" stroke-width="1.7" stroke-linecap="round"/><path d="M4 13h16" stroke-width="1.7"/></svg></span>
+        <span class="nav-chip-label" data-i18n="navBusiness">Unternehmen</span>
+      </button>
+      <button type="button" class="nav-chip nav-chip-soon" data-nav-audience="freelancers" title="Bald verfügbar" style="--chip-color:#0d9488;">
+        <span class="nav-chip-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3.3" stroke-width="1.7"/><path d="M5 20c0-4.1 3.1-6.8 7-6.8s7 2.7 7 6.8" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+        <span class="nav-chip-label" data-i18n="navFreelancers">Freelancer</span>
+      </button>
+    </nav>
     <div class="lang-switch" id="lang-switch">
       <button data-lang="de">DE</button>
       <button data-lang="en">EN</button>
@@ -1953,7 +2028,7 @@
     <div class="hiw-step hiw-step-done" data-n="07">
       <div class="hiw-ghost-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="13" rx="2" stroke-width="1.6"/><path d="M3 10.5h18" stroke-width="1.6"/><path d="M6.5 15h4" stroke-width="1.6" stroke-linecap="round"/></svg></div>
       <span class="hiw-num-tag"><span class="hiw-num">7</span></span>
-      <span class="hiw-done-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="hiw-done-badge" aria-hidden="true"><svg viewBox="2.5 4.5 19 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <h4 data-i18n="hiwStep7Title">Bezahlen</h4>
       <p data-i18n="hiwStep7Desc">Sie zahlen bequem online oder bar vor Ort.</p>
     </div>
@@ -2374,6 +2449,9 @@ const I18N = {
     audienceHomeDesc: "Privatpersonen & Homeoffice.",
     audienceBizTitle: "Unternehmen",
     audienceBizDesc: "Kleine, mittlere & Großunternehmen.",
+    navHome: "Zuhause",
+    navBusiness: "Unternehmen",
+    navFreelancers: "Freelancer",
     tapToSelect: "Antippen zum Auswählen",
     audiencePausedNote: "Aktuell keine Buchungen möglich",
     step0Title: "Wobei können wir helfen?",
@@ -2556,6 +2634,9 @@ const I18N = {
     audienceHomeDesc: "Individuals & home offices.",
     audienceBizTitle: "Business",
     audienceBizDesc: "Small, medium & enterprise businesses.",
+    navHome: "Home",
+    navBusiness: "Business",
+    navFreelancers: "Freelancers",
     tapToSelect: "Tap to select",
     audiencePausedNote: "Not accepting bookings right now",
     step0Title: "What brings you here today?",
@@ -3667,13 +3748,30 @@ function updateAddressKnownLine() {
   });
 }
 
+async function selectAudience(audience) {
+  state.audience = audience;
+  if (!CATALOG[audience] || !CATALOG[audience].length) await loadCatalog();
+  renderCategoryGrid();
+  showStep(1);
+}
+
 document.querySelectorAll(".path-card[data-audience]").forEach(card => {
-  card.addEventListener("click", async () => {
+  card.addEventListener("click", () => {
     if (card.classList.contains("audience-paused")) return;
-    state.audience = card.dataset.audience;
-    if (!CATALOG[state.audience] || !CATALOG[state.audience].length) await loadCatalog();
-    renderCategoryGrid();
-    showStep(1);
+    selectAudience(card.dataset.audience);
+  });
+});
+
+// Header quick links: jump straight to an audience's full service grid
+// from anywhere on the page, instead of scrolling back up to step 0 and
+// picking a card. "Freelancers" has no catalog/booking flow yet (that's
+// a separate section to be added later), so its chip is present for the
+// nav layout but intentionally inert for now.
+document.querySelectorAll(".nav-chip[data-nav-audience]").forEach(chip => {
+  chip.addEventListener("click", () => {
+    const audience = chip.dataset.navAudience;
+    if (audience !== "home" && audience !== "business") return;
+    selectAudience(audience);
   });
 });
 
