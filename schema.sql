@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   customer_address TEXT NOT NULL DEFAULT '', -- on-site visit address
   notes TEXT,
   status TEXT NOT NULL DEFAULT 'confirmed', -- confirmed | cancelled | completed
-  payment_status TEXT NOT NULL DEFAULT 'pending', -- paid | pending -- independent of `status`; set manually today, by a payment-gateway webhook once that's wired up
+  payment_status TEXT NOT NULL DEFAULT 'pending', -- paid | pending | not_applicable (auto-set when status becomes 'cancelled') -- independent of `status` otherwise; set manually today, by a payment-gateway webhook once that's wired up
   paid_at TEXT,                  -- set when payment_status becomes 'paid'
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   cancelled_at TEXT,            -- set when status becomes 'cancelled'

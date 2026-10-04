@@ -274,6 +274,7 @@
   .badge-payment { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap; }
   .badge-payment.is-paid { background: var(--ok-bg); color: var(--ok); }
   .badge-payment.is-pending { background: var(--warn-bg); color: var(--warn); }
+  .badge-payment.is-not_applicable { background: var(--bg); color: var(--muted); }
   .attachment-cell { text-align: center; }
   .attachment-thumb-loading { color: var(--muted); font-size: 0.8rem; }
   .attachment-thumb { display: block; width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border); }
@@ -700,6 +701,7 @@
       modeInPerson: "In person",
       paymentPaid: "Paid",
       paymentPending: "Pending",
+      paymentNotApplicable: "Not applicable",
       empty: "No bookings found.",
       pagerInfo: (from, to, total) => `${from}–${to} of ${total}`,
       prev: "← Prev",
@@ -840,6 +842,7 @@
       modeInPerson: "Vor Ort",
       paymentPaid: "Bezahlt",
       paymentPending: "Ausstehend",
+      paymentNotApplicable: "Entfällt",
       empty: "Keine Buchungen gefunden.",
       pagerInfo: (from, to, total) => `${from}–${to} von ${total}`,
       prev: "← Zurück",
@@ -1102,7 +1105,9 @@
 
   function paymentLabel(paymentStatus) {
     const s = t();
-    return paymentStatus === "paid" ? s.paymentPaid : s.paymentPending;
+    if (paymentStatus === "paid") return s.paymentPaid;
+    if (paymentStatus === "not_applicable") return s.paymentNotApplicable;
+    return s.paymentPending;
   }
 
   function buildQuery() {
@@ -1196,7 +1201,7 @@
         <td>${b.is_consultation ? `<span class="badge-mode${b.online_consultation ? " is-online" : ""}">${modeText}</span>` : "—"}</td>
         <td class="attachment-cell"></td>
         <td><span class="badge badge-${b.status}">${statusLabel(b.status)}</span></td>
-        <td><span class="badge-payment is-${b.payment_status === "paid" ? "paid" : "pending"}">${paymentLabel(b.payment_status)}</span></td>
+        <td><span class="badge-payment is-${b.payment_status || "pending"}">${paymentLabel(b.payment_status)}</span></td>
       `;
       tr.addEventListener("click", () => openDetail(b.id));
       if (b.has_attachment) {
@@ -1450,7 +1455,7 @@
     document.getElementById("m-name").textContent = b.customer_name;
     document.getElementById("m-ref").textContent = b.bookingRef;
     document.getElementById("m-status").innerHTML = `<span class="badge badge-${b.status}">${statusLabel(b.status)}</span>`;
-    document.getElementById("m-payment-status").innerHTML = `<span class="badge-payment is-${b.payment_status === "paid" ? "paid" : "pending"}">${paymentLabel(b.payment_status)}</span>`;
+    document.getElementById("m-payment-status").innerHTML = `<span class="badge-payment is-${b.payment_status || "pending"}">${paymentLabel(b.payment_status)}</span>`;
     document.getElementById("m-service").textContent =
       (lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › ");
     document.getElementById("m-when").textContent = `${b.date}, ${s.atTime(b.time)}`;
@@ -1503,14 +1508,22 @@
     // Paid/pending is independent of the booking status (cancel/complete/
     // confirm) above -- this just flips payment_status. Once a payment
     // gateway is wired up, a successful online payment can set this
-    // automatically; until then it's a manual admin toggle.
-    if (b.payment_status === "paid") {
-      actions.appendChild(makeActionBtn(s.actionMarkPending, "btn-warn", "markPending", () => setPaymentStatus(b.id, "pending")));
-    } else {
-      actions.appendChild(makeActionBtn(s.actionMarkPaid, "btn-ok", "markPaid", () => setPaymentStatus(b.id, "paid")));
+    // automatically; until then it's a manual admin toggle. A cancelled
+    // booking's payment status is "not_applicable", set automatically when
+    // it was cancelled, so there's nothing to toggle here.
+    if (b.status !== "cancelled") {
+      if (b.payment_status === "paid") {
+        actions.appendChild(makeActionBtn(s.actionMarkPending, "btn-warn", "markPending", () => setPaymentStatus(b.id, "pending")));
+      } else {
+        actions.appendChild(makeActionBtn(s.actionMarkPaid, "btn-ok", "markPaid", () => setPaymentStatus(b.id, "paid")));
+      }
     }
     if (b.status !== "cancelled") {
-      actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", "invoice", () => sendInvoice(b.id)));
+      // An invoice documents a completed payment, so it's only offered once
+      // the booking is actually marked paid.
+      if (b.payment_status === "paid") {
+        actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", "invoice", () => sendInvoice(b.id)));
+      }
       actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", "paymentLink", () => sendPaymentLink(b.id)));
     }
     actions.appendChild(makeActionBtn(s.actionDelete, "btn-danger", "delete", () => deleteBooking(b.id, b.bookingRef)));

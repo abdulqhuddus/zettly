@@ -271,13 +271,22 @@ export async function handleAdminUpdateStatus(request, env, id) {
     return json({ error: "Cancellation reason must be 100 characters or fewer" }, 400);
   }
 
+  // Cancelling always clears any payment-pending/paid state to
+  // "not_applicable" -- a cancelled booking isn't owed or collected on, so
+  // it shouldn't keep showing as a pending payment on the dashboard.
+  // Reactivating (confirming/completing a previously-cancelled booking)
+  // puts it back to "pending" -- its prior paid/pending state before the
+  // cancellation isn't tracked, so this is the safer default for an admin
+  // to then re-mark as paid if it actually was.
   await env.DB.prepare(
-    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ? WHERE id = ?`
+    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = ? WHERE id = ?`
   )
     .bind(
       body.status,
       cancelling ? new Date().toISOString().replace("Z", "") : reactivating ? null : existing.cancelled_at,
       cancelling ? reason : reactivating ? null : existing.cancellation_reason,
+      cancelling ? "not_applicable" : reactivating ? "pending" : existing.payment_status,
+      cancelling ? null : reactivating ? null : existing.paid_at,
       id
     )
     .run();
@@ -357,8 +366,12 @@ export async function handleAdminSetPaymentStatus(request, env, id) {
   if (!VALID_PAYMENT_STATUSES.includes(body?.paymentStatus)) {
     return json({ error: "Invalid payment status" }, 400);
   }
-  const existing = await env.DB.prepare(`SELECT id, paid_at FROM bookings WHERE id = ?`).bind(id).first();
+  const existing = await env.DB.prepare(`SELECT id, status, paid_at FROM bookings WHERE id = ?`).bind(id).first();
   if (!existing) return json({ error: "Not found" }, 404);
+  // A cancelled booking's payment status is "not_applicable", set
+  // automatically when it was cancelled -- not something to manually flip
+  // to paid/pending from here.
+  if (existing.status === "cancelled") return json({ error: "Booking is cancelled" }, 400);
 
   const markingPaid = body.paymentStatus === "paid";
   await env.DB.prepare(`UPDATE bookings SET payment_status = ?, paid_at = ? WHERE id = ?`)
@@ -386,6 +399,11 @@ export async function handleAdminSendInvoice(request, env, id) {
   }
   const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
   if (!existing) return json({ error: "Not found" }, 404);
+  // An invoice documents a completed payment, so it's only available once
+  // the booking is actually marked paid -- not while payment is still
+  // pending or the booking has been cancelled (payment_status
+  // "not_applicable").
+  if (existing.payment_status !== "paid") return json({ error: "Booking is not marked as paid yet" }, 400);
 
   const lang = body?.lang === "en" ? "en" : "de";
   const result = await sendInvoiceEmail(env, existing, lang);

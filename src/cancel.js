@@ -79,8 +79,11 @@ export async function handleCancelSubmit(request, env) {
     return json({ error: "Cancellation reason must be 100 characters or fewer" }, 400);
   }
 
+  // Cancelling always clears any payment-pending/paid state to
+  // "not_applicable" -- a cancelled booking isn't owed or collected on,
+  // so it shouldn't keep showing as a pending payment on the dashboard.
   await env.DB.prepare(
-    `UPDATE bookings SET status = 'cancelled', cancelled_at = ?, cancellation_reason = ? WHERE id = ?`
+    `UPDATE bookings SET status = 'cancelled', cancelled_at = ?, cancellation_reason = ?, payment_status = 'not_applicable', paid_at = NULL WHERE id = ?`
   )
     .bind(new Date().toISOString().replace("Z", ""), reason, row.id)
     .run();
