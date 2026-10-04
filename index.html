@@ -2072,6 +2072,10 @@
     padding: 0.2rem 0.6rem; border-radius: 999px; background: #efe8ff; color: var(--accent);
   }
   .consultation-mode-badge.is-online { background: #e8f8ef; color: #16a34a; }
+  .pb-consultation-toggle { cursor: pointer; }
+  .pb-consultation-control { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .pb-consultation-control input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--accent); cursor: pointer; margin: 0; }
+  .pb-consultation-hint { font-size: 0.76rem; color: var(--muted); line-height: 1.4; margin: -0.1rem 0 0.4rem; padding-right: 0.1rem; }
   .pb-row.pb-total {
     margin-top: 0.3rem; padding-top: 0.65rem; border-top: 1px dashed var(--border);
   }
@@ -2560,10 +2564,6 @@
           <label data-i18n="phone">Telefon (optional)</label>
           <input type="tel" id="f-phone" placeholder="+49 ..." />
         </div>
-        <label class="consent-check" id="online-consultation-field" style="display:none;">
-          <input type="checkbox" id="f-online-consultation" />
-          <span data-i18n="onlineConsultationLabel">Ich möchte diese Beratung online (per Videoanruf) statt vor Ort.</span>
-        </label>
         <div class="address-section">
           <div class="address-section-head">
             <span class="address-section-icon">
@@ -3107,6 +3107,7 @@ const I18N = {
     fillNotes: "Bitte beschreiben Sie kurz Ihr Anliegen.",
     summaryAddress: "Adresse",
     summaryCommute: "Anfahrt",
+    summaryCommuteTravel: "Anfahrt",
     summaryTotal: "Gesamt",
     summaryQuantity: "Menge",
     summaryQuantityIncrease: "Anzahl erhöhen",
@@ -3264,8 +3265,8 @@ const I18N = {
     commuteZone4Fee: "+ €25",
     commuteZone5Label: "75–100 km",
     commuteZone5Fee: "+ €30",
-    commuteExplainer: "Within 15 km of Munich, you only pay the service price, no extra call-out fee. Further addresses get a tiered call-out fee based on distance: you'll see the exact surcharge as soon as you enter your postal code during booking.",
-    commuteExplainerBooking: "Within 15 km of Munich, you only pay the service price, no extra call-out fee. Further addresses get a tiered call-out fee based on distance.",
+    commuteExplainer: "Within 15 km of Munich, you only pay the service price, no extra travel fee. Further addresses get a tiered travel fee based on distance: you'll see the exact surcharge as soon as you enter your postal code during booking.",
+    commuteExplainerBooking: "Within 15 km of Munich, you only pay the service price, no extra travel fee. Further addresses get a tiered travel fee based on distance.",
     ctaBannerTitle: "Book an appointment now",
     ctaBannerSub: "Online in just 2 minutes: fast & simple.",
     hiwTitle: "How your appointment works",
@@ -3289,9 +3290,9 @@ const I18N = {
     multiDeviceNotice: "Need more than one? On the last page, before you submit, you can adjust the quantity.",
     continue: "Continue",
     locStepTitle: "Your location",
-    locStepSub: "We use your postal code to work out the call-out fee, if any applies.",
+    locStepSub: "We use your postal code to work out the travel fee, if any applies.",
     locChecking: "Checking the distance …",
-    locResultTitle: "Call-out",
+    locResultTitle: "Travel fee",
     locOutOfAreaTitle: "A little milestone!",
     locOutOfAreaGeneric: "You're the first to try booking with us from this far away, we're genuinely thrilled about your interest! This area isn't part of our service area just yet, but we're growing steadily and hope to cover your region soon too.",
     locFillZip: "Please enter a valid 5-digit postal code.",
@@ -3299,7 +3300,7 @@ const I18N = {
     locNotFound: "We couldn't find that postal code. Please double-check it.",
     locOutOfArea: (km) => `You're a whopping ${Math.round(km)} km from Munich, making you the first person in that area to try booking with us! That's a little milestone for us. It's outside our 100 km service area for now, but we're growing steadily and hope to reach you soon too.`,
     locDistanceLine: "Distance from Munich",
-    locFeeLabel: "Call-out fee",
+    locFeeLabel: "Travel fee",
     locFeeFree: "Free",
     step3Title: "Your details",
     step3Sub: "We'll send your confirmation here.",
@@ -3318,13 +3319,13 @@ const I18N = {
     fillAddress: "Please enter your full address.",
     fillNotes: "Please briefly describe what you need.",
     summaryAddress: "Address",
-    summaryCommute: "Call-out",
+    summaryCommute: "Travel",
     summaryCommuteTravel: "Travel",
     summaryTotal: "Total",
     summaryQuantity: "Quantity",
     summaryQuantityIncrease: "Increase quantity",
     summaryQuantityDecrease: "Decrease quantity",
-    summaryQuantityNote: "The call-out fee is charged once per visit, regardless of how many devices you add.",
+    summaryQuantityNote: "The travel fee is charged once per visit, regardless of how many devices you add.",
     summarySubtotal: "Subtotal",
     commuteFreeShort: "Free",
     consentLabel: 'I have read the <a href="#" id="privacy-modal-link" rel="noopener">privacy policy</a> and agree that my details will be stored and processed to handle my booking.',
@@ -4207,11 +4208,19 @@ function renderSummary(targetId, readOnly = false) {
         <span class="pb-label"><span class="pb-ico">${SUMMARY_ICONS.price}</span>${t("summaryPrice")}</span>
         <span class="pb-value">${fmtPrice(state.service)}</span>
       </div>
-      ${state.service.isConsultation ? `
+      ${state.service.isConsultation ? (readOnly ? `
       <div class="pb-row">
         <span class="pb-label">${t("consultationModeLabel")}</span>
         <span class="pb-value consultation-mode-badge${isOnlineConsult ? " is-online" : ""}">${isOnlineConsult ? t("consultationModeOnline") : t("consultationModeInPerson")}</span>
-      </div>` : ""}
+      </div>` : `
+      <label class="pb-row pb-consultation-toggle" for="f-online-consultation">
+        <span class="pb-label">${t("consultationModeLabel")}</span>
+        <span class="pb-consultation-control">
+          <input type="checkbox" id="f-online-consultation" ${state.onlineConsultation ? "checked" : ""} />
+          <span class="pb-value consultation-mode-badge${isOnlineConsult ? " is-online" : ""}">${isOnlineConsult ? t("consultationModeOnline") : t("consultationModeInPerson")}</span>
+        </span>
+      </label>
+      <p class="pb-consultation-hint">${t("onlineConsultationLabel")}</p>`) : ""}
       <div class="pb-row pb-qty">
         <span class="pb-label">${t("summaryQuantity")}</span>
         ${readOnly ? `<span class="pb-value">&times;${qty}</span>` : `
@@ -4250,6 +4259,14 @@ function renderSummary(targetId, readOnly = false) {
     const incrBtn = document.getElementById("qty-incr");
     if (decrBtn) decrBtn.addEventListener("click", () => changeQuantity(targetId, -1));
     if (incrBtn) incrBtn.addEventListener("click", () => changeQuantity(targetId, 1));
+    const onlineCheckbox = document.getElementById("f-online-consultation");
+    if (onlineCheckbox) {
+      onlineCheckbox.addEventListener("click", (e) => e.stopPropagation());
+      onlineCheckbox.addEventListener("change", (e) => {
+        state.onlineConsultation = e.target.checked;
+        renderSummary(targetId);
+      });
+    }
   }
 }
 
@@ -4370,20 +4387,6 @@ function onLocationInputChange() {
 document.getElementById("loc-zip").addEventListener("input", onLocationInputChange);
 document.getElementById("loc-city").addEventListener("input", onLocationInputChange);
 
-// Once the location step is done, the details step shows the resolved
-// PLZ/city as a read-only line instead of asking for it again, with a link
-// back to the location step if it needs correcting.
-function updateOnlineConsultationField() {
-  const field = document.getElementById("online-consultation-field");
-  const checkbox = document.getElementById("f-online-consultation");
-  if (!field || !checkbox) return;
-  const show = !!(state.service && state.service.isConsultation);
-  field.style.display = show ? "" : "none";
-  if (!show) {
-    checkbox.checked = false;
-    state.onlineConsultation = false;
-  }
-}
 
 function updateAddressKnownLine() {
   const el = document.getElementById("address-section-sub-known");
@@ -4487,14 +4490,8 @@ document.getElementById("to-location").addEventListener("click", () => {
 
 document.getElementById("to-details").addEventListener("click", () => {
   updateAddressKnownLine();
-  updateOnlineConsultationField();
   renderSummary("summary");
   showStep(5);
-});
-
-document.getElementById("f-online-consultation").addEventListener("change", (e) => {
-  state.onlineConsultation = e.target.checked;
-  renderSummary("summary");
 });
 
 // The consent checkbox and the liability-notice acceptance are both

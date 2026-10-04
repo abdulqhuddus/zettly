@@ -158,8 +158,8 @@ const EMAIL_STRINGS = {
     address: "Address",
     priceOnRequest: "Quoted after on-site diagnosis",
     priceOnConsultation: "Quoted after a free consultation",
-    commuteFeeNote: (fee) => `The total includes a €${fee} call-out fee for your location.`,
-    commuteFeeSuffix: "call-out",
+    commuteFeeNote: (fee) => `The total includes a €${fee} travel fee for your location.`,
+    commuteFeeSuffix: "travel",
     travelFeeNote: (fee) => `The total includes a €${fee} travel fee for your location.`,
     travelFeeSuffix: "travel",
     consultationModeLabel: "Consultation mode",
@@ -466,7 +466,7 @@ async function sendAdminNotification(env, booking, service, lang) {
           <tr><td style="padding:4px 0; color:#6b6b74;">Service</td><td style="padding:4px 0; text-align:right;">${booking.serviceName}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Date</td><td style="padding:4px 0; text-align:right;">${dateDisplay}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Time</td><td style="padding:4px 0; text-align:right;">${booking.time}</td></tr>
-          <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}${commuteFee > 0 ? ` (incl. €${commuteFee} ${service.isConsultation ? "travel fee" : "call-out"})` : ""}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}${commuteFee > 0 ? ` (incl. €${commuteFee} travel fee)` : ""}</td></tr>
           ${service.quantity > 1 ? `<tr><td style="padding:4px 0; color:#6b6b74;">Quantity</td><td style="padding:4px 0; text-align:right; font-weight:700;">×${service.quantity}${service.unitPrice != null ? ` (€${service.unitPrice} each)` : ""}</td></tr>` : ""}
           ${consultationModeText ? `<tr><td style="padding:4px 0; color:#6b6b74;">Consultation mode</td><td style="padding:4px 0; text-align:right; font-weight:700;">${consultationModeText}</td></tr>` : ""}
           <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
