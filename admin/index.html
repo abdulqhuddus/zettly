@@ -820,6 +820,13 @@
       <input type="text" id="order-address">
     </div>
     <div class="form-field">
+      <label for="order-audience" id="t-order-audience">Service type</label>
+      <select id="order-audience">
+        <option value="home" id="opt-order-audience-home">Home</option>
+        <option value="business" id="opt-order-audience-business">Business</option>
+      </select>
+    </div>
+    <div class="form-field">
       <label for="order-service" id="t-order-service">Service</label>
       <select id="order-service"></select>
     </div>
@@ -997,6 +1004,7 @@
       orderEmail: "Email",
       orderPhone: "Phone (optional)",
       orderAddress: "Address (optional)",
+      orderServiceType: "Service type",
       orderService: "Service",
       orderServicePlaceholder: "Choose a service…",
       orderNotes: "Notes (optional)",
@@ -1193,6 +1201,7 @@
       orderEmail: "E-Mail",
       orderPhone: "Telefon (optional)",
       orderAddress: "Adresse (optional)",
+      orderServiceType: "Art der Leistung",
       orderService: "Leistung",
       orderServicePlaceholder: "Leistung wählen…",
       orderNotes: "Notizen (optional)",
@@ -1258,7 +1267,7 @@
     paymentLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/></svg>',
     markPaid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 0 0-2.8-2h-.4a2.6 2.6 0 0 0 0 5.2h.4a2.6 2.6 0 0 1 0 5.2h-.4a3 3 0 0 1-2.8-2"/><line x1="12" y1="6" x2="12" y2="18"/></svg>',
     markPending: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>',
-    viewLogs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>',
+    viewLogs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="5" cy="18" r="1.2" fill="currentColor" stroke="none"/><line x1="9.5" y1="6" x2="20" y2="6"/><line x1="9.5" y1="12" x2="20" y2="12"/><line x1="9.5" y1="18" x2="16" y2="18"/></svg>',
     setPrice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15s.8 1 2.5 1 2.5-.8 2.5-1.8-1-1.5-2.5-1.7-2.5-.7-2.5-1.7S10.5 9 12 9s2 .5 2.3 1"/><path d="M12 7.3v1M12 15.7v1"/></svg>',
     createOrder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12.5" x2="12" y2="17.5"/><line x1="9.5" y1="15" x2="14.5" y2="15"/></svg>',
     eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
@@ -1385,6 +1394,9 @@
     document.getElementById("t-order-email").textContent = s.orderEmail;
     document.getElementById("t-order-phone").textContent = s.orderPhone;
     document.getElementById("t-order-address").textContent = s.orderAddress;
+    document.getElementById("t-order-audience").textContent = s.orderServiceType;
+    document.getElementById("opt-order-audience-home").textContent = s.audienceHomeOpt;
+    document.getElementById("opt-order-audience-business").textContent = s.audienceBusinessOpt;
     document.getElementById("t-order-service").textContent = s.orderService;
     document.getElementById("t-order-notes").textContent = s.orderNotes;
     document.getElementById("t-order-price").textContent = s.orderPrice;
@@ -2478,29 +2490,21 @@
     return catalogLeavesPromise;
   }
 
-  async function openOrderModal(b) {
-    orderModalSourceId = b.id;
-    document.getElementById("order-modal-source-ref").textContent = b.bookingRef;
-    document.getElementById("order-firstname").value = b.customer_first_name || (b.customer_name || "").split(" ")[0] || "";
-    document.getElementById("order-lastname").value = b.customer_last_name || (b.customer_name || "").split(" ").slice(1).join(" ");
-    document.getElementById("order-company").value = b.customer_company || "";
-    document.getElementById("order-email").value = b.customer_email || "";
-    document.getElementById("order-phone").value = b.customer_phone || "";
-    document.getElementById("order-address").value = b.customer_address || "";
-    document.getElementById("order-notes").value = "";
-    document.getElementById("order-price").value = "";
-    document.getElementById("order-quantity").value = "1";
-    document.getElementById("order-error").textContent = "";
+  let orderModalLeaves = [];
 
+  // Rebuilds the Service dropdown for just one audience (home or business)
+  // -- otherwise every one of the ~500 catalog leaves from both would show
+  // at once, most of them irrelevant to whichever kind of order this is.
+  function populateOrderServiceOptions(audience) {
     const select = document.getElementById("order-service");
     const s = t();
     select.innerHTML = `<option value="">${s.orderServicePlaceholder}</option>`;
-    const leaves = await getCatalogLeavesCached();
     // Grouped by everything up to the last breadcrumb segment, so the
     // dropdown reads like the public site's own category structure instead
-    // of one flat alphabetical list of ~500 leaves.
+    // of one flat alphabetical list.
     const groups = new Map();
-    for (const leaf of leaves) {
+    for (const leaf of orderModalLeaves) {
+      if (!leaf.serviceId.startsWith(audience + ":")) continue;
       const crumb = lang === "de" ? leaf.breadcrumbDe : leaf.breadcrumbEn;
       const groupLabel = crumb.slice(0, -1).join(" › ");
       const optionLabel = `${crumb[crumb.length - 1]}${leaf.quote ? "" : ` (€${leaf.price})`}`;
@@ -2518,6 +2522,32 @@
       }
       select.appendChild(optgroup);
     }
+  }
+  document.getElementById("order-audience").addEventListener("change", (e) => {
+    populateOrderServiceOptions(e.target.value);
+  });
+
+  async function openOrderModal(b) {
+    orderModalSourceId = b.id;
+    document.getElementById("order-modal-source-ref").textContent = b.bookingRef;
+    document.getElementById("order-firstname").value = b.customer_first_name || (b.customer_name || "").split(" ")[0] || "";
+    document.getElementById("order-lastname").value = b.customer_last_name || (b.customer_name || "").split(" ").slice(1).join(" ");
+    document.getElementById("order-company").value = b.customer_company || "";
+    document.getElementById("order-email").value = b.customer_email || "";
+    document.getElementById("order-phone").value = b.customer_phone || "";
+    document.getElementById("order-address").value = b.customer_address || "";
+    document.getElementById("order-notes").value = "";
+    document.getElementById("order-price").value = "";
+    document.getElementById("order-quantity").value = "1";
+    document.getElementById("order-error").textContent = "";
+
+    // Defaults to the source booking's own audience -- the admin can still
+    // switch it to create an order for the other kind of service.
+    const audienceSelect = document.getElementById("order-audience");
+    audienceSelect.value = b.audience === "business" ? "business" : "home";
+
+    orderModalLeaves = await getCatalogLeavesCached();
+    populateOrderServiceOptions(audienceSelect.value);
 
     document.getElementById("order-modal").classList.add("open");
   }

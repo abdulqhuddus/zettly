@@ -588,7 +588,7 @@ export async function handleAdminCreateOrder(request, env, sourceId) {
   const customerName = `${firstName} ${lastName}`.trim();
   const email = typeof body?.email === "string" ? body.email.trim() : "";
   if (!isValidEmail(email)) return json({ error: "Invalid email address" }, 400);
-  const company = audience === "business" && typeof body?.company === "string" ? body.company.trim().slice(0, 200) || null : null;
+  const company = typeof body?.company === "string" ? body.company.trim().slice(0, 200) || null : null;
   const phone = typeof body?.phone === "string" ? body.phone.trim().slice(0, 50) || null : null;
   const address = typeof body?.address === "string" ? body.address.trim().slice(0, 300) : "";
   const notes = typeof body?.notes === "string" ? body.notes.trim().slice(0, 1000) || null : null;
@@ -598,29 +598,37 @@ export async function handleAdminCreateOrder(request, env, sourceId) {
   const serviceIdStr = `${audience}:${categoryId}:${(path || []).join(":")}`;
   const serviceName = localizedBreadcrumbNameSafe(resolved);
 
-  await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email, customer_phone, customer_company, customer_address, notes, status, payment_status, quantity, source_booking_id, created_by)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', 'pending', ?, ?, 'admin')`
-  )
-    .bind(
-      id,
-      serviceIdStr,
-      serviceName,
-      Math.round(price),
-      resolved.leaf.duration || 0,
-      source.date,
-      source.time,
-      customerName,
-      firstName,
-      lastName,
-      email,
-      phone,
-      company,
-      address || source.customer_address || "",
-      notes,
-      quantity
+  try {
+    await env.DB.prepare(
+      `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email, customer_phone, customer_company, customer_address, notes, status, payment_status, quantity, source_booking_id, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', 'pending', ?, ?, 'admin')`
     )
-    .run();
+      .bind(
+        id,
+        serviceIdStr,
+        serviceName,
+        Math.round(price),
+        resolved.leaf.duration || 0,
+        source.date,
+        source.time,
+        customerName,
+        firstName,
+        lastName,
+        email,
+        phone,
+        company,
+        address || source.customer_address || "",
+        notes,
+        quantity,
+        sourceId
+      )
+      .run();
+  } catch (err) {
+    // Surfaced as a real error message rather than a bare 500 -- a D1
+    // failure here (bad bind count, a since-dropped column, etc.) should
+    // tell the admin something useful instead of the generic fallback.
+    return json({ error: `Could not create order: ${err.message || err}` }, 500);
+  }
 
   const bookingRef = `ZTL-${id.split("-")[0].toUpperCase()}`;
   const sourceRef = `ZTL-${source.id.split("-")[0].toUpperCase()}`;
