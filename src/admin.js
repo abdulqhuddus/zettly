@@ -14,7 +14,7 @@ import {
   recordFailedLogin,
   clearFailedLogins,
 } from "./auth.js";
-import { json, berlinNow, isValidEmail } from "./utils.js";
+import { json, berlinNow, isValidEmail, logActivity } from "./utils.js";
 import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
 import { sendConfirmationEmail, parseAttachment } from "./index.js";
@@ -286,15 +286,31 @@ export async function handleAdminAddEvidence(request, env, bookingId) {
     .run();
 
   const row = await env.DB.prepare(`SELECT id, filename, content_type, note, created_at FROM booking_evidence WHERE id = ?`).bind(id).first();
+  await logActivity(env, bookingId, "evidence_uploaded", "admin", note ? `Added evidence photo: ${note}` : "Added an evidence photo");
   return json({ ok: true, photo: row });
 }
 
 export async function handleAdminDeleteEvidence(request, env, bookingId, evidenceId) {
   if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
-  const existing = await env.DB.prepare(`SELECT id FROM booking_evidence WHERE id = ? AND booking_id = ?`).bind(evidenceId, bookingId).first();
+  const existing = await env.DB.prepare(`SELECT id, filename FROM booking_evidence WHERE id = ? AND booking_id = ?`).bind(evidenceId, bookingId).first();
   if (!existing) return json({ error: "Not found" }, 404);
   await env.DB.prepare(`DELETE FROM booking_evidence WHERE id = ?`).bind(evidenceId).run();
+  await logActivity(env, bookingId, "evidence_deleted", "admin", existing.filename ? `Removed evidence photo: ${existing.filename}` : "Removed an evidence photo");
   return json({ ok: true });
+}
+
+// Activity timeline for a booking -- the "View logs" page on the admin
+// dashboard reads this. Newest first, so the most recent event is always at
+// the top.
+export async function handleAdminGetActivity(env, bookingId) {
+  const booking = await env.DB.prepare(`SELECT id FROM bookings WHERE id = ?`).bind(bookingId).first();
+  if (!booking) return json({ error: "Not found" }, 404);
+  const { results } = await env.DB.prepare(
+    `SELECT id, action, actor, detail, created_at FROM booking_activity_log WHERE booking_id = ? ORDER BY created_at DESC, id DESC`
+  )
+    .bind(bookingId)
+    .all();
+  return json({ activity: results });
 }
 
 export async function handleAdminBookingDetail(env, id) {
@@ -379,6 +395,14 @@ export async function handleAdminUpdateStatus(request, env, id) {
   // the customer gets the same confirmation email, with both PDFs
   // attached, as when they first booked.
   const reconfirming = body.status === "confirmed" && existing.status !== "confirmed";
+
+  if (existing.status !== body.status) {
+    const action = cancelling ? "cancelled" : body.status === "completed" ? "completed" : body.status === "processing" ? "processing" : reconfirming ? "reconfirmed" : "status_changed";
+    const detail = cancelling
+      ? `Cancelled by admin${reason ? ` (reason: ${reason})` : ""}`
+      : `Status changed: ${existing.status} → ${body.status}`;
+    await logActivity(env, id, action, "admin", detail);
+  }
 
   let emailSent = false;
   if (cancelling && body.notifyCustomer !== false) {
@@ -465,6 +489,7 @@ export async function handleAdminSetPaymentStatus(request, env, id) {
     )
     .run();
 
+  await logActivity(env, id, "payment_status_changed", "admin", `Payment status changed to ${body.paymentStatus}`);
   return json({ ok: true, id, paymentStatus: body.paymentStatus });
 }
 
@@ -490,6 +515,7 @@ export async function handleAdminSendInvoice(request, env, id) {
 
   const lang = body?.lang === "en" ? "en" : "de";
   const result = await sendInvoiceEmail(env, existing, lang);
+  await logActivity(env, id, "invoice_sent", "admin", result.sent ? "Invoice emailed to customer" : "Invoice send attempted but not emailed");
   return json({ ok: true, emailSent: result.sent, reason: result.reason });
 }
 
@@ -514,6 +540,7 @@ export async function handleAdminSendPaymentLink(request, env, id) {
 
   const lang = body?.lang === "en" ? "en" : "de";
   const result = await sendPaymentLinkEmail(env, existing, lang, overrideEmail || null);
+  await logActivity(env, id, "payment_link_sent", "admin", result.sent ? `Payment link emailed${overrideEmail ? ` to ${overrideEmail}` : ""}` : "Payment link send attempted but not emailed");
   return json({ ok: true, emailSent: result.sent, reason: result.reason, paymentLink: result.paymentLink });
 }
 

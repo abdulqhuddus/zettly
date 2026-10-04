@@ -5,7 +5,7 @@
 
 import catalog from "../catalog.json";
 import { verifyCancelToken } from "./auth.js";
-import { json, minutesUntil, localizedDate } from "./utils.js";
+import { json, minutesUntil, localizedDate, logActivity } from "./utils.js";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
 import { sendCancellationEmail, sendAdminCancellationNotification } from "./notify.js";
 
@@ -87,6 +87,8 @@ export async function handleCancelSubmit(request, env) {
   )
     .bind(new Date().toISOString().replace("Z", ""), reason, row.id)
     .run();
+
+  await logActivity(env, row.id, "cancelled", "customer", `Cancelled by customer (reason: ${reason})`);
 
   const lang = body.lang === "de" ? "de" : "en";
   const cancelledRow = { ...row, cancellation_reason: reason };

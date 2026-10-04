@@ -56,6 +56,21 @@ export function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Records one entry in a booking's activity timeline (see the admin "View
+// logs" page). Best-effort: a logging failure must never break the actual
+// action it's describing, so it's swallowed here rather than propagated.
+export async function logActivity(env, bookingId, action, actor, detail = null) {
+  try {
+    await env.DB.prepare(
+      `INSERT INTO booking_activity_log (id, booking_id, action, actor, detail) VALUES (?, ?, ?, ?, ?)`
+    )
+      .bind(crypto.randomUUID(), bookingId, action, actor, detail)
+      .run();
+  } catch {
+    // ignore -- the timeline is a convenience view, not the record of truth
+  }
+}
+
 export function localizedDate(dateStr, lang) {
   const d = new Date(dateStr + "T00:00:00");
   return d.toLocaleDateString(lang === "en" ? "en-GB" : "de-DE", {

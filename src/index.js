@@ -1,7 +1,7 @@
 import catalog from "../catalog.json";
 import { generateBookingPdf, toBase64 } from "./pdf.js";
 import { getSession, createCancelToken } from "./auth.js";
-import { json, toMinutes, berlinNow, isValidEmail, localizedDate } from "./utils.js";
+import { json, toMinutes, berlinNow, isValidEmail, localizedDate, logActivity } from "./utils.js";
 import { LOGO_PNG_BASE64 } from "./logo.js";
 import { resolveLeaf as resolveLeafFromCatalog, fullBreadcrumb as buildFullBreadcrumb, localizedBreadcrumbName } from "./catalog-utils.js";
 import {
@@ -13,6 +13,7 @@ import {
   handleAdminBookingAttachment,
   handleAdminUpdateStatus,
   handleAdminSetPaymentStatus,
+  handleAdminGetActivity,
   handleAdminListEvidence,
   handleAdminGetEvidencePhoto,
   handleAdminAddEvidence,
@@ -677,6 +678,11 @@ async function handleBook(request, env) {
     )
     .run();
 
+  await logActivity(env, id, "created", "customer", "Booking created");
+  if (attachment) {
+    await logActivity(env, id, "attachment_uploaded", "customer", `Attached a photo: ${attachment.filename}`);
+  }
+
   const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_company: company, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, isConsultation: isConsultationLeaf, onlineConsultation: wantsOnlineConsultation, liabilityAcceptedAt: acceptedAt, privacyAcceptedAt: acceptedAt };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
   // Best-effort: the owner's own heads-up email should never affect the
@@ -776,6 +782,10 @@ export default {
       const attachmentMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/attachment$/);
       if (attachmentMatch && request.method === "GET") {
         return handleAdminBookingAttachment(env, attachmentMatch[1]);
+      }
+      const activityMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/activity$/);
+      if (activityMatch && request.method === "GET") {
+        return handleAdminGetActivity(env, activityMatch[1]);
       }
       const paymentMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/payment$/);
       if (paymentMatch && request.method === "POST") {

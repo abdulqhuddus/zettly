@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Zettly Admin — Logs</title>
+<style>
+  :root {
+    --accent: #7C3AED;
+    --accent-light: #F3EEFF;
+    --pink: #EC4899;
+    --ink: #111114;
+    --muted: #6b6b74;
+    --border: #e9e7ef;
+    --bg: #f7f6fb;
+    --ok: #16a34a;
+    --ok-bg: #eafcef;
+    --danger: #c2185b;
+    --danger-bg: #fdeef2;
+    --warn: #b45309;
+    --warn-bg: #fef3e0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  a { color: inherit; }
+  header.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 0.8rem; }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+  }
+  .back-link svg { width: 15px; height: 15px; }
+  header h1 { font-size: 1.05rem; margin: 0; font-weight: 700; }
+  .lang-toggle { display: flex; gap: 0.3rem; }
+  .lang-toggle button {
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 0.28rem 0.6rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .lang-toggle button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  main { padding: 1.5rem; max-width: 760px; margin: 0 auto; }
+
+  .summary-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1.3rem;
+  }
+  .summary-ref { font-size: 0.78rem; font-weight: 700; color: var(--accent); margin-bottom: 0.25rem; }
+  .summary-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .summary-meta { font-size: 0.85rem; color: var(--muted); }
+
+  .timeline-heading { font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 0.8rem; }
+
+  .timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+  .timeline li {
+    display: flex;
+    gap: 0.9rem;
+    padding-bottom: 1.3rem;
+    position: relative;
+  }
+  .timeline li:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 34px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .tl-icon {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+  .tl-icon svg { width: 16px; height: 16px; }
+  .tl-icon.ok { background: var(--ok-bg); color: var(--ok); }
+  .tl-icon.danger { background: var(--danger-bg); color: var(--danger); }
+  .tl-icon.warn { background: var(--warn-bg); color: var(--warn); }
+  .tl-body {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.7rem 0.9rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .tl-top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; }
+  .tl-detail { font-size: 0.9rem; font-weight: 600; }
+  .tl-time { font-size: 0.74rem; color: var(--muted); white-space: nowrap; }
+  .tl-actor {
+    display: inline-block;
+    margin-top: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    background: var(--bg);
+    border-radius: 999px;
+    padding: 0.15rem 0.5rem;
+  }
+
+  .empty-state, .loading-state, .error-state {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding: 2.5rem 1rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+  .error-state { color: var(--danger); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="back-link" href="/admin" id="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <span id="t-back">Back</span>
+    </a>
+    <h1 id="t-title">Booking activity</h1>
+  </div>
+  <div class="lang-toggle">
+    <button data-lang="en" type="button">EN</button>
+    <button data-lang="de" type="button">DE</button>
+  </div>
+</header>
+<main>
+  <div class="summary-card" id="summary-card" style="display:none;">
+    <div class="summary-ref" id="summary-ref"></div>
+    <div class="summary-title" id="summary-title"></div>
+    <div class="summary-meta" id="summary-meta"></div>
+  </div>
+  <p class="timeline-heading" id="t-timeline-heading" style="display:none;">Activity timeline</p>
+  <div id="state-area" class="loading-state">Loading…</div>
+  <ul class="timeline" id="timeline" style="display:none;"></ul>
+</main>
+<script>
+(() => {
+  const STRINGS = {
+    en: {
+      back: "Back",
+      title: "Booking activity",
+      timelineHeading: "Activity timeline",
+      loading: "Loading…",
+      loadFailed: "Couldn't load this booking's activity. The link may be invalid, or your session may have expired.",
+      empty: "No activity recorded yet.",
+      missingId: "No booking specified.",
+      actorAdmin: "Admin",
+      actorCustomer: "Customer",
+      actorSystem: "System",
+      actions: {
+        created: "Booking created",
+        attachment_uploaded: "Photo attached",
+        cancelled: "Booking cancelled",
+        completed: "Marked as completed",
+        processing: "Marked as processing",
+        reconfirmed: "Re-confirmed",
+        status_changed: "Status changed",
+        payment_status_changed: "Payment status changed",
+        evidence_uploaded: "Evidence photo added",
+        evidence_deleted: "Evidence photo removed",
+        invoice_sent: "Invoice sent",
+        payment_link_sent: "Payment link sent",
+      },
+    },
+    de: {
+      back: "Zurück",
+      title: "Buchungsverlauf",
+      timelineHeading: "Verlauf",
+      loading: "Wird geladen…",
+      loadFailed: "Der Verlauf dieser Buchung konnte nicht geladen werden. Der Link ist eventuell ungültig, oder Ihre Sitzung ist abgelaufen.",
+      empty: "Noch keine Aktivitäten erfasst.",
+      missingId: "Keine Buchung angegeben.",
+      actorAdmin: "Admin",
+      actorCustomer: "Kunde",
+      actorSystem: "System",
+      actions: {
+        created: "Buchung erstellt",
+        attachment_uploaded: "Foto angehängt",
+        cancelled: "Buchung storniert",
+        completed: "Als abgeschlossen markiert",
+        processing: "Als in Bearbeitung markiert",
+        reconfirmed: "Erneut bestätigt",
+        status_changed: "Status geändert",
+        payment_status_changed: "Zahlungsstatus geändert",
+        evidence_uploaded: "Nachweisfoto hinzugefügt",
+        evidence_deleted: "Nachweisfoto entfernt",
+        invoice_sent: "Rechnung gesendet",
+        payment_link_sent: "Zahlungslink gesendet",
+      },
+    },
+  };
+
+  const ICONS = {
+    created: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>',
+    attachment_uploaded: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+    cancelled: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+    completed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>',
+    processing: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>',
+    reconfirmed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a9 9 0 1 1 2.5 6.2"/><polyline points="3 5 3 11 9 11"/></svg>',
+    status_changed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M21 3L13 11M8 21H3v-5M3 21l8-8"/></svg>',
+    payment_status_changed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 0 0-2.8-2h-.4a2.6 2.6 0 0 0 0 5.2h.4a2.6 2.6 0 0 1 0 5.2h-.4a3 3 0 0 1-2.8-2"/><line x1="12" y1="6" x2="12" y2="18"/></svg>',
+    evidence_uploaded: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>',
+    evidence_deleted: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 20 7"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></svg>',
+    invoice_sent: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg>',
+    payment_link_sent: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/></svg>',
+  };
+  // Which icon color variant each action gets, for a quick visual read of
+  // the timeline (red for cancellations, green for positive progress, etc).
+  const ICON_CLASS = {
+    cancelled: "danger",
+    completed: "ok",
+    reconfirmed: "ok",
+    processing: "warn",
+    evidence_deleted: "danger",
+    payment_status_changed: "ok",
+  };
+
+  let lang = "en";
+  try {
+    const saved = localStorage.getItem("zettly-admin-lang");
+    if (saved === "en" || saved === "de") lang = saved;
+  } catch {}
+
+  function t() { return STRINGS[lang]; }
+
+  function applyStaticStrings() {
+    const s = t();
+    document.getElementById("t-back").textContent = s.back;
+    document.getElementById("t-title").textContent = s.title;
+    document.getElementById("t-timeline-heading").textContent = s.timelineHeading;
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".lang-toggle button").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.lang === lang);
+    });
+  }
+
+  document.querySelectorAll(".lang-toggle button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      lang = btn.dataset.lang;
+      try { localStorage.setItem("zettly-admin-lang", lang); } catch {}
+      applyStaticStrings();
+      render();
+    });
+  });
+
+  const params = new URLSearchParams(location.search);
+  const bookingId = params.get("id") || "";
+
+  let booking = null;
+  let activity = null;
+  let loadError = null;
+
+  function fmtDateTime(sqliteTimestamp) {
+    // Stored as SQLite's datetime('now') format ("YYYY-MM-DD HH:MM:SS", UTC)
+    // -- parsed as UTC explicitly, then displayed in the browser's own
+    // locale/timezone so admins in different timezones each see their own
+    // local time.
+    if (!sqliteTimestamp) return "";
+    const iso = sqliteTimestamp.includes("T") ? sqliteTimestamp : sqliteTimestamp.replace(" ", "T") + "Z";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return sqliteTimestamp;
+    return d.toLocaleString(lang === "de" ? "de-DE" : "en-GB", { dateStyle: "medium", timeStyle: "short" });
+  }
+
+  function render() {
+    const s = t();
+    const stateArea = document.getElementById("state-area");
+    const timelineEl = document.getElementById("timeline");
+    const summaryCard = document.getElementById("summary-card");
+    const timelineHeading = document.getElementById("t-timeline-heading");
+
+    if (!bookingId) {
+      stateArea.style.display = "block";
+      stateArea.className = "error-state";
+      stateArea.textContent = s.missingId;
+      timelineEl.style.display = "none";
+      summaryCard.style.display = "none";
+      timelineHeading.style.display = "none";
+      return;
+    }
+    if (loadError) {
+      stateArea.style.display = "block";
+      stateArea.className = "error-state";
+      stateArea.textContent = s.loadFailed;
+      timelineEl.style.display = "none";
+      summaryCard.style.display = "none";
+      timelineHeading.style.display = "none";
+      return;
+    }
+    if (!booking || !activity) {
+      stateArea.style.display = "block";
+      stateArea.className = "loading-state";
+      stateArea.textContent = s.loading;
+      timelineEl.style.display = "none";
+      summaryCard.style.display = "none";
+      timelineHeading.style.display = "none";
+      return;
+    }
+
+    summaryCard.style.display = "block";
+    timelineHeading.style.display = "block";
+    document.getElementById("summary-ref").textContent = booking.bookingRef || "";
+    document.getElementById("summary-title").textContent = `${booking.customer_name || ""} — ${booking.service_name || ""}`;
+    document.getElementById("summary-meta").textContent = `${booking.date || ""} ${booking.time || ""}`.trim();
+
+    if (!activity.length) {
+      stateArea.style.display = "block";
+      stateArea.className = "empty-state";
+      stateArea.textContent = s.empty;
+      timelineEl.style.display = "none";
+      return;
+    }
+
+    stateArea.style.display = "none";
+    timelineEl.style.display = "block";
+    timelineEl.innerHTML = "";
+    for (const entry of activity) {
+      const li = document.createElement("li");
+      const iconCls = ICON_CLASS[entry.action] || "";
+      const actorLabel = entry.actor === "admin" ? s.actorAdmin : entry.actor === "customer" ? s.actorCustomer : s.actorSystem;
+      li.innerHTML = `
+        <div class="tl-icon ${iconCls}">${ICONS[entry.action] || ICONS.status_changed}</div>
+        <div class="tl-body">
+          <div class="tl-top">
+            <span class="tl-detail"></span>
+            <span class="tl-time"></span>
+          </div>
+          <span class="tl-actor"></span>
+        </div>`;
+      li.querySelector(".tl-detail").textContent = entry.detail || s.actions[entry.action] || entry.action;
+      li.querySelector(".tl-time").textContent = fmtDateTime(entry.created_at);
+      li.querySelector(".tl-actor").textContent = actorLabel;
+      timelineEl.appendChild(li);
+    }
+  }
+
+  async function load() {
+    if (!bookingId) { render(); return; }
+    try {
+      const [bookingRes, activityRes] = await Promise.all([
+        fetch(`/api/admin/bookings/${encodeURIComponent(bookingId)}`, { credentials: "same-origin" }),
+        fetch(`/api/admin/bookings/${encodeURIComponent(bookingId)}/activity`, { credentials: "same-origin" }),
+      ]);
+      if (bookingRes.status === 401 || activityRes.status === 401) {
+        location.href = "/admin";
+        return;
+      }
+      if (!bookingRes.ok || !activityRes.ok) throw new Error("load failed");
+      booking = await bookingRes.json();
+      const activityData = await activityRes.json();
+      activity = activityData.activity || [];
+    } catch {
+      loadError = true;
+    }
+    render();
+  }
+
+  applyStaticStrings();
+  render();
+  load();
+})();
+</script>
+</body>
+</html>
