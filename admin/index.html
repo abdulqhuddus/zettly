@@ -533,6 +533,7 @@
       <div class="detail-row"><dt id="t-m-price">Price</dt><dd id="m-price"></dd></div>
       <div class="detail-row" id="m-callout-row"><dt id="t-m-callout">Call-out fee</dt><dd id="m-callout"></dd></div>
       <div class="detail-row" id="m-phone-consultation-row"><dt id="t-m-consultation-type">Consultation type</dt><dd id="m-consultation-type"></dd></div>
+      <div class="detail-row" id="m-company-row"><dt id="t-m-company">Company</dt><dd id="m-company"></dd></div>
       <div class="detail-row"><dt id="t-m-email">Email</dt><dd id="m-email"></dd></div>
       <div class="detail-row"><dt id="t-m-phone">Phone</dt><dd id="m-phone"></dd></div>
       <div class="detail-row"><dt id="t-m-address">Address</dt><dd id="m-address"></dd></div>
@@ -641,6 +642,7 @@
       mPrice: "Price",
       mConsultationType: "Consultation type",
       mPhoneConsultation: "Phone call",
+      mCompany: "Company",
       mEmail: "Email",
       mPhone: "Phone",
       mAddress: "Address",
@@ -758,6 +760,7 @@
       mCallout: "Anfahrtspauschale",
       mConsultationType: "Beratungsart",
       mPhoneConsultation: "Telefonisch",
+      mCompany: "Firma",
       mEmail: "E-Mail",
       mPhone: "Telefon",
       mAddress: "Adresse",
@@ -876,6 +879,7 @@
     document.getElementById("t-m-price").textContent = s.mPrice;
     document.getElementById("t-m-callout").textContent = s.mCallout;
     document.getElementById("t-m-consultation-type").textContent = s.mConsultationType;
+    document.getElementById("t-m-company").textContent = s.mCompany;
     document.getElementById("t-m-email").textContent = s.mEmail;
     document.getElementById("t-m-phone").textContent = s.mPhone;
     document.getElementById("t-m-address").textContent = s.mAddress;
@@ -1272,6 +1276,9 @@
     } else {
       phoneConsultationRow.style.display = "none";
     }
+    const companyRow = document.getElementById("m-company-row");
+    if (b.customer_company) { companyRow.style.display = "flex"; document.getElementById("m-company").textContent = b.customer_company; }
+    else companyRow.style.display = "none";
     document.getElementById("m-email").textContent = b.customer_email;
     document.getElementById("m-phone").textContent = b.customer_phone || "—";
     document.getElementById("m-address").textContent = b.customer_address || "—";

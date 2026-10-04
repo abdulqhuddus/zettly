@@ -418,6 +418,7 @@ async function sendAdminNotification(env, booking, service, lang) {
           ${service.quantity > 1 ? `<tr><td style="padding:4px 0; color:#6b6b74;">Quantity</td><td style="padding:4px 0; text-align:right; font-weight:700;">×${service.quantity}${service.unitPrice != null ? ` (€${service.unitPrice} each)` : ""}</td></tr>` : ""}
           ${booking.phoneConsultation ? `<tr><td style="padding:4px 0; color:#6b6b74;">Consultation type</td><td style="padding:4px 0; text-align:right; font-weight:700;">Phone call</td></tr>` : ""}
           <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
+          ${booking.customer_company ? `<tr><td style="padding:4px 0; color:#6b6b74;">Company</td><td style="padding:4px 0; text-align:right; font-weight:700;">${booking.customer_company}</td></tr>` : ""}
           <tr><td style="padding:4px 0; color:#6b6b74;">Email</td><td style="padding:4px 0; text-align:right;">${booking.customer_email}</td></tr>
           ${booking.customer_phone ? `<tr><td style="padding:4px 0; color:#6b6b74;">Phone</td><td style="padding:4px 0; text-align:right;">${booking.customer_phone}</td></tr>` : ""}
           <tr><td style="padding:4px 0; color:#6b6b74; vertical-align:top;">Address</td><td style="padding:4px 0; text-align:right;">${booking.customer_address}</td></tr>
@@ -448,7 +449,10 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang, attachment: rawAttachment } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, company: rawCompany, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang, attachment: rawAttachment } = body;
+  // Only meaningful for business bookings; silently ignored otherwise so a
+  // tampered request can't attach a company name to a home booking.
+  const company = audience === "business" && typeof rawCompany === "string" ? rawCompany.trim().slice(0, 200) || null : null;
   const lang = rawLang === "en" ? "en" : "de";
   // Optional, and silently dropped rather than rejected if it's missing,
   // oversized, or an unsupported type -- a bad photo shouldn't block an
@@ -570,8 +574,8 @@ async function handleBook(request, env) {
   const acceptedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at, quantity, attachment_data, attachment_filename, attachment_content_type, attachment_size)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_company, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at, quantity, attachment_data, attachment_filename, attachment_content_type, attachment_size)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
       id,
@@ -584,6 +588,7 @@ async function handleBook(request, env) {
       name,
       email,
       phone || null,
+      company,
       address,
       notesWithAudience,
       commuteFee,
@@ -599,7 +604,7 @@ async function handleBook(request, env) {
     )
     .run();
 
-  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, phoneConsultation: wantsPhoneConsultation, liabilityAcceptedAt: acceptedAt, privacyAcceptedAt: acceptedAt };
+  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_company: company, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, phoneConsultation: wantsPhoneConsultation, liabilityAcceptedAt: acceptedAt, privacyAcceptedAt: acceptedAt };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
   // Best-effort: the owner's own heads-up email should never affect the
   // customer-facing response, so its failure is swallowed here.

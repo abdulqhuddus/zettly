@@ -120,7 +120,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity,
+            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -161,7 +161,7 @@ export async function handleAdminListBookings(url, env) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity,
+            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity,
             attachment_data, attachment_filename, attachment_content_type, attachment_size
      FROM bookings WHERE id = ?`
   )

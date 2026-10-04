@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   customer_name TEXT NOT NULL,
   customer_email TEXT NOT NULL,
   customer_phone TEXT,
+  customer_company TEXT,                     -- optional, business bookings only
   customer_address TEXT NOT NULL DEFAULT '', -- on-site visit address
   notes TEXT,
   status TEXT NOT NULL DEFAULT 'confirmed', -- confirmed | cancelled | completed

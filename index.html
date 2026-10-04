@@ -728,8 +728,8 @@
 
   /* --- Dynamics 365 CRM mini-diagram (bx-crm-*) --- */
   .bx-crm-mock { width: 100%; transform: scale(0.82); }
-  .bx-crm-logo { display: block; width: 52px; height: 52px; margin: 0 auto 0.6rem; }
-  .bx-crm-board { position: relative; display: flex; gap: 0.3rem; margin-top: 46px; }
+  .bx-crm-logo { display: block; width: 80px; height: 80px; margin: 0 auto 0.6rem; }
+  .bx-crm-board { position: relative; display: flex; gap: 0.3rem; margin-top: 70px; }
   .bx-crm-col {
     position: relative; z-index: 1; flex: 1; min-width: 0; border-radius: 12px;
     padding: 1.5rem 0.1rem 0.5rem; text-align: center; background: var(--accent-light);
@@ -2543,6 +2543,10 @@
             <input type="text" id="f-lastname" placeholder="Mustermann" />
           </div>
         </div>
+        <div class="field" id="company-field" style="display:none;">
+          <label data-i18n="companyName">Firmenname</label>
+          <input type="text" id="f-company" placeholder="Musterfirma GmbH" />
+        </div>
         <div class="field">
           <label data-i18n="email">E-Mail</label>
           <input type="email" id="f-email" placeholder="max@beispiel.de" />
@@ -3084,6 +3088,7 @@ const I18N = {
     step3Sub: "Die Bestätigung senden wir an diese Adresse.",
     firstName: "Vorname",
     lastName: "Nachname",
+    companyName: "Firmenname",
     email: "E-Mail",
     phone: "Telefon (optional)",
     addressTitle: "Adresse für den Vor-Ort-Termin",
@@ -3292,6 +3297,7 @@ const I18N = {
     step3Sub: "We'll send your confirmation here.",
     firstName: "First name",
     lastName: "Last name",
+    companyName: "Company name",
     email: "Email",
     phone: "Phone (optional)",
     addressTitle: "Address for the on-site visit",
@@ -3525,6 +3531,10 @@ function showStep(n) {
   // again below the success summary once a booking goes through, but
   // collapse it for every step of the wizard itself.
   document.getElementById("business-exclusive").classList.toggle("collapsed", n !== 0 && n !== 6);
+  // Company name only makes sense for business bookings, so only show that
+  // field on the details step when the customer picked the business path.
+  const companyField = document.getElementById("company-field");
+  if (companyField) companyField.style.display = state.audience === "business" ? "" : "none";
   const pct = ((n + 1) / TOTAL_STEPS) * 100;
   document.getElementById("progress-fill").style.width = pct + "%";
   document.getElementById("progress-label").innerHTML = `<b>${n + 1}</b> / ${TOTAL_STEPS}`;
@@ -4661,6 +4671,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
   const name = `${firstName} ${lastName}`.trim();
   const email = document.getElementById("f-email").value.trim();
   const phone = document.getElementById("f-phone").value.trim();
+  const company = state.audience === "business" ? document.getElementById("f-company").value.trim() : "";
   const street = document.getElementById("f-street").value.trim();
   const zip = state.zip;
   const city = state.city;
@@ -4710,7 +4721,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         path: state.service.path,
         date: state.date,
         time: state.time,
-        name, email, phone, address, zip: state.zip, notes, lang,
+        name, email, phone, company, address, zip: state.zip, notes, lang,
         phoneConsultation: !!state.phoneConsultation,
         liabilityAccepted: !!state.liabilityAccepted,
         privacyAccepted: !!document.getElementById("f-consent").checked,
