@@ -115,12 +115,35 @@
   .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 0.5rem 0.9rem; border-radius: 8px; font-size: 0.82rem; }
   main { padding: 1.5rem; max-width: 1180px; margin: 0 auto; }
 
+  .stats-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.3rem;
+  }
+  .stats-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .stats-panel-header h2 { font-size: 1rem; font-weight: 700; margin: 0; }
+  .stats-panel-body {
+    display: none;
+    margin-top: 1.1rem;
+  }
+  .stats-panel.open .stats-panel-body { display: block; }
+  .stats-toggle-btn { padding: 0.5rem 0.85rem; }
+  .stats-toggle-icon { display: inline-flex; width: 17px; height: 17px; }
+  .stats-toggle-icon svg { width: 100%; height: 100%; }
   .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0.9rem;
     margin-bottom: 1.1rem;
   }
+  .stats-row:last-child { margin-bottom: 0; }
   .stat-card {
     background: #fff;
     border: 1px solid var(--border);
@@ -432,6 +455,15 @@
     </div>
   </header>
   <main>
+    <div class="stats-panel" id="stats-panel">
+      <div class="stats-panel-header">
+        <h2 id="t-stats-title">Analytics</h2>
+        <button class="btn btn-ghost stats-toggle-btn" id="stats-toggle-btn" type="button" aria-expanded="false">
+          <span class="stats-toggle-icon" id="stats-toggle-icon"></span>
+          <span id="stats-toggle-label">Show</span>
+        </button>
+      </div>
+      <div class="stats-panel-body" id="stats-panel-body">
     <div class="stats-row">
       <div class="stat-card stat-count">
         <div class="stat-label" id="t-stat-count">Total Bookings</div>
@@ -484,6 +516,8 @@
       <div class="stat-card stat-pending">
         <div class="stat-label" id="t-stat-pending-amount">Total Pending Bookings Amount</div>
         <div class="stat-value" id="stat-pending-amount">–</div>
+      </div>
+    </div>
       </div>
     </div>
     <div class="booking-toggle-group">
@@ -639,6 +673,9 @@
       loginFailed: "Login failed",
       adminLabel: "Admin",
       logoutBtn: "Log out",
+      statsTitle: "Analytics",
+      statsShow: "Show",
+      statsHide: "Hide",
       statCount: "Total Bookings",
       statConfirmedCount: "Total Confirmed",
       statCancelledCount: "Total Cancelled",
@@ -780,6 +817,9 @@
       loginFailed: "Anmeldung fehlgeschlagen",
       adminLabel: "Admin",
       logoutBtn: "Abmelden",
+      statsTitle: "Analysen",
+      statsShow: "Anzeigen",
+      statsHide: "Verbergen",
       statCount: "Buchungen gesamt",
       statConfirmedCount: "Bestätigt gesamt",
       statCancelledCount: "Storniert gesamt",
@@ -929,6 +969,8 @@
     paymentLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/></svg>',
     markPaid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 0 0-2.8-2h-.4a2.6 2.6 0 0 0 0 5.2h.4a2.6 2.6 0 0 1 0 5.2h-.4a3 3 0 0 1-2.8-2"/><line x1="12" y1="6" x2="12" y2="18"/></svg>',
     markPending: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>',
+    eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    eyeOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.2A10.4 10.4 0 0 1 12 5c7 0 10.5 7 10.5 7a17.5 17.5 0 0 1-3.2 4.2M6.6 6.6C3.4 8.6 1.5 12 1.5 12s3.5 7 10.5 7a10.5 10.5 0 0 0 4.4-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
   };
 
   let lang = "en";
@@ -959,6 +1001,8 @@
     document.getElementById("login-btn").textContent = s.loginBtn;
     document.getElementById("t-admin-label").textContent = s.adminLabel;
     document.getElementById("logout-btn").textContent = s.logoutBtn;
+    document.getElementById("t-stats-title").textContent = s.statsTitle;
+    updateStatsToggleLabel();
     document.getElementById("t-stat-count").textContent = s.statCount;
     document.getElementById("t-stat-confirmed-count").textContent = s.statConfirmedCount;
     document.getElementById("t-stat-cancelled-count").textContent = s.statCancelledCount;
@@ -1097,6 +1141,25 @@
     await api("/api/admin/logout", { method: "POST" }).catch(() => {});
     showLogin();
   });
+
+  // The analytics/revenue figures stay hidden by default on every page
+  // load (never remembered as "open") -- someone glancing at the screen,
+  // or it being open on a shared/unlocked device, shouldn't see booking
+  // counts and revenue without a deliberate click to reveal them.
+  function updateStatsToggleLabel() {
+    const s = t();
+    const panel = document.getElementById("stats-panel");
+    const open = panel.classList.contains("open");
+    document.getElementById("stats-toggle-icon").innerHTML = open ? ICONS.eyeOff : ICONS.eye;
+    document.getElementById("stats-toggle-label").textContent = open ? s.statsHide : s.statsShow;
+    document.getElementById("stats-toggle-btn").setAttribute("aria-expanded", String(open));
+  }
+
+  document.getElementById("stats-toggle-btn").addEventListener("click", () => {
+    document.getElementById("stats-panel").classList.toggle("open");
+    updateStatsToggleLabel();
+  });
+  updateStatsToggleLabel();
 
   function statusLabel(status) {
     const s = t();
