@@ -344,6 +344,69 @@ export async function handleAdminDeleteBooking(request, env, id) {
   return json({ ok: true });
 }
 
+// Fulfils a GDPR Art. 17 erasure request (privacy policy section 10).
+//
+// German commercial/tax law (§ 257 HGB, § 147 AO) requires invoices to be
+// kept for up to 10 years, so a booking that's been invoiced can't be hard
+// deleted -- instead its personal data is scrubbed while the financial
+// record (service, price, date, status) stays intact, per Art. 18 GDPR
+// ("restriction of processing" rather than erasure). A booking that was
+// never invoiced carries no such obligation, so it's hard deleted outright,
+// same as handleAdminDeleteBooking above but reached from the "customer
+// asked us to delete their data" flow and logged accordingly before the
+// row (and its cascaded evidence/activity rows) disappear.
+export async function handleAdminRequestErasure(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  const existing = await env.DB.prepare(`SELECT id FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+
+  const invoiced = await env.DB.prepare(
+    `SELECT 1 FROM booking_activity_log WHERE booking_id = ? AND action = 'invoice_sent' LIMIT 1`
+  )
+    .bind(id)
+    .first();
+
+  if (!invoiced) {
+    // No legal retention obligation attaches yet -- honor the request in
+    // full. ON DELETE CASCADE removes booking_evidence and
+    // booking_activity_log rows along with it, so nothing is logged after
+    // (there'd be nothing left to attach the log entry to).
+    await env.DB.prepare(`DELETE FROM bookings WHERE id = ?`).bind(id).run();
+    return json({ ok: true, result: "deleted" });
+  }
+
+  // Invoiced: keep the booking row (it's the financial record) but erase
+  // every personal-data field on it, and remove any evidence photos, which
+  // are personal data with no retention requirement of their own.
+  await env.DB.prepare(
+    `UPDATE bookings SET
+       customer_name = 'Erased',
+       customer_first_name = NULL,
+       customer_last_name = NULL,
+       customer_email = 'erased@erased.invalid',
+       customer_phone = NULL,
+       customer_company = NULL,
+       customer_address = '',
+       notes = NULL,
+       attachment_data = NULL,
+       attachment_filename = NULL,
+       attachment_content_type = NULL,
+       attachment_size = NULL
+     WHERE id = ?`
+  )
+    .bind(id)
+    .run();
+  await env.DB.prepare(`DELETE FROM booking_evidence WHERE booking_id = ?`).bind(id).run();
+  await logActivity(
+    env,
+    id,
+    "gdpr_erasure",
+    "admin",
+    "Customer data erased on request; invoice/financial record retained for the legal retention period"
+  );
+  return json({ ok: true, result: "anonymized" });
+}
+
 const VALID_STATUSES = ["confirmed", "cancelled", "completed", "processing"];
 
 export async function handleAdminUpdateStatus(request, env, id) {

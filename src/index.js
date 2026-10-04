@@ -23,6 +23,7 @@ import {
   handleAdminAddEvidence,
   handleAdminDeleteEvidence,
   handleAdminDeleteBooking,
+  handleAdminRequestErasure,
   handleAdminListBlocks,
   handleAdminCreateBlock,
   handleAdminDeleteBlock,
@@ -807,6 +808,10 @@ export default {
       const priceMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/price$/);
       if (priceMatch && request.method === "POST") {
         return handleAdminSetPrice(request, env, priceMatch[1]);
+      }
+      const erasureMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/erasure$/);
+      if (erasureMatch && request.method === "POST") {
+        return handleAdminRequestErasure(request, env, erasureMatch[1]);
       }
       if (url.pathname === "/api/admin/catalog-leaves" && request.method === "GET") {
         return handleAdminCatalogLeaves();

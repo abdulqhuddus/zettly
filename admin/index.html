@@ -982,6 +982,7 @@
       actionProcessing: "Mark as processing",
       actionReconfirm: "Re-confirm",
       actionDelete: "Delete booking",
+      actionGdprErasure: "Erase customer data",
       actionSendInvoice: "Send invoice",
       actionSendPaymentLink: "Send payment link",
       actionMarkPaid: "Mark as paid",
@@ -1034,6 +1035,11 @@
       confirmDeleteRefMismatch: "That doesn't match the booking reference. Type it exactly to confirm.",
       bookingDeleted: "Booking deleted",
       deleteFailed: "Failed to delete",
+      confirmGdprErasureTitle: "Erase customer data",
+      confirmGdprErasureMessage: "This fulfils a customer's data-deletion request. If no invoice has been sent, the booking is deleted entirely. If an invoice was already sent, the booking is kept as the legally required financial record but the customer's name, contact details, address, notes, and any attachment or evidence photos are permanently erased. This cannot be undone. Type the booking reference below to confirm.",
+      gdprErasureDeleted: "Booking deleted",
+      gdprErasureAnonymized: "Customer data erased; invoice record retained as required by law",
+      gdprErasureFailed: "Failed to erase customer data",
       confirmSendInvoiceTitle: "Send invoice",
       confirmSendInvoiceMessage: "Send invoice to the customer now?",
       confirmSendPaymentLinkTitle: "Send payment link",
@@ -1179,6 +1185,7 @@
       actionProcessing: "In Bearbeitung setzen",
       actionReconfirm: "Wieder bestätigen",
       actionDelete: "Buchung löschen",
+      actionGdprErasure: "Kundendaten löschen",
       actionSendInvoice: "Rechnung senden",
       actionSendPaymentLink: "Zahlungslink senden",
       actionMarkPaid: "Als bezahlt markieren",
@@ -1231,6 +1238,11 @@
       confirmDeleteRefMismatch: "Das stimmt nicht mit der Buchungsnummer überein. Geben Sie sie zur Bestätigung genau ein.",
       bookingDeleted: "Buchung gelöscht",
       deleteFailed: "Löschen fehlgeschlagen",
+      confirmGdprErasureTitle: "Kundendaten löschen",
+      confirmGdprErasureMessage: "Dies erfüllt eine Löschanfrage des Kunden. Wurde noch keine Rechnung versendet, wird die Buchung vollständig gelöscht. Wurde bereits eine Rechnung versendet, bleibt die Buchung als gesetzlich erforderlicher Finanzdatensatz erhalten, aber Name, Kontaktdaten, Adresse, Notizen sowie Anhänge oder Nachweisfotos des Kunden werden endgültig gelöscht. Dies kann nicht rückgängig gemacht werden. Geben Sie zur Bestätigung unten die Buchungsnummer ein.",
+      gdprErasureDeleted: "Buchung gelöscht",
+      gdprErasureAnonymized: "Kundendaten gelöscht; Rechnungsdatensatz gesetzlich vorgeschrieben aufbewahrt",
+      gdprErasureFailed: "Kundendaten konnten nicht gelöscht werden",
       confirmSendInvoiceTitle: "Rechnung senden",
       confirmSendInvoiceMessage: "Rechnung jetzt an den Kunden senden?",
       confirmSendPaymentLinkTitle: "Zahlungslink senden",
@@ -1272,6 +1284,7 @@
     createOrder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12.5" x2="12" y2="17.5"/><line x1="9.5" y1="15" x2="14.5" y2="15"/></svg>',
     eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
     eyeOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.2A10.4 10.4 0 0 1 12 5c7 0 10.5 7 10.5 7a17.5 17.5 0 0 1-3.2 4.2M6.6 6.6C3.4 8.6 1.5 12 1.5 12s3.5 7 10.5 7a10.5 10.5 0 0 0 4.4-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
+    gdprErasure: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 3h4v2H4V7h4z"/><path d="M6 9l1 11a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-11"/><line x1="12" y1="12" x2="12" y2="17"/></svg>',
   };
 
   let lang = "en";
@@ -2179,6 +2192,9 @@
     actions.appendChild(makeActionBtn(s.actionViewLogs, "btn-neutral", "viewLogs", () => {
       window.open(`/admin/logs.html?id=${encodeURIComponent(b.id)}`, "_blank");
     }));
+    if (b.customer_name !== "Erased") {
+      actions.appendChild(makeActionBtn(s.actionGdprErasure, "btn-danger", "gdprErasure", () => requestErasure(b.id, b.bookingRef)));
+    }
     actions.appendChild(makeActionBtn(s.actionDelete, "btn-danger", "delete", () => deleteBooking(b.id, b.bookingRef)));
     document.getElementById("modal").classList.add("open");
   }
@@ -2427,6 +2443,34 @@
       loadBookings();
     } catch (err) {
       toast(err.message || s.deleteFailed);
+    }
+  }
+
+  // GDPR Art. 17 erasure request from a customer. Unlike deleteBooking
+  // above, the server decides whether this can be a hard delete (no
+  // invoice sent yet) or has to anonymize the personal-data fields while
+  // keeping the booking row as the legally-required financial record
+  // (invoice already sent) -- this just triggers that and reports back
+  // whichever happened.
+  async function requestErasure(id, bookingRef) {
+    const s = t();
+    const result = await showConfirm({
+      title: s.confirmGdprErasureTitle,
+      message: s.confirmGdprErasureMessage,
+      requireReason: true,
+      reasonLabel: bookingRef,
+      reasonPlaceholder: bookingRef,
+      matchValue: bookingRef,
+      matchError: s.confirmDeleteRefMismatch,
+    });
+    if (!result.confirmed) return;
+    try {
+      const res = await api(`/api/admin/bookings/${encodeURIComponent(id)}/erasure`, { method: "POST" });
+      toast(res.result === "deleted" ? s.gdprErasureDeleted : s.gdprErasureAnonymized);
+      closeModal();
+      loadBookings();
+    } catch (err) {
+      toast(err.message || s.gdprErasureFailed);
     }
   }
 
