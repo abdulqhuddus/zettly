@@ -293,6 +293,8 @@
   .badge-cancelled { background: var(--danger-bg); color: var(--danger); }
   .badge-completed { background: var(--accent-light); color: var(--accent); }
   .badge-mode { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; background: var(--accent-light); color: var(--accent); white-space: nowrap; }
+  .badge-audience { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; background: var(--bg); color: var(--muted); white-space: nowrap; }
+  .badge-audience.is-business { background: var(--accent-light); color: var(--accent); }
   .badge-mode.is-online { background: var(--ok-bg); color: var(--ok); }
   .badge-payment { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap; }
   .badge-payment.is-paid { background: var(--ok-bg); color: var(--ok); }
@@ -585,6 +587,11 @@
         <option value="cancelled" id="opt-status-cancelled">Cancelled</option>
         <option value="completed" id="opt-status-completed">Completed</option>
       </select>
+      <select id="f-audience">
+        <option value="" id="opt-audience-all">All types</option>
+        <option value="home" id="opt-audience-home">Home</option>
+        <option value="business" id="opt-audience-business">Business</option>
+      </select>
       <input type="date" id="f-from" title="From date">
       <input type="date" id="f-to" title="To date">
       <button class="btn btn-ghost" id="f-clear">Reset</button>
@@ -594,6 +601,7 @@
         <thead>
           <tr>
             <th id="th-ref">Reference</th>
+            <th id="th-type">Type</th>
             <th id="th-customer">Customer</th>
             <th id="th-service">Service</th>
             <th id="th-appointment">Appointment</th>
@@ -622,6 +630,7 @@
     <h2 id="m-name"></h2>
     <div class="modal-ref" id="m-ref"></div>
     <dl>
+      <div class="detail-row"><dt id="t-m-type">Type</dt><dd id="m-type"></dd></div>
       <div class="detail-row"><dt id="t-m-status">Status</dt><dd id="m-status"></dd></div>
       <div class="detail-row"><dt id="t-m-payment-status">Payment</dt><dd id="m-payment-status"></dd></div>
       <div class="detail-row"><dt id="t-m-service">Service</dt><dd id="m-service"></dd></div>
@@ -685,9 +694,9 @@
       statCancelledValue: "Total Cancelled Value",
       statCompletedValue: "Total Completed Value",
       statPaidCount: "Total Paid Bookings",
-      statPaidAmount: "Total Paid Bookings Amount",
+      statPaidAmount: "Total Paid Bookings Value",
       statPendingCount: "Total Pending Bookings",
-      statPendingAmount: "Total Pending Bookings Amount",
+      statPendingAmount: "Total Pending Bookings Value",
       bookingToggleTitleHome: "Home bookings",
       bookingToggleSubHome: "Turn off bookings from home customers, with no end date.",
       bookingToggleTitleBusiness: "Business bookings",
@@ -721,10 +730,14 @@
       statusConfirmed: "Confirmed",
       statusCancelled: "Cancelled",
       statusCompleted: "Completed",
+      audienceAll: "All types",
+      audienceHomeOpt: "Home",
+      audienceBusinessOpt: "Business",
       fromDate: "From date",
       toDate: "To date",
       reset: "Reset",
       thRef: "Reference",
+      thType: "Type",
       thCustomer: "Customer",
       thService: "Service",
       thAppointment: "Appointment",
@@ -750,6 +763,7 @@
       qtyBadge: (n) => `×${n} devices`,
       mQuantity: "Quantity",
       mUnitPrice: "Unit price",
+      mType: "Type",
       mStatus: "Status",
       mPaymentStatus: "Payment",
       mService: "Service",
@@ -865,10 +879,14 @@
       statusConfirmed: "Bestätigt",
       statusCancelled: "Storniert",
       statusCompleted: "Abgeschlossen",
+      audienceAll: "Alle Arten",
+      audienceHomeOpt: "Zuhause",
+      audienceBusinessOpt: "Unternehmen",
       fromDate: "Von Datum",
       toDate: "Bis Datum",
       reset: "Zurücksetzen",
       thRef: "Referenz",
+      thType: "Art",
       thCustomer: "Kunde",
       thService: "Leistung",
       thAppointment: "Termin",
@@ -894,6 +912,7 @@
       qtyBadge: (n) => `×${n} Geräte`,
       mQuantity: "Anzahl",
       mUnitPrice: "Einzelpreis",
+      mType: "Art",
       mStatus: "Status",
       mPaymentStatus: "Zahlung",
       mService: "Leistung",
@@ -1036,10 +1055,14 @@
     document.getElementById("opt-status-confirmed").textContent = s.statusConfirmed;
     document.getElementById("opt-status-cancelled").textContent = s.statusCancelled;
     document.getElementById("opt-status-completed").textContent = s.statusCompleted;
+    document.getElementById("opt-audience-all").textContent = s.audienceAll;
+    document.getElementById("opt-audience-home").textContent = s.audienceHomeOpt;
+    document.getElementById("opt-audience-business").textContent = s.audienceBusinessOpt;
     document.getElementById("f-from").title = s.fromDate;
     document.getElementById("f-to").title = s.toDate;
     document.getElementById("f-clear").textContent = s.reset;
     document.getElementById("th-ref").textContent = s.thRef;
+    document.getElementById("th-type").textContent = s.thType;
     document.getElementById("th-customer").textContent = s.thCustomer;
     document.getElementById("th-service").textContent = s.thService;
     document.getElementById("th-appointment").textContent = s.thAppointment;
@@ -1050,6 +1073,7 @@
     document.getElementById("th-status").textContent = s.thStatus;
     document.getElementById("th-payment").textContent = s.thPayment;
     document.getElementById("empty").textContent = s.empty;
+    document.getElementById("t-m-type").textContent = s.mType;
     document.getElementById("t-m-status").textContent = s.mStatus;
     document.getElementById("t-m-payment-status").textContent = s.mPaymentStatus;
     document.getElementById("t-m-service").textContent = s.mService;
@@ -1177,10 +1201,12 @@
     const params = new URLSearchParams();
     const q = document.getElementById("f-q").value.trim();
     const status = document.getElementById("f-status").value;
+    const audience = document.getElementById("f-audience").value;
     const from = document.getElementById("f-from").value;
     const to = document.getElementById("f-to").value;
     if (q) params.set("q", q);
     if (status) params.set("status", status);
+    if (audience) params.set("audience", audience);
     if (from) params.set("from", from);
     if (to) params.set("to", to);
     params.set("limit", state.limit);
@@ -1254,9 +1280,11 @@
     for (const b of bookings) {
       const tr = document.createElement("tr");
       const modeText = b.is_consultation ? (b.online_consultation ? s.modeOnline : s.modeInPerson) : "—";
+      const audienceText = b.audience === "business" ? s.audienceBusinessOpt : s.audienceHomeOpt;
       tr.innerHTML = `
         <td class="ref">${b.bookingRef}</td>
-        <td>${escapeHtml(b.customer_name)}<div class="muted">${escapeHtml(b.customer_email)}</div></td>
+        <td><span class="badge-audience${b.audience === "business" ? " is-business" : ""}">${audienceText}</span></td>
+        <td>${escapeHtml(b.customer_name)}${b.customer_company ? `<div class="muted">${escapeHtml(b.customer_company)}</div>` : ""}<div class="muted">${escapeHtml(b.customer_email)}</div></td>
         <td>${escapeHtml((lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › "))}${b.quantity > 1 ? `<div class="muted">${s.qtyBadge(b.quantity)}</div>` : ""}</td>
         <td>${b.date}<div class="muted">${s.atTime(b.time)}</div></td>
         <td>${b.price ? "€" + b.price : s.onSite}</td>
@@ -1344,7 +1372,7 @@
 
     container.appendChild(makeBtn(s.next, currentPage + 1, { disabled: currentPage === totalPages }));
   }
-  ["f-q", "f-status", "f-from", "f-to"].forEach((id) => {
+  ["f-q", "f-status", "f-audience", "f-from", "f-to"].forEach((id) => {
     document.getElementById(id).addEventListener("change", () => { state.offset = 0; loadBookings(); });
   });
   document.getElementById("f-q").addEventListener("keydown", (e) => {
@@ -1353,6 +1381,7 @@
   document.getElementById("f-clear").addEventListener("click", () => {
     document.getElementById("f-q").value = "";
     document.getElementById("f-status").value = "";
+    document.getElementById("f-audience").value = "";
     document.getElementById("f-from").value = "";
     document.getElementById("f-to").value = "";
     state.offset = 0;
@@ -1517,6 +1546,7 @@
     currentDetail = b;
     document.getElementById("m-name").textContent = b.customer_name;
     document.getElementById("m-ref").textContent = b.bookingRef;
+    document.getElementById("m-type").innerHTML = `<span class="badge-audience${b.audience === "business" ? " is-business" : ""}">${b.audience === "business" ? s.audienceBusinessOpt : s.audienceHomeOpt}</span>`;
     document.getElementById("m-status").innerHTML = `<span class="badge badge-${b.status}">${statusLabel(b.status)}</span>`;
     document.getElementById("m-payment-status").innerHTML = `<span class="badge-payment is-${b.payment_status || "pending"}">${paymentLabel(b.payment_status)}</span>`;
     document.getElementById("m-service").textContent =

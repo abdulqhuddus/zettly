@@ -511,7 +511,6 @@ async function handleBook(request, env) {
   // oversized, or an unsupported type -- a bad photo shouldn't block an
   // otherwise-valid booking.
   const attachment = parseAttachment(rawAttachment);
-  const audienceTag = audience === "business" ? "[business] " : audience === "home" ? "[home] " : "";
 
   if (!audience || !categoryId || !date || !time || !name || !email || !address || !zip || !(notes || "").trim()) {
     return json({ error: "Missing required fields" }, 400);
@@ -582,8 +581,13 @@ async function handleBook(request, env) {
     quantity,
     unitPrice: leaf.quote ? null : leaf.price,
   };
-  const quoteTag = leaf.quote ? "[Kostenvoranschlag vor Ort] " : "";
-  const notesWithAudience = `${audienceTag}${quoteTag}${notes || ""}`.trim() || null;
+  // The booking's audience (home/business) and whether it's a quote-type
+  // service are already recoverable from service_id and the catalog leaf --
+  // admin.js re-resolves both for the dashboard -- so the customer's actual
+  // notes are stored as-is now, instead of prefixed with "[business]"/
+  // "[Kostenvoranschlag vor Ort]" tags that used to show up as literal text
+  // in the admin's Notes field.
+  const notesWithAudience = (notes || "").trim() || null;
 
   if (!isValidEmail(email)) {
     return json({ error: "Invalid email" }, 400);

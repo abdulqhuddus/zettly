@@ -40,6 +40,7 @@ function withServiceBreadcrumb(row) {
     serviceBreadcrumbEn: breadcrumbEn || [row.service_name],
     serviceBreadcrumbDe: breadcrumbDe || [row.service_name],
     is_consultation: resolvedLeaf?.quoteKind === "consultation",
+    audience: svcAudience === "business" ? "business" : "home",
   };
 }
 
@@ -91,6 +92,7 @@ export async function handleAdminMe(request, env) {
 
 export async function handleAdminListBookings(url, env) {
   const status = url.searchParams.get("status"); // confirmed | cancelled | completed | (empty = all)
+  const audience = url.searchParams.get("audience"); // home | business | (empty = all) -- derived from the service_id prefix, not a stored column
   const date = url.searchParams.get("date"); // YYYY-MM-DD
   const from = url.searchParams.get("from"); // YYYY-MM-DD, inclusive
   const to = url.searchParams.get("to"); // YYYY-MM-DD, inclusive
@@ -119,6 +121,10 @@ export async function handleAdminListBookings(url, env) {
     baseWhere.push("(customer_name LIKE ? OR customer_email LIKE ? OR id LIKE ?)");
     const like = `%${q}%`;
     baseParams.push(like, like, like);
+  }
+  if (audience === "home" || audience === "business") {
+    baseWhere.push("service_id LIKE ?");
+    baseParams.push(`${audience}:%`);
   }
 
   const where = status ? ["status = ?", ...baseWhere] : [...baseWhere];
