@@ -404,7 +404,11 @@ export function dummyPaymentLinkFor(bookingRef) {
  * real payment gateway integration still being pending -- see
  * dummyPaymentLinkFor(). `booking` is a raw `bookings` table row.
  */
-export async function sendPaymentLinkEmail(env, booking, lang = "de") {
+// overrideEmail lets an admin send the payment link to a different address
+// than the one on the booking -- e.g. the customer who made the booking
+// doesn't have access to that inbox and asked for it to go elsewhere
+// instead.
+export async function sendPaymentLinkEmail(env, booking, lang = "de", overrideEmail = null) {
   if (!env.RESEND_API_KEY) return { sent: false, reason: "no_api_key" };
   const t = PAYMENT_LINK_STRINGS[lang] || PAYMENT_LINK_STRINGS.de;
   const bookingRef = `ZTL-${booking.id.split("-")[0].toUpperCase()}`;
@@ -439,7 +443,7 @@ export async function sendPaymentLinkEmail(env, booking, lang = "de") {
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json" },
     body: JSON.stringify({
       from,
-      to: booking.customer_email,
+      to: overrideEmail || booking.customer_email,
       subject: t.subject(bookingRef),
       html,
     }),

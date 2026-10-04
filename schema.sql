@@ -40,6 +40,24 @@ CREATE TABLE IF NOT EXISTS bookings (
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);
 
+-- Optional evidence photos an admin attaches to a booking after the fact
+-- (e.g. the device/equipment before work starts, with the customer's
+-- permission) -- any number per booking, each with its own timestamp and a
+-- short note. Separate from the customer's own booking-time attachment_*
+-- columns above.
+CREATE TABLE IF NOT EXISTS booking_evidence (
+  id TEXT PRIMARY KEY,
+  booking_id TEXT NOT NULL REFERENCES bookings(id) ON DELETE CASCADE,
+  image_data TEXT NOT NULL,
+  content_type TEXT NOT NULL,
+  filename TEXT,
+  note TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  created_by TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_booking_evidence_booking_id ON booking_evidence(booking_id);
+
 -- Tracks failed admin login attempts per IP so the login endpoint can lock
 -- out an IP after repeated failures instead of allowing unlimited guesses.
 CREATE TABLE IF NOT EXISTS admin_login_attempts (

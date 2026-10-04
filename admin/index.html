@@ -292,6 +292,7 @@
   .badge-confirmed { background: var(--ok-bg); color: var(--ok); }
   .badge-cancelled { background: var(--danger-bg); color: var(--danger); }
   .badge-completed { background: var(--accent-light); color: var(--accent); }
+  .badge-processing { background: var(--warn-bg); color: var(--warn); }
   .badge-mode { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; background: var(--accent-light); color: var(--accent); white-space: nowrap; }
   .badge-audience { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; background: var(--bg); color: var(--muted); white-space: nowrap; }
   .badge-audience.is-business { background: var(--accent-light); color: var(--accent); }
@@ -349,6 +350,28 @@
   .detail-row dt { color: var(--muted); }
   .detail-row dd { margin: 0; font-weight: 600; text-align: right; }
   .modal-actions { display: flex; gap: 0.5rem; margin-top: 1.3rem; flex-wrap: wrap; justify-content: center; }
+  .evidence-section { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .evidence-section h3 { font-size: 0.9rem; font-weight: 700; margin: 0 0 0.2rem; }
+  .evidence-sub { font-size: 0.78rem; color: var(--muted); margin: 0 0 0.8rem; }
+  .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 0.8rem; }
+  .evidence-item { position: relative; }
+  .evidence-thumb-link { display: block; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--bg); border: 1px solid var(--border); }
+  .evidence-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .evidence-meta { font-size: 0.68rem; color: var(--muted); margin-top: 0.25rem; line-height: 1.3; }
+  .evidence-note { font-size: 0.7rem; color: var(--ink); margin-top: 0.1rem; word-break: break-word; }
+  .evidence-remove-btn {
+    position: absolute; top: 4px; right: 4px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(17,17,20,0.65); color: #fff; border: none;
+    font-size: 0.8rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .evidence-empty { font-size: 0.78rem; color: var(--muted); grid-column: 1 / -1; }
+  .evidence-add { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .evidence-add input[type="text"] {
+    flex: 1 1 140px; padding: 0.55rem 0.7rem; border: 1.5px solid var(--border);
+    border-radius: 8px; font-size: 0.82rem; font-family: inherit;
+  }
   .btn-danger { background: var(--danger-bg); color: var(--danger); }
   .btn-ok { background: var(--ok-bg); color: var(--ok); }
   .btn-neutral { background: var(--accent-light); color: var(--accent); }
@@ -413,6 +436,20 @@
   .confirm-dialog textarea:focus { border-color: var(--accent); }
   .confirm-dialog .char-count { text-align: right; font-size: 0.7rem; color: var(--muted); margin: 0.25rem 0 0; }
   .confirm-dialog .field-error { color: var(--danger); font-size: 0.76rem; margin: 0.2rem 0 0; min-height: 1.05em; }
+  .confirm-email-field { margin-top: 0.3rem; }
+  .confirm-email-checkbox-label { display: flex !important; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 600; color: var(--ink); cursor: pointer; }
+  .confirm-email-checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; margin: 0; }
+  #confirm-email-input {
+    margin-top: 0.5rem;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.86rem;
+    font-family: inherit;
+    outline: none;
+  }
+  #confirm-email-input:focus { border-color: var(--accent); }
   .confirm-actions { display: flex; gap: 0.6rem; margin-top: 1.1rem; }
   .confirm-actions .btn { flex: 1; }
   .btn-cancel-action { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
@@ -585,6 +622,7 @@
         <option value="" id="opt-status-all">All statuses</option>
         <option value="confirmed" id="opt-status-confirmed">Confirmed</option>
         <option value="cancelled" id="opt-status-cancelled">Cancelled</option>
+        <option value="processing" id="opt-status-processing">Processing</option>
         <option value="completed" id="opt-status-completed">Completed</option>
       </select>
       <select id="f-audience">
@@ -648,6 +686,17 @@
       <div class="detail-row" id="m-cancel-reason-row"><dt id="t-m-cancel-reason">Cancellation reason</dt><dd id="m-cancel-reason"></dd></div>
       <div class="detail-row"><dt id="t-m-created">Created</dt><dd id="m-created"></dd></div>
     </dl>
+    <div class="evidence-section">
+      <h3 id="t-evidence-title">Evidence photos</h3>
+      <p class="evidence-sub" id="t-evidence-sub">Optional, with the customer's permission -- e.g. the equipment before work starts.</p>
+      <div class="evidence-grid" id="evidence-grid"></div>
+      <div class="evidence-add">
+        <input type="file" id="evidence-file-input" accept="image/*" style="display:none;">
+        <input type="text" id="evidence-note-input" maxlength="300" placeholder="Short note (optional)">
+        <button class="btn btn-neutral" id="evidence-add-btn" type="button">Add photo</button>
+      </div>
+      <p class="field-error" id="evidence-error"></p>
+    </div>
     <div class="modal-actions" id="m-actions"></div>
   </div>
 </div>
@@ -661,6 +710,14 @@
       <textarea id="confirm-reason" maxlength="100" placeholder="Please enter a reason…"></textarea>
       <p class="char-count" id="confirm-reason-count">0/100</p>
       <p class="field-error" id="confirm-reason-error"></p>
+    </div>
+    <div class="field confirm-email-field" id="confirm-email-field">
+      <label class="confirm-email-checkbox-label">
+        <input type="checkbox" id="confirm-email-checkbox">
+        <span id="t-confirm-email-checkbox-label">Send to a different email address</span>
+      </label>
+      <input type="email" id="confirm-email-input" style="display:none;" placeholder="name@example.com">
+      <p class="field-error" id="confirm-email-error"></p>
     </div>
     <div class="confirm-actions">
       <button class="btn btn-cancel-action" id="confirm-cancel-btn">Cancel</button>
@@ -730,6 +787,7 @@
       statusConfirmed: "Confirmed",
       statusCancelled: "Cancelled",
       statusCompleted: "Completed",
+      statusProcessing: "Processing",
       audienceAll: "All types",
       audienceHomeOpt: "Home",
       audienceBusinessOpt: "Business",
@@ -779,11 +837,24 @@
       mAddress: "Address",
       mNotes: "Notes",
       mViewAttachment: "View full size",
+      evidenceTitle: "Evidence photos",
+      evidenceSub: "Optional, with the customer's permission — e.g. the equipment before work starts.",
+      evidenceNotePlaceholder: "Short note (optional)",
+      evidenceAddBtn: "Add photo",
+      evidenceEmpty: "No photos yet.",
+      evidenceAdded: "Photo added",
+      evidenceAddFailed: "Failed to add photo",
+      evidenceDeleted: "Photo removed",
+      evidenceDeleteFailed: "Failed to remove photo",
+      evidenceConfirmDeleteTitle: "Remove photo",
+      evidenceConfirmDeleteMessage: "Remove this evidence photo? This can't be undone.",
+      evidenceInvalidFile: "Please choose a JPG, PNG, WEBP or HEIC photo under ~1.2 MB.",
       mCancelReason: "Cancellation reason",
       mCreated: "Created",
       minutes: "min",
       actionCancel: "Cancel booking",
       actionComplete: "Mark as completed",
+      actionProcessing: "Mark as processing",
       actionReconfirm: "Re-confirm",
       actionDelete: "Delete booking",
       actionSendInvoice: "Send invoice",
@@ -799,6 +870,8 @@
       confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email.",
       confirmCompleteTitle: "Mark as completed",
       confirmCompleteMessage: "Mark this booking as completed?",
+      confirmProcessingTitle: "Mark as processing",
+      confirmProcessingMessage: "Mark this booking as processing?",
       confirmReconfirmTitle: "Re-confirm booking",
       confirmReconfirmMessage: "Re-send confirmation email to the customer?",
       confirmDeleteTitle: "Delete booking",
@@ -817,6 +890,8 @@
       confirmReasonLabel: "Reason for cancellation (required)",
       confirmReasonPlaceholder: "Please enter a reason…",
       confirmReasonError: "Please enter a reason.",
+      confirmEmailCheckboxLabel: "Send to a different email address",
+      confirmEmailError: "Please enter a valid email address.",
       confirmReasonTooLong: "Please keep the reason to 100 characters or fewer.",
       confirmCancelBtn: "Cancel",
       confirmOkBtn: "Confirm",
@@ -879,6 +954,7 @@
       statusConfirmed: "Bestätigt",
       statusCancelled: "Storniert",
       statusCompleted: "Abgeschlossen",
+      statusProcessing: "In Bearbeitung",
       audienceAll: "Alle Arten",
       audienceHomeOpt: "Zuhause",
       audienceBusinessOpt: "Unternehmen",
@@ -928,11 +1004,24 @@
       mAddress: "Adresse",
       mNotes: "Notizen",
       mViewAttachment: "In voller Größe ansehen",
+      evidenceTitle: "Beweisfotos",
+      evidenceSub: "Optional, mit Einverständnis des Kunden — z. B. das Gerät vor Beginn der Arbeiten.",
+      evidenceNotePlaceholder: "Kurze Notiz (optional)",
+      evidenceAddBtn: "Foto hinzufügen",
+      evidenceEmpty: "Noch keine Fotos.",
+      evidenceAdded: "Foto hinzugefügt",
+      evidenceAddFailed: "Foto konnte nicht hinzugefügt werden",
+      evidenceDeleted: "Foto entfernt",
+      evidenceDeleteFailed: "Foto konnte nicht entfernt werden",
+      evidenceConfirmDeleteTitle: "Foto entfernen",
+      evidenceConfirmDeleteMessage: "Dieses Beweisfoto entfernen? Das kann nicht rückgängig gemacht werden.",
+      evidenceInvalidFile: "Bitte ein JPG-, PNG-, WEBP- oder HEIC-Foto unter ca. 1,2 MB wählen.",
       mCancelReason: "Stornierungsgrund",
       mCreated: "Erstellt",
       minutes: "Min.",
       actionCancel: "Stornieren",
       actionComplete: "Als abgeschlossen markieren",
+      actionProcessing: "In Bearbeitung setzen",
       actionReconfirm: "Wieder bestätigen",
       actionDelete: "Buchung löschen",
       actionSendInvoice: "Rechnung senden",
@@ -948,6 +1037,8 @@
       confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt.",
       confirmCompleteTitle: "Als abgeschlossen markieren",
       confirmCompleteMessage: "Buchung als abgeschlossen markieren?",
+      confirmProcessingTitle: "In Bearbeitung setzen",
+      confirmProcessingMessage: "Buchung als in Bearbeitung markieren?",
       confirmReconfirmTitle: "Buchung wieder bestätigen",
       confirmReconfirmMessage: "Bestätigungs-E-Mail erneut an den Kunden senden?",
       confirmDeleteTitle: "Buchung löschen",
@@ -966,6 +1057,8 @@
       confirmReasonLabel: "Grund der Stornierung (erforderlich)",
       confirmReasonPlaceholder: "Bitte Grund angeben…",
       confirmReasonError: "Bitte geben Sie einen Grund an.",
+      confirmEmailCheckboxLabel: "An eine andere E-Mail-Adresse senden",
+      confirmEmailError: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
       confirmReasonTooLong: "Bitte begrenzen Sie den Grund auf maximal 100 Zeichen.",
       confirmCancelBtn: "Abbrechen",
       confirmOkBtn: "Bestätigen",
@@ -982,6 +1075,7 @@
   const ICONS = {
     cancel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
     complete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>',
+    processing: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>',
     reconfirm: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a9 9 0 1 1 2.5 6.2"/><polyline points="3 5 3 11 9 11"/></svg>',
     delete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 20 7"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg>',
     invoice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>',
@@ -1054,6 +1148,7 @@
     document.getElementById("opt-status-all").textContent = s.statusAll;
     document.getElementById("opt-status-confirmed").textContent = s.statusConfirmed;
     document.getElementById("opt-status-cancelled").textContent = s.statusCancelled;
+    document.getElementById("opt-status-processing").textContent = s.statusProcessing;
     document.getElementById("opt-status-completed").textContent = s.statusCompleted;
     document.getElementById("opt-audience-all").textContent = s.audienceAll;
     document.getElementById("opt-audience-home").textContent = s.audienceHomeOpt;
@@ -1089,8 +1184,13 @@
     document.getElementById("t-m-address").textContent = s.mAddress;
     document.getElementById("t-m-notes").textContent = s.mNotes;
     document.getElementById("t-m-cancel-reason").textContent = s.mCancelReason;
+    document.getElementById("t-evidence-title").textContent = s.evidenceTitle;
+    document.getElementById("t-evidence-sub").textContent = s.evidenceSub;
+    document.getElementById("evidence-note-input").placeholder = s.evidenceNotePlaceholder;
+    document.getElementById("evidence-add-btn").textContent = s.evidenceAddBtn;
     document.getElementById("t-m-created").textContent = s.mCreated;
     document.getElementById("t-confirm-reason-label").textContent = s.confirmReasonLabel;
+    document.getElementById("t-confirm-email-checkbox-label").textContent = s.confirmEmailCheckboxLabel;
     document.getElementById("confirm-reason").placeholder = s.confirmReasonPlaceholder;
     document.getElementById("confirm-cancel-btn").textContent = s.confirmCancelBtn;
     document.getElementById("confirm-ok-btn").textContent = s.confirmOkBtn;
@@ -1187,7 +1287,7 @@
 
   function statusLabel(status) {
     const s = t();
-    return { confirmed: s.statusConfirmed, cancelled: s.statusCancelled, completed: s.statusCompleted }[status] || status;
+    return { confirmed: s.statusConfirmed, cancelled: s.statusCancelled, completed: s.statusCompleted, processing: s.statusProcessing }[status] || status;
   }
 
   function paymentLabel(paymentStatus) {
@@ -1266,6 +1366,123 @@
     const blob = new Blob([bytes], { type: contentType });
     return URL.createObjectURL(blob);
   }
+
+  // ---- Evidence photos (admin-added, per booking) ------------------------
+
+  const ALLOWED_EVIDENCE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
+  const MAX_EVIDENCE_BYTES = 1_200_000;
+
+  function formatEvidenceTimestamp(isoLike) {
+    // created_at is stored as "YYYY-MM-DD HH:MM:SS" (UTC, no 'Z') -- append
+    // it so Date parses it as UTC rather than local time before converting
+    // to the admin's own locale for display.
+    const d = new Date(isoLike.includes("T") ? isoLike : isoLike.replace(" ", "T") + "Z");
+    if (isNaN(d.getTime())) return isoLike;
+    return d.toLocaleString(lang === "de" ? "de-DE" : "en-US", { dateStyle: "medium", timeStyle: "short" });
+  }
+
+  async function loadEvidence(bookingId) {
+    const grid = document.getElementById("evidence-grid");
+    grid.innerHTML = "";
+    try {
+      const data = await api("/api/admin/bookings/" + encodeURIComponent(bookingId) + "/evidence");
+      renderEvidenceGrid(bookingId, data.photos || []);
+    } catch {
+      // Best-effort -- an evidence-list failure shouldn't block viewing the
+      // rest of the booking.
+    }
+  }
+
+  function renderEvidenceGrid(bookingId, photos) {
+    const s = t();
+    const grid = document.getElementById("evidence-grid");
+    grid.innerHTML = "";
+    if (!photos.length) {
+      grid.innerHTML = `<p class="evidence-empty">${s.evidenceEmpty}</p>`;
+      return;
+    }
+    for (const photo of photos) {
+      const item = document.createElement("div");
+      item.className = "evidence-item";
+      item.innerHTML = `
+        <a class="evidence-thumb-link" href="#" title="${s.mViewAttachment}"><span class="attachment-thumb-loading">…</span></a>
+        <button class="evidence-remove-btn" type="button" aria-label="${s.actionDelete}">&times;</button>
+        <div class="evidence-meta">${formatEvidenceTimestamp(photo.created_at)}</div>
+        ${photo.note ? `<div class="evidence-note">${escapeHtml(photo.note)}</div>` : ""}
+      `;
+      const link = item.querySelector(".evidence-thumb-link");
+      let loadedUrl = null;
+      link.addEventListener("click", async (e) => {
+        e.preventDefault();
+        if (!loadedUrl) {
+          try {
+            const full = await api("/api/admin/bookings/" + encodeURIComponent(bookingId) + "/evidence/" + encodeURIComponent(photo.id));
+            const contentType = full.dataUrl.slice(5, full.dataUrl.indexOf(";"));
+            loadedUrl = base64ToBlobUrl(full.dataUrl.split(",")[1], contentType);
+            link.innerHTML = `<img class="evidence-thumb" src="${loadedUrl}" alt="">`;
+          } catch {
+            return;
+          }
+        }
+        window.open(loadedUrl, "_blank", "noopener");
+      });
+      item.querySelector(".evidence-remove-btn").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const result = await showConfirm({
+          title: s.evidenceConfirmDeleteTitle,
+          message: s.evidenceConfirmDeleteMessage,
+        });
+        if (!result.confirmed) return;
+        try {
+          await api("/api/admin/bookings/" + encodeURIComponent(bookingId) + "/evidence/" + encodeURIComponent(photo.id), { method: "DELETE" });
+          toast(s.evidenceDeleted);
+          loadEvidence(bookingId);
+        } catch (err) {
+          toast(err.message || s.evidenceDeleteFailed);
+        }
+      });
+      grid.appendChild(item);
+    }
+  }
+
+  function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  document.getElementById("evidence-add-btn").addEventListener("click", () => {
+    document.getElementById("evidence-file-input").click();
+  });
+
+  document.getElementById("evidence-file-input").addEventListener("change", async (e) => {
+    const s = t();
+    const errorEl = document.getElementById("evidence-error");
+    errorEl.textContent = "";
+    const file = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!file || !currentDetail) return;
+    if (!ALLOWED_EVIDENCE_TYPES.includes(file.type) || file.size > MAX_EVIDENCE_BYTES) {
+      errorEl.textContent = s.evidenceInvalidFile;
+      return;
+    }
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      const note = document.getElementById("evidence-note-input").value.trim();
+      await api("/api/admin/bookings/" + encodeURIComponent(currentDetail.id) + "/evidence", {
+        method: "POST",
+        body: JSON.stringify({ photo: { dataUrl, filename: file.name }, note: note || undefined }),
+      });
+      document.getElementById("evidence-note-input").value = "";
+      toast(s.evidenceAdded);
+      loadEvidence(currentDetail.id);
+    } catch (err) {
+      errorEl.textContent = err.message || s.evidenceAddFailed;
+    }
+  });
 
   function renderRows(bookings) {
     const s = t();
@@ -1544,6 +1761,7 @@
     const s = t();
     const b = await api("/api/admin/bookings/" + encodeURIComponent(id));
     currentDetail = b;
+    loadEvidence(id);
     document.getElementById("m-name").textContent = b.customer_name;
     document.getElementById("m-ref").textContent = b.bookingRef;
     document.getElementById("m-type").innerHTML = `<span class="badge-audience${b.audience === "business" ? " is-business" : ""}">${b.audience === "business" ? s.audienceBusinessOpt : s.audienceHomeOpt}</span>`;
@@ -1592,10 +1810,13 @@
     if (b.status !== "cancelled") {
       actions.appendChild(makeActionBtn(s.actionCancel, "btn-danger", "cancel", () => updateStatus(b.id, "cancelled")));
     }
+    if (b.status === "confirmed") {
+      actions.appendChild(makeActionBtn(s.actionProcessing, "btn-warn", "processing", () => updateStatus(b.id, "processing")));
+    }
     if (b.status !== "completed" && b.status !== "cancelled") {
       actions.appendChild(makeActionBtn(s.actionComplete, "btn-ok", "complete", () => updateStatus(b.id, "completed")));
     }
-    if (b.status !== "confirmed" && b.status !== "completed" && isFutureBooking(b)) {
+    if (b.status === "cancelled" && isFutureBooking(b)) {
       actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", "reconfirm", () => updateStatus(b.id, "confirmed")));
     }
     // Paid/pending is independent of the booking status (cancel/complete/
@@ -1645,7 +1866,7 @@
   }
 
   // ---- Custom confirm dialog (replaces window.confirm/alert) ------------
-  function showConfirm({ title, message, requireReason, reasonLabel, reasonPlaceholder, matchValue, matchError }) {
+  function showConfirm({ title, message, requireReason, reasonLabel, reasonPlaceholder, matchValue, matchError, showEmailOption }) {
     return new Promise((resolve) => {
       const s = t();
       const backdrop = document.getElementById("confirm-modal");
@@ -1654,6 +1875,10 @@
       const reasonError = document.getElementById("confirm-reason-error");
       const reasonCount = document.getElementById("confirm-reason-count");
       const reasonLabelEl = document.getElementById("t-confirm-reason-label");
+      const emailField = document.getElementById("confirm-email-field");
+      const emailCheckbox = document.getElementById("confirm-email-checkbox");
+      const emailInput = document.getElementById("confirm-email-input");
+      const emailError = document.getElementById("confirm-email-error");
       document.getElementById("confirm-title").textContent = title;
       document.getElementById("confirm-message").textContent = message;
       reasonInput.value = "";
@@ -1662,6 +1887,12 @@
       reasonField.style.display = requireReason ? "block" : "none";
       if (reasonLabelEl) reasonLabelEl.textContent = reasonLabel || s.confirmReasonLabel;
       reasonInput.placeholder = reasonPlaceholder || s.confirmReasonPlaceholder;
+
+      emailField.style.display = showEmailOption ? "block" : "none";
+      emailCheckbox.checked = false;
+      emailInput.value = "";
+      emailInput.style.display = "none";
+      emailError.textContent = "";
 
       const okBtn = document.getElementById("confirm-ok-btn");
       const cancelBtn = document.getElementById("confirm-cancel-btn");
@@ -1673,10 +1904,25 @@
         backdrop.removeEventListener("click", onBackdropClick);
         document.removeEventListener("keydown", onKeydown);
         reasonInput.removeEventListener("input", onReasonInput);
+        emailCheckbox.removeEventListener("change", onEmailCheckboxChange);
         resolve(result);
       }
       function onReasonInput() { if (!matchValue) reasonCount.textContent = `${reasonInput.value.length}/100`; }
+      function onEmailCheckboxChange() {
+        emailInput.style.display = emailCheckbox.checked ? "block" : "none";
+        emailError.textContent = "";
+        if (emailCheckbox.checked) setTimeout(() => emailInput.focus(), 30);
+      }
       function onOk() {
+        let altEmail = null;
+        if (showEmailOption && emailCheckbox.checked) {
+          altEmail = emailInput.value.trim();
+          if (!altEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(altEmail)) {
+            emailError.textContent = s.confirmEmailError;
+            emailInput.focus();
+            return;
+          }
+        }
         if (requireReason) {
           const reason = reasonInput.value.trim();
           if (!reason) {
@@ -1690,7 +1936,7 @@
               reasonInput.focus();
               return;
             }
-            cleanup({ confirmed: true });
+            cleanup({ confirmed: true, altEmail });
             return;
           }
           if (reason.length > 100) {
@@ -1698,9 +1944,9 @@
             reasonInput.focus();
             return;
           }
-          cleanup({ confirmed: true, reason });
+          cleanup({ confirmed: true, reason, altEmail });
         } else {
-          cleanup({ confirmed: true });
+          cleanup({ confirmed: true, altEmail });
         }
       }
       function onCancel() { cleanup({ confirmed: false }); }
@@ -1712,6 +1958,7 @@
       backdrop.addEventListener("click", onBackdropClick);
       document.addEventListener("keydown", onKeydown);
       reasonInput.addEventListener("input", onReasonInput);
+      emailCheckbox.addEventListener("change", onEmailCheckboxChange);
 
       backdrop.classList.add("open");
       if (requireReason) setTimeout(() => reasonInput.focus(), 30);
@@ -1733,6 +1980,12 @@
       const result = await showConfirm({
         title: s.confirmCompleteTitle,
         message: s.confirmCompleteMessage,
+      });
+      if (!result.confirmed) return;
+    } else if (status === "processing") {
+      const result = await showConfirm({
+        title: s.confirmProcessingTitle,
+        message: s.confirmProcessingMessage,
       });
       if (!result.confirmed) return;
     } else if (status === "confirmed") {
@@ -1798,12 +2051,13 @@
     const result = await showConfirm({
       title: s.confirmSendPaymentLinkTitle,
       message: s.confirmSendPaymentLinkMessage,
+      showEmailOption: true,
     });
     if (!result.confirmed) return;
     try {
       await api(`/api/admin/bookings/${encodeURIComponent(id)}/send-payment-link`, {
         method: "POST",
-        body: JSON.stringify({ lang }),
+        body: JSON.stringify({ lang, ...(result.altEmail ? { email: result.altEmail } : {}) }),
       });
       toast(s.paymentLinkSent);
     } catch (err) {

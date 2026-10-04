@@ -14,10 +14,10 @@ import {
   recordFailedLogin,
   clearFailedLogins,
 } from "./auth.js";
-import { json, berlinNow } from "./utils.js";
+import { json, berlinNow, isValidEmail } from "./utils.js";
 import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
-import { sendConfirmationEmail } from "./index.js";
+import { sendConfirmationEmail, parseAttachment } from "./index.js";
 import catalog from "../catalog.json";
 import { breadcrumbFromServiceId, resolveLeaf, fullBreadcrumb } from "./catalog-utils.js";
 
@@ -220,6 +220,83 @@ export async function handleAdminBookingAttachment(env, id) {
   });
 }
 
+// ---- Evidence photos (admin-added, after the booking exists) ------------
+//
+// Separate from the customer's own booking-time attachment above: any
+// number of photos per booking, each with its own timestamp (created_at)
+// and a short optional note -- e.g. a picture of the equipment before work
+// starts, taken with the customer's permission. A cap of 20 keeps a single
+// booking's photos from growing unbounded.
+const MAX_EVIDENCE_PHOTOS_PER_BOOKING = 20;
+
+// List metadata only (id, note, timestamp, filename) -- never the base64
+// image data -- so the modal can show a thumbnail strip without pulling
+// every photo's full payload down just to open the booking.
+export async function handleAdminListEvidence(env, bookingId) {
+  const { results } = await env.DB.prepare(
+    `SELECT id, filename, content_type, note, created_at FROM booking_evidence WHERE booking_id = ? ORDER BY created_at ASC`
+  )
+    .bind(bookingId)
+    .all();
+  return json({ photos: results });
+}
+
+// One photo's full image data, fetched lazily per-thumbnail-click, same
+// pattern as handleAdminBookingAttachment above.
+export async function handleAdminGetEvidencePhoto(env, bookingId, evidenceId) {
+  const row = await env.DB.prepare(
+    `SELECT image_data, content_type, filename, note, created_at FROM booking_evidence WHERE id = ? AND booking_id = ?`
+  )
+    .bind(evidenceId, bookingId)
+    .first();
+  if (!row) return json({ error: "Not found" }, 404);
+  return json({
+    dataUrl: `data:${row.content_type};base64,${row.image_data}`,
+    filename: row.filename,
+    note: row.note,
+    created_at: row.created_at,
+  });
+}
+
+export async function handleAdminAddEvidence(request, env, bookingId) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  const existing = await env.DB.prepare(`SELECT id FROM bookings WHERE id = ?`).bind(bookingId).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+
+  const { count } = (await env.DB.prepare(`SELECT COUNT(*) AS count FROM booking_evidence WHERE booking_id = ?`).bind(bookingId).first()) || { count: 0 };
+  if (count >= MAX_EVIDENCE_PHOTOS_PER_BOOKING) {
+    return json({ error: `A booking can have at most ${MAX_EVIDENCE_PHOTOS_PER_BOOKING} evidence photos` }, 400);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+  const parsed = parseAttachment(body?.photo);
+  if (!parsed) return json({ error: "Invalid or missing photo" }, 400);
+  const note = typeof body?.note === "string" ? body.note.trim().slice(0, 300) || null : null;
+
+  const id = crypto.randomUUID();
+  await env.DB.prepare(
+    `INSERT INTO booking_evidence (id, booking_id, image_data, content_type, filename, note) VALUES (?, ?, ?, ?, ?, ?)`
+  )
+    .bind(id, bookingId, parsed.base64, parsed.contentType, parsed.filename, note)
+    .run();
+
+  const row = await env.DB.prepare(`SELECT id, filename, content_type, note, created_at FROM booking_evidence WHERE id = ?`).bind(id).first();
+  return json({ ok: true, photo: row });
+}
+
+export async function handleAdminDeleteEvidence(request, env, bookingId, evidenceId) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  const existing = await env.DB.prepare(`SELECT id FROM booking_evidence WHERE id = ? AND booking_id = ?`).bind(evidenceId, bookingId).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+  await env.DB.prepare(`DELETE FROM booking_evidence WHERE id = ?`).bind(evidenceId).run();
+  return json({ ok: true });
+}
+
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
@@ -247,7 +324,7 @@ export async function handleAdminDeleteBooking(request, env, id) {
   return json({ ok: true });
 }
 
-const VALID_STATUSES = ["confirmed", "cancelled", "completed"];
+const VALID_STATUSES = ["confirmed", "cancelled", "completed", "processing"];
 
 export async function handleAdminUpdateStatus(request, env, id) {
   if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
@@ -427,8 +504,16 @@ export async function handleAdminSendPaymentLink(request, env, id) {
   const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
   if (!existing) return json({ error: "Not found" }, 404);
 
+  // Optional: send to a different address than the one on the booking --
+  // e.g. the customer who booked doesn't have access to that inbox and
+  // asked for the link to go elsewhere instead.
+  const overrideEmail = typeof body?.email === "string" ? body.email.trim() : "";
+  if (overrideEmail && !isValidEmail(overrideEmail)) {
+    return json({ error: "Invalid email address" }, 400);
+  }
+
   const lang = body?.lang === "en" ? "en" : "de";
-  const result = await sendPaymentLinkEmail(env, existing, lang);
+  const result = await sendPaymentLinkEmail(env, existing, lang, overrideEmail || null);
   return json({ ok: true, emailSent: result.sent, reason: result.reason, paymentLink: result.paymentLink });
 }
 

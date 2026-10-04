@@ -13,6 +13,10 @@ import {
   handleAdminBookingAttachment,
   handleAdminUpdateStatus,
   handleAdminSetPaymentStatus,
+  handleAdminListEvidence,
+  handleAdminGetEvidencePhoto,
+  handleAdminAddEvidence,
+  handleAdminDeleteEvidence,
   handleAdminDeleteBooking,
   handleAdminListBlocks,
   handleAdminCreateBlock,
@@ -52,7 +56,7 @@ const ALLOWED_ATTACHMENT_TYPES = ["image/jpeg", "image/png", "image/webp", "imag
 // null for anything missing/invalid/oversized so the caller can just skip
 // storing an attachment rather than failing the whole booking over it --
 // this field is optional and best-effort.
-function parseAttachment(attachment) {
+export function parseAttachment(attachment) {
   if (!attachment || typeof attachment !== "object") return null;
   const { dataUrl, filename } = attachment;
   if (typeof dataUrl !== "string") return null;
@@ -776,6 +780,20 @@ export default {
       const paymentMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/payment$/);
       if (paymentMatch && request.method === "POST") {
         return handleAdminSetPaymentStatus(request, env, paymentMatch[1]);
+      }
+      const evidenceListMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/evidence$/);
+      if (evidenceListMatch && request.method === "GET") {
+        return handleAdminListEvidence(env, evidenceListMatch[1]);
+      }
+      if (evidenceListMatch && request.method === "POST") {
+        return handleAdminAddEvidence(request, env, evidenceListMatch[1]);
+      }
+      const evidenceItemMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/evidence\/([^/]+)$/);
+      if (evidenceItemMatch && request.method === "GET") {
+        return handleAdminGetEvidencePhoto(env, evidenceItemMatch[1], evidenceItemMatch[2]);
+      }
+      if (evidenceItemMatch && request.method === "DELETE") {
+        return handleAdminDeleteEvidence(request, env, evidenceItemMatch[1], evidenceItemMatch[2]);
       }
       const invoiceMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/send-invoice$/);
       if (invoiceMatch && request.method === "POST") {
