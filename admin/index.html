@@ -113,7 +113,7 @@
   }
   .topbar-right { display: flex; align-items: center; gap: 0.7rem; }
   .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 0.5rem 0.9rem; border-radius: 8px; font-size: 0.82rem; }
-  main { padding: 1.5rem; max-width: 1180px; margin: 0 auto; }
+  main { padding: 1.5rem; max-width: 1760px; margin: 0 auto; }
 
   .stats-panel {
     background: #fff;
@@ -464,6 +464,35 @@
   .confirm-actions { display: flex; gap: 0.6rem; margin-top: 1.1rem; }
   .confirm-actions .btn { flex: 1; }
   .btn-cancel-action { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+
+  /* ---- Form fields shared by the price/order modals ---- */
+  .form-field { margin-bottom: 0.85rem; }
+  .form-field label { display: block; font-size: 0.76rem; font-weight: 700; color: var(--muted); margin-bottom: 0.35rem; }
+  .form-field input, .form-field select, .form-field textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.86rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .form-field textarea { min-height: 64px; resize: vertical; }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
+  .form-field .field-error { color: var(--danger); font-size: 0.76rem; margin: 0.3rem 0 0; min-height: 1.05em; }
+  .form-row { display: flex; gap: 0.7rem; }
+  .form-row .form-field { flex: 1; min-width: 0; }
+  .order-source-note { font-size: 0.8rem; color: var(--muted); margin: -0.3rem 0 1rem; }
+  .linked-orders { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .linked-orders h3 { font-size: 0.9rem; font-weight: 700; margin: 0 0 0.6rem; }
+  .linked-order-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+    padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.5rem;
+    font-size: 0.82rem; cursor: pointer;
+  }
+  .linked-order-item:hover { background: #fbfaff; }
+  .linked-order-ref { font-weight: 700; }
+  .linked-orders-empty { font-size: 0.82rem; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -708,6 +737,10 @@
       </div>
       <p class="field-error" id="evidence-error"></p>
     </div>
+    <div class="linked-orders" id="linked-orders-section" style="display:none;">
+      <h3 id="t-linked-orders-title">Linked orders</h3>
+      <div id="linked-orders-list"></div>
+    </div>
     <div class="modal-actions" id="m-actions"></div>
   </div>
 </div>
@@ -733,6 +766,80 @@
     <div class="confirm-actions">
       <button class="btn btn-cancel-action" id="confirm-cancel-btn">Cancel</button>
       <button class="btn btn-danger" id="confirm-ok-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="price-modal">
+  <div class="modal">
+    <button class="modal-close" id="price-modal-close">&times;</button>
+    <h2 id="t-price-modal-title">Set price</h2>
+    <div class="modal-ref" id="price-modal-ref"></div>
+    <div class="form-field">
+      <label for="price-input" id="t-price-input-label">Final price (€)</label>
+      <input type="number" id="price-input" min="0" step="1" inputmode="numeric">
+      <p class="field-error" id="price-input-error"></p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-neutral" id="price-save-btn" type="button" style="width:auto;">Save price</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="order-modal">
+  <div class="modal">
+    <button class="modal-close" id="order-modal-close">&times;</button>
+    <h2 id="t-order-modal-title">Create order</h2>
+    <p class="order-source-note"><span id="t-order-modal-sub">Linked to</span> <strong id="order-modal-source-ref"></strong></p>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="order-firstname" id="t-order-firstname">First name</label>
+        <input type="text" id="order-firstname">
+      </div>
+      <div class="form-field">
+        <label for="order-lastname" id="t-order-lastname">Last name</label>
+        <input type="text" id="order-lastname">
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="order-company" id="t-order-company">Company (optional)</label>
+      <input type="text" id="order-company">
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="order-email" id="t-order-email">Email</label>
+        <input type="email" id="order-email">
+      </div>
+      <div class="form-field">
+        <label for="order-phone" id="t-order-phone">Phone (optional)</label>
+        <input type="text" id="order-phone">
+      </div>
+    </div>
+    <div class="form-field">
+      <label for="order-address" id="t-order-address">Address (optional)</label>
+      <input type="text" id="order-address">
+    </div>
+    <div class="form-field">
+      <label for="order-service" id="t-order-service">Service</label>
+      <select id="order-service"></select>
+    </div>
+    <div class="form-field">
+      <label for="order-notes" id="t-order-notes">Notes (optional)</label>
+      <textarea id="order-notes" maxlength="1000"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="order-price" id="t-order-price">Price (€)</label>
+        <input type="number" id="order-price" min="0" step="1" inputmode="numeric">
+      </div>
+      <div class="form-field">
+        <label for="order-quantity" id="t-order-quantity">Quantity</label>
+        <input type="number" id="order-quantity" min="1" max="100" step="1" value="1">
+      </div>
+    </div>
+    <p class="field-error" id="order-error"></p>
+    <div class="modal-actions">
+      <button class="btn btn-neutral" id="order-save-btn" type="button" style="width:auto;">Create order</button>
     </div>
   </div>
 </div>
@@ -873,6 +980,34 @@
       actionMarkPaid: "Mark as paid",
       actionMarkPending: "Mark as pending",
       actionViewLogs: "View activity logs",
+      actionSetPrice: "Set price",
+      actionCreateOrder: "Create order",
+      setPriceTitle: "Set price",
+      setPriceLabel: "Final price (€)",
+      setPricePlaceholder: "e.g. 150",
+      setPriceSave: "Save price",
+      setPriceInvalid: "Enter a valid price",
+      priceUpdated: "Price updated",
+      priceUpdateFailed: "Failed to update price",
+      orderModalTitle: "Create order",
+      orderModalSub: "Linked to",
+      orderFirstName: "First name",
+      orderLastName: "Last name",
+      orderCompany: "Company (optional)",
+      orderEmail: "Email",
+      orderPhone: "Phone (optional)",
+      orderAddress: "Address (optional)",
+      orderService: "Service",
+      orderServicePlaceholder: "Choose a service…",
+      orderNotes: "Notes (optional)",
+      orderPrice: "Price (€)",
+      orderQuantity: "Quantity",
+      orderSubmit: "Create order",
+      orderCreated: "Order created",
+      orderCreateFailed: "Failed to create order",
+      orderInvalid: "Please fill in all required fields",
+      linkedOrders: "Linked orders",
+      linkedOrdersNone: "No orders created yet.",
       invoiceSent: "Invoice sent",
       invoiceSendFailed: "Failed to send invoice",
       paymentLinkSent: "Payment link sent",
@@ -1041,6 +1176,34 @@
       actionMarkPaid: "Als bezahlt markieren",
       actionMarkPending: "Als ausstehend markieren",
       actionViewLogs: "Verlauf anzeigen",
+      actionSetPrice: "Preis festlegen",
+      actionCreateOrder: "Auftrag erstellen",
+      setPriceTitle: "Preis festlegen",
+      setPriceLabel: "Endpreis (€)",
+      setPricePlaceholder: "z. B. 150",
+      setPriceSave: "Preis speichern",
+      setPriceInvalid: "Bitte einen gültigen Preis eingeben",
+      priceUpdated: "Preis aktualisiert",
+      priceUpdateFailed: "Preis konnte nicht aktualisiert werden",
+      orderModalTitle: "Auftrag erstellen",
+      orderModalSub: "Verknüpft mit",
+      orderFirstName: "Vorname",
+      orderLastName: "Nachname",
+      orderCompany: "Firma (optional)",
+      orderEmail: "E-Mail",
+      orderPhone: "Telefon (optional)",
+      orderAddress: "Adresse (optional)",
+      orderService: "Leistung",
+      orderServicePlaceholder: "Leistung wählen…",
+      orderNotes: "Notizen (optional)",
+      orderPrice: "Preis (€)",
+      orderQuantity: "Menge",
+      orderSubmit: "Auftrag erstellen",
+      orderCreated: "Auftrag erstellt",
+      orderCreateFailed: "Auftrag konnte nicht erstellt werden",
+      orderInvalid: "Bitte alle Pflichtfelder ausfüllen",
+      linkedOrders: "Verknüpfte Aufträge",
+      linkedOrdersNone: "Noch keine Aufträge erstellt.",
       invoiceSent: "Rechnung gesendet",
       invoiceSendFailed: "Rechnung konnte nicht gesendet werden",
       paymentLinkSent: "Zahlungslink gesendet",
@@ -1096,6 +1259,8 @@
     markPaid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 0 0-2.8-2h-.4a2.6 2.6 0 0 0 0 5.2h.4a2.6 2.6 0 0 1 0 5.2h-.4a3 3 0 0 1-2.8-2"/><line x1="12" y1="6" x2="12" y2="18"/></svg>',
     markPending: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>',
     viewLogs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>',
+    setPrice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15s.8 1 2.5 1 2.5-.8 2.5-1.8-1-1.5-2.5-1.7-2.5-.7-2.5-1.7S10.5 9 12 9s2 .5 2.3 1"/><path d="M12 7.3v1M12 15.7v1"/></svg>',
+    createOrder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12.5" x2="12" y2="17.5"/><line x1="9.5" y1="15" x2="14.5" y2="15"/></svg>',
     eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
     eyeOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.2A10.4 10.4 0 0 1 12 5c7 0 10.5 7 10.5 7a17.5 17.5 0 0 1-3.2 4.2M6.6 6.6C3.4 8.6 1.5 12 1.5 12s3.5 7 10.5 7a10.5 10.5 0 0 0 4.4-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
   };
@@ -1208,6 +1373,24 @@
     document.getElementById("confirm-reason").placeholder = s.confirmReasonPlaceholder;
     document.getElementById("confirm-cancel-btn").textContent = s.confirmCancelBtn;
     document.getElementById("confirm-ok-btn").textContent = s.confirmOkBtn;
+    document.getElementById("t-price-modal-title").textContent = s.setPriceTitle;
+    document.getElementById("t-price-input-label").textContent = s.setPriceLabel;
+    document.getElementById("price-input").placeholder = s.setPricePlaceholder;
+    document.getElementById("price-save-btn").textContent = s.setPriceSave;
+    document.getElementById("t-order-modal-title").textContent = s.orderModalTitle;
+    document.getElementById("t-order-modal-sub").textContent = s.orderModalSub;
+    document.getElementById("t-order-firstname").textContent = s.orderFirstName;
+    document.getElementById("t-order-lastname").textContent = s.orderLastName;
+    document.getElementById("t-order-company").textContent = s.orderCompany;
+    document.getElementById("t-order-email").textContent = s.orderEmail;
+    document.getElementById("t-order-phone").textContent = s.orderPhone;
+    document.getElementById("t-order-address").textContent = s.orderAddress;
+    document.getElementById("t-order-service").textContent = s.orderService;
+    document.getElementById("t-order-notes").textContent = s.orderNotes;
+    document.getElementById("t-order-price").textContent = s.orderPrice;
+    document.getElementById("t-order-quantity").textContent = s.orderQuantity;
+    document.getElementById("order-save-btn").textContent = s.orderSubmit;
+    document.getElementById("t-linked-orders-title").textContent = s.linkedOrders;
     renderPager();
   }
 
@@ -1394,6 +1577,34 @@
     return d.toLocaleString(lang === "de" ? "de-DE" : "en-US", { dateStyle: "medium", timeStyle: "short" });
   }
 
+  // Shown only for a consultation booking (the only kind a manual order can
+  // be linked from) -- any orders already created against it.
+  async function loadLinkedOrders(bookingId, isConsultation) {
+    const section = document.getElementById("linked-orders-section");
+    if (!isConsultation) { section.style.display = "none"; return; }
+    const s = t();
+    const list = document.getElementById("linked-orders-list");
+    try {
+      const data = await api("/api/admin/bookings/" + encodeURIComponent(bookingId) + "/orders");
+      const orders = data.orders || [];
+      section.style.display = "block";
+      if (!orders.length) {
+        list.innerHTML = `<p class="linked-orders-empty">${s.linkedOrdersNone}</p>`;
+        return;
+      }
+      list.innerHTML = "";
+      for (const order of orders) {
+        const item = document.createElement("div");
+        item.className = "linked-order-item";
+        item.innerHTML = `<span><span class="linked-order-ref">${order.bookingRef}</span> — ${order.service_name}</span><span>€${order.price}</span>`;
+        item.addEventListener("click", () => openDetail(order.id));
+        list.appendChild(item);
+      }
+    } catch {
+      // Best-effort -- shouldn't block viewing the rest of the booking.
+    }
+  }
+
   async function loadEvidence(bookingId) {
     const grid = document.getElementById("evidence-grid");
     grid.innerHTML = "";
@@ -1550,10 +1761,12 @@
     }
   });
 
-  // Splits the stored "First Last" customer_name back into its two parts --
-  // the booking form only ever concatenates firstName + " " + lastName, so
-  // the first word is the first name and everything after it is the last
-  // name (keeps compound/multi-word surnames intact).
+  // The booking form always collects first/last name as two separate
+  // fields, stored as-given in customer_first_name/customer_last_name.
+  // Bookings made before that split existed (pre-migration) only have the
+  // combined customer_name, so those fall back to a best-effort split
+  // (first word vs. the rest) -- a compound first name like "Abdul Qhuddus"
+  // only renders correctly for bookings made after the fix.
   function splitCustomerName(fullName) {
     const trimmed = (fullName || "").trim();
     const spaceIdx = trimmed.indexOf(" ");
@@ -1565,7 +1778,10 @@
   // (bold for a Home booking, since there's no company line to anchor the
   // cell visually) / last name / email.
   function renderCustomerCell(b) {
-    const { first, last } = splitCustomerName(b.customer_name);
+    const hasStoredNames = b.customer_first_name != null;
+    const { first, last } = hasStoredNames
+      ? { first: b.customer_first_name || "", last: b.customer_last_name || "" }
+      : splitCustomerName(b.customer_name);
     const isBusiness = !!b.customer_company;
     const lines = [];
     if (isBusiness) {
@@ -1857,6 +2073,7 @@
     const b = await api("/api/admin/bookings/" + encodeURIComponent(id));
     currentDetail = b;
     loadEvidence(id);
+    loadLinkedOrders(id, b.is_consultation);
     document.getElementById("m-name").textContent = b.customer_name;
     document.getElementById("m-ref").textContent = b.bookingRef;
     document.getElementById("m-type").innerHTML = `<span class="badge-audience${b.audience === "business" ? " is-business" : ""}">${b.audience === "business" ? s.audienceBusinessOpt : s.audienceHomeOpt}</span>`;
@@ -1934,6 +2151,18 @@
         actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", "invoice", () => sendInvoice(b.id)));
       }
       actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", "paymentLink", () => sendPaymentLink(b.id)));
+    }
+    // Quote-type bookings (consultation, or "price given on-site") are
+    // booked with no real price yet -- offered whenever the leaf is a quote,
+    // not just while price is still 0, so a figure can be corrected later too.
+    if (b.is_quote && b.status !== "cancelled") {
+      actions.appendChild(makeActionBtn(s.actionSetPrice, "btn-neutral", "setPrice", () => openPriceModal(b)));
+    }
+    // A manual order is only ever meaningful for a consultation -- the admin
+    // visits/talks to the customer, then records what was actually agreed as
+    // its own linked booking.
+    if (b.is_consultation) {
+      actions.appendChild(makeActionBtn(s.actionCreateOrder, "btn-neutral", "createOrder", () => openOrderModal(b)));
     }
     actions.appendChild(makeActionBtn(s.actionViewLogs, "btn-neutral", "viewLogs", () => {
       window.open(`/admin/logs.html?id=${encodeURIComponent(b.id)}`, "_blank");
@@ -2196,6 +2425,144 @@
   document.getElementById("modal-close").addEventListener("click", closeModal);
   document.getElementById("modal").addEventListener("click", (e) => {
     if (e.target.id === "modal") closeModal();
+  });
+
+  // ---- Set price (quote/consultation bookings) ---------------------------
+
+  let priceModalBookingId = null;
+  function openPriceModal(b) {
+    priceModalBookingId = b.id;
+    document.getElementById("price-modal-ref").textContent = b.bookingRef;
+    document.getElementById("price-input").value = b.price || "";
+    document.getElementById("price-input-error").textContent = "";
+    document.getElementById("price-modal").classList.add("open");
+  }
+  function closePriceModal() {
+    document.getElementById("price-modal").classList.remove("open");
+    priceModalBookingId = null;
+  }
+  document.getElementById("price-modal-close").addEventListener("click", closePriceModal);
+  document.getElementById("price-modal").addEventListener("click", (e) => {
+    if (e.target.id === "price-modal") closePriceModal();
+  });
+  document.getElementById("price-save-btn").addEventListener("click", async () => {
+    const s = t();
+    const errorEl = document.getElementById("price-input-error");
+    const value = Number(document.getElementById("price-input").value);
+    if (!Number.isFinite(value) || value < 0) {
+      errorEl.textContent = s.setPriceInvalid;
+      return;
+    }
+    try {
+      await api(`/api/admin/bookings/${encodeURIComponent(priceModalBookingId)}/price`, {
+        method: "POST",
+        body: JSON.stringify({ price: value }),
+      });
+      toast(s.priceUpdated);
+      closePriceModal();
+      loadBookings();
+      if (currentDetail) openDetail(currentDetail.id);
+    } catch (err) {
+      errorEl.textContent = err.message || s.priceUpdateFailed;
+    }
+  });
+
+  // ---- Create a manual order linked to a consultation booking ------------
+
+  let orderModalSourceId = null;
+  let catalogLeavesPromise = null;
+  function getCatalogLeavesCached() {
+    if (!catalogLeavesPromise) {
+      catalogLeavesPromise = api("/api/admin/catalog-leaves").then((data) => data.leaves || []);
+    }
+    return catalogLeavesPromise;
+  }
+
+  async function openOrderModal(b) {
+    orderModalSourceId = b.id;
+    document.getElementById("order-modal-source-ref").textContent = b.bookingRef;
+    document.getElementById("order-firstname").value = b.customer_first_name || (b.customer_name || "").split(" ")[0] || "";
+    document.getElementById("order-lastname").value = b.customer_last_name || (b.customer_name || "").split(" ").slice(1).join(" ");
+    document.getElementById("order-company").value = b.customer_company || "";
+    document.getElementById("order-email").value = b.customer_email || "";
+    document.getElementById("order-phone").value = b.customer_phone || "";
+    document.getElementById("order-address").value = b.customer_address || "";
+    document.getElementById("order-notes").value = "";
+    document.getElementById("order-price").value = "";
+    document.getElementById("order-quantity").value = "1";
+    document.getElementById("order-error").textContent = "";
+
+    const select = document.getElementById("order-service");
+    const s = t();
+    select.innerHTML = `<option value="">${s.orderServicePlaceholder}</option>`;
+    const leaves = await getCatalogLeavesCached();
+    // Grouped by everything up to the last breadcrumb segment, so the
+    // dropdown reads like the public site's own category structure instead
+    // of one flat alphabetical list of ~500 leaves.
+    const groups = new Map();
+    for (const leaf of leaves) {
+      const crumb = lang === "de" ? leaf.breadcrumbDe : leaf.breadcrumbEn;
+      const groupLabel = crumb.slice(0, -1).join(" › ");
+      const optionLabel = `${crumb[crumb.length - 1]}${leaf.quote ? "" : ` (€${leaf.price})`}`;
+      if (!groups.has(groupLabel)) groups.set(groupLabel, []);
+      groups.get(groupLabel).push({ ...leaf, optionLabel });
+    }
+    for (const [groupLabel, options] of groups) {
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = groupLabel;
+      for (const opt of options) {
+        const o = document.createElement("option");
+        o.value = opt.serviceId;
+        o.textContent = opt.optionLabel;
+        optgroup.appendChild(o);
+      }
+      select.appendChild(optgroup);
+    }
+
+    document.getElementById("order-modal").classList.add("open");
+  }
+  function closeOrderModal() {
+    document.getElementById("order-modal").classList.remove("open");
+    orderModalSourceId = null;
+  }
+  document.getElementById("order-modal-close").addEventListener("click", closeOrderModal);
+  document.getElementById("order-modal").addEventListener("click", (e) => {
+    if (e.target.id === "order-modal") closeOrderModal();
+  });
+  document.getElementById("order-save-btn").addEventListener("click", async () => {
+    const s = t();
+    const errorEl = document.getElementById("order-error");
+    const firstName = document.getElementById("order-firstname").value.trim();
+    const lastName = document.getElementById("order-lastname").value.trim();
+    const email = document.getElementById("order-email").value.trim();
+    const serviceId = document.getElementById("order-service").value;
+    const price = Number(document.getElementById("order-price").value);
+    const quantity = parseInt(document.getElementById("order-quantity").value, 10) || 1;
+    if (!firstName || !lastName || !email || !serviceId || !Number.isFinite(price) || price < 0) {
+      errorEl.textContent = s.orderInvalid;
+      return;
+    }
+    const sourceId = orderModalSourceId;
+    try {
+      const result = await api(`/api/admin/bookings/${encodeURIComponent(sourceId)}/orders`, {
+        method: "POST",
+        body: JSON.stringify({
+          firstName, lastName, email,
+          company: document.getElementById("order-company").value.trim(),
+          phone: document.getElementById("order-phone").value.trim(),
+          address: document.getElementById("order-address").value.trim(),
+          serviceId,
+          notes: document.getElementById("order-notes").value.trim(),
+          price, quantity,
+        }),
+      });
+      toast(`${s.orderCreated}: ${result.bookingRef}`);
+      closeOrderModal();
+      loadBookings();
+      if (currentDetail && currentDetail.id === sourceId) loadLinkedOrders(currentDetail.id, true);
+    } catch (err) {
+      errorEl.textContent = err.message || s.orderCreateFailed;
+    }
   });
 
   // ---- Boot: apply language, then check for an existing session ----

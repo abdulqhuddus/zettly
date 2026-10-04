@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS bookings (
   date TEXT NOT NULL,        -- YYYY-MM-DD
   time TEXT NOT NULL,        -- HH:MM (24h)
   customer_name TEXT NOT NULL,
+  customer_first_name TEXT,     -- as entered on the two-field booking form; customer_name is still the source of truth for display elsewhere (emails, PDFs)
+  customer_last_name TEXT,
   customer_email TEXT NOT NULL,
   customer_phone TEXT,
   customer_company TEXT,                     -- optional, business bookings only
@@ -35,10 +37,13 @@ CREATE TABLE IF NOT EXISTS bookings (
   attachment_data TEXT,         -- optional customer-provided photo, base64-encoded (no data: prefix); capped well under D1's 2MB row limit
   attachment_filename TEXT,
   attachment_content_type TEXT,
-  attachment_size INTEGER       -- original (pre-base64) byte size, for display only
+  attachment_size INTEGER,      -- original (pre-base64) byte size, for display only
+  source_booking_id TEXT REFERENCES bookings(id), -- set when this row is a manually-created order linked back to the consultation/quote booking it followed up on
+  created_by TEXT NOT NULL DEFAULT 'customer' -- 'customer' | 'admin' -- 'admin' rows are manual orders created from the dashboard, not a real self-service booking
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);
+CREATE INDEX IF NOT EXISTS idx_bookings_source_booking_id ON bookings(source_booking_id);
 
 -- Optional evidence photos an admin attaches to a booking after the fact
 -- (e.g. the device/equipment before work starts, with the customer's

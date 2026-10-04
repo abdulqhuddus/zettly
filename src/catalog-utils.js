@@ -51,6 +51,45 @@ export function localizedBreadcrumbName(resolved, lang) {
 // Returns null if the id doesn't parse or no longer resolves (e.g. the
 // catalog changed since the booking was made) — callers should fall back to
 // the stored leaf service_name in that case.
+// Flattens the whole catalog tree into a list of bookable leaves, each with
+// the serviceId string a booking would store and its full breadcrumb in
+// both languages -- used by the admin "create a manual order" form's
+// service picker, which needs every leaf as flat options rather than the
+// public site's step-by-step tree walk.
+export function listCatalogLeaves(catalog) {
+  const leaves = [];
+  for (const audience of Object.keys(catalog)) {
+    for (const category of catalog[audience] || []) {
+      const walk = (node, path, crumbDe, crumbEn) => {
+        if (!node) return;
+        if (node.type === "leaf") {
+          // Matches fullBreadcrumb()'s shape exactly: audience + category +
+          // each chosen option's name along the path -- the same breadcrumb
+          // the rest of the app (admin dashboard, cancel page) shows for a
+          // booking made against this leaf.
+          leaves.push({
+            serviceId: `${audience}:${category.id}:${path.join(":")}`,
+            breadcrumbDe: [AUDIENCE_LABELS[audience]?.de || audience, category.name?.de, ...crumbDe].filter(Boolean),
+            breadcrumbEn: [AUDIENCE_LABELS[audience]?.en || audience, category.name?.en || category.name?.de, ...crumbEn].filter(Boolean),
+            quote: !!node.quote,
+            quoteKind: node.quoteKind || null,
+            price: node.quote ? null : node.price,
+            duration: node.duration,
+          });
+          return;
+        }
+        if (node.type === "branch") {
+          for (const option of node.options || []) {
+            walk(option.next, [...path, option.id], [...crumbDe, option.name?.de], [...crumbEn, option.name?.en || option.name?.de]);
+          }
+        }
+      };
+      walk(category.root, [], [], []);
+    }
+  }
+  return leaves;
+}
+
 export function breadcrumbFromServiceId(catalog, serviceId, lang) {
   if (!serviceId || typeof serviceId !== "string") return null;
   const [audience, categoryId, ...path] = serviceId.split(":");

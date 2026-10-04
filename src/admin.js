@@ -19,7 +19,7 @@ import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./sett
 import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
 import { sendConfirmationEmail, parseAttachment } from "./index.js";
 import catalog from "../catalog.json";
-import { breadcrumbFromServiceId, resolveLeaf, fullBreadcrumb } from "./catalog-utils.js";
+import { breadcrumbFromServiceId, resolveLeaf, fullBreadcrumb, listCatalogLeaves } from "./catalog-utils.js";
 
 // The bookings table only stores the leaf service_name ("New setup"); the
 // admin dashboard wants the full selection path the customer walked through
@@ -40,6 +40,10 @@ function withServiceBreadcrumb(row) {
     serviceBreadcrumbEn: breadcrumbEn || [row.service_name],
     serviceBreadcrumbDe: breadcrumbDe || [row.service_name],
     is_consultation: resolvedLeaf?.quoteKind === "consultation",
+    // Quote-type leaves (consultation or "price given on-site") are booked
+    // with price = 0, the real price only known later -- the admin "Set
+    // price" action is offered for these.
+    is_quote: !!resolvedLeaf?.quote,
     audience: svcAudience === "business" ? "business" : "home",
   };
 }
@@ -132,8 +136,8 @@ export async function handleAdminListBookings(url, env) {
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
   const { results } = await env.DB.prepare(
-    `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
+    `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -315,8 +319,8 @@ export async function handleAdminGetActivity(env, bookingId) {
 
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
-    `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
+    `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings WHERE id = ?`
   )
@@ -491,6 +495,148 @@ export async function handleAdminSetPaymentStatus(request, env, id) {
 
   await logActivity(env, id, "payment_status_changed", "admin", `Payment status changed to ${body.paymentStatus}`);
   return json({ ok: true, id, paymentStatus: body.paymentStatus });
+}
+
+// Quote-type bookings (consultation, or "price given on-site") are stored
+// with price = 0 -- the real price is only known once the admin has
+// actually diagnosed the job or held the consultation. This lets them key
+// that final price in afterwards; the dashboard's "€X" display and the
+// invoice/payment-link emails all just read the same `price` column, so
+// nothing else needs to change once it's set.
+const MAX_MANUAL_PRICE = 100000;
+
+export async function handleAdminSetPrice(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+  const price = Number(body?.price);
+  if (!Number.isFinite(price) || price < 0 || price > MAX_MANUAL_PRICE) {
+    return json({ error: "Invalid price" }, 400);
+  }
+  const existing = await env.DB.prepare(`SELECT id FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+
+  // Prices are whole euros throughout the app (bookings.price is an
+  // INTEGER column, and every display just shows "€" + the number with no
+  // decimal formatting), so round here rather than storing cents nothing
+  // else would ever show.
+  const rounded = Math.round(price);
+  await env.DB.prepare(`UPDATE bookings SET price = ? WHERE id = ?`).bind(rounded, id).run();
+  await logActivity(env, id, "price_set", "admin", `Price set to €${rounded}`);
+  return json({ ok: true, id, price: rounded });
+}
+
+// ---- Manual orders (admin-created, linked back to an existing booking) --
+//
+// For a consultation/quote booking: once the admin has actually visited or
+// spoken with the customer and agreed a price, this lets them record that
+// as its own booking-shaped row -- any person or company, any catalog
+// service, free-text notes, and a price they set themselves -- rather than
+// trying to force the original quote booking's price to represent it.
+// Reuses the bookings table itself (created_by = 'admin', source_booking_id
+// pointing back at the original), so the resulting order immediately gets
+// the same status/payment/invoice/payment-link tooling as a real booking.
+
+let cachedCatalogLeaves = null;
+function getCatalogLeaves() {
+  if (!cachedCatalogLeaves) cachedCatalogLeaves = listCatalogLeaves(catalog);
+  return cachedCatalogLeaves;
+}
+
+export async function handleAdminCatalogLeaves() {
+  return json({ leaves: getCatalogLeaves() });
+}
+
+export async function handleAdminListOrders(env, bookingId) {
+  const { results } = await env.DB.prepare(
+    `SELECT id, service_name, price, status, payment_status, created_at FROM bookings WHERE source_booking_id = ? ORDER BY created_at DESC`
+  )
+    .bind(bookingId)
+    .all();
+  return json({ orders: results.map((r) => ({ ...r, bookingRef: `ZTL-${r.id.split("-")[0].toUpperCase()}` })) });
+}
+
+export async function handleAdminCreateOrder(request, env, sourceId) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  const source = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(sourceId).first();
+  if (!source) return json({ error: "Not found" }, 404);
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+
+  const serviceId = typeof body?.serviceId === "string" ? body.serviceId : "";
+  const [audience, categoryId, ...path] = serviceId.split(":");
+  const resolved = audience && categoryId ? resolveLeaf(catalog, audience, categoryId, path) : null;
+  if (!resolved) return json({ error: "Invalid service" }, 400);
+
+  const price = Number(body?.price);
+  if (!Number.isFinite(price) || price < 0 || price > MAX_MANUAL_PRICE) {
+    return json({ error: "Invalid price" }, 400);
+  }
+
+  const firstName = typeof body?.firstName === "string" ? body.firstName.trim().slice(0, 100) : "";
+  const lastName = typeof body?.lastName === "string" ? body.lastName.trim().slice(0, 100) : "";
+  if (!firstName || !lastName) return json({ error: "First and last name are required" }, 400);
+  const customerName = `${firstName} ${lastName}`.trim();
+  const email = typeof body?.email === "string" ? body.email.trim() : "";
+  if (!isValidEmail(email)) return json({ error: "Invalid email address" }, 400);
+  const company = audience === "business" && typeof body?.company === "string" ? body.company.trim().slice(0, 200) || null : null;
+  const phone = typeof body?.phone === "string" ? body.phone.trim().slice(0, 50) || null : null;
+  const address = typeof body?.address === "string" ? body.address.trim().slice(0, 300) : "";
+  const notes = typeof body?.notes === "string" ? body.notes.trim().slice(0, 1000) || null : null;
+  const quantity = Number.isInteger(body?.quantity) && body.quantity > 0 && body.quantity <= 100 ? body.quantity : 1;
+
+  const id = crypto.randomUUID();
+  const serviceIdStr = `${audience}:${categoryId}:${(path || []).join(":")}`;
+  const serviceName = localizedBreadcrumbNameSafe(resolved);
+
+  await env.DB.prepare(
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email, customer_phone, customer_company, customer_address, notes, status, payment_status, quantity, source_booking_id, created_by)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed', 'pending', ?, ?, 'admin')`
+  )
+    .bind(
+      id,
+      serviceIdStr,
+      serviceName,
+      Math.round(price),
+      resolved.leaf.duration || 0,
+      source.date,
+      source.time,
+      customerName,
+      firstName,
+      lastName,
+      email,
+      phone,
+      company,
+      address || source.customer_address || "",
+      notes,
+      quantity
+    )
+    .run();
+
+  const bookingRef = `ZTL-${id.split("-")[0].toUpperCase()}`;
+  const sourceRef = `ZTL-${source.id.split("-")[0].toUpperCase()}`;
+  await logActivity(env, id, "created", "admin", `Manually created order linked to ${sourceRef}`);
+  await logActivity(env, sourceId, "order_created", "admin", `Created order ${bookingRef} (€${Math.round(price)})`);
+
+  return json({ ok: true, id, bookingRef });
+}
+
+// Small local fallback so a catalog leaf with no `name` of its own (the
+// common case -- the display name normally comes from the breadcrumb option
+// that led to it) still gets a sensible service_name on the new row.
+function localizedBreadcrumbNameSafe(resolved) {
+  if (resolved.leaf.name) return resolved.leaf.name.de || resolved.leaf.name.en;
+  const last = resolved.breadcrumb[resolved.breadcrumb.length - 1];
+  return last ? last.de || last.en : "Service";
 }
 
 // ---- Invoice / payment link (manual admin actions on a booking) ---------

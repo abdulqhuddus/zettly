@@ -13,6 +13,10 @@ import {
   handleAdminBookingAttachment,
   handleAdminUpdateStatus,
   handleAdminSetPaymentStatus,
+  handleAdminSetPrice,
+  handleAdminCreateOrder,
+  handleAdminListOrders,
+  handleAdminCatalogLeaves,
   handleAdminGetActivity,
   handleAdminListEvidence,
   handleAdminGetEvidencePhoto,
@@ -507,10 +511,17 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, company: rawCompany, address, zip, notes, onlineConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang, attachment: rawAttachment } = body;
+  const { audience, categoryId, path, date, time, name, firstName: rawFirstName, lastName: rawLastName, email, phone, company: rawCompany, address, zip, notes, onlineConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang, attachment: rawAttachment } = body;
   // Only meaningful for business bookings; silently ignored otherwise so a
   // tampered request can't attach a company name to a home booking.
   const company = audience === "business" && typeof rawCompany === "string" ? rawCompany.trim().slice(0, 200) || null : null;
+  // The booking form always collects these as two separate fields -- stored
+  // as-given (rather than re-split from `name` later) so a compound first
+  // name like "Abdul Qhuddus" doesn't get mangled into "Abdul" + "Qhuddus
+  // Mohammed". Falls back to splitting `name` for any older/direct API
+  // caller that still only sends the combined field.
+  const firstName = typeof rawFirstName === "string" && rawFirstName.trim() ? rawFirstName.trim().slice(0, 100) : (name || "").trim().split(" ")[0] || "";
+  const lastName = typeof rawLastName === "string" && rawLastName.trim() ? rawLastName.trim().slice(0, 100) : (name || "").trim().split(" ").slice(1).join(" ");
   const lang = rawLang === "en" ? "en" : "de";
   // Optional, and silently dropped rather than rejected if it's missing,
   // oversized, or an unsupported type -- a bad photo shouldn't block an
@@ -648,8 +659,8 @@ async function handleBook(request, env) {
   const acceptedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_company, customer_address, notes, commute_fee, commute_distance_km, online_consultation, liability_accepted_at, privacy_accepted_at, quantity, attachment_data, attachment_filename, attachment_content_type, attachment_size)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email, customer_phone, customer_company, customer_address, notes, commute_fee, commute_distance_km, online_consultation, liability_accepted_at, privacy_accepted_at, quantity, attachment_data, attachment_filename, attachment_content_type, attachment_size)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
       id,
@@ -660,6 +671,8 @@ async function handleBook(request, env) {
       date,
       time,
       name,
+      firstName,
+      lastName,
       email,
       phone || null,
       company,
@@ -790,6 +803,20 @@ export default {
       const paymentMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/payment$/);
       if (paymentMatch && request.method === "POST") {
         return handleAdminSetPaymentStatus(request, env, paymentMatch[1]);
+      }
+      const priceMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/price$/);
+      if (priceMatch && request.method === "POST") {
+        return handleAdminSetPrice(request, env, priceMatch[1]);
+      }
+      if (url.pathname === "/api/admin/catalog-leaves" && request.method === "GET") {
+        return handleAdminCatalogLeaves();
+      }
+      const ordersMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/orders$/);
+      if (ordersMatch && request.method === "GET") {
+        return handleAdminListOrders(env, ordersMatch[1]);
+      }
+      if (ordersMatch && request.method === "POST") {
+        return handleAdminCreateOrder(request, env, ordersMatch[1]);
       }
       const evidenceListMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/evidence$/);
       if (evidenceListMatch && request.method === "GET") {

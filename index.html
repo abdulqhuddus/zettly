@@ -2061,11 +2061,14 @@
     margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 14px;
     background: #f8f7fb; border: 1px solid var(--border);
   }
-  .pb-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; padding: 0.3rem 0; }
-  .pb-label { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-weight: 600; }
+  .pb-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.7rem; font-size: 0.88rem; padding: 0.3rem 0; }
+  .pb-label { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-weight: 600; flex: 0 0 auto; padding-top: 0.1rem; }
   .pb-ico { display: inline-flex; width: 18px; height: 18px; color: var(--accent); flex: 0 0 auto; }
   .pb-ico svg { width: 100%; height: 100%; }
-  .pb-value { font-weight: 700; color: var(--ink); }
+  /* text-align:right + min-width:0 so a long value (e.g. the German
+     "price after a free consultation" copy) wraps onto its own lines
+     flush with the card's right edge instead of crowding the label. */
+  .pb-value { font-weight: 700; color: var(--ink); text-align: right; min-width: 0; }
   .pb-value.pb-free { color: #16a34a; }
   .consultation-mode-badge {
     display: inline-flex; align-items: center; font-size: 0.78rem; font-weight: 800;
@@ -4797,7 +4800,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         path: state.service.path,
         date: state.date,
         time: state.time,
-        name, email, phone, company, address, zip: state.zip, notes, lang,
+        name, firstName, lastName, email, phone, company, address, zip: state.zip, notes, lang,
         onlineConsultation: !!state.onlineConsultation,
         liabilityAccepted: !!state.liabilityAccepted,
         privacyAccepted: !!document.getElementById("f-consent").checked,
