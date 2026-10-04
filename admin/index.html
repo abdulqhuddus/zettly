@@ -139,6 +139,10 @@
   .stat-card.stat-total .stat-value { color: var(--accent); }
   .stat-card.stat-completed .stat-value { color: var(--ok); }
   .stat-card.stat-pending .stat-value { color: var(--warn); }
+  .stat-card.stat-cancelled .stat-value { color: var(--danger); }
+  .stat-card.stat-confirmed .stat-value { color: var(--ok); }
+  .stat-card.stat-paid .stat-value { color: var(--ok); }
+  .stats-row + .stats-row { margin-top: -0.2rem; }
   @media (max-width: 760px) {
     .stats-row { grid-template-columns: repeat(2, 1fr); }
   }
@@ -267,6 +271,9 @@
   .badge-completed { background: var(--accent-light); color: var(--accent); }
   .badge-mode { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; background: var(--accent-light); color: var(--accent); white-space: nowrap; }
   .badge-mode.is-online { background: var(--ok-bg); color: var(--ok); }
+  .badge-payment { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap; }
+  .badge-payment.is-paid { background: var(--ok-bg); color: var(--ok); }
+  .badge-payment.is-pending { background: var(--warn-bg); color: var(--warn); }
   .attachment-cell { text-align: center; }
   .attachment-thumb-loading { color: var(--muted); font-size: 0.8rem; }
   .attachment-thumb { display: block; width: 36px; height: 36px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border); }
@@ -315,10 +322,21 @@
   .detail-row:first-of-type { border-top: none; }
   .detail-row dt { color: var(--muted); }
   .detail-row dd { margin: 0; font-weight: 600; text-align: right; }
-  .modal-actions { display: flex; gap: 0.6rem; margin-top: 1.3rem; flex-wrap: wrap; }
+  .modal-actions { display: flex; gap: 0.5rem; margin-top: 1.3rem; flex-wrap: wrap; justify-content: center; }
   .btn-danger { background: var(--danger-bg); color: var(--danger); }
   .btn-ok { background: var(--ok-bg); color: var(--ok); }
   .btn-neutral { background: var(--accent-light); color: var(--accent); }
+  .btn-warn { background: var(--warn-bg); color: var(--warn); }
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    transition: transform 0.12s ease, filter 0.12s ease;
+  }
+  .icon-btn svg { width: 19px; height: 19px; }
+  .icon-btn:hover { transform: translateY(-2px); filter: brightness(0.96); }
   .modal-close { background: none; border: none; float: right; font-size: 1.3rem; line-height: 1; cursor: pointer; color: var(--muted); }
   .toast {
     position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
@@ -418,17 +436,53 @@
         <div class="stat-label" id="t-stat-count">Total Bookings</div>
         <div class="stat-value" id="stat-count">–</div>
       </div>
-      <div class="stat-card stat-total">
-        <div class="stat-label" id="t-stat-total">Total Bookings Amount</div>
-        <div class="stat-value" id="stat-total">–</div>
+      <div class="stat-card stat-confirmed">
+        <div class="stat-label" id="t-stat-confirmed-count">Total Confirmed</div>
+        <div class="stat-value" id="stat-confirmed-count">–</div>
+      </div>
+      <div class="stat-card stat-cancelled">
+        <div class="stat-label" id="t-stat-cancelled-count">Total Cancelled</div>
+        <div class="stat-value" id="stat-cancelled-count">–</div>
       </div>
       <div class="stat-card stat-completed">
-        <div class="stat-label" id="t-stat-completed">Completed Amount</div>
-        <div class="stat-value" id="stat-completed">–</div>
+        <div class="stat-label" id="t-stat-completed-count">Total Completed</div>
+        <div class="stat-value" id="stat-completed-count">–</div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card stat-total">
+        <div class="stat-label" id="t-stat-total">Total Bookings Value</div>
+        <div class="stat-value" id="stat-total">–</div>
+      </div>
+      <div class="stat-card stat-confirmed">
+        <div class="stat-label" id="t-stat-confirmed-value">Total Confirmed Value</div>
+        <div class="stat-value" id="stat-confirmed-value">–</div>
+      </div>
+      <div class="stat-card stat-cancelled">
+        <div class="stat-label" id="t-stat-cancelled-value">Total Cancelled Value</div>
+        <div class="stat-value" id="stat-cancelled-value">–</div>
+      </div>
+      <div class="stat-card stat-completed">
+        <div class="stat-label" id="t-stat-completed-value">Total Completed Value</div>
+        <div class="stat-value" id="stat-completed-value">–</div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card stat-paid">
+        <div class="stat-label" id="t-stat-paid-count">Total Paid Bookings</div>
+        <div class="stat-value" id="stat-paid-count">–</div>
+      </div>
+      <div class="stat-card stat-paid">
+        <div class="stat-label" id="t-stat-paid-amount">Total Paid Bookings Amount</div>
+        <div class="stat-value" id="stat-paid-amount">–</div>
       </div>
       <div class="stat-card stat-pending">
-        <div class="stat-label" id="t-stat-pending">Pending Amount</div>
-        <div class="stat-value" id="stat-pending">–</div>
+        <div class="stat-label" id="t-stat-pending-count">Total Pending Bookings</div>
+        <div class="stat-value" id="stat-pending-count">–</div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="stat-label" id="t-stat-pending-amount">Total Pending Bookings Amount</div>
+        <div class="stat-value" id="stat-pending-amount">–</div>
       </div>
     </div>
     <div class="booking-toggle-group">
@@ -513,6 +567,7 @@
             <th id="th-mode">Mode</th>
             <th id="th-attachment">File</th>
             <th id="th-status">Status</th>
+            <th id="th-payment">Payment</th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
@@ -533,6 +588,7 @@
     <div class="modal-ref" id="m-ref"></div>
     <dl>
       <div class="detail-row"><dt id="t-m-status">Status</dt><dd id="m-status"></dd></div>
+      <div class="detail-row"><dt id="t-m-payment-status">Payment</dt><dd id="m-payment-status"></dd></div>
       <div class="detail-row"><dt id="t-m-service">Service</dt><dd id="m-service"></dd></div>
       <div class="detail-row"><dt id="t-m-when">Appointment</dt><dd id="m-when"></dd></div>
       <div class="detail-row"><dt id="t-m-duration">Duration</dt><dd id="m-duration"></dd></div>
@@ -583,9 +639,17 @@
       adminLabel: "Admin",
       logoutBtn: "Log out",
       statCount: "Total Bookings",
-      statTotal: "Total Bookings Amount",
-      statCompleted: "Completed Amount",
-      statPending: "Pending Amount",
+      statConfirmedCount: "Total Confirmed",
+      statCancelledCount: "Total Cancelled",
+      statCompletedCount: "Total Completed",
+      statTotal: "Total Bookings Value",
+      statConfirmedValue: "Total Confirmed Value",
+      statCancelledValue: "Total Cancelled Value",
+      statCompletedValue: "Total Completed Value",
+      statPaidCount: "Total Paid Bookings",
+      statPaidAmount: "Total Paid Bookings Amount",
+      statPendingCount: "Total Pending Bookings",
+      statPendingAmount: "Total Pending Bookings Amount",
       bookingToggleTitleHome: "Home bookings",
       bookingToggleSubHome: "Turn off bookings from home customers, with no end date.",
       bookingToggleTitleBusiness: "Business bookings",
@@ -631,8 +695,11 @@
       thMode: "Mode",
       thAttachment: "File",
       thStatus: "Status",
+      thPayment: "Payment",
       modeOnline: "Online",
       modeInPerson: "In person",
+      paymentPaid: "Paid",
+      paymentPending: "Pending",
       empty: "No bookings found.",
       pagerInfo: (from, to, total) => `${from}–${to} of ${total}`,
       prev: "← Prev",
@@ -645,6 +712,7 @@
       mQuantity: "Quantity",
       mUnitPrice: "Unit price",
       mStatus: "Status",
+      mPaymentStatus: "Payment",
       mService: "Service",
       mWhen: "Appointment",
       mDuration: "Duration",
@@ -667,10 +735,13 @@
       actionDelete: "Delete booking",
       actionSendInvoice: "Send invoice",
       actionSendPaymentLink: "Send payment link",
+      actionMarkPaid: "Mark as paid",
+      actionMarkPending: "Mark as pending",
       invoiceSent: "Invoice sent",
       invoiceSendFailed: "Failed to send invoice",
       paymentLinkSent: "Payment link sent",
       paymentLinkSendFailed: "Failed to send payment link",
+      paymentStatusUpdated: "Payment status updated",
       confirmCancelTitle: "Cancel booking",
       confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email.",
       confirmCompleteTitle: "Mark as completed",
@@ -686,6 +757,10 @@
       confirmSendInvoiceMessage: "Send invoice to the customer now?",
       confirmSendPaymentLinkTitle: "Send payment link",
       confirmSendPaymentLinkMessage: "Send payment link to the customer?",
+      confirmMarkPaidTitle: "Mark as paid",
+      confirmMarkPaidMessage: "Mark this booking as paid?",
+      confirmMarkPendingTitle: "Mark as pending",
+      confirmMarkPendingMessage: "Mark this booking as payment pending?",
       confirmReasonLabel: "Reason for cancellation (required)",
       confirmReasonPlaceholder: "Please enter a reason…",
       confirmReasonError: "Please enter a reason.",
@@ -704,9 +779,17 @@
       adminLabel: "Admin",
       logoutBtn: "Abmelden",
       statCount: "Buchungen gesamt",
+      statConfirmedCount: "Bestätigt gesamt",
+      statCancelledCount: "Storniert gesamt",
+      statCompletedCount: "Abgeschlossen gesamt",
       statTotal: "Gesamtbetrag Buchungen",
-      statCompleted: "Betrag abgeschlossen",
-      statPending: "Betrag ausstehend",
+      statConfirmedValue: "Betrag bestätigt",
+      statCancelledValue: "Betrag storniert",
+      statCompletedValue: "Betrag abgeschlossen",
+      statPaidCount: "Bezahlte Buchungen",
+      statPaidAmount: "Betrag bezahlt",
+      statPendingCount: "Ausstehende Buchungen",
+      statPendingAmount: "Betrag ausstehend",
       bookingToggleTitleHome: "Buchungen (Zuhause)",
       bookingToggleSubHome: "Buchungen von Privatkunden deaktivieren, ohne Enddatum.",
       bookingToggleTitleBusiness: "Buchungen (Unternehmen)",
@@ -752,8 +835,11 @@
       thMode: "Art",
       thAttachment: "Datei",
       thStatus: "Status",
+      thPayment: "Zahlung",
       modeOnline: "Online",
       modeInPerson: "Vor Ort",
+      paymentPaid: "Bezahlt",
+      paymentPending: "Ausstehend",
       empty: "Keine Buchungen gefunden.",
       pagerInfo: (from, to, total) => `${from}–${to} von ${total}`,
       prev: "← Zurück",
@@ -766,6 +852,7 @@
       mQuantity: "Anzahl",
       mUnitPrice: "Einzelpreis",
       mStatus: "Status",
+      mPaymentStatus: "Zahlung",
       mService: "Leistung",
       mWhen: "Termin",
       mDuration: "Dauer",
@@ -788,10 +875,13 @@
       actionDelete: "Buchung löschen",
       actionSendInvoice: "Rechnung senden",
       actionSendPaymentLink: "Zahlungslink senden",
+      actionMarkPaid: "Als bezahlt markieren",
+      actionMarkPending: "Als ausstehend markieren",
       invoiceSent: "Rechnung gesendet",
       invoiceSendFailed: "Rechnung konnte nicht gesendet werden",
       paymentLinkSent: "Zahlungslink gesendet",
       paymentLinkSendFailed: "Zahlungslink konnte nicht gesendet werden",
+      paymentStatusUpdated: "Zahlungsstatus aktualisiert",
       confirmCancelTitle: "Buchung stornieren",
       confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt.",
       confirmCompleteTitle: "Als abgeschlossen markieren",
@@ -807,6 +897,10 @@
       confirmSendInvoiceMessage: "Rechnung jetzt an den Kunden senden?",
       confirmSendPaymentLinkTitle: "Zahlungslink senden",
       confirmSendPaymentLinkMessage: "Zahlungslink an den Kunden senden?",
+      confirmMarkPaidTitle: "Als bezahlt markieren",
+      confirmMarkPaidMessage: "Diese Buchung als bezahlt markieren?",
+      confirmMarkPendingTitle: "Als ausstehend markieren",
+      confirmMarkPendingMessage: "Diese Buchung als zahlungsausstehend markieren?",
       confirmReasonLabel: "Grund der Stornierung (erforderlich)",
       confirmReasonPlaceholder: "Bitte Grund angeben…",
       confirmReasonError: "Bitte geben Sie einen Grund an.",
@@ -817,6 +911,21 @@
       updateFailed: "Fehler beim Aktualisieren",
       genericError: "Fehler",
     },
+  };
+
+  // Inline icons for the modal's icon-only action buttons -- the full
+  // wording is still available (as a native tooltip via the title/
+  // aria-label attribute makeActionBtn sets), this is just what's always
+  // visible so every action fits comfortably in one row.
+  const ICONS = {
+    cancel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+    complete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>',
+    reconfirm: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a9 9 0 1 1 2.5 6.2"/><polyline points="3 5 3 11 9 11"/></svg>',
+    delete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 20 7"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg>',
+    invoice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>',
+    paymentLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/></svg>',
+    markPaid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9.5a3 3 0 0 0-2.8-2h-.4a2.6 2.6 0 0 0 0 5.2h.4a2.6 2.6 0 0 1 0 5.2h-.4a3 3 0 0 1-2.8-2"/><line x1="12" y1="6" x2="12" y2="18"/></svg>',
+    markPending: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>',
   };
 
   let lang = "en";
@@ -848,9 +957,17 @@
     document.getElementById("t-admin-label").textContent = s.adminLabel;
     document.getElementById("logout-btn").textContent = s.logoutBtn;
     document.getElementById("t-stat-count").textContent = s.statCount;
+    document.getElementById("t-stat-confirmed-count").textContent = s.statConfirmedCount;
+    document.getElementById("t-stat-cancelled-count").textContent = s.statCancelledCount;
+    document.getElementById("t-stat-completed-count").textContent = s.statCompletedCount;
     document.getElementById("t-stat-total").textContent = s.statTotal;
-    document.getElementById("t-stat-completed").textContent = s.statCompleted;
-    document.getElementById("t-stat-pending").textContent = s.statPending;
+    document.getElementById("t-stat-confirmed-value").textContent = s.statConfirmedValue;
+    document.getElementById("t-stat-cancelled-value").textContent = s.statCancelledValue;
+    document.getElementById("t-stat-completed-value").textContent = s.statCompletedValue;
+    document.getElementById("t-stat-paid-count").textContent = s.statPaidCount;
+    document.getElementById("t-stat-paid-amount").textContent = s.statPaidAmount;
+    document.getElementById("t-stat-pending-count").textContent = s.statPendingCount;
+    document.getElementById("t-stat-pending-amount").textContent = s.statPendingAmount;
     document.getElementById("t-booking-toggle-title-home").textContent = s.bookingToggleTitleHome;
     document.getElementById("t-booking-toggle-sub-home").textContent = s.bookingToggleSubHome;
     document.getElementById("t-booking-toggle-title-business").textContent = s.bookingToggleTitleBusiness;
@@ -884,8 +1001,10 @@
     document.getElementById("th-mode").textContent = s.thMode;
     document.getElementById("th-attachment").textContent = s.thAttachment;
     document.getElementById("th-status").textContent = s.thStatus;
+    document.getElementById("th-payment").textContent = s.thPayment;
     document.getElementById("empty").textContent = s.empty;
     document.getElementById("t-m-status").textContent = s.mStatus;
+    document.getElementById("t-m-payment-status").textContent = s.mPaymentStatus;
     document.getElementById("t-m-service").textContent = s.mService;
     document.getElementById("t-m-when").textContent = s.mWhen;
     document.getElementById("t-m-duration").textContent = s.mDuration;
@@ -981,6 +1100,11 @@
     return { confirmed: s.statusConfirmed, cancelled: s.statusCancelled, completed: s.statusCompleted }[status] || status;
   }
 
+  function paymentLabel(paymentStatus) {
+    const s = t();
+    return paymentStatus === "paid" ? s.paymentPaid : s.paymentPending;
+  }
+
   function buildQuery() {
     const params = new URLSearchParams();
     const q = document.getElementById("f-q").value.trim();
@@ -1013,11 +1137,26 @@
   }
 
   function renderStats(stats) {
-    stats = stats || { count: 0, totalAmount: 0, completedAmount: 0, pendingAmount: 0 };
+    stats = stats || {
+      count: 0, totalAmount: 0,
+      confirmedCount: 0, confirmedAmount: 0,
+      cancelledCount: 0, cancelledAmount: 0,
+      completedCount: 0, completedAmount: 0,
+      paidCount: 0, paidAmount: 0,
+      pendingCount: 0, pendingAmount: 0,
+    };
     document.getElementById("stat-count").textContent = stats.count;
+    document.getElementById("stat-confirmed-count").textContent = stats.confirmedCount;
+    document.getElementById("stat-cancelled-count").textContent = stats.cancelledCount;
+    document.getElementById("stat-completed-count").textContent = stats.completedCount;
     document.getElementById("stat-total").textContent = formatMoney(stats.totalAmount);
-    document.getElementById("stat-completed").textContent = formatMoney(stats.completedAmount);
-    document.getElementById("stat-pending").textContent = formatMoney(stats.pendingAmount);
+    document.getElementById("stat-confirmed-value").textContent = formatMoney(stats.confirmedAmount);
+    document.getElementById("stat-cancelled-value").textContent = formatMoney(stats.cancelledAmount);
+    document.getElementById("stat-completed-value").textContent = formatMoney(stats.completedAmount);
+    document.getElementById("stat-paid-count").textContent = stats.paidCount;
+    document.getElementById("stat-paid-amount").textContent = formatMoney(stats.paidAmount);
+    document.getElementById("stat-pending-count").textContent = stats.pendingCount;
+    document.getElementById("stat-pending-amount").textContent = formatMoney(stats.pendingAmount);
   }
 
   // Turns a base64 payload into a blob: URL instead of handing the browser
@@ -1057,6 +1196,7 @@
         <td>${b.is_consultation ? `<span class="badge-mode${b.online_consultation ? " is-online" : ""}">${modeText}</span>` : "—"}</td>
         <td class="attachment-cell"></td>
         <td><span class="badge badge-${b.status}">${statusLabel(b.status)}</span></td>
+        <td><span class="badge-payment is-${b.payment_status === "paid" ? "paid" : "pending"}">${paymentLabel(b.payment_status)}</span></td>
       `;
       tr.addEventListener("click", () => openDetail(b.id));
       if (b.has_attachment) {
@@ -1310,6 +1450,7 @@
     document.getElementById("m-name").textContent = b.customer_name;
     document.getElementById("m-ref").textContent = b.bookingRef;
     document.getElementById("m-status").innerHTML = `<span class="badge badge-${b.status}">${statusLabel(b.status)}</span>`;
+    document.getElementById("m-payment-status").innerHTML = `<span class="badge-payment is-${b.payment_status === "paid" ? "paid" : "pending"}">${paymentLabel(b.payment_status)}</span>`;
     document.getElementById("m-service").textContent =
       (lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › ");
     document.getElementById("m-when").textContent = `${b.date}, ${s.atTime(b.time)}`;
@@ -1351,19 +1492,28 @@
     const actions = document.getElementById("m-actions");
     actions.innerHTML = "";
     if (b.status !== "cancelled") {
-      actions.appendChild(makeActionBtn(s.actionCancel, "btn-danger", () => updateStatus(b.id, "cancelled")));
+      actions.appendChild(makeActionBtn(s.actionCancel, "btn-danger", "cancel", () => updateStatus(b.id, "cancelled")));
     }
     if (b.status !== "completed" && b.status !== "cancelled") {
-      actions.appendChild(makeActionBtn(s.actionComplete, "btn-ok", () => updateStatus(b.id, "completed")));
+      actions.appendChild(makeActionBtn(s.actionComplete, "btn-ok", "complete", () => updateStatus(b.id, "completed")));
     }
     if (b.status !== "confirmed" && b.status !== "completed" && isFutureBooking(b)) {
-      actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", () => updateStatus(b.id, "confirmed")));
+      actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", "reconfirm", () => updateStatus(b.id, "confirmed")));
+    }
+    // Paid/pending is independent of the booking status (cancel/complete/
+    // confirm) above -- this just flips payment_status. Once a payment
+    // gateway is wired up, a successful online payment can set this
+    // automatically; until then it's a manual admin toggle.
+    if (b.payment_status === "paid") {
+      actions.appendChild(makeActionBtn(s.actionMarkPending, "btn-warn", "markPending", () => setPaymentStatus(b.id, "pending")));
+    } else {
+      actions.appendChild(makeActionBtn(s.actionMarkPaid, "btn-ok", "markPaid", () => setPaymentStatus(b.id, "paid")));
     }
     if (b.status !== "cancelled") {
-      actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", () => sendInvoice(b.id)));
-      actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", () => sendPaymentLink(b.id)));
+      actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", "invoice", () => sendInvoice(b.id)));
+      actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", "paymentLink", () => sendPaymentLink(b.id)));
     }
-    actions.appendChild(makeActionBtn(s.actionDelete, "btn-danger", () => deleteBooking(b.id, b.bookingRef)));
+    actions.appendChild(makeActionBtn(s.actionDelete, "btn-danger", "delete", () => deleteBooking(b.id, b.bookingRef)));
     document.getElementById("modal").classList.add("open");
   }
 
@@ -1377,10 +1527,13 @@
     return dt.getTime() > Date.now();
   }
 
-  function makeActionBtn(label, cls, onClick) {
+  function makeActionBtn(label, cls, icon, onClick) {
     const btn = document.createElement("button");
-    btn.className = "btn " + cls;
-    btn.textContent = label;
+    btn.className = "btn icon-btn " + cls;
+    btn.innerHTML = ICONS[icon] || "";
+    btn.title = label;
+    btn.setAttribute("aria-label", label);
+    btn.type = "button";
     btn.addEventListener("click", onClick);
     return btn;
   }
@@ -1489,6 +1642,26 @@
         body: JSON.stringify({ status, lang, ...(reason ? { reason } : {}) }),
       });
       toast(s.statusUpdated);
+      closeModal();
+      loadBookings();
+    } catch (err) {
+      toast(err.message || s.updateFailed);
+    }
+  }
+
+  async function setPaymentStatus(id, paymentStatus) {
+    const s = t();
+    const result = await showConfirm({
+      title: paymentStatus === "paid" ? s.confirmMarkPaidTitle : s.confirmMarkPendingTitle,
+      message: paymentStatus === "paid" ? s.confirmMarkPaidMessage : s.confirmMarkPendingMessage,
+    });
+    if (!result.confirmed) return;
+    try {
+      await api(`/api/admin/bookings/${encodeURIComponent(id)}/payment`, {
+        method: "POST",
+        body: JSON.stringify({ paymentStatus }),
+      });
+      toast(s.paymentStatusUpdated);
       closeModal();
       loadBookings();
     } catch (err) {

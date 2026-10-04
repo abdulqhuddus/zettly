@@ -127,7 +127,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -140,25 +140,56 @@ export async function handleAdminListBookings(url, env) {
     .bind(...params)
     .first();
 
-  // Summary cards on the dashboard: totals across whatever the current
-  // filters select (search/date range), independent of the status filter
-  // and of pagination, broken down by status so the UI can show completed
-  // vs. still-pending revenue alongside the grand total.
-  const baseWhereSql = baseWhere.length ? `WHERE ${baseWhere.join(" AND ")}` : "";
+  // Summary cards on the dashboard: totals across whatever filters are
+  // currently applied (search/date range/status), broken down by status and
+  // by payment state so the UI can show, e.g., confirmed vs. cancelled vs.
+  // completed value, and paid vs. still-pending revenue, side by side. These
+  // intentionally use the SAME where/params as the paginated list above, so
+  // picking a status filter narrows the cards exactly like it narrows the
+  // table.
   const { results: statusRows } = await env.DB.prepare(
     `SELECT status, COUNT(*) AS n, COALESCE(SUM(price + commute_fee), 0) AS sum
-     FROM bookings ${baseWhereSql}
+     FROM bookings ${whereSql}
      GROUP BY status`
   )
-    .bind(...baseParams)
+    .bind(...params)
     .all();
 
-  const stats = { count: 0, totalAmount: 0, completedAmount: 0, pendingAmount: 0 };
+  // Paid/pending is independent of status, except "pending" explicitly
+  // excludes cancelled bookings (an unpaid cancelled booking isn't money
+  // still owed).
+  const { results: paymentRows } = await env.DB.prepare(
+    `SELECT payment_status, COUNT(*) AS n, COALESCE(SUM(price + commute_fee), 0) AS sum
+     FROM bookings ${whereSql}${whereSql ? " AND" : "WHERE"} status != 'cancelled'
+     GROUP BY payment_status`
+  )
+    .bind(...params)
+    .all();
+
+  const stats = {
+    count: 0,
+    totalAmount: 0,
+    confirmedCount: 0,
+    confirmedAmount: 0,
+    cancelledCount: 0,
+    cancelledAmount: 0,
+    completedCount: 0,
+    completedAmount: 0,
+    paidCount: 0,
+    paidAmount: 0,
+    pendingCount: 0,
+    pendingAmount: 0,
+  };
   for (const row of statusRows) {
     stats.count += row.n;
-    if (row.status !== "cancelled") stats.totalAmount += row.sum;
-    if (row.status === "completed") stats.completedAmount += row.sum;
-    if (row.status === "confirmed") stats.pendingAmount += row.sum;
+    stats.totalAmount += row.sum;
+    if (row.status === "confirmed") { stats.confirmedCount += row.n; stats.confirmedAmount += row.sum; }
+    if (row.status === "cancelled") { stats.cancelledCount += row.n; stats.cancelledAmount += row.sum; }
+    if (row.status === "completed") { stats.completedCount += row.n; stats.completedAmount += row.sum; }
+  }
+  for (const row of paymentRows) {
+    if (row.payment_status === "paid") { stats.paidCount += row.n; stats.paidAmount += row.sum; }
+    if (row.payment_status === "pending") { stats.pendingCount += row.n; stats.pendingAmount += row.sum; }
   }
 
   const bookings = results.map((r) => withServiceBreadcrumb({ ...r, bookingRef: `ZTL-${r.id.split("-")[0].toUpperCase()}` }));
@@ -186,7 +217,7 @@ export async function handleAdminBookingAttachment(env, id) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings WHERE id = ?`
   )
@@ -304,6 +335,41 @@ export async function handleAdminUpdateStatus(request, env, id) {
   }
 
   return json({ ok: true, id, status: body.status, emailSent });
+}
+
+const VALID_PAYMENT_STATUSES = ["paid", "pending"];
+
+// Separate from handleAdminUpdateStatus (booking status: confirmed /
+// cancelled / completed) -- payment_status tracks whether the customer has
+// actually paid, independent of that. Today this is only ever flipped by an
+// admin clicking "Mark as paid" / "Mark as pending" in the dashboard; once a
+// payment gateway is wired up, its webhook can call this same column (or an
+// equivalent internal update) to set payment_status = 'paid' automatically
+// on a successful online payment, with no further schema change needed.
+export async function handleAdminSetPaymentStatus(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+  if (!VALID_PAYMENT_STATUSES.includes(body?.paymentStatus)) {
+    return json({ error: "Invalid payment status" }, 400);
+  }
+  const existing = await env.DB.prepare(`SELECT id, paid_at FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+
+  const markingPaid = body.paymentStatus === "paid";
+  await env.DB.prepare(`UPDATE bookings SET payment_status = ?, paid_at = ? WHERE id = ?`)
+    .bind(
+      body.paymentStatus,
+      markingPaid ? new Date().toISOString().replace("Z", "") : null,
+      id
+    )
+    .run();
+
+  return json({ ok: true, id, paymentStatus: body.paymentStatus });
 }
 
 // ---- Invoice / payment link (manual admin actions on a booking) ---------

@@ -12,6 +12,7 @@ import {
   handleAdminBookingDetail,
   handleAdminBookingAttachment,
   handleAdminUpdateStatus,
+  handleAdminSetPaymentStatus,
   handleAdminDeleteBooking,
   handleAdminListBlocks,
   handleAdminCreateBlock,
@@ -767,6 +768,10 @@ export default {
       const attachmentMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/attachment$/);
       if (attachmentMatch && request.method === "GET") {
         return handleAdminBookingAttachment(env, attachmentMatch[1]);
+      }
+      const paymentMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/payment$/);
+      if (paymentMatch && request.method === "POST") {
+        return handleAdminSetPaymentStatus(request, env, paymentMatch[1]);
       }
       const invoiceMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/send-invoice$/);
       if (invoiceMatch && request.method === "POST") {
