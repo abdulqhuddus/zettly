@@ -6,7 +6,7 @@ import catalog from "../catalog.json";
 import { generateBookingPdf, generateInvoicePdf, toBase64, formatEUR } from "./pdf.js";
 import { LOGO_PNG_BASE64 } from "./logo.js";
 import { localizedDate } from "./utils.js";
-import { breadcrumbFromServiceId } from "./catalog-utils.js";
+import { breadcrumbFromServiceId, resolveLeaf } from "./catalog-utils.js";
 
 const STRINGS = {
   de: {
@@ -19,6 +19,11 @@ const STRINGS = {
     rebook: "Falls Sie einen neuen Termin buchen möchten, besuchen Sie gerne erneut unsere Website.",
     signature: "Ihr Zettly-Team",
     subject: (ref) => `Stornierung Buchung ${ref}`,
+    priceOnRequest: "Wird nach Diagnose vor Ort mitgeteilt",
+    priceOnConsultation: "Wird nach einem kostenlosen Beratungsgespräch mitgeteilt",
+    consultationModeLabel: "Beratungsart",
+    consultationModeOnline: "Online (Videoanruf)",
+    consultationModeInPerson: "Vor Ort",
   },
   en: {
     heading: "Your appointment has been cancelled",
@@ -30,6 +35,11 @@ const STRINGS = {
     rebook: "If you'd like to book a new appointment, feel free to visit our website again.",
     signature: "The Zettly Team",
     subject: (ref) => `Cancellation for booking ${ref}`,
+    priceOnRequest: "Quoted after on-site diagnosis",
+    priceOnConsultation: "Quoted after a free consultation",
+    consultationModeLabel: "Consultation mode",
+    consultationModeOnline: "Online (video call)",
+    consultationModeInPerson: "In person",
   },
 };
 
@@ -46,7 +56,17 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
   const bookingRef = `ZTL-${booking.id.split("-")[0].toUpperCase()}`;
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const dateDisplay = localizedDate(booking.date, lang);
-  const priceText = booking.price ? `€${booking.price}` : lang === "en" ? "Quoted on-site" : "Vor Ort mitgeteilt";
+  // Re-resolve the leaf this booking was made against so the cancelled-PDF
+  // wording distinguishes a Fix/repair diagnosis quote from a business
+  // consultation quote, same as the live booking flow does.
+  const [svcAudience, svcCategoryId, ...svcPath] = (booking.service_id || "").split(":");
+  const resolvedLeaf = svcAudience && svcCategoryId ? resolveLeaf(catalog, svcAudience, svcCategoryId, svcPath)?.leaf : null;
+  const isConsultation = resolvedLeaf?.quoteKind === "consultation";
+  const priceTextFor = (tt) => (booking.price ? `€${booking.price}` : (isConsultation ? tt.priceOnConsultation : tt.priceOnRequest));
+  const consultationModeTextFor = (tt) =>
+    isConsultation ? (booking.online_consultation ? tt.consultationModeOnline : tt.consultationModeInPerson) : null;
+  const priceText = priceTextFor(t);
+  const consultationModeText = consultationModeTextFor(t);
   const quantity = booking.quantity || 1;
   const unitPrice = booking.price && quantity > 1 ? Math.round((booking.price / quantity) * 100) / 100 : null;
 
@@ -69,6 +89,7 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
       <div style="padding:26px 28px;">
         <p style="margin:0 0 14px; font-size:14px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
         <p style="margin:0 0 14px; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.body(bookingRef, dateDisplay, booking.time)}</p>
+        ${consultationModeText ? `<p style="margin:0 0 14px;"><span style="display:inline-block; background:${booking.online_consultation ? "#e8f8ef" : "#f3eeff"}; color:${booking.online_consultation ? "#16a34a" : "#7C3AED"}; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px;">${t.consultationModeLabel}: ${consultationModeText}</span></p>` : ""}
         <p style="margin:0 0 14px; font-size:12.5px; color:#8a8a92; line-height:1.5;">${t.attachmentNote}</p>
         <p style="margin:0; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.rebook}</p>
         <p style="margin:22px 0 0; font-size:13px; font-weight:700; color:#111114;">${t.signature}</p>
@@ -91,20 +112,32 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
       customerAddress: booking.customer_address,
       time: booking.time,
       duration: booking.duration_minutes,
-      priceText,
       cancelled: true,
       cancelledBy,
       cancellationReason: booking.cancellation_reason,
       liabilityAcceptedAt: booking.liability_accepted_at,
       privacyAcceptedAt: booking.privacy_accepted_at,
+      isConsultation,
       quantity,
       unitPrice,
     };
     const pdfBytesDe = generateBookingPdf({
-      ...basePdfData, breadcrumb: breadcrumbDe, date: booking.date, dateDisplay: dateDisplayDe, lang: "de",
+      ...basePdfData,
+      breadcrumb: breadcrumbDe,
+      date: booking.date,
+      dateDisplay: dateDisplayDe,
+      priceText: priceTextFor(STRINGS.de),
+      consultationModeText: consultationModeTextFor(STRINGS.de),
+      lang: "de",
     });
     const pdfBytesEn = generateBookingPdf({
-      ...basePdfData, breadcrumb: breadcrumbEn, date: booking.date, dateDisplay: dateDisplayEn, lang: "en",
+      ...basePdfData,
+      breadcrumb: breadcrumbEn,
+      date: booking.date,
+      dateDisplay: dateDisplayEn,
+      priceText: priceTextFor(STRINGS.en),
+      consultationModeText: consultationModeTextFor(STRINGS.en),
+      lang: "en",
     });
     attachments = [
       { filename: `zettly-storniert-${bookingRef}-de.pdf`, content: toBase64(pdfBytesDe) },
@@ -147,7 +180,11 @@ export async function sendAdminCancellationNotification(env, booking) {
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const bookingRef = `ZTL-${booking.id.split("-")[0].toUpperCase()}`;
   const dateDisplay = localizedDate(booking.date, "de");
-  const priceText = booking.price ? `€${booking.price}` : "Vor Ort mitgeteilt";
+  const [svcAudience, svcCategoryId, ...svcPath] = (booking.service_id || "").split(":");
+  const resolvedLeaf = svcAudience && svcCategoryId ? resolveLeaf(catalog, svcAudience, svcCategoryId, svcPath)?.leaf : null;
+  const isConsultation = resolvedLeaf?.quoteKind === "consultation";
+  const priceText = booking.price ? `€${booking.price}` : (isConsultation ? "Wird nach einem kostenlosen Beratungsgespräch mitgeteilt" : "Wird nach Diagnose vor Ort mitgeteilt");
+  const consultationModeText = isConsultation ? (booking.online_consultation ? "Online (Videoanruf)" : "Vor Ort") : null;
 
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
@@ -163,6 +200,7 @@ export async function sendAdminCancellationNotification(env, booking) {
           <tr><td style="padding:4px 0; color:#6b6b74;">Date</td><td style="padding:4px 0; text-align:right;">${dateDisplay}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Time</td><td style="padding:4px 0; text-align:right;">${booking.time}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}</td></tr>
+          ${consultationModeText ? `<tr><td style="padding:4px 0; color:#6b6b74;">Consultation mode</td><td style="padding:4px 0; text-align:right; font-weight:700;">${consultationModeText}</td></tr>` : ""}
           <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Email</td><td style="padding:4px 0; text-align:right;">${booking.customer_email}</td></tr>
           ${booking.customer_phone ? `<tr><td style="padding:4px 0; color:#6b6b74;">Phone</td><td style="padding:4px 0; text-align:right;">${booking.customer_phone}</td></tr>` : ""}

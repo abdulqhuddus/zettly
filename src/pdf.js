@@ -288,8 +288,9 @@ export function drawLogoMark(content, xMM, yTopMM, sizeMM, accentColor = PURPLE)
  * @param {number} data.duration - minutes
  * @param {string} data.priceText - the total, already formatted ("€39" or "Preis nach Diagnose"); shown as the only price row when there's no call-out fee, or as the bold total row when there is one
  * @param {string} [data.servicePriceText] - the service price alone, before any call-out fee; only used (and required) when data.commuteFee > 0
- * @param {number} [data.commuteFee] - the distance-based call-out fee in whole euros; > 0 splits the price into Price / Call-out fee / Total rows
- * @param {boolean} [data.phoneConsultation] - true if the customer opted for this consultation to be held by phone instead of in person; adds a "Consultation type" row when set
+ * @param {number} [data.commuteFee] - the distance-based call-out/travel fee in whole euros; > 0 splits the price into Price / Fee / Total rows
+ * @param {boolean} [data.isConsultation] - true for a business-consultation leaf (Dynamics 365 CRM, Website Builder, Managed IT, ...) rather than a Fix/repair diagnosis quote; renames the fee row from "Call-out fee" to "Travel fee" and skips the late-cancellation-fee sentence
+ * @param {string} [data.consultationModeText] - "Online (video call)"/"In person" (already localized); adds a "Consultation mode" row when set, always alongside data.isConsultation
  * @param {"de"|"en"} data.lang
  * @returns {Uint8Array}
  */
@@ -310,15 +311,18 @@ export function generateBookingPdf(data) {
         unitPriceEach: (p) => `€${p} each`,
         price: "Price",
         callout: "Call-out fee",
+        travelFee: "Travel fee",
         total: "Total",
-        consultationType: "Consultation type",
-        phoneConsultationValue: "Phone call",
+        consultationType: "Consultation mode",
+        consultationOnline: "Online (video call)",
+        consultationInPerson: "In person",
         email: "Email",
         minutes: "min",
         cancelHeading: "Cancellation policy",
         liabilityAccepted: "Liability policy accepted",
         privacyAccepted: "Privacy policy accepted",
-        footer1: "You can cancel this booking free of charge up to 24 hours before your appointment, using the cancellation link in your confirmation email, or by contacting us at kontakt@zettly.de. If you cancel less than 24 hours before your appointment, a fixed fee of 50% of the service cost applies - please contact us directly in that case.",
+        footer1Base: "You can cancel this booking free of charge up to 24 hours before your appointment, using the cancellation link in your confirmation email, or by contacting us at kontakt@zettly.de.",
+        footer1LateFee: "If you cancel less than 24 hours before your appointment, a fixed fee of 50% of the service cost applies - please contact us directly in that case.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
@@ -351,15 +355,18 @@ export function generateBookingPdf(data) {
         unitPriceEach: (p) => `€${p} pro Gerät`,
         price: "Preis",
         callout: "Anfahrtspauschale",
+        travelFee: "Anfahrtspauschale",
         total: "Gesamt",
         consultationType: "Beratungsart",
-        phoneConsultationValue: "Telefonisch",
+        consultationOnline: "Online (Videoanruf)",
+        consultationInPerson: "Vor Ort",
         email: "E-Mail",
         minutes: "Min.",
         cancelHeading: "Stornierungsbedingungen",
         liabilityAccepted: "Haftungshinweise akzeptiert",
         privacyAccepted: "Datenschutzerklärung akzeptiert",
-        footer1: "Sie können diese Buchung bis 24 Stunden vor dem Termin kostenlos stornieren - über den Stornierungslink in Ihrer Bestätigungs-E-Mail oder per Kontakt an kontakt@zettly.de. Bei einer Stornierung weniger als 24 Stunden vor dem Termin fällt eine pauschale Gebühr in Höhe von 50% der Servicekosten an - bitte kontaktieren Sie uns in diesem Fall direkt.",
+        footer1Base: "Sie können diese Buchung bis 24 Stunden vor dem Termin kostenlos stornieren - über den Stornierungslink in Ihrer Bestätigungs-E-Mail oder per Kontakt an kontakt@zettly.de.",
+        footer1LateFee: "Bei einer Stornierung weniger als 24 Stunden vor dem Termin fällt eine pauschale Gebühr in Höhe von 50% der Servicekosten an - bitte kontaktieren Sie uns in diesem Fall direkt.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
@@ -504,19 +511,20 @@ export function generateBookingPdf(data) {
       size: 9.5,
     });
   }
-  // Only shown when the customer opted into a phone consultation on a
-  // leaf that actually offers it (e.g. the Dynamics 365 consultation) -
-  // otherwise this row is simply omitted rather than showing "in person".
-  if (data.phoneConsultation) {
-    boxRows.push({ label: L.consultationType, value: L.phoneConsultationValue, size: 9.5 });
+  // Shown for every consultation-type booking (not just online ones), so
+  // the PDF always makes clear whether it's a video call or an on-site
+  // visit -- never omitted the way the old phone-only flag was.
+  if (data.isConsultation && data.consultationModeText) {
+    boxRows.push({ label: L.consultationType, value: data.consultationModeText, size: 9.5 });
   }
-  // The service price and the distance-based call-out fee are shown as
-  // separate line items with a bold total underneath, rather than a single
-  // merged figure, so the customer can see exactly what they're being
-  // charged for.
+  // The service price and the distance-based call-out/travel fee are shown
+  // as separate line items with a bold total underneath, rather than a
+  // single merged figure, so the customer can see exactly what they're
+  // being charged for. Consultations call this a "travel fee" rather than
+  // a "call-out fee" -- that word is reserved for a Fix/repair visit.
   if (data.commuteFee > 0) {
     boxRows.push({ label: L.price, value: data.servicePriceText, size: 9.5 });
-    boxRows.push({ label: L.callout, value: `+ €${data.commuteFee}`, size: 9.5 });
+    boxRows.push({ label: data.isConsultation ? L.travelFee : L.callout, value: `+ €${data.commuteFee}`, size: 9.5 });
     boxRows.push({ label: L.total, value: data.priceText, size: 9.5, bold: true });
   } else {
     boxRows.push({ label: L.price, value: data.priceText, size: 9.5 });
@@ -623,9 +631,15 @@ export function generateBookingPdf(data) {
   const calloutBodyLineGap = 12.5;
   const calloutColor = DANGER;
   const calloutBgColor = DANGER_BG;
+  // The 24h/50%-late-fee sentence only applies to bookings that actually
+  // involve a committed appointment slot someone travels to or blocks time
+  // for; consultations (always rescheduled with a simple email/call, online
+  // or in person) never carry it.
   const calloutBodyText = data.cancelled
     ? (data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote)
-    : L.footer1;
+    : data.isConsultation
+      ? L.footer1Base
+      : `${L.footer1Base} ${L.footer1LateFee}`;
   const calloutBodyLines = wrapText(calloutBodyText, 86);
   const calloutInnerH = calloutHeadingGap + calloutBodyLines.length * calloutBodyLineGap;
   const calloutH = calloutPadTop + calloutInnerH + calloutPadBottom;

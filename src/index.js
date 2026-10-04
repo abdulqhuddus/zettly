@@ -10,6 +10,7 @@ import {
   handleAdminMe,
   handleAdminListBookings,
   handleAdminBookingDetail,
+  handleAdminBookingAttachment,
   handleAdminUpdateStatus,
   handleAdminDeleteBooking,
   handleAdminListBlocks,
@@ -128,10 +129,15 @@ const EMAIL_STRINGS = {
     price: "Preis",
     address: "Adresse",
     priceOnRequest: "Wird nach Diagnose vor Ort mitgeteilt",
+    priceOnConsultation: "Wird nach einem kostenlosen Beratungsgespräch mitgeteilt",
     commuteFeeNote: (fee) => `Im Gesamtpreis ist eine Anfahrtspauschale von €${fee} für Ihren Standort enthalten.`,
     commuteFeeSuffix: "Anfahrt",
+    consultationModeLabel: "Beratungsart",
+    consultationModeOnline: "Online (Videoanruf)",
+    consultationModeInPerson: "Vor Ort",
     minutes: "Min.",
-    reschedule: "Sie können Ihren Termin kostenlos stornieren – bis zu 24 Stunden vorher. Bei einer Stornierung weniger als 24 Stunden vorher fällt eine pauschale Gebühr in Höhe von 50% der Servicekosten an - bitte kontaktieren Sie uns in diesem Fall direkt.",
+    reschedule: "Sie können Ihren Termin kostenlos stornieren – bis zu 24 Stunden vorher.",
+    lateCancelFee: "Bei einer Stornierung weniger als 24 Stunden vorher fällt eine pauschale Gebühr in Höhe von 50% der Servicekosten an - bitte kontaktieren Sie uns in diesem Fall direkt.",
     cancelButton: "Termin stornieren",
     cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
     pdfNote: "Bitte entnehmen Sie die vollständige Buchungsbestätigung dem beigefügten PDF.",
@@ -151,10 +157,17 @@ const EMAIL_STRINGS = {
     price: "Price",
     address: "Address",
     priceOnRequest: "Quoted after on-site diagnosis",
+    priceOnConsultation: "Quoted after a free consultation",
     commuteFeeNote: (fee) => `The total includes a €${fee} call-out fee for your location.`,
     commuteFeeSuffix: "call-out",
+    travelFeeNote: (fee) => `The total includes a €${fee} travel fee for your location.`,
+    travelFeeSuffix: "travel",
+    consultationModeLabel: "Consultation mode",
+    consultationModeOnline: "Online (video call)",
+    consultationModeInPerson: "In person",
     minutes: "min",
-    reschedule: "You can cancel free of charge – up to 24 hours before your appointment. If you cancel less than 24 hours before your appointment, a fixed fee of 50% of the service cost applies - please contact us directly in that case.",
+    reschedule: "You can cancel free of charge – up to 24 hours before your appointment.",
+    lateCancelFee: "If you cancel less than 24 hours before your appointment, a fixed fee of 50% of the service cost applies - please contact us directly in that case.",
     cancelButton: "Cancel appointment",
     cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
     pdfNote: "Please find your full booking confirmation attached.",
@@ -162,6 +175,38 @@ const EMAIL_STRINGS = {
     subject: (bookingRef) => `Booking Confirmation ${bookingRef}`,
   },
 };
+
+// Builds the price-related display strings for one language, given a
+// service and its (already fee-aware) commute/travel fee. Factored out so
+// the confirmation email body and both PDF languages (which don't
+// necessarily match the language the customer booked in) each get their own
+// correctly-localized copy, instead of reusing the request's single `lang`.
+function priceTextsFor(langKey, service, commuteFee, onlineConsultation) {
+  const t = EMAIL_STRINGS[langKey] || EMAIL_STRINGS.de;
+  // "diagnosis" is reserved for Fix/repair-type quotes; every other quoted
+  // service (the business consultations) says "consultation" instead.
+  const priceOnRequestText = service.isConsultation ? t.priceOnConsultation : t.priceOnRequest;
+  // In-person consultations keep a distance-based fee (just not called
+  // "call-out", which implies a repair call-out specifically); online
+  // consultations never carry one at all since there's no travel.
+  const feeSuffix = service.isConsultation ? (t.travelFeeSuffix || t.commuteFeeSuffix) : t.commuteFeeSuffix;
+  const feeNote = service.isConsultation ? (t.travelFeeNote || t.commuteFeeNote) : t.commuteFeeNote;
+  // servicePriceText is the service price alone; priceText is the total
+  // including the call-out/travel fee. The PDF shows both as separate line
+  // items (plus the total) rather than one merged figure, so the customer
+  // can see exactly what they're being charged for.
+  const servicePriceText = service.quote ? priceOnRequestText : `€${service.price}`;
+  const priceText = service.quote
+    ? commuteFee > 0
+      ? `${priceOnRequestText} (+ €${commuteFee} ${feeSuffix})`
+      : priceOnRequestText
+    : `€${service.price + commuteFee}`;
+  const commuteNote = commuteFee > 0 ? feeNote(commuteFee) : null;
+  const consultationModeText = service.isConsultation
+    ? (onlineConsultation ? t.consultationModeOnline : t.consultationModeInPerson)
+    : null;
+  return { servicePriceText, priceText, commuteNote, consultationModeText };
+}
 
 async function handleServices() {
   return json(catalog);
@@ -223,18 +268,12 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
   const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const commuteFee = booking.commuteFee || 0;
-  // servicePriceText is the service price alone; priceText is the total
-  // including the call-out fee. The PDF shows both as separate line items
-  // (plus the total) rather than one merged figure, so the customer can see
-  // exactly what they're being charged for.
-  const servicePriceText = service.quote ? t.priceOnRequest : `€${service.price}`;
-  const priceText = service.quote
-    ? commuteFee > 0
-      ? `${t.priceOnRequest} (+ €${commuteFee} ${t.commuteFeeSuffix})`
-      : t.priceOnRequest
-    : `€${service.price + commuteFee}`;
-  const commuteNote =
-    commuteFee > 0 ? t.commuteFeeNote(commuteFee) : null;
+  const { servicePriceText, priceText, commuteNote, consultationModeText } = priceTextsFor(
+    lang,
+    service,
+    commuteFee,
+    booking.onlineConsultation
+  );
 
   let cancelUrl = null;
   if (env.SESSION_SECRET) {
@@ -262,7 +301,8 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       <div style="height:4px; background:linear-gradient(90deg,#7C3AED,#a855f7 60%,#EC4899);"></div>
       <div style="padding:28px;">
         <p style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
-        <p style="margin:0 0 ${commuteNote ? "6px" : "22px"}; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro}</p>
+        <p style="margin:0 0 ${commuteNote || consultationModeText ? "6px" : "22px"}; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro}</p>
+        ${consultationModeText ? `<p style="margin:0 0 6px;"><span style="display:inline-block; background:${booking.onlineConsultation ? "#e8f8ef" : "#f3eeff"}; color:${booking.onlineConsultation ? "#16a34a" : "#7C3AED"}; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px;">${t.consultationModeLabel}: ${consultationModeText}</span></p>` : ""}
         ${commuteNote ? `<p style="margin:0 0 22px; font-size:12.5px; color:#8a8a92; line-height:1.5;">${commuteNote}</p>` : ""}
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:collapse; background:#f8f7fb; border:1px solid #e9e7ef; border-radius:12px;">
           <tr>
@@ -277,7 +317,7 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
             </td>
           </tr>
         </table>
-        <p style="margin:22px 0 0; font-size:12.5px; color:#6b6b74;">${t.reschedule}</p>
+        <p style="margin:22px 0 0; font-size:12.5px; color:#6b6b74;">${t.reschedule}${service.isConsultation ? "" : ` ${t.lateCancelFee}`}</p>
         ${
           cancelUrl
             ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;">
@@ -303,6 +343,11 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
     // email body itself is written in.
     const dateDisplayDe = localizedDate(booking.date, "de");
     const dateDisplayEn = localizedDate(booking.date, "en");
+    // Each PDF language gets its own correctly-localized price/fee/
+    // consultation-mode text, rather than reusing whichever language the
+    // customer happened to book in for both attachments.
+    const textsDe = priceTextsFor("de", service, commuteFee, booking.onlineConsultation);
+    const textsEn = priceTextsFor("en", service, commuteFee, booking.onlineConsultation);
     const pdfBytesDe = generateBookingPdf({
       bookingRef: booking.bookingRef,
       customerName: booking.customer_name,
@@ -313,12 +358,13 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       dateDisplay: dateDisplayDe,
       time: booking.time,
       duration: service.duration,
-      priceText,
-      servicePriceText,
+      priceText: textsDe.priceText,
+      servicePriceText: textsDe.servicePriceText,
       commuteFee,
+      isConsultation: service.isConsultation,
+      consultationModeText: textsDe.consultationModeText,
       quantity: service.quantity,
       unitPrice: service.unitPrice,
-      phoneConsultation: booking.phoneConsultation,
       liabilityAcceptedAt: booking.liabilityAcceptedAt,
       privacyAcceptedAt: booking.privacyAcceptedAt,
       lang: "de",
@@ -333,12 +379,13 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       dateDisplay: dateDisplayEn,
       time: booking.time,
       duration: service.duration,
-      priceText,
-      servicePriceText,
+      priceText: textsEn.priceText,
+      servicePriceText: textsEn.servicePriceText,
       commuteFee,
+      isConsultation: service.isConsultation,
+      consultationModeText: textsEn.consultationModeText,
       quantity: service.quantity,
       unitPrice: service.unitPrice,
-      phoneConsultation: booking.phoneConsultation,
       liabilityAcceptedAt: booking.liabilityAcceptedAt,
       privacyAcceptedAt: booking.privacyAcceptedAt,
       lang: "en",
@@ -398,8 +445,13 @@ async function sendAdminNotification(env, booking, service, lang) {
   if (!env.RESEND_API_KEY) return { sent: false, reason: "no_api_key" };
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
   const commuteFee = booking.commuteFee || 0;
-  const priceText = service.quote ? "Vor Ort mitgeteilt" : `€${service.price + commuteFee}`;
+  const priceText = service.quote
+    ? (service.isConsultation ? "Nach kostenlosem Beratungsgespräch" : "Vor Ort mitgeteilt")
+    : `€${service.price + commuteFee}`;
   const dateDisplay = localizedDate(booking.date, lang);
+  const consultationModeText = service.isConsultation
+    ? (booking.onlineConsultation ? "Online (Videoanruf)" : "Vor Ort")
+    : null;
 
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
@@ -414,9 +466,9 @@ async function sendAdminNotification(env, booking, service, lang) {
           <tr><td style="padding:4px 0; color:#6b6b74;">Service</td><td style="padding:4px 0; text-align:right;">${booking.serviceName}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Date</td><td style="padding:4px 0; text-align:right;">${dateDisplay}</td></tr>
           <tr><td style="padding:4px 0; color:#6b6b74;">Time</td><td style="padding:4px 0; text-align:right;">${booking.time}</td></tr>
-          <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}${commuteFee > 0 ? ` (incl. €${commuteFee} call-out)` : ""}</td></tr>
+          <tr><td style="padding:4px 0; color:#6b6b74;">Price</td><td style="padding:4px 0; text-align:right;">${priceText}${commuteFee > 0 ? ` (incl. €${commuteFee} ${service.isConsultation ? "travel fee" : "call-out"})` : ""}</td></tr>
           ${service.quantity > 1 ? `<tr><td style="padding:4px 0; color:#6b6b74;">Quantity</td><td style="padding:4px 0; text-align:right; font-weight:700;">×${service.quantity}${service.unitPrice != null ? ` (€${service.unitPrice} each)` : ""}</td></tr>` : ""}
-          ${booking.phoneConsultation ? `<tr><td style="padding:4px 0; color:#6b6b74;">Consultation type</td><td style="padding:4px 0; text-align:right; font-weight:700;">Phone call</td></tr>` : ""}
+          ${consultationModeText ? `<tr><td style="padding:4px 0; color:#6b6b74;">Consultation mode</td><td style="padding:4px 0; text-align:right; font-weight:700;">${consultationModeText}</td></tr>` : ""}
           <tr><td style="padding:12px 0 4px; color:#6b6b74;">Customer</td><td style="padding:12px 0 4px; text-align:right;">${booking.customer_name}</td></tr>
           ${booking.customer_company ? `<tr><td style="padding:4px 0; color:#6b6b74;">Company</td><td style="padding:4px 0; text-align:right; font-weight:700;">${booking.customer_company}</td></tr>` : ""}
           <tr><td style="padding:4px 0; color:#6b6b74;">Email</td><td style="padding:4px 0; text-align:right;">${booking.customer_email}</td></tr>
@@ -449,7 +501,7 @@ async function handleBook(request, env) {
     return json({ error: "Invalid JSON" }, 400);
   }
 
-  const { audience, categoryId, path, date, time, name, email, phone, company: rawCompany, address, zip, notes, phoneConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang, attachment: rawAttachment } = body;
+  const { audience, categoryId, path, date, time, name, email, phone, company: rawCompany, address, zip, notes, onlineConsultation, liabilityAccepted, privacyAccepted, quantity: rawQuantity, lang: rawLang, attachment: rawAttachment } = body;
   // Only meaningful for business bookings; silently ignored otherwise so a
   // tampered request can't attach a company name to a home booking.
   const company = audience === "business" && typeof rawCompany === "string" ? rawCompany.trim().slice(0, 200) || null : null;
@@ -481,25 +533,39 @@ async function handleBook(request, env) {
     return json({ error: `Quantity must be a whole number between 1 and ${MAX_BOOKING_QUANTITY}` }, 400);
   }
 
-  // The postal code drives the call-out (Anfahrt) fee the customer already
-  // saw quoted on the location step; it's recomputed here rather than
-  // trusted from the client, so nobody can tamper with the fee in transit.
-  const commute = await computeCommute(zip);
-  if (!commute.ok) {
-    const msg =
-      commute.reason === "out_of_area"
-        ? "This address is outside our 100 km service area"
-        : "We couldn't find that postal code, please check it";
-    return json({ error: msg }, 400);
-  }
-  const commuteFee = commute.fee;
-
   const resolved = resolveLeaf(audience, categoryId, path);
   if (!resolved) {
     return json({ error: "Unknown service" }, 400);
   }
   const { leaf } = resolved;
   const serviceName = localizedBreadcrumbName(resolved, lang);
+  // Consultation-type leaves (Dynamics 365 CRM, Website Builder, Managed IT
+  // packages, etc. -- anything quoted with quoteKind "consultation" rather
+  // than a Fix/repair diagnosis) can be held online instead of in person.
+  // An online consultation needs no technician travel at all, so it skips
+  // the call-out fee and the 100km service-area check entirely, rather than
+  // just hiding the word "call-out" -- someone outside the service area can
+  // still book an online consultation.
+  const isConsultationLeaf = leaf.quoteKind === "consultation";
+  const wantsOnlineConsultation = !!(isConsultationLeaf && onlineConsultation);
+
+  let commuteFee = 0;
+  let commuteDistanceKm = null;
+  if (!wantsOnlineConsultation) {
+    // The postal code drives the travel/call-out fee the customer already
+    // saw quoted on the location step; it's recomputed here rather than
+    // trusted from the client, so nobody can tamper with the fee in transit.
+    const commute = await computeCommute(zip);
+    if (!commute.ok) {
+      const msg =
+        commute.reason === "out_of_area"
+          ? "This address is outside our 100 km service area"
+          : "We couldn't find that postal code, please check it";
+      return json({ error: msg }, 400);
+    }
+    commuteFee = commute.fee;
+    commuteDistanceKm = commute.distanceKm;
+  }
   // `price` here is the full total for `quantity` devices (quantity * the
   // catalog's per-unit price) -- every downstream consumer (DB column,
   // email, PDF "Total" row) already just adds this to the call-out fee, so
@@ -510,15 +576,13 @@ async function handleBook(request, env) {
     duration: leaf.duration,
     price: leaf.quote ? null : leaf.price * quantity,
     quote: leaf.quote,
+    quoteKind: leaf.quoteKind || null,
+    isConsultation: isConsultationLeaf,
     quantity,
     unitPrice: leaf.quote ? null : leaf.price,
   };
   const quoteTag = leaf.quote ? "[Kostenvoranschlag vor Ort] " : "";
   const notesWithAudience = `${audienceTag}${quoteTag}${notes || ""}`.trim() || null;
-  // Only honored when the catalog actually offers a phone option for this
-  // leaf (currently just the Dynamics 365 consultation) - a client can't
-  // flip this on for a service that never showed the checkbox.
-  const wantsPhoneConsultation = !!(leaf.phoneOptional && phoneConsultation);
 
   if (!isValidEmail(email)) {
     return json({ error: "Invalid email" }, 400);
@@ -574,7 +638,7 @@ async function handleBook(request, env) {
   const acceptedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
 
   await env.DB.prepare(
-    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_company, customer_address, notes, commute_fee, commute_distance_km, phone_consultation, liability_accepted_at, privacy_accepted_at, quantity, attachment_data, attachment_filename, attachment_content_type, attachment_size)
+    `INSERT INTO bookings (id, service_id, service_name, price, duration_minutes, date, time, customer_name, customer_email, customer_phone, customer_company, customer_address, notes, commute_fee, commute_distance_km, online_consultation, liability_accepted_at, privacy_accepted_at, quantity, attachment_data, attachment_filename, attachment_content_type, attachment_size)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(
@@ -592,8 +656,8 @@ async function handleBook(request, env) {
       address,
       notesWithAudience,
       commuteFee,
-      Math.round(commute.distanceKm * 10) / 10,
-      wantsPhoneConsultation ? 1 : 0,
+      commuteDistanceKm != null ? Math.round(commuteDistanceKm * 10) / 10 : null,
+      wantsOnlineConsultation ? 1 : 0,
       acceptedAt,
       acceptedAt,
       quantity,
@@ -604,7 +668,7 @@ async function handleBook(request, env) {
     )
     .run();
 
-  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_company: company, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, phoneConsultation: wantsPhoneConsultation, liabilityAcceptedAt: acceptedAt, privacyAcceptedAt: acceptedAt };
+  const booking = { id, bookingRef, breadcrumb, breadcrumbDe, breadcrumbEn, date, time, customer_name: name, customer_email: email, customer_phone: phone || null, customer_company: company, customer_address: address, notes: notesWithAudience, serviceName, commuteFee, isConsultation: isConsultationLeaf, onlineConsultation: wantsOnlineConsultation, liabilityAcceptedAt: acceptedAt, privacyAcceptedAt: acceptedAt };
   const emailResult = await sendConfirmationEmail(env, booking, service, lang);
   // Best-effort: the owner's own heads-up email should never affect the
   // customer-facing response, so its failure is swallowed here.
@@ -699,6 +763,10 @@ export default {
       }
       if (bookingMatch && !url.pathname.endsWith("/status") && request.method === "DELETE") {
         return handleAdminDeleteBooking(request, env, bookingMatch[1]);
+      }
+      const attachmentMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/attachment$/);
+      if (attachmentMatch && request.method === "GET") {
+        return handleAdminBookingAttachment(env, attachmentMatch[1]);
       }
       const invoiceMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/send-invoice$/);
       if (invoiceMatch && request.method === "POST") {

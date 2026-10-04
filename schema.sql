@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   cancellation_reason TEXT,     -- required whenever status becomes 'cancelled'
   commute_fee INTEGER NOT NULL DEFAULT 0,  -- distance-based call-out fee (separate from `price`, the service fee)
   commute_distance_km REAL,     -- straight-line km from Munich the fee was computed from
-  phone_consultation INTEGER NOT NULL DEFAULT 0, -- 1 if the customer asked for a consultation-type booking to be held by phone instead of in person
+  online_consultation INTEGER NOT NULL DEFAULT 0, -- 1 if the customer asked for a consultation-type booking to be held online (video call) instead of in person
   liability_accepted_at TEXT,   -- set at booking time; the UI can't submit without accepting the liability notices
   privacy_accepted_at TEXT,     -- set at booking time; the UI can't submit without accepting the privacy policy (#f-consent)
   quantity INTEGER NOT NULL DEFAULT 1,  -- devices/units covered; `price` already includes this multiplier, the call-out fee never does

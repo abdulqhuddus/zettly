@@ -2067,6 +2067,11 @@
   .pb-ico svg { width: 100%; height: 100%; }
   .pb-value { font-weight: 700; color: var(--ink); }
   .pb-value.pb-free { color: #16a34a; }
+  .consultation-mode-badge {
+    display: inline-flex; align-items: center; font-size: 0.78rem; font-weight: 800;
+    padding: 0.2rem 0.6rem; border-radius: 999px; background: #efe8ff; color: var(--accent);
+  }
+  .consultation-mode-badge.is-online { background: #e8f8ef; color: #16a34a; }
   .pb-row.pb-total {
     margin-top: 0.3rem; padding-top: 0.65rem; border-top: 1px dashed var(--border);
   }
@@ -2555,9 +2560,9 @@
           <label data-i18n="phone">Telefon (optional)</label>
           <input type="tel" id="f-phone" placeholder="+49 ..." />
         </div>
-        <label class="consent-check" id="phone-consultation-field" style="display:none;">
-          <input type="checkbox" id="f-phone-consultation" />
-          <span data-i18n="phoneConsultationLabel">Ich möchte diese Beratung lieber telefonisch statt vor Ort.</span>
+        <label class="consent-check" id="online-consultation-field" style="display:none;">
+          <input type="checkbox" id="f-online-consultation" />
+          <span data-i18n="onlineConsultationLabel">Ich möchte diese Beratung online (per Videoanruf) statt vor Ort.</span>
         </label>
         <div class="address-section">
           <div class="address-section-head">
@@ -3160,7 +3165,10 @@ const I18N = {
     attachmentRemove: "Entfernen",
     attachmentTooLarge: "Die Datei ist zu groß (max. 1,2 MB).",
     attachmentInvalidType: "Bitte wählen Sie ein Foto (JPEG, PNG, WebP oder HEIC).",
-    phoneConsultationLabel: "Ich möchte diese Beratung lieber telefonisch statt vor Ort.",
+    onlineConsultationLabel: "Ich möchte diese Beratung online (per Videoanruf) statt vor Ort.",
+    consultationModeLabel: "Beratungsart",
+    consultationModeOnline: "Online (Videoanruf)",
+    consultationModeInPerson: "Vor Ort",
     confirmBooking: "Buchung bestätigen",
     successTitle: "Sie sind gebucht!",
     bookingRefLabel: "Buchungsnummer",
@@ -3311,6 +3319,7 @@ const I18N = {
     fillNotes: "Please briefly describe what you need.",
     summaryAddress: "Address",
     summaryCommute: "Call-out",
+    summaryCommuteTravel: "Travel",
     summaryTotal: "Total",
     summaryQuantity: "Quantity",
     summaryQuantityIncrease: "Increase quantity",
@@ -3369,7 +3378,10 @@ const I18N = {
     attachmentRemove: "Remove",
     attachmentTooLarge: "That file is too large (max 1.2 MB).",
     attachmentInvalidType: "Please choose a photo (JPEG, PNG, WebP, or HEIC).",
-    phoneConsultationLabel: "I'd prefer this consultation to be held over the phone instead of in person.",
+    onlineConsultationLabel: "I'd like this consultation to be held online (video call) instead of in person.",
+    consultationModeLabel: "Consultation mode",
+    consultationModeOnline: "Online (video call)",
+    consultationModeInPerson: "In person",
     confirmBooking: "Confirm booking",
     successTitle: "You're booked!",
     bookingRefLabel: "Booking reference",
@@ -3405,7 +3417,7 @@ const state = {
   // /api/commute last returned: null (not checked yet), "checking",
   // "ok", or "error".
   zip: null, city: null, commuteFee: 0, commuteDistanceKm: null, commuteStatus: null, commuteErrorReason: null,
-  phoneConsultation: false,
+  onlineConsultation: false,
   liabilityAccepted: false,
   // How many devices/units this booking covers. Only the service price
   // scales with it -- the call-out fee is for one visit regardless of how
@@ -4036,10 +4048,11 @@ function finalizeLeaf(leaf) {
     price: leaf.quote ? null : leaf.price,
     duration: leaf.duration || 30,
     quote: !!leaf.quote,
-    phoneOptional: !!leaf.phoneOptional,
+    quoteKind: leaf.quoteKind || null,
+    isConsultation: leaf.quoteKind === "consultation",
     path: state.treePath.map(e => e.choiceId),
   };
-  state.phoneConsultation = false;
+  state.onlineConsultation = false;
   state.quantity = 1;
   renderDateStrip();
   showStep(3);
@@ -4171,6 +4184,11 @@ function renderSummary(targetId, readOnly = false) {
 
   const qty = state.quantity || 1;
   const subtotal = state.service.quote ? null : state.service.price * qty;
+  // Online consultations never carry a travel fee (nothing to drive to), so
+  // the summary waives it here regardless of what the location step found --
+  // the server applies the same waiver when the booking is actually saved.
+  const isOnlineConsult = !!(state.service.isConsultation && state.onlineConsultation);
+  const effectiveCommuteFee = isOnlineConsult ? 0 : (state.commuteFee || 0);
 
   el.innerHTML = `
     <div class="summary-path">${pathHtml}</div>
@@ -4189,6 +4207,11 @@ function renderSummary(targetId, readOnly = false) {
         <span class="pb-label"><span class="pb-ico">${SUMMARY_ICONS.price}</span>${t("summaryPrice")}</span>
         <span class="pb-value">${fmtPrice(state.service)}</span>
       </div>
+      ${state.service.isConsultation ? `
+      <div class="pb-row">
+        <span class="pb-label">${t("consultationModeLabel")}</span>
+        <span class="pb-value consultation-mode-badge${isOnlineConsult ? " is-online" : ""}">${isOnlineConsult ? t("consultationModeOnline") : t("consultationModeInPerson")}</span>
+      </div>` : ""}
       <div class="pb-row pb-qty">
         <span class="pb-label">${t("summaryQuantity")}</span>
         ${readOnly ? `<span class="pb-value">&times;${qty}</span>` : `
@@ -4204,15 +4227,15 @@ function renderSummary(targetId, readOnly = false) {
         <span class="pb-label">${t("summarySubtotal")}</span>
         <span class="pb-value">${fmtEuro(subtotal)}</span>
       </div>` : ""}
-      ${state.commuteStatus === "ok" ? `
+      ${state.commuteStatus === "ok" && !isOnlineConsult ? `
       <div class="pb-row">
-        <span class="pb-label"><span class="pb-ico">${SUMMARY_ICONS.car}</span>${t("summaryCommute")}</span>
-        <span class="pb-value${state.commuteFee > 0 ? "" : " pb-free"}">${state.commuteFee > 0 ? "+" + fmtEuro(state.commuteFee) : t("commuteFreeShort")}</span>
+        <span class="pb-label"><span class="pb-ico">${SUMMARY_ICONS.car}</span>${state.service.isConsultation ? t("summaryCommuteTravel") : t("summaryCommute")}</span>
+        <span class="pb-value${effectiveCommuteFee > 0 ? "" : " pb-free"}">${effectiveCommuteFee > 0 ? "+" + fmtEuro(effectiveCommuteFee) : t("commuteFreeShort")}</span>
       </div>` : ""}
       ${state.commuteStatus === "ok" && !state.service.quote ? `
       <div class="pb-row pb-total">
         <span class="pb-label">${t("summaryTotal")}</span>
-        <span class="pb-value">${fmtEuro(subtotal + state.commuteFee)}</span>
+        <span class="pb-value">${fmtEuro(subtotal + effectiveCommuteFee)}</span>
       </div>` : ""}
     </div>
     ${state.address ? `
@@ -4350,15 +4373,15 @@ document.getElementById("loc-city").addEventListener("input", onLocationInputCha
 // Once the location step is done, the details step shows the resolved
 // PLZ/city as a read-only line instead of asking for it again, with a link
 // back to the location step if it needs correcting.
-function updatePhoneConsultationField() {
-  const field = document.getElementById("phone-consultation-field");
-  const checkbox = document.getElementById("f-phone-consultation");
+function updateOnlineConsultationField() {
+  const field = document.getElementById("online-consultation-field");
+  const checkbox = document.getElementById("f-online-consultation");
   if (!field || !checkbox) return;
-  const show = !!(state.service && state.service.phoneOptional);
+  const show = !!(state.service && state.service.isConsultation);
   field.style.display = show ? "" : "none";
   if (!show) {
     checkbox.checked = false;
-    state.phoneConsultation = false;
+    state.onlineConsultation = false;
   }
 }
 
@@ -4464,13 +4487,14 @@ document.getElementById("to-location").addEventListener("click", () => {
 
 document.getElementById("to-details").addEventListener("click", () => {
   updateAddressKnownLine();
-  updatePhoneConsultationField();
+  updateOnlineConsultationField();
   renderSummary("summary");
   showStep(5);
 });
 
-document.getElementById("f-phone-consultation").addEventListener("change", (e) => {
-  state.phoneConsultation = e.target.checked;
+document.getElementById("f-online-consultation").addEventListener("change", (e) => {
+  state.onlineConsultation = e.target.checked;
+  renderSummary("summary");
 });
 
 // The consent checkbox and the liability-notice acceptance are both
@@ -4722,7 +4746,7 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
         date: state.date,
         time: state.time,
         name, email, phone, company, address, zip: state.zip, notes, lang,
-        phoneConsultation: !!state.phoneConsultation,
+        onlineConsultation: !!state.onlineConsultation,
         liabilityAccepted: !!state.liabilityAccepted,
         privacyAccepted: !!document.getElementById("f-consent").checked,
         quantity: state.quantity || 1,

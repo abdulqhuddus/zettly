@@ -29,10 +29,17 @@ import { breadcrumbFromServiceId, resolveLeaf, fullBreadcrumb } from "./catalog-
 function withServiceBreadcrumb(row) {
   const breadcrumbEn = breadcrumbFromServiceId(catalog, row.service_id, "en");
   const breadcrumbDe = breadcrumbFromServiceId(catalog, row.service_id, "de");
+  // Re-resolved from the catalog rather than stored on the row, same as the
+  // breadcrumbs above -- lets the admin UI show "Online"/"In person" (and
+  // only for leaves that actually offer it) without duplicating the
+  // quoteKind convention client-side.
+  const [svcAudience, svcCategoryId, ...svcPath] = (row.service_id || "").split(":");
+  const resolvedLeaf = svcAudience && svcCategoryId ? resolveLeaf(catalog, svcAudience, svcCategoryId, svcPath)?.leaf : null;
   return {
     ...row,
     serviceBreadcrumbEn: breadcrumbEn || [row.service_name],
     serviceBreadcrumbDe: breadcrumbDe || [row.service_name],
+    is_consultation: resolvedLeaf?.quoteKind === "consultation",
   };
 }
 
@@ -120,7 +127,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity,
+            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -158,11 +165,29 @@ export async function handleAdminListBookings(url, env) {
   return json({ bookings, total: totalRow?.n || 0, limit, offset, stats });
 }
 
+// Small, dedicated endpoint for just the (possibly large, base64) attachment
+// fields, so the bookings table can lazy-load a thumbnail per row with an
+// attachment without the main list query ever sending that payload for
+// every row on the page -- the list query only carries the cheap
+// has_attachment boolean.
+export async function handleAdminBookingAttachment(env, id) {
+  const row = await env.DB.prepare(
+    `SELECT attachment_data, attachment_filename, attachment_content_type FROM bookings WHERE id = ?`
+  )
+    .bind(id)
+    .first();
+  if (!row || !row.attachment_data) return json({ error: "Not found" }, 404);
+  return json({
+    dataUrl: `data:${row.attachment_content_type};base64,${row.attachment_data}`,
+    filename: row.attachment_filename,
+  });
+}
+
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, phone_consultation, quantity,
-            attachment_data, attachment_filename, attachment_content_type, attachment_size
+            customer_phone, customer_company, customer_address, notes, status, created_at, cancelled_at, cancellation_reason, online_consultation, quantity,
+            (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings WHERE id = ?`
   )
     .bind(id)
@@ -254,7 +279,7 @@ export async function handleAdminUpdateStatus(request, env, id) {
         customer_email: existing.customer_email,
         customer_address: existing.customer_address,
         commuteFee: existing.commute_fee || 0,
-        phoneConsultation: !!existing.phone_consultation,
+        onlineConsultation: !!existing.online_consultation,
         liabilityAcceptedAt: existing.liability_accepted_at,
         privacyAcceptedAt: existing.privacy_accepted_at,
       };
@@ -269,6 +294,8 @@ export async function handleAdminUpdateStatus(request, env, id) {
         duration: existing.duration_minutes,
         price: resolved.leaf.quote ? null : existing.price,
         quote: !!resolved.leaf.quote,
+        quoteKind: resolved.leaf.quoteKind || null,
+        isConsultation: resolved.leaf.quoteKind === "consultation",
         quantity,
         unitPrice: resolved.leaf.quote ? null : Math.round((existing.price / quantity) * 100) / 100,
       };
