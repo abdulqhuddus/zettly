@@ -274,20 +274,31 @@
   .filters input[type="search"] { flex: 1 1 200px; min-width: 160px; }
 
   .table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  /* Font size kept deliberately small (vs. the rest of the dashboard) so the
+     table fits more characters per line before wrapping -- the Service
+     column in particular holds a full catalog breadcrumb ("Home › Smart
+     Home Devices › Sensor › Set up automations & scenes") that otherwise
+     wraps to one word per line in a narrow column. */
+  table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
   thead th {
     text-align: left;
-    font-size: 0.72rem;
+    font-size: 0.64rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--muted);
-    padding: 0.8rem 1rem;
+    padding: 0.65rem 0.75rem;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
   }
-  tbody td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover { background: #fbfaff; cursor: pointer; }
+  /* Service breadcrumb column: given real room (instead of shrinking to
+     whatever's left over) and allowed to wrap on word boundaries, now that
+     the smaller font above means each line holds much more text. */
+  th:nth-child(4), td:nth-child(4) { min-width: 220px; max-width: 320px; white-space: normal; }
+  .cust-line { line-height: 1.4; }
+  .cust-bold { font-weight: 700; color: var(--ink); }
   .badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; text-transform: capitalize; }
   .badge-confirmed { background: var(--ok-bg); color: var(--ok); }
   .badge-cancelled { background: var(--danger-bg); color: var(--danger); }
@@ -1539,6 +1550,35 @@
     }
   });
 
+  // Splits the stored "First Last" customer_name back into its two parts --
+  // the booking form only ever concatenates firstName + " " + lastName, so
+  // the first word is the first name and everything after it is the last
+  // name (keeps compound/multi-word surnames intact).
+  function splitCustomerName(fullName) {
+    const trimmed = (fullName || "").trim();
+    const spaceIdx = trimmed.indexOf(" ");
+    if (spaceIdx === -1) return { first: trimmed, last: "" };
+    return { first: trimmed.slice(0, spaceIdx), last: trimmed.slice(spaceIdx + 1).trim() };
+  }
+
+  // Customer cell, one line each: company (business only, bold) / first name
+  // (bold for a Home booking, since there's no company line to anchor the
+  // cell visually) / last name / email.
+  function renderCustomerCell(b) {
+    const { first, last } = splitCustomerName(b.customer_name);
+    const isBusiness = !!b.customer_company;
+    const lines = [];
+    if (isBusiness) {
+      lines.push(`<div class="cust-line cust-bold">${escapeHtml(b.customer_company)}</div>`);
+      lines.push(`<div class="cust-line">${escapeHtml(first)}</div>`);
+    } else {
+      lines.push(`<div class="cust-line cust-bold">${escapeHtml(first)}</div>`);
+    }
+    if (last) lines.push(`<div class="cust-line">${escapeHtml(last)}</div>`);
+    lines.push(`<div class="cust-line muted">${escapeHtml(b.customer_email)}</div>`);
+    return lines.join("");
+  }
+
   function renderRows(bookings) {
     const s = t();
     const tbody = document.getElementById("rows");
@@ -1556,7 +1596,7 @@
       tr.innerHTML = `
         <td class="ref">${b.bookingRef}</td>
         <td><span class="badge-audience${b.audience === "business" ? " is-business" : ""}">${audienceText}</span></td>
-        <td>${escapeHtml(b.customer_name)}${b.customer_company ? `<div class="muted">${escapeHtml(b.customer_company)}</div>` : ""}<div class="muted">${escapeHtml(b.customer_email)}</div></td>
+        <td>${renderCustomerCell(b)}</td>
         <td>${escapeHtml((lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › "))}${b.quantity > 1 ? `<div class="muted">${s.qtyBadge(b.quantity)}</div>` : ""}</td>
         <td>${b.date}<div class="muted">${s.atTime(b.time)}</div></td>
         <td>${b.price ? "€" + b.price : s.onSite}</td>
