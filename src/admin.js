@@ -14,10 +14,10 @@ import {
   recordFailedLogin,
   clearFailedLogins,
 } from "./auth.js";
-import { json, berlinNow, isValidEmail, logActivity, minutesUntil, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee, TRAVEL_FEE_CUTOFF_MINUTES } from "./utils.js";
+import { json, berlinNow, isValidEmail, logActivity, minutesUntil, toMinutes, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee, TRAVEL_FEE_CUTOFF_MINUTES } from "./utils.js";
 import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
-import { sendConfirmationEmail, parseAttachment } from "./index.js";
+import { sendConfirmationEmail, parseAttachment, bookingBlocksSlot, loadBlockedChecker } from "./index.js";
 import catalog from "../catalog.json";
 import { breadcrumbFromServiceId, resolveLeaf, fullBreadcrumb, listCatalogLeaves } from "./catalog-utils.js";
 
@@ -640,6 +640,116 @@ export async function handleAdminWaiveCancellationFee(request, env, id) {
     .run();
   await logActivity(env, id, "cancellation_fee_waived", "admin", `Waived late cancellation fee of €${waivedAmount}`);
   return json({ ok: true, id, waivedAmount });
+}
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const TIME_RE = /^\d{2}:\d{2}$/;
+
+// Lets an admin move a confirmed/processing booking to a new date and/or
+// time. Unlike the customer-facing booking flow, this doesn't enforce the
+// 2-hour booking-lead buffer (an admin may need to move something to very
+// soon), but it still checks for a double-booking against other confirmed
+// appointments and against the admin's own calendar blocks, using the exact
+// same conflict logic as the public booking endpoint (see
+// bookingBlocksSlot/loadBlockedChecker in src/index.js) so two bookings can
+// never silently overlap.
+export async function handleAdminRescheduleBooking(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid request" }, 400);
+  }
+  const date = typeof body?.date === "string" ? body.date : "";
+  const time = typeof body?.time === "string" ? body.time : "";
+  if (!DATE_RE.test(date) || !TIME_RE.test(time)) {
+    return json({ error: "Please provide a valid date and time" }, 400);
+  }
+
+  const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+  if (existing.status === "cancelled" || existing.status === "completed") {
+    return json({ error: "Only a confirmed or in-progress booking can be rescheduled" }, 400);
+  }
+
+  const now = berlinNow();
+  if (date < now.date || (date === now.date && toMinutes(time) < now.minutes)) {
+    return json({ error: "Please choose a date and time in the future" }, 400);
+  }
+
+  const start = toMinutes(time);
+  const end = start + (existing.duration_minutes || 0);
+  const { results: conflicts } = await env.DB.prepare(
+    `SELECT time, duration_minutes FROM bookings WHERE date = ? AND status = 'confirmed' AND id != ?`
+  )
+    .bind(date, id)
+    .all();
+  const clash = conflicts.some((b) => bookingBlocksSlot(start, end, toMinutes(b.time)));
+  if (clash) {
+    return json({ error: "This slot conflicts with another confirmed booking" }, 409);
+  }
+  const isBlocked = await loadBlockedChecker(env, date);
+  if (isBlocked(start)) {
+    return json({ error: "This slot is blocked on the calendar" }, 409);
+  }
+
+  const oldDate = existing.date;
+  const oldTime = existing.time;
+  if (oldDate === date && oldTime === time) {
+    return json({ error: "That is already this booking's date and time" }, 400);
+  }
+
+  await env.DB.prepare(`UPDATE bookings SET date = ?, time = ? WHERE id = ?`).bind(date, time, id).run();
+  await logActivity(
+    env,
+    id,
+    "rescheduled",
+    "admin",
+    `Rescheduled from ${oldDate} ${oldTime} to ${date} ${time}`
+  );
+
+  let emailSent = false;
+  if (body.notifyCustomer !== false) {
+    const lang = body.lang === "en" ? "en" : "de";
+    const [audience, categoryId, ...path] = (existing.service_id || "").split(":");
+    const resolved = audience && categoryId ? resolveLeaf(catalog, audience, categoryId, path) : null;
+    if (resolved) {
+      const bookingRef = `ZTL-${existing.id.split("-")[0].toUpperCase()}`;
+      const quantity = existing.quantity || 1;
+      const bookingForEmail = {
+        id: existing.id,
+        bookingRef,
+        breadcrumbDe: fullBreadcrumb(resolved, audience, "de"),
+        breadcrumbEn: fullBreadcrumb(resolved, audience, "en"),
+        date,
+        time,
+        customer_name: existing.customer_name,
+        customer_email: existing.customer_email,
+        customer_address: existing.customer_address,
+        commuteFee: existing.commute_fee || 0,
+        onlineConsultation: !!existing.online_consultation,
+        liabilityAcceptedAt: existing.liability_accepted_at,
+        privacyAcceptedAt: existing.privacy_accepted_at,
+      };
+      const serviceForEmail = {
+        duration: existing.duration_minutes,
+        price: resolved.leaf.quote ? null : existing.price,
+        quote: !!resolved.leaf.quote,
+        quoteKind: resolved.leaf.quoteKind || null,
+        isConsultation: resolved.leaf.quoteKind === "consultation",
+        quantity,
+        unitPrice: resolved.leaf.quote ? null : Math.round((existing.price / quantity) * 100) / 100,
+      };
+      emailSent = (
+        await sendConfirmationEmail(env, bookingForEmail, serviceForEmail, lang, {
+          rescheduled: { oldDate, oldTime },
+        })
+      ).sent;
+    }
+  }
+
+  return json({ ok: true, id, date, time, emailSent });
 }
 
 const VALID_PAYMENT_STATUSES = ["paid", "pending"];

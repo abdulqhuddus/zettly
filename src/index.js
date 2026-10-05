@@ -25,6 +25,7 @@ import {
   handleAdminDeleteBooking,
   handleAdminRequestErasure,
   handleAdminWaiveCancellationFee,
+  handleAdminRescheduleBooking,
   handleAdminListBlocks,
   handleAdminCreateBlock,
   handleAdminDeleteBlock,
@@ -100,7 +101,7 @@ const BOOKING_LEAD_MINUTES = 120;
 const BOOKING_BUFFER_BEFORE_MIN = 120;
 const BOOKING_BUFFER_AFTER_MIN = 180;
 
-function bookingBlocksSlot(candidateStart, candidateEnd, bookingStart) {
+export function bookingBlocksSlot(candidateStart, candidateEnd, bookingStart) {
   return candidateStart < bookingStart + BOOKING_BUFFER_AFTER_MIN && candidateEnd > bookingStart - BOOKING_BUFFER_BEFORE_MIN;
 }
 
@@ -115,7 +116,7 @@ const HALF_DAY_SPLIT_MIN = 13 * 60;
 // since midnight) falls inside a blocked period — used by both the public
 // availability endpoint and the booking endpoint itself, so a slot that's
 // hidden as unavailable can never be booked by hitting the API directly.
-async function loadBlockedChecker(env, date) {
+export async function loadBlockedChecker(env, date) {
   if (!env.DB) return () => false;
   const { results } = await env.DB.prepare(`SELECT period FROM calendar_blocks WHERE date = ?`).bind(date).all();
   const periods = new Set(results.map((r) => r.period));
@@ -156,6 +157,10 @@ const EMAIL_STRINGS = {
     pdfNote: "Bitte entnehmen Sie die vollständige Buchungsbestätigung dem beigefügten PDF.",
     signature: "Ihr Zettly-Team",
     subject: (bookingRef) => `Buchungsbestätigung ${bookingRef}`,
+    rescheduledHeading: "Ihr Termin wurde verschoben",
+    rescheduledSubject: (bookingRef) => `Terminänderung ${bookingRef}`,
+    rescheduledNote: (oldDateDisplay, oldTime) =>
+      `Ihr bisheriger Termin am ${oldDateDisplay} um ${oldTime} Uhr ist nicht mehr gültig — bitte ignorieren Sie diesen. Ihr neuer Termin ist unten aufgeführt.`,
   },
   en: {
     heading: "Your appointment is confirmed",
@@ -187,6 +192,10 @@ const EMAIL_STRINGS = {
     pdfNote: "Please find your full booking confirmation attached.",
     signature: "The Zettly Team",
     subject: (bookingRef) => `Booking Confirmation ${bookingRef}`,
+    rescheduledHeading: "Your appointment has been rescheduled",
+    rescheduledSubject: (bookingRef) => `Appointment change ${bookingRef}`,
+    rescheduledNote: (oldDateDisplay, oldTime) =>
+      `Your previous appointment on ${oldDateDisplay} at ${oldTime} is no longer valid — please disregard it. Your new appointment is shown below.`,
   },
 };
 
@@ -274,13 +283,19 @@ async function handleAvailability(url, env) {
   return json({ date, slots });
 }
 
-export async function sendConfirmationEmail(env, booking, service, lang) {
+export async function sendConfirmationEmail(env, booking, service, lang, opts = {}) {
   if (!env.RESEND_API_KEY) {
     return { sent: false, reason: "no_api_key" };
   }
 
   const t = EMAIL_STRINGS[lang] || EMAIL_STRINGS.de;
   const from = env.RESEND_FROM || "Zettly <no-reply@zettly.de>";
+  // Set when an admin reschedules an existing booking to a new date/time
+  // (see src/admin.js's handleAdminRescheduleBooking): the email reuses this
+  // same booking-confirmation layout (PDF attached, cancel button, policy
+  // notes) but with a reschedule-specific heading/subject and a callout
+  // telling the customer to disregard the old date/time.
+  const rescheduled = opts.rescheduled || null;
   const commuteFee = booking.commuteFee || 0;
   const { servicePriceText, priceText, commuteNote, consultationModeText } = priceTextsFor(
     lang,
@@ -309,12 +324,13 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
             </td>
           </tr>
         </table>
-        <div style="color:#6b6b74; font-size:14px; margin-top:10px;">${t.heading}</div>
+        <div style="color:#6b6b74; font-size:14px; margin-top:10px;">${rescheduled ? t.rescheduledHeading : t.heading}</div>
         <div style="display:inline-block; margin-top:14px; background:#f3eeff; color:#7C3AED; font-size:12px; font-weight:700; padding:6px 12px; border-radius:999px;">${t.ref}: ${booking.bookingRef}</div>
       </div>
       <div style="height:4px; background:linear-gradient(90deg,#7C3AED,#a855f7 60%,#EC4899);"></div>
       <div style="padding:28px;">
         <p style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
+        ${rescheduled ? `<p style="margin:0 0 16px; padding:10px 12px; background:#fdeef2; border-left:3px solid #c2185b; border-radius:6px; font-size:13px; color:#111114; line-height:1.5;">${t.rescheduledNote(localizedDate(rescheduled.oldDate, lang), rescheduled.oldTime)}</p>` : ""}
         <p style="margin:0 0 ${commuteNote || consultationModeText ? "6px" : "22px"}; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.detailsIntro}</p>
         ${consultationModeText ? `<p style="margin:0 0 6px;"><span style="display:inline-block; background:${booking.onlineConsultation ? "#e8f8ef" : "#f3eeff"}; color:${booking.onlineConsultation ? "#16a34a" : "#7C3AED"}; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px;">${t.consultationModeLabel}: ${consultationModeText}</span></p>` : ""}
         ${commuteNote ? `<p style="margin:0 0 22px; font-size:12.5px; color:#8a8a92; line-height:1.5;">${commuteNote}</p>` : ""}
@@ -439,7 +455,7 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
     body: JSON.stringify({
       from,
       to: booking.customer_email,
-      subject: t.subject(booking.bookingRef),
+      subject: rescheduled ? t.rescheduledSubject(booking.bookingRef) : t.subject(booking.bookingRef),
       html,
       ...(attachments ? { attachments } : {}),
     }),
@@ -821,6 +837,10 @@ export default {
       const waiveFeeMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/waive-fee$/);
       if (waiveFeeMatch && request.method === "POST") {
         return handleAdminWaiveCancellationFee(request, env, waiveFeeMatch[1]);
+      }
+      const rescheduleMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/reschedule$/);
+      if (rescheduleMatch && request.method === "POST") {
+        return handleAdminRescheduleBooking(request, env, rescheduleMatch[1]);
       }
       if (url.pathname === "/api/admin/catalog-leaves" && request.method === "GET") {
         return handleAdminCatalogLeaves();

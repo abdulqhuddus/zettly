@@ -872,6 +872,29 @@
   </div>
 </div>
 
+<div class="modal-backdrop" id="reschedule-modal">
+  <div class="modal">
+    <button class="modal-close" id="reschedule-modal-close">&times;</button>
+    <h2 id="t-reschedule-modal-title">Reschedule booking</h2>
+    <p class="order-source-note"><span id="t-reschedule-modal-sub">Booking</span> <strong id="reschedule-modal-source-ref"></strong></p>
+    <div class="form-row">
+      <div class="form-field">
+        <label for="reschedule-date" id="t-reschedule-date">New date</label>
+        <input type="date" id="reschedule-date">
+      </div>
+      <div class="form-field">
+        <label for="reschedule-time" id="t-reschedule-time">New time</label>
+        <input type="time" id="reschedule-time" step="1800">
+      </div>
+    </div>
+    <p class="order-source-note" id="t-reschedule-note">The customer will be emailed the new appointment and asked to disregard the previous one. They can still cancel from that email.</p>
+    <p class="field-error" id="reschedule-error"></p>
+    <div class="modal-actions">
+      <button class="btn btn-neutral" id="reschedule-save-btn" type="button" style="width:auto;">Save &amp; notify customer</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1006,6 +1029,17 @@
       actionComplete: "Mark as completed",
       actionProcessing: "Mark as processing",
       actionReconfirm: "Re-confirm",
+      actionReschedule: "Reschedule",
+      rescheduleModalTitle: "Reschedule booking",
+      rescheduleModalSub: "Booking",
+      rescheduleDateLabel: "New date",
+      rescheduleTimeLabel: "New time",
+      rescheduleNote: "The customer will be emailed the new appointment and asked to disregard the previous one. They can still cancel from that email.",
+      rescheduleSaveBtn: "Save & notify customer",
+      rescheduleInvalid: "Please choose a date and time.",
+      rescheduled: "Booking rescheduled — customer notified",
+      rescheduledNoEmail: "Booking rescheduled, but the email could not be sent",
+      rescheduleFailed: "Failed to reschedule",
       actionDelete: "Delete booking",
       actionGdprErasure: "Erase customer data",
       actionSendInvoice: "Send invoice",
@@ -1225,6 +1259,17 @@
       actionComplete: "Als abgeschlossen markieren",
       actionProcessing: "In Bearbeitung setzen",
       actionReconfirm: "Wieder bestätigen",
+      actionReschedule: "Verschieben",
+      rescheduleModalTitle: "Buchung verschieben",
+      rescheduleModalSub: "Buchung",
+      rescheduleDateLabel: "Neues Datum",
+      rescheduleTimeLabel: "Neue Uhrzeit",
+      rescheduleNote: "Der Kunde erhält eine E-Mail mit dem neuen Termin und wird gebeten, den vorherigen zu ignorieren. Er kann über diese E-Mail weiterhin stornieren.",
+      rescheduleSaveBtn: "Speichern & Kunde benachrichtigen",
+      rescheduleInvalid: "Bitte Datum und Uhrzeit auswählen.",
+      rescheduled: "Buchung verschoben — Kunde benachrichtigt",
+      rescheduledNoEmail: "Buchung verschoben, aber die E-Mail konnte nicht gesendet werden",
+      rescheduleFailed: "Verschieben fehlgeschlagen",
       actionDelete: "Buchung löschen",
       actionGdprErasure: "Kundendaten löschen",
       actionSendInvoice: "Rechnung senden",
@@ -1339,6 +1384,7 @@
     eyeOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.2A10.4 10.4 0 0 1 12 5c7 0 10.5 7 10.5 7a17.5 17.5 0 0 1-3.2 4.2M6.6 6.6C3.4 8.6 1.5 12 1.5 12s3.5 7 10.5 7a10.5 10.5 0 0 0 4.4-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
     gdprErasure: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 3h4v2H4V7h4z"/><path d="M6 9l1 11a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-11"/><line x1="12" y1="12" x2="12" y2="17"/></svg>',
     waiveFee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="16" x2="16" y2="8"/><circle cx="9" cy="9" r="0.6" fill="currentColor"/><circle cx="15" cy="15" r="0.6" fill="currentColor"/></svg>',
+    reschedule: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><path d="M8 14l2.2 2.2L16 11"/></svg>',
   };
 
   let lang = "en";
@@ -1474,6 +1520,12 @@
     document.getElementById("t-order-price").textContent = s.orderPrice;
     document.getElementById("t-order-quantity").textContent = s.orderQuantity;
     document.getElementById("order-save-btn").textContent = s.orderSubmit;
+    document.getElementById("t-reschedule-modal-title").textContent = s.rescheduleModalTitle;
+    document.getElementById("t-reschedule-modal-sub").textContent = s.rescheduleModalSub;
+    document.getElementById("t-reschedule-date").textContent = s.rescheduleDateLabel;
+    document.getElementById("t-reschedule-time").textContent = s.rescheduleTimeLabel;
+    document.getElementById("t-reschedule-note").textContent = s.rescheduleNote;
+    document.getElementById("reschedule-save-btn").textContent = s.rescheduleSaveBtn;
     document.getElementById("t-linked-orders-title").textContent = s.linkedOrders;
     renderPager();
   }
@@ -2242,6 +2294,9 @@
     if (b.status === "cancelled" && isFutureBooking(b)) {
       actions.appendChild(makeActionBtn(s.actionReconfirm, "btn-neutral", "reconfirm", () => updateStatus(b.id, "confirmed")));
     }
+    if (b.status !== "cancelled" && b.status !== "completed") {
+      actions.appendChild(makeActionBtn(s.actionReschedule, "btn-neutral", "reschedule", () => openRescheduleModal(b)));
+    }
     // Paid/pending is independent of the booking status (cancel/complete/
     // confirm) above -- this just flips payment_status. Once a payment
     // gateway is wired up, a successful online payment can set this
@@ -2779,6 +2834,47 @@
       if (currentDetail && currentDetail.id === sourceId) loadLinkedOrders(currentDetail.id, true);
     } catch (err) {
       errorEl.textContent = err.message || s.orderCreateFailed;
+    }
+  });
+
+  let rescheduleSourceId = null;
+  function openRescheduleModal(b) {
+    rescheduleSourceId = b.id;
+    document.getElementById("reschedule-modal-source-ref").textContent = b.bookingRef;
+    document.getElementById("reschedule-date").value = b.date;
+    document.getElementById("reschedule-time").value = b.time;
+    document.getElementById("reschedule-error").textContent = "";
+    document.getElementById("reschedule-modal").classList.add("open");
+  }
+  function closeRescheduleModal() {
+    document.getElementById("reschedule-modal").classList.remove("open");
+    rescheduleSourceId = null;
+  }
+  document.getElementById("reschedule-modal-close").addEventListener("click", closeRescheduleModal);
+  document.getElementById("reschedule-modal").addEventListener("click", (e) => {
+    if (e.target.id === "reschedule-modal") closeRescheduleModal();
+  });
+  document.getElementById("reschedule-save-btn").addEventListener("click", async () => {
+    const s = t();
+    const errorEl = document.getElementById("reschedule-error");
+    const date = document.getElementById("reschedule-date").value;
+    const time = document.getElementById("reschedule-time").value;
+    if (!date || !time) {
+      errorEl.textContent = s.rescheduleInvalid;
+      return;
+    }
+    const sourceId = rescheduleSourceId;
+    try {
+      const result = await api(`/api/admin/bookings/${encodeURIComponent(sourceId)}/reschedule`, {
+        method: "POST",
+        body: JSON.stringify({ date, time, lang }),
+      });
+      toast(result.emailSent ? s.rescheduled : s.rescheduledNoEmail);
+      closeRescheduleModal();
+      loadBookings();
+      if (currentDetail && currentDetail.id === sourceId) openDetail(sourceId);
+    } catch (err) {
+      errorEl.textContent = err.message || s.rescheduleFailed;
     }
   });
 
