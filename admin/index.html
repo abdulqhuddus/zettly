@@ -231,7 +231,8 @@
   .calendar-panel-header h2 { font-size: 1rem; font-weight: 700; margin: 0; }
   .calendar-toggle-btn { padding: 0.5rem 0.85rem; }
   .calendar-panel-body { display: none; margin-top: 1.1rem; }
-  .calendar-panel.open .calendar-panel-body { display: block; }
+  .calendar-panel.open .calendar-panel-body,
+  .block-panel.open .calendar-panel-body { display: block; }
   .calendar-nav { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.2rem; }
   .calendar-nav-btn {
     width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--border);
@@ -731,62 +732,81 @@
         </div>
       </div>
     </div>
-    <div class="booking-toggle-group">
-      <div class="booking-toggle-panel" id="booking-toggle-panel-home">
-        <div class="booking-toggle-text">
-          <h2 id="t-booking-toggle-title-home">Home bookings</h2>
-          <p id="t-booking-toggle-sub-home">Turn off bookings from home customers, with no end date.</p>
-        </div>
-        <div class="booking-toggle-row">
-          <span class="booking-toggle-status" id="booking-toggle-status-home">–</span>
-          <label class="switch">
-            <input type="checkbox" id="booking-toggle-input-home" data-audience="home">
-            <span class="switch-track"></span>
-          </label>
-        </div>
+    <div class="block-panel" id="booking-section-panel">
+      <div class="calendar-panel-header">
+        <h2 id="t-booking-section-title">Turn off bookings</h2>
+        <button class="btn btn-ghost stats-toggle-btn" id="booking-section-toggle-btn" type="button" aria-expanded="false">
+          <span class="stats-toggle-icon" id="booking-section-toggle-icon"></span>
+          <span id="booking-section-toggle-label">Show</span>
+        </button>
       </div>
-      <div class="booking-toggle-panel" id="booking-toggle-panel-business">
-        <div class="booking-toggle-text">
-          <h2 id="t-booking-toggle-title-business">Business bookings</h2>
-          <p id="t-booking-toggle-sub-business">Turn off bookings from business customers, with no end date.</p>
-        </div>
-        <div class="booking-toggle-row">
-          <span class="booking-toggle-status" id="booking-toggle-status-business">–</span>
-          <label class="switch">
-            <input type="checkbox" id="booking-toggle-input-business" data-audience="business">
-            <span class="switch-track"></span>
-          </label>
+      <div class="calendar-panel-body" id="booking-section-panel-body">
+        <div class="booking-toggle-group">
+          <div class="booking-toggle-panel" id="booking-toggle-panel-home">
+            <div class="booking-toggle-text">
+              <h2 id="t-booking-toggle-title-home">Home bookings</h2>
+              <p id="t-booking-toggle-sub-home">Turn off bookings from home customers, with no end date.</p>
+            </div>
+            <div class="booking-toggle-row">
+              <span class="booking-toggle-status" id="booking-toggle-status-home">–</span>
+              <label class="switch">
+                <input type="checkbox" id="booking-toggle-input-home" data-audience="home">
+                <span class="switch-track"></span>
+              </label>
+            </div>
+          </div>
+          <div class="booking-toggle-panel" id="booking-toggle-panel-business">
+            <div class="booking-toggle-text">
+              <h2 id="t-booking-toggle-title-business">Business bookings</h2>
+              <p id="t-booking-toggle-sub-business">Turn off bookings from business customers, with no end date.</p>
+            </div>
+            <div class="booking-toggle-row">
+              <span class="booking-toggle-status" id="booking-toggle-status-business">–</span>
+              <label class="switch">
+                <input type="checkbox" id="booking-toggle-input-business" data-audience="business">
+                <span class="switch-track"></span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="block-panel">
-      <h2 id="t-block-title">Block calendar</h2>
-      <p class="block-sub" id="t-block-sub">Stop customers from booking a day, or just its morning/afternoon.</p>
-      <div class="block-form">
-        <div class="field grow">
-          <label for="block-start" id="t-block-start">Start date</label>
-          <input type="date" id="block-start">
-        </div>
-        <div class="field grow">
-          <label for="block-end" id="t-block-end">End date</label>
-          <input type="date" id="block-end">
-        </div>
-        <div class="field grow">
-          <label for="block-period" id="t-block-period">Block</label>
-          <select id="block-period">
-            <option value="full" id="opt-period-full">Full day</option>
-            <option value="am" id="opt-period-am">Morning (before 13:00)</option>
-            <option value="pm" id="opt-period-pm">Afternoon (13:00 onward)</option>
-          </select>
-        </div>
-        <div class="field grow">
-          <label for="block-reason" id="t-block-reason">Reason (optional)</label>
-          <input type="text" id="block-reason" maxlength="80">
-        </div>
-        <button class="btn btn-primary" id="block-add-btn" type="button" style="width:auto;">Add block</button>
+    <div class="block-panel" id="block-section-panel">
+      <div class="calendar-panel-header">
+        <h2 id="t-block-title">Block calendar</h2>
+        <button class="btn btn-ghost stats-toggle-btn" id="block-section-toggle-btn" type="button" aria-expanded="false">
+          <span class="stats-toggle-icon" id="block-section-toggle-icon"></span>
+          <span id="block-section-toggle-label">Show</span>
+        </button>
       </div>
-      <p class="field-error" id="block-error"></p>
-      <div class="block-list" id="block-list"></div>
+      <div class="calendar-panel-body" id="block-section-panel-body">
+        <p class="block-sub" id="t-block-sub">Stop customers from booking a day, or just its morning/afternoon.</p>
+        <div class="block-form">
+          <div class="field grow">
+            <label for="block-start" id="t-block-start">Start date</label>
+            <input type="date" id="block-start">
+          </div>
+          <div class="field grow">
+            <label for="block-end" id="t-block-end">End date</label>
+            <input type="date" id="block-end">
+          </div>
+          <div class="field grow">
+            <label for="block-period" id="t-block-period">Block</label>
+            <select id="block-period">
+              <option value="full" id="opt-period-full">Full day</option>
+              <option value="am" id="opt-period-am">Morning (before 13:00)</option>
+              <option value="pm" id="opt-period-pm">Afternoon (13:00 onward)</option>
+            </select>
+          </div>
+          <div class="field grow">
+            <label for="block-reason" id="t-block-reason">Reason (optional)</label>
+            <input type="text" id="block-reason" maxlength="80">
+          </div>
+          <button class="btn btn-primary" id="block-add-btn" type="button" style="width:auto;">Add block</button>
+        </div>
+        <p class="field-error" id="block-error"></p>
+        <div class="block-list" id="block-list"></div>
+      </div>
     </div>
     <div class="filters">
       <input type="search" id="f-q" placeholder="Search: name, email, booking ID …">
@@ -1055,6 +1075,7 @@
       statPaidAmount: "Total Paid Bookings Value",
       statPendingCount: "Total Pending Bookings",
       statPendingAmount: "Total Pending Bookings Value",
+      bookingSectionTitle: "Turn off bookings",
       bookingToggleTitleHome: "Home bookings",
       bookingToggleSubHome: "Turn off bookings from home customers, with no end date.",
       bookingToggleTitleBusiness: "Business bookings",
@@ -1292,6 +1313,7 @@
       statPaidAmount: "Betrag bezahlt",
       statPendingCount: "Ausstehende Buchungen",
       statPendingAmount: "Betrag ausstehend",
+      bookingSectionTitle: "Buchungen deaktivieren",
       bookingToggleTitleHome: "Buchungen (Zuhause)",
       bookingToggleSubHome: "Buchungen von Privatkunden deaktivieren, ohne Enddatum.",
       bookingToggleTitleBusiness: "Buchungen (Unternehmen)",
@@ -1575,17 +1597,20 @@
     document.getElementById("t-stat-paid-amount").textContent = s.statPaidAmount;
     document.getElementById("t-stat-pending-count").textContent = s.statPendingCount;
     document.getElementById("t-stat-pending-amount").textContent = s.statPendingAmount;
+    document.getElementById("t-booking-section-title").textContent = s.bookingSectionTitle;
     document.getElementById("t-booking-toggle-title-home").textContent = s.bookingToggleTitleHome;
     document.getElementById("t-booking-toggle-sub-home").textContent = s.bookingToggleSubHome;
     document.getElementById("t-booking-toggle-title-business").textContent = s.bookingToggleTitleBusiness;
     document.getElementById("t-booking-toggle-sub-business").textContent = s.bookingToggleSubBusiness;
     if (state.bookingStatuses) renderBookingToggles(state.bookingStatuses);
+    updateBookingSectionToggleLabel();
     document.getElementById("t-calendar-title").textContent = s.calendarTitle;
     document.getElementById("t-calendar-sub").textContent = s.calendarSub;
     updateCalendarToggleLabel();
     renderCalendar();
     document.getElementById("t-block-title").textContent = s.blockTitle;
     document.getElementById("t-block-sub").textContent = s.blockSub;
+    updateBlockSectionToggleLabel();
     document.getElementById("t-block-start").textContent = s.blockStart;
     document.getElementById("t-block-end").textContent = s.blockEnd;
     document.getElementById("t-block-period").textContent = s.blockPeriod;
@@ -1799,6 +1824,32 @@
     }
   });
   updateCalendarToggleLabel();
+
+  // Generic collapse/expand toggle, shared by the "Turn off bookings" and
+  // "Block calendar" panels below -- same collapsed-by-default pattern as
+  // the analytics and appointments-calendar panels above.
+  function wireSectionToggle(panelId, toggleBtnId, toggleIconId, toggleLabelId) {
+    function update() {
+      const s = t();
+      const panel = document.getElementById(panelId);
+      const open = panel.classList.contains("open");
+      document.getElementById(toggleIconId).innerHTML = open ? ICONS.eyeOff : ICONS.eye;
+      document.getElementById(toggleLabelId).textContent = open ? s.statsHide : s.statsShow;
+      document.getElementById(toggleBtnId).setAttribute("aria-expanded", String(open));
+    }
+    document.getElementById(toggleBtnId).addEventListener("click", () => {
+      document.getElementById(panelId).classList.toggle("open");
+      update();
+    });
+    update();
+    return update;
+  }
+  const updateBookingSectionToggleLabel = wireSectionToggle(
+    "booking-section-panel", "booking-section-toggle-btn", "booking-section-toggle-icon", "booking-section-toggle-label"
+  );
+  const updateBlockSectionToggleLabel = wireSectionToggle(
+    "block-section-panel", "block-section-toggle-btn", "block-section-toggle-icon", "block-section-toggle-label"
+  );
 
   function statusLabel(status) {
     const s = t();
