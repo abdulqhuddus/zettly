@@ -25,6 +25,7 @@ import {
   handleAdminDeleteBooking,
   handleAdminRequestErasure,
   handleAdminWaiveCancellationFee,
+  handleAdminWaiveTravelFee,
   handleAdminRescheduleBooking,
   handleAdminListBlocks,
   handleAdminCreateBlock,
@@ -837,6 +838,10 @@ export default {
       const waiveFeeMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/waive-fee$/);
       if (waiveFeeMatch && request.method === "POST") {
         return handleAdminWaiveCancellationFee(request, env, waiveFeeMatch[1]);
+      }
+      const waiveTravelFeeMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/waive-travel-fee$/);
+      if (waiveTravelFeeMatch && request.method === "POST") {
+        return handleAdminWaiveTravelFee(request, env, waiveTravelFeeMatch[1]);
       }
       const rescheduleMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/reschedule$/);
       if (rescheduleMatch && request.method === "POST") {

@@ -1287,6 +1287,11 @@
       confirmWaiveFeeMessage: "This removes the late-cancellation fee entirely — the customer will owe nothing for this booking. This cannot be undone. Type the booking reference below to confirm.",
       feeWaived: "Cancellation fee waived",
       feeWaiveFailed: "Failed to waive the fee",
+      actionWaiveTravelFee: "Waive travel fee",
+      confirmWaiveTravelFeeTitle: "Waive travel fee",
+      confirmWaiveTravelFeeMessage: "This removes the travel fee entirely — the customer will owe nothing for it. This cannot be undone. Type the booking reference below to confirm.",
+      travelFeeWaived: "Travel fee waived",
+      travelFeeWaiveFailed: "Failed to waive the travel fee",
       feeWaivedLabel: "Waived",
       mWasPrice: "was",
       genericError: "Error",
@@ -1525,6 +1530,11 @@
       confirmWaiveFeeMessage: "Dies entfernt die Stornierungsgebühr vollständig — der Kunde schuldet für diese Buchung nichts mehr. Dies kann nicht rückgängig gemacht werden. Geben Sie zur Bestätigung unten die Buchungsnummer ein.",
       feeWaived: "Stornierungsgebühr erlassen",
       feeWaiveFailed: "Gebühr konnte nicht erlassen werden",
+      actionWaiveTravelFee: "Fahrtkosten erlassen",
+      confirmWaiveTravelFeeTitle: "Fahrtkosten erlassen",
+      confirmWaiveTravelFeeMessage: "Dies entfernt die Fahrtkosten vollständig — der Kunde schuldet dafür nichts mehr. Dies kann nicht rückgängig gemacht werden. Geben Sie zur Bestätigung unten die Buchungsnummer ein.",
+      travelFeeWaived: "Fahrtkosten erlassen",
+      travelFeeWaiveFailed: "Fahrtkosten konnten nicht erlassen werden",
       feeWaivedLabel: "Erlassen",
       mWasPrice: "war",
       genericError: "Fehler",
@@ -2722,6 +2732,12 @@
     if (b.pre_cancellation_price != null && !b.cancellation_fee_waived) {
       actions.appendChild(makeActionBtn(s.actionWaiveFee, "btn-neutral", "waiveFee", () => waiveCancellationFee(b.id, b.bookingRef)));
     }
+    // Mirrors the late-cancellation-fee waiver above, but for the travel
+    // (commute) fee kept on an already-cancelled booking -- separate because
+    // either fee can be owed and waived independently of the other.
+    if (b.status === "cancelled" && (b.commute_fee || 0) > 0 && !b.travel_fee_waived) {
+      actions.appendChild(makeActionBtn(s.actionWaiveTravelFee, "btn-neutral", "waiveTravelFee", () => waiveTravelFee(b.id, b.bookingRef)));
+    }
     // Quote-type bookings (consultation, or "price given on-site") are
     // booked with no real price yet -- offered whenever the leaf is a quote,
     // not just while price is still 0, so a figure can be corrected later too.
@@ -2962,6 +2978,28 @@
       loadBookings();
     } catch (err) {
       toast(err.message || s.feeWaiveFailed);
+    }
+  }
+
+  async function waiveTravelFee(id, bookingRef) {
+    const s = t();
+    const result = await showConfirm({
+      title: s.confirmWaiveTravelFeeTitle,
+      message: s.confirmWaiveTravelFeeMessage,
+      requireReason: true,
+      reasonLabel: bookingRef,
+      reasonPlaceholder: bookingRef,
+      matchValue: bookingRef,
+      matchError: s.confirmDeleteRefMismatch,
+    });
+    if (!result.confirmed) return;
+    try {
+      await api(`/api/admin/bookings/${encodeURIComponent(id)}/waive-travel-fee`, { method: "POST" });
+      toast(s.travelFeeWaived);
+      closeModal();
+      loadBookings();
+    } catch (err) {
+      toast(err.message || s.travelFeeWaiveFailed);
     }
   }
 

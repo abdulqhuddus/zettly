@@ -732,53 +732,84 @@ export function generateBookingPdf(data) {
         [L.bankRefLabel, data.bookingRef],
       ]
     : [];
-  const calloutInnerH =
+
+  // ---- Trailing content below the callout (rebook message or the plain
+  // footer note, then the closing signature) -- its height is independent
+  // of the callout's own content, so it's computed up front to know exactly
+  // how much room the callout is allowed to take without pushing the
+  // closing signature down into the fixed-position acceptance pills/footer
+  // bar near the bottom of the page (see those below: fromTop(261/272/278)). ----
+  const afterCalloutGap = 16;
+  const preClosingGap = 18;
+  const closingLineGap = 15;
+  const trailingLines = data.cancelled ? wrapText(L.rebookMsg, 92) : wrapText(L.footer2note, 92);
+  const trailingLineGap = data.cancelled ? 13 : 11;
+  const trailingBlockH = trailingLines.length * trailingLineGap + (data.cancelled ? 5 : 0);
+  const trailingTotalH = afterCalloutGap + trailingBlockH + preClosingGap + closingLineGap;
+  // The acceptance-pill row starts at fromTop(261); staying above fromTop(255)
+  // keeps a small buffer rather than cutting it exactly at the edge.
+  const SAFE_FLOOR_Y = fromTop(255);
+
+  // The callout's nominal (unshrunk) height, using the normal gaps above --
+  // identical to every callout before the bank-details feature existed, so
+  // a short callout (the overwhelming majority) renders pixel-identical to
+  // before. Only when the nominal height would overrun the safe floor does
+  // this compress line spacing (and, in extreme cases, font size slightly)
+  // to make it fit, rather than silently overlapping the footer.
+  const nominalCalloutInnerH =
     calloutHeadingGap + calloutBodyLines.length * calloutBodyLineGap +
     (bankDetailLines.length ? bankDetailGapBefore + bankDetailLines.length * bankDetailLineGap : 0);
+  const nominalCalloutH = calloutPadTop + nominalCalloutInnerH + calloutPadBottom;
+  const availableCalloutH = Math.max(60, y - trailingTotalH - SAFE_FLOOR_Y);
+  const calloutScale = Math.min(1, availableCalloutH / nominalCalloutH);
+  const lineScale = Math.max(calloutScale, 0.7); // never squeeze lines closer than 70%
+  const fontScale = calloutScale < 0.7 ? Math.max(calloutScale / 0.7, 0.85) : 1; // only then shrink text itself, down to 85%
+
+  const scaledHeadingGap = calloutHeadingGap * lineScale;
+  const scaledBodyLineGap = calloutBodyLineGap * lineScale;
+  const scaledBankGapBefore = bankDetailGapBefore * lineScale;
+  const scaledBankLineGap = bankDetailLineGap * lineScale;
+  const scaledHeadingSize = calloutHeadingSize * fontScale;
+  const scaledBodySize = calloutBodySize * fontScale;
+
+  const calloutInnerH =
+    scaledHeadingGap + calloutBodyLines.length * scaledBodyLineGap +
+    (bankDetailLines.length ? scaledBankGapBefore + bankDetailLines.length * scaledBankLineGap : 0);
   const calloutH = calloutPadTop + calloutInnerH + calloutPadBottom;
   const calloutTopY = y;
   const calloutBottomY = calloutTopY - calloutH;
   content.push(rect(LEFT_X, calloutBottomY, RIGHT_X - LEFT_X, calloutH, calloutBgColor));
   content.push(rect(LEFT_X, calloutBottomY, 3, calloutH, calloutColor));
 
-  let cy = calloutTopY - calloutPadTop - calloutHeadingSize * 0.8;
-  content.push(text(LEFT_X + calloutPadX, cy, calloutHeadingSize, data.cancelled ? L.boxTitleCancelled : L.cancelHeading, { bold: true, color: calloutColor }));
-  cy -= calloutHeadingGap;
+  let cy = calloutTopY - calloutPadTop - scaledHeadingSize * 0.8;
+  content.push(text(LEFT_X + calloutPadX, cy, scaledHeadingSize, data.cancelled ? L.boxTitleCancelled : L.cancelHeading, { bold: true, color: calloutColor }));
+  cy -= scaledHeadingGap;
   for (const bl of calloutBodyLines) {
-    content.push(text(LEFT_X + calloutPadX, cy, calloutBodySize, bl, { color: INK }));
-    cy -= calloutBodyLineGap;
+    content.push(text(LEFT_X + calloutPadX, cy, scaledBodySize, bl, { color: INK }));
+    cy -= scaledBodyLineGap;
   }
   if (bankDetailLines.length) {
     // Right-align every value to the same column, just past the widest
     // label, so the block reads as a clean two-column table rather than
     // text trailing off at varying distances after each colon.
-    const labelColW = Math.max(...bankDetailLines.map(([label]) => estWidth(`${label}:`, calloutBodySize, true))) + 10;
-    cy -= bankDetailGapBefore;
+    const labelColW = Math.max(...bankDetailLines.map(([label]) => estWidth(`${label}:`, scaledBodySize, true))) + 10;
+    cy -= scaledBankGapBefore;
     for (const [label, value] of bankDetailLines) {
-      content.push(text(LEFT_X + calloutPadX, cy, calloutBodySize, `${label}:`, { bold: true, color: INK }));
-      content.push(text(LEFT_X + calloutPadX + labelColW, cy, calloutBodySize, String(value), { color: INK }));
-      cy -= bankDetailLineGap;
+      content.push(text(LEFT_X + calloutPadX, cy, scaledBodySize, `${label}:`, { bold: true, color: INK }));
+      content.push(text(LEFT_X + calloutPadX + labelColW, cy, scaledBodySize, String(value), { color: INK }));
+      cy -= scaledBankLineGap;
     }
   }
-  y = calloutBottomY - 16;
+  y = calloutBottomY - afterCalloutGap;
 
-  if (data.cancelled) {
-    const rebookLines = wrapText(L.rebookMsg, 92);
-    for (const rl of rebookLines) {
-      content.push(text(LEFT_X, y, 9.5, rl, { color: MUTED }));
-      y -= 13;
-    }
-    y -= 5;
-  } else {
-    const noteLines = wrapText(L.footer2note, 92);
-    for (const nl of noteLines) {
-      content.push(text(LEFT_X, y, 8, nl, { color: MUTED }));
-      y -= 11;
-    }
+  for (const tl of trailingLines) {
+    content.push(text(LEFT_X, y, data.cancelled ? 9.5 : 8, tl, { color: MUTED }));
+    y -= trailingLineGap;
   }
-  y -= 18;
+  if (data.cancelled) y -= 5;
+  y -= preClosingGap;
   content.push(text(LEFT_X, y, 10, L.closing1, { color: INK }));
-  y -= 15;
+  y -= closingLineGap;
   content.push(text(LEFT_X, y, 10, L.closing2, { bold: true, color: PURPLE }));
 
   // ---- Acceptance footer: a small row of clickable pills confirming the

@@ -648,12 +648,46 @@ export async function handleAdminWaiveCancellationFee(request, env, id) {
     return json({ error: "This fee has already been waived" }, 400);
   }
   const waivedAmount = existing.price;
+  // A travel fee can be owed independently of the late-cancellation fee, so
+  // waiving this one doesn't automatically mean nothing is owed anymore --
+  // payment_status only drops to "not_applicable" once the remaining
+  // (travel-fee) balance is also zero.
+  const remainingOwed = existing.commute_fee || 0;
   await env.DB.prepare(
-    `UPDATE bookings SET price = 0, cancellation_fee_waived = 1, payment_status = 'not_applicable', paid_at = NULL WHERE id = ?`
+    remainingOwed > 0
+      ? `UPDATE bookings SET price = 0, cancellation_fee_waived = 1 WHERE id = ?`
+      : `UPDATE bookings SET price = 0, cancellation_fee_waived = 1, payment_status = 'not_applicable', paid_at = NULL WHERE id = ?`
   )
     .bind(id)
     .run();
   await logActivity(env, id, "cancellation_fee_waived", "admin", `Waived late cancellation fee of €${waivedAmount}`);
+  return json({ ok: true, id, waivedAmount });
+}
+
+// Mirrors handleAdminWaiveCancellationFee above, for the travel/commute fee
+// instead of the late-cancellation fee -- lets an admin waive an
+// already-charged travel fee at any later point, independent of whether
+// the late-cancellation fee itself was ever waived.
+export async function handleAdminWaiveTravelFee(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+  if (!(existing.commute_fee > 0)) {
+    return json({ error: "This booking has no travel fee to waive" }, 400);
+  }
+  if (existing.travel_fee_waived) {
+    return json({ error: "This travel fee has already been waived" }, 400);
+  }
+  const waivedAmount = existing.commute_fee;
+  const remainingOwed = existing.price || 0;
+  await env.DB.prepare(
+    remainingOwed > 0
+      ? `UPDATE bookings SET commute_fee = 0, pre_cancellation_commute_fee = ?, travel_fee_waived = 1 WHERE id = ?`
+      : `UPDATE bookings SET commute_fee = 0, pre_cancellation_commute_fee = ?, travel_fee_waived = 1, payment_status = 'not_applicable', paid_at = NULL WHERE id = ?`
+  )
+    .bind(waivedAmount, id)
+    .run();
+  await logActivity(env, id, "travel_fee_waived", "admin", `Waived travel fee of €${waivedAmount}`);
   return json({ ok: true, id, waivedAmount });
 }
 
