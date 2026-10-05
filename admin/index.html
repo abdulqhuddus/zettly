@@ -227,10 +227,12 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.8rem;
-    margin-bottom: 0.2rem;
   }
   .calendar-panel-header h2 { font-size: 1rem; font-weight: 700; margin: 0; }
-  .calendar-nav { display: flex; align-items: center; gap: 0.6rem; }
+  .calendar-toggle-btn { padding: 0.5rem 0.85rem; }
+  .calendar-panel-body { display: none; margin-top: 1.1rem; }
+  .calendar-panel.open .calendar-panel-body { display: block; }
+  .calendar-nav { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.2rem; }
   .calendar-nav-btn {
     width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--border);
     background: #fff; color: var(--ink); cursor: pointer; display: flex;
@@ -707,20 +709,26 @@
     </div>
       </div>
     </div>
-    <div class="calendar-panel">
+    <div class="calendar-panel" id="calendar-panel">
       <div class="calendar-panel-header">
         <h2 id="t-calendar-title">Appointments calendar</h2>
+        <button class="btn btn-ghost calendar-toggle-btn" id="calendar-toggle-btn" type="button" aria-expanded="false">
+          <span class="stats-toggle-icon" id="calendar-toggle-icon"></span>
+          <span id="calendar-toggle-label">Show</span>
+        </button>
+      </div>
+      <div class="calendar-panel-body" id="calendar-panel-body">
         <div class="calendar-nav">
           <button class="calendar-nav-btn" id="calendar-prev-btn" type="button" aria-label="Previous month">‹</button>
           <span class="calendar-month-label" id="calendar-month-label">–</span>
           <button class="calendar-nav-btn" id="calendar-next-btn" type="button" aria-label="Next month">›</button>
         </div>
-      </div>
-      <p class="calendar-sub" id="t-calendar-sub">Each date shows how many appointments fall on it. Click a date to see the names and times.</p>
-      <div class="calendar-grid" id="calendar-grid"></div>
-      <div class="calendar-day-detail" id="calendar-day-detail" style="display:none;">
-        <p class="calendar-day-detail-title" id="calendar-day-detail-title"></p>
-        <div class="calendar-day-detail-list" id="calendar-day-detail-list"></div>
+        <p class="calendar-sub" id="t-calendar-sub">Each date shows how many appointments fall on it. Click a date to see the names and times.</p>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <div class="calendar-day-detail" id="calendar-day-detail" style="display:none;">
+          <p class="calendar-day-detail-title" id="calendar-day-detail-title"></p>
+          <div class="calendar-day-detail-list" id="calendar-day-detail-list"></div>
+        </div>
       </div>
     </div>
     <div class="booking-toggle-group">
@@ -1574,6 +1582,7 @@
     if (state.bookingStatuses) renderBookingToggles(state.bookingStatuses);
     document.getElementById("t-calendar-title").textContent = s.calendarTitle;
     document.getElementById("t-calendar-sub").textContent = s.calendarSub;
+    updateCalendarToggleLabel();
     renderCalendar();
     document.getElementById("t-block-title").textContent = s.blockTitle;
     document.getElementById("t-block-sub").textContent = s.blockSub;
@@ -1724,7 +1733,6 @@
     loginScreen.style.display = "none";
     dashboard.style.display = "block";
     loadBookings();
-    loadCalendar();
     loadBlocks();
     loadBookingStatus();
   }
@@ -1768,6 +1776,29 @@
     updateStatsToggleLabel();
   });
   updateStatsToggleLabel();
+
+  // The appointments calendar also stays collapsed by default -- same
+  // reasoning as the analytics panel above -- and its data is only fetched
+  // the first time it's actually expanded, not on every page load.
+  function updateCalendarToggleLabel() {
+    const s = t();
+    const panel = document.getElementById("calendar-panel");
+    const open = panel.classList.contains("open");
+    document.getElementById("calendar-toggle-icon").innerHTML = open ? ICONS.eyeOff : ICONS.eye;
+    document.getElementById("calendar-toggle-label").textContent = open ? s.statsHide : s.statsShow;
+    document.getElementById("calendar-toggle-btn").setAttribute("aria-expanded", String(open));
+  }
+
+  document.getElementById("calendar-toggle-btn").addEventListener("click", () => {
+    const panel = document.getElementById("calendar-panel");
+    const nowOpen = panel.classList.toggle("open");
+    updateCalendarToggleLabel();
+    if (nowOpen && !state.calendarLoaded) {
+      state.calendarLoaded = true;
+      loadCalendar();
+    }
+  });
+  updateCalendarToggleLabel();
 
   function statusLabel(status) {
     const s = t();
