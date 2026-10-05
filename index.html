@@ -2163,6 +2163,10 @@
     font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-top: 1rem;
     max-width: 420px; margin-left: auto; margin-right: auto;
   }
+  .noshow-note {
+    font-size: 0.74rem; color: var(--danger); line-height: 1.5; margin-top: 0.5rem;
+    max-width: 420px; margin-left: auto; margin-right: auto; font-weight: 600;
+  }
   .success-wrap h1 { animation: fadeUp 0.5s 0.15s both; }
   .success-wrap .subtitle { animation: fadeUp 0.5s 0.25s both; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -2632,6 +2636,7 @@
       </div>
       <div class="summary" id="success-summary"></div>
       <p class="cancel-note" data-i18n="cancelNote">Bitte beachten Sie: zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.</p>
+      <p class="noshow-note" id="success-noshow-note" data-i18n="successNoShowNote" style="display:none;">Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Andernfalls gilt dies als verspätete Stornierung.</p>
       <a class="back-link" href="/" data-i18n="bookAnother">Weiteren Termin buchen</a>
     </div>
   </div>
@@ -3183,6 +3188,7 @@ const I18N = {
     successTitle: "Sie sind gebucht!",
     bookingRefLabel: "Buchungsnummer",
     cancelNote: "Bitte beachten Sie: <span class=\"zettly-word\">zett<span>ly</span></span> behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
+    successNoShowNote: "Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Andernfalls gilt dies als verspätete Stornierung und eine bereits berechnete Anfahrtspauschale wird nicht erstattet.",
     announceBarHead: "Wir befinden uns im Aufbau ·",
     announceBarTail: "Buchungen sind derzeit nicht möglich",
     loadingTimes: "Lade Termine…",
@@ -3399,6 +3405,7 @@ const I18N = {
     successTitle: "You're booked!",
     bookingRefLabel: "Booking reference",
     cancelNote: "Please note: <span class=\"zettly-word\">zett<span>ly</span></span> reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
+    successNoShowNote: "Please ensure someone is reachable at the given address at the agreed appointment time. Otherwise, this counts as a late cancellation and any travel fee already assessed is not refunded.",
     announceBarHead: "We're under construction ·",
     announceBarTail: "bookings are currently not accepted",
     loadingTimes: "Loading times…",
@@ -4841,6 +4848,11 @@ document.getElementById("submit-booking").addEventListener("click", async () => 
     document.getElementById("booking-ref-value").textContent = data.bookingRef || "";
     state.address = address;
     renderSummary("success-summary", true);
+    // The no-show note only applies to an actual in-person appointment --
+    // never to an online (video-call) consultation, which has no address to
+    // be reachable at.
+    const isOnlinePickup = !!(state.service.isConsultation && state.onlineConsultation);
+    document.getElementById("success-noshow-note").style.display = isOnlinePickup ? "none" : "block";
     showStep(6);
   } catch (e) {
     errorEl.textContent = t("networkError");
