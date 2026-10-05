@@ -16,9 +16,11 @@
     --accent-light: #F3EEFF;
     --pink: #EC4899;
     --pink-light: #FDEEF7;
+    --brand-blue: #0078D4;
     --ink: #111114;
     --muted: #6b6b74;
     --border: #e9e7ef;
+    --danger: #c2185b;
   }
 
   body {
@@ -183,20 +185,94 @@
   .liability-points { list-style: decimal; margin: 0 0 0.4rem 1.2rem; padding: 0; }
   .liability-points li { margin-bottom: 1rem; }
   .liability-points li b { display: block; color: var(--ink); font-weight: 700; margin-bottom: 0.2rem; }
+  .liability-noshow-highlight { background: rgba(194, 24, 91, 0.08); border: 1px solid rgba(194, 24, 91, 0.3); border-left: 3px solid var(--danger); border-radius: 10px; padding: 0.85rem 1rem; margin: 0 0 1.4rem; font-size: 0.92rem; color: #33333a; }
+  .liability-noshow-highlight b { display: block; color: var(--danger); font-weight: 700; margin-bottom: 0.25rem; }
 
+  /* ---- Full site footer, matching the homepage's (see index.html) ---- */
   .site-footer {
+    position: relative;
     width: 100%;
-    max-width: 720px;
-    padding: 2.5rem 1.25rem 1rem;
-    margin-top: 1rem;
+    max-width: none;
+    padding: 0;
+    margin-top: 2.5rem;
+    background: var(--accent-light);
     border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.82rem;
-    line-height: 1.7;
+    overflow: hidden;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
   }
-  .site-footer .footer-links a { color: var(--muted); text-decoration: none; margin-right: 1.2rem; }
-  .site-footer .footer-links a:hover { color: var(--accent); }
-  .site-footer .footer-bottom { color: #b3b1ba; margin-top: 0.8rem; }
+  .footer-watermark {
+    position: absolute;
+    top: 50%; right: -6%;
+    width: 380px; height: 380px;
+    transform: translateY(-50%) rotate(-8deg);
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @media (max-width: 640px) {
+    .footer-watermark { width: 280px; height: 280px; right: -18%; top: 12%; transform: rotate(-8deg); opacity: 0.05; }
+  }
+  .site-footer .footer-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2.8rem 1.25rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.2rem;
+    justify-content: space-between;
+  }
+  .site-footer .footer-col { min-width: 150px; display: flex; flex-direction: column; gap: 0.65rem; }
+  .site-footer .footer-col.footer-about { flex: 1 1 260px; max-width: 320px; }
+  .site-footer .footer-brand-mark { width: 44px; height: 44px; margin-bottom: 0.8rem; }
+  .site-footer .footer-tagline { color: var(--muted); font-size: 0.85rem; line-height: 1.65; max-width: 300px; }
+  .site-footer .footer-tagline .zettly-word { font-size: 1.15em; }
+  .site-footer .footer-col h5 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.9rem; font-weight: 700; }
+  .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item {
+    display: flex; align-items: center; color: var(--ink); text-decoration: none; font-size: 0.85rem;
+    line-height: 1.3;
+  }
+  .site-footer .footer-col a:hover { color: var(--accent); }
+  .site-footer .service-item:not(.highlight) { position: relative; }
+  .site-footer .service-item:not(.highlight)::before {
+    content: ""; position: absolute; left: -0.75rem; top: 50%; transform: translateY(-50%);
+    width: 5px; height: 5px; border-radius: 50%; background: var(--border);
+  }
+  .site-footer .service-item.highlight {
+    color: var(--accent); font-weight: 700; gap: 0.5rem;
+    flex-wrap: nowrap; white-space: nowrap;
+  }
+  .site-footer .service-item .badge {
+    font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+    background: linear-gradient(120deg, var(--brand-blue), var(--accent));
+    box-shadow: 0 4px 10px rgba(124,58,237,0.28);
+    color: #fff; padding: 0.2rem 0.5rem; border-radius: 999px;
+    flex: 0 0 auto;
+  }
+  .site-footer .footer-bottom-bar {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 1.1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    color: #918f9c;
+    font-size: 0.78rem;
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    .site-footer .footer-inner { flex-direction: column; justify-content: flex-start; align-items: center; text-align: center; gap: 0; padding: 2.4rem 1.5rem 0.5rem; }
+    .site-footer .footer-col { width: 100%; max-width: 280px; padding: 1.3rem 0; }
+    .site-footer .footer-col.footer-about { max-width: 100%; padding-top: 0; flex: 0 0 auto; }
+    .site-footer .footer-brand-mark { margin: 0 auto 0.8rem; }
+    .site-footer .footer-col:last-child { padding-bottom: 0; }
+    .site-footer .footer-tagline { margin: 0 auto; }
+    .site-footer .footer-col:not(:last-child) { border-bottom: 1px solid rgba(17,17,20,0.1); }
+    .site-footer .footer-col h5 { text-align: center; }
+    .site-footer .footer-col a, .site-footer .footer-col span.addr, .site-footer .footer-col span.service-item { justify-content: center; }
+  }
 </style>
 </head>
 <body>
@@ -250,6 +326,8 @@
   <div class="updated">Stand: Oktober 2026</div>
   <p class="intro">Die folgenden Punkte beschreiben mögliche Haftungsaspekte, die je nach gewähltem Service relevant sein können. Nicht alle Punkte treffen auf jede Leistung zu.</p>
 
+  <div class="liability-noshow-highlight"><b>Nichterscheinen (No-Show)</b>Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Können wir zur vereinbarten Zeit niemanden vor Ort antreffen (Nichterscheinen), gilt dies als verspätete Stornierung: Die Stornierungsgebühr gemäß unseren Stornierungsbedingungen (50% des Leistungspreises, maximal €50) fällt an, und eine bereits berechnete Anfahrtspauschale wird in diesem Fall nicht erstattet.</div>
+
   <ol class="liability-points">
     <li><b>Datensicherung</b>Wir empfehlen dringend, vor jeder Formatierung, Neuinstallation oder ähnlichen Leistung eine Sicherungskopie Ihrer Daten zu erstellen. Sofern Sie nicht zusätzlich unseren Datensicherungs-/Migrationsservice gebucht haben, sichern wir Ihre Daten während des Termins ausschließlich auf einem von Ihnen bereitgestellten Speichermedium, eine zusätzliche Kopie wird von uns nicht aufbewahrt.</li>
     <li><b>Formatierung/Neuinstallation</b>Sollte das System in einen nicht behebbaren, fehlerhaften Zustand geraten, kann mit Ihrer Zustimmung eine Formatierung und Neuinstallation durchgeführt werden. Dies kann zu einem Datenverlust führen, der im Nachhinein nicht wiederhergestellt werden kann.</li>
@@ -271,6 +349,7 @@
     <li><b>Höhere Gewalt</b>Für Verzögerungen oder Ausfälle, die durch Umstände außerhalb unserer Kontrolle entstehen (z.&nbsp;B. Krankheit, Unfall, Verkehrsstörungen, extreme Wetterbedingungen oder Ausfälle bei Drittanbietern), übernehmen wir keine Haftung. Wir informieren Sie in solchen Fällen so früh wie möglich und bieten Ihnen einen neuen Termin an.</li>
     <li><b>Fernwartung und Remote-Zugriff</b>Bei Leistungen per Fernwartung erfolgt der Zugriff auf Ihr Gerät ausschließlich mit Ihrer ausdrücklichen Zustimmung über eine von Ihnen freigegebene Verbindung. Für Unterbrechungen durch Ihre Internetverbindung oder die eingesetzte Fernwartungssoftware können wir keine Haftung übernehmen.</li>
     <li><b>Von Ihnen bereitgestellte Anhänge</b>Fotos oder Dokumente, die Sie uns optional im Buchungsprozess zur Verfügung stellen, dienen ausschließlich der Vorbereitung auf Ihren Termin. Wir übernehmen keine Haftung für Einschätzungen, die auf unvollständigen oder nicht aussagekräftigen Anhängen beruhen.</li>
+    <li><b>Nichterscheinen (No-Show)</b>Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Können wir zur vereinbarten Zeit niemanden vor Ort antreffen (Nichterscheinen), gilt dies als verspätete Stornierung: Die Stornierungsgebühr gemäß unseren Stornierungsbedingungen (50% des Leistungspreises, maximal €50) fällt an, und eine bereits berechnete Anfahrtspauschale wird in diesem Fall nicht erstattet.</li>
   </ol>
 </div>
 
@@ -278,6 +357,8 @@
   <h1>Liability Notices</h1>
   <div class="updated">Last updated: October 2026</div>
   <p class="intro">The points below outline potential liability considerations that may apply depending on the service you've selected. Not all points will be relevant to every service.</p>
+
+  <div class="liability-noshow-highlight"><b>No-Show</b>Please ensure someone is reachable at the given address at the agreed appointment time. If we're unable to find anyone on site at the agreed time (a no-show), this counts as a late cancellation: the cancellation fee under our cancellation policy (50% of the service price, capped at €50) applies, and any travel fee already assessed is not refunded in this case.</div>
 
   <ol class="liability-points">
     <li><b>Data backup</b>We strongly recommend creating a backup of your data before any formatting, reinstallation, or similar service. Unless you've also booked our data backup/migration service, we will back up your data only onto a storage device you provide during the appointment, and we don't retain or keep a separate copy afterwards.</li>
@@ -300,22 +381,74 @@
     <li><b>Force majeure</b>We accept no liability for delays or cancellations caused by circumstances beyond our control (e.g. illness, accidents, traffic disruptions, extreme weather, or third-party outages). In such cases, we'll let you know as early as possible and offer you a new appointment.</li>
     <li><b>Remote support and remote access</b>For services carried out via remote support, access to your device only ever happens with your explicit consent, through a connection you authorize. We accept no liability for interruptions caused by your internet connection or the remote-support software used.</li>
     <li><b>Attachments you provide</b>Photos or documents you optionally provide during the booking process are used solely to help us prepare for your appointment. We accept no liability for assessments based on incomplete or unclear attachments.</li>
+    <li><b>No-Show</b>Please ensure someone is reachable at the given address at the agreed appointment time. If we're unable to find anyone on site at the agreed time (a no-show), this counts as a late cancellation: the cancellation fee under our cancellation policy (50% of the service price, capped at €50) applies, and any travel fee already assessed is not refunded in this case.</li>
   </ol>
 </div>
 
 <footer class="site-footer">
-  <div class="footer-links">
-    <a href="/" data-i18n="footerHome">Startseite</a>
-    <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
-    <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+  <svg class="footer-watermark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="0" y="0" width="28" height="28" rx="6" fill="#111114"/>
+    <rect x="36" y="0" width="64" height="64" rx="14" fill="#111114"/>
+    <rect x="0" y="36" width="64" height="64" rx="14" fill="#111114"/>
+    <rect x="72" y="72" width="28" height="28" rx="6" fill="#111114"/>
+  </svg>
+  <div class="footer-inner">
+    <div class="footer-col footer-about">
+      <svg class="footer-brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0"  y="0"  width="28" height="28" rx="6"  fill="#7C3AED"/>
+        <rect x="36" y="0"  width="64" height="64" rx="14" fill="#111114"/>
+        <rect x="0"  y="36" width="64" height="64" rx="14" fill="#7C3AED"/>
+        <rect x="72" y="72" width="28" height="28" rx="6"  fill="#111114"/>
+      </svg>
+      <p class="footer-tagline" id="footer-tagline" data-i18n="footerTagline">zettly ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 CRM Entwicklung, Workflows und Integrationen für Unternehmen.</p>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerServicesHeading">Leistungen</h5>
+      <a class="service-item highlight" href="/managed-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceManagedIt">Managed IT</span></a>
+      <a class="service-item highlight" href="/dynamics-365/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceDynamics">Dynamics 365 CRM</span></a>
+      <a class="service-item highlight" href="/website-builder/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceWebsite">Website-Erstellung</span></a>
+      <a class="service-item highlight" href="/home-it/"><span class="badge" data-i18n="footerSpecialtyBadge">Schwerpunkt</span><span data-i18n="footerServiceHome">IT für Zuhause</span></a>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerLinksHeading">Links</h5>
+      <a href="/" data-i18n="footerHome">Startseite</a>
+      <a href="/#service-area" data-i18n="footerCoverage">Abdeckungsgebiet</a>
+      <a href="/datenschutz/" data-i18n="footerPrivacy">Datenschutz</a>
+      <a href="/haftungshinweise/" data-i18n="footerLiability">Haftungshinweise</a>
+    </div>
+    <div class="footer-col">
+      <h5 data-i18n="footerContactHeading">Kontakt</h5>
+      <a href="mailto:kontakt@zettly.de">kontakt@zettly.de</a>
+      <span class="addr">München, Deutschland</span>
+    </div>
   </div>
-  <div class="footer-bottom">&copy; <span id="footer-year"></span> Zettly</div>
+  <div class="footer-bottom-bar">&copy; <span id="footer-year"></span> <span class="zettly-word">zett<span>ly</span></span></div>
 </footer>
 
 <script>
   const STRINGS = {
-    de: { title: "Zettly | Haftungshinweise", back: "Zur Startseite", home: "Startseite", privacy: "Datenschutz", navHome: "Zuhause", navBusiness: "Unternehmen", navFreelancers: "Freelancer", announceHead: "Wir befinden uns im Aufbau ·", announceTail: "Buchungen sind derzeit nicht möglich" },
-    en: { title: "Zettly | Liability Notices", back: "Back to home", home: "Home", privacy: "Privacy Policy", navHome: "Home Services", navBusiness: "Business Services", navFreelancers: "Freelancers", announceHead: "We're under construction ·", announceTail: "bookings are currently not accepted" },
+    de: {
+      title: "Zettly | Haftungshinweise", back: "Zur Startseite", home: "Startseite", privacy: "Datenschutz",
+      navHome: "Zuhause", navBusiness: "Unternehmen", navFreelancers: "Freelancer",
+      announceHead: "Wir befinden uns im Aufbau ·", announceTail: "Buchungen sind derzeit nicht möglich",
+      footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> ist Ihr IT-Partner in München: von Computer- und Netzwerksupport für Zuhause bis hin zu Microsoft Dynamics 365 CRM Entwicklung, Workflows und Integrationen für Unternehmen.",
+      footerServicesHeading: "Leistungen", footerSpecialtyBadge: "Schwerpunkt",
+      footerServiceManagedIt: "Managed IT", footerServiceDynamics: "Dynamics 365 CRM",
+      footerServiceWebsite: "Website-Erstellung", footerServiceHome: "IT für Zuhause",
+      footerLinksHeading: "Links", footerCoverage: "Abdeckungsgebiet", footerLiability: "Haftungshinweise",
+      footerContactHeading: "Kontakt",
+    },
+    en: {
+      title: "Zettly | Liability Notices", back: "Back to home", home: "Home", privacy: "Privacy Policy",
+      navHome: "Home Services", navBusiness: "Business Services", navFreelancers: "Freelancers",
+      announceHead: "We're under construction ·", announceTail: "bookings are currently not accepted",
+      footerTagline: "<span class=\"zettly-word\">zett<span>ly</span></span> is your IT partner in Munich: from computer and network support at home to Microsoft Dynamics 365 CRM development, workflows, and integrations for businesses.",
+      footerServicesHeading: "Services", footerSpecialtyBadge: "Specialty",
+      footerServiceManagedIt: "Managed IT", footerServiceDynamics: "Dynamics 365 CRM",
+      footerServiceWebsite: "Website Builder", footerServiceHome: "Home IT",
+      footerLinksHeading: "Links", footerCoverage: "Coverage", footerLiability: "Liability Notices",
+      footerContactHeading: "Contact",
+    },
   };
 
   function setLang(lang) {
@@ -330,6 +463,17 @@
     });
     document.querySelector('[data-i18n="footerHome"]').textContent = STRINGS[lang].home;
     document.querySelector('[data-i18n="footerPrivacy"]').textContent = STRINGS[lang].privacy;
+    document.getElementById("footer-tagline").innerHTML = STRINGS[lang].footerTagline;
+    document.querySelectorAll('[data-i18n="footerServicesHeading"]').forEach(el => el.textContent = STRINGS[lang].footerServicesHeading);
+    document.querySelectorAll('[data-i18n="footerSpecialtyBadge"]').forEach(el => el.textContent = STRINGS[lang].footerSpecialtyBadge);
+    document.querySelector('[data-i18n="footerServiceManagedIt"]').textContent = STRINGS[lang].footerServiceManagedIt;
+    document.querySelector('[data-i18n="footerServiceDynamics"]').textContent = STRINGS[lang].footerServiceDynamics;
+    document.querySelector('[data-i18n="footerServiceWebsite"]').textContent = STRINGS[lang].footerServiceWebsite;
+    document.querySelector('[data-i18n="footerServiceHome"]').textContent = STRINGS[lang].footerServiceHome;
+    document.querySelector('[data-i18n="footerLinksHeading"]').textContent = STRINGS[lang].footerLinksHeading;
+    document.querySelector('[data-i18n="footerCoverage"]').textContent = STRINGS[lang].footerCoverage;
+    document.querySelector('[data-i18n="footerLiability"]').textContent = STRINGS[lang].footerLiability;
+    document.querySelector('[data-i18n="footerContactHeading"]').textContent = STRINGS[lang].footerContactHeading;
     document.getElementById("announce-text-head").textContent = STRINGS[lang].announceHead;
     document.getElementById("announce-text-tail").textContent = STRINGS[lang].announceTail;
     document.querySelectorAll("#lang-switch button").forEach(b => {
