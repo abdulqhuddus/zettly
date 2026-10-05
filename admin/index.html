@@ -2299,6 +2299,28 @@
     return lines.join("");
   }
 
+  // The table's Price/Travel cells used to show "On-site" for ANY booking
+  // with a stored price/commute_fee of 0 -- correct for an actual
+  // quote-type service (price only known on-site), but misleading for a
+  // fixed-price booking whose late-cancellation fee or travel fee was
+  // waived down to €0: that's "Waived", not "price given on-site".
+  function renderPriceCell(b, s) {
+    if (b.status === "cancelled" && b.pre_cancellation_price != null) {
+      return b.cancellation_fee_waived
+        ? `${s.feeWaivedLabel}<div class="muted">${s.mWasPrice}: €${b.pre_cancellation_price}</div>`
+        : `€${b.price}<div class="muted">${s.mWasPrice}: €${b.pre_cancellation_price}</div>`;
+    }
+    if (b.price) return "€" + b.price;
+    if (b.is_quote) return s.onSite;
+    return "€0";
+  }
+  function renderTravelCell(b, s) {
+    if (b.status === "cancelled" && b.travel_fee_waived && b.pre_cancellation_commute_fee != null) {
+      return `${s.feeWaivedLabel}<div class="muted">${s.mWasPrice}: €${b.pre_cancellation_commute_fee}</div>`;
+    }
+    return b.commute_fee ? "€" + b.commute_fee : s.calloutFree;
+  }
+
   function renderRows(bookings) {
     const s = t();
     const tbody = document.getElementById("rows");
@@ -2319,8 +2341,8 @@
         <td>${renderCustomerCell(b)}</td>
         <td>${escapeHtml((lang === "de" ? b.serviceBreadcrumbDe : b.serviceBreadcrumbEn || [b.service_name]).join(" › "))}${b.quantity > 1 ? `<div class="muted">${s.qtyBadge(b.quantity)}</div>` : ""}</td>
         <td>${b.date}<div class="muted">${s.atTime(b.time)}</div></td>
-        <td>${b.price ? "€" + b.price : s.onSite}</td>
-        <td>${b.commute_fee ? "€" + b.commute_fee : s.calloutFree}</td>
+        <td>${renderPriceCell(b, s)}</td>
+        <td>${renderTravelCell(b, s)}</td>
         <td>${b.is_consultation ? `<span class="badge-mode${b.online_consultation ? " is-online" : ""}">${modeText}</span>` : "—"}</td>
         <td class="attachment-cell"></td>
         <td><span class="badge badge-${b.status}">${statusLabel(b.status)}</span></td>
