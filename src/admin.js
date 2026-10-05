@@ -137,7 +137,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived, no_show, pre_cancellation_commute_fee,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived, no_show, pre_cancellation_commute_fee, travel_fee_waived,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -326,7 +326,7 @@ export async function handleAdminGetActivity(env, bookingId) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived, no_show, pre_cancellation_commute_fee,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived, no_show, pre_cancellation_commute_fee, travel_fee_waived,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings WHERE id = ?`
   )
@@ -461,8 +461,11 @@ export async function handleAdminUpdateStatus(request, env, id) {
   // Marking a cancellation as a no-show (admin-only; set via a checkbox on
   // the cancellation confirm dialog). A no-show, by definition, happens at
   // or after the appointment time, so it always counts as "close enough" for
-  // the travel-fee-keeping logic below, regardless of the 3h cutoff.
-  const noShow = cancelling && body.noShow === true;
+  // the travel-fee-keeping logic below, regardless of the 3h cutoff. It
+  // never applies to an online-video-call consultation -- there's no
+  // physical address to not be reachable at -- so the flag is forced off
+  // server-side even if the client somehow sent it.
+  const noShow = cancelling && body.noShow === true && !existing.online_consultation;
 
   // The travel/commute fee (if the booking had one) is kept -- charged --
   // only when the cancellation happens less than TRAVEL_FEE_CUTOFF_MINUTES
@@ -470,9 +473,12 @@ export async function handleAdminUpdateStatus(request, env, id) {
   // is waived back to 0 (the customer didn't cause us to actually travel).
   // This is a separate, tighter window than the 24h service-price late fee
   // above -- a booking can owe the late fee without owing the travel fee.
+  // An admin can also explicitly waive it via body.waiveTravelFee, the same
+  // way body.waiveFee waives the late-cancellation fee.
   let newCommuteFee = existing.commute_fee || 0;
   let preCommuteFee = existing.pre_cancellation_commute_fee;
   let travelFeeKept = false;
+  let travelFeeWaived = existing.travel_fee_waived;
 
   if (cancelling) {
     const mins = minutesUntil(existing.date, existing.time);
@@ -486,15 +492,21 @@ export async function handleAdminUpdateStatus(request, env, id) {
     feeWaived = lateFeeAmount > 0 && body.waiveFee === true ? 1 : 0;
 
     const hadCommuteFee = (existing.commute_fee || 0) > 0;
-    travelFeeKept = hadCommuteFee && (mins < TRAVEL_FEE_CUTOFF_MINUTES || noShow);
+    const wouldKeepTravelFee = hadCommuteFee && (mins < TRAVEL_FEE_CUTOFF_MINUTES || noShow);
+    travelFeeKept = wouldKeepTravelFee && body.waiveTravelFee !== true;
     newCommuteFee = travelFeeKept ? existing.commute_fee : 0;
     preCommuteFee = travelFeeKept ? null : (hadCommuteFee ? existing.commute_fee : null);
+    // Same bookkeeping convention as feeWaived above: recorded only when
+    // there was actually a travel fee to waive, so the dashboard can tell
+    // "deliberately waived" apart from "never applied in the first place".
+    travelFeeWaived = wouldKeepTravelFee && body.waiveTravelFee === true ? 1 : 0;
   } else if (reactivating) {
     newPrice = existing.pre_cancellation_price != null ? existing.pre_cancellation_price : existing.price;
     prePrice = null;
     feeWaived = 0;
     newCommuteFee = existing.pre_cancellation_commute_fee != null ? existing.pre_cancellation_commute_fee : existing.commute_fee;
     preCommuteFee = null;
+    travelFeeWaived = 0;
   }
 
   // Cancelling always clears any payment-pending/paid state to
@@ -505,7 +517,7 @@ export async function handleAdminUpdateStatus(request, env, id) {
   // state before the cancellation isn't tracked, so this is the safer
   // default for an admin to then re-mark as paid if it actually was.
   await env.DB.prepare(
-    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = ?, price = ?, pre_cancellation_price = ?, cancellation_fee_waived = ?, commute_fee = ?, pre_cancellation_commute_fee = ?, no_show = ? WHERE id = ?`
+    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = ?, price = ?, pre_cancellation_price = ?, cancellation_fee_waived = ?, commute_fee = ?, pre_cancellation_commute_fee = ?, no_show = ?, travel_fee_waived = ? WHERE id = ?`
   )
     .bind(
       body.status,
@@ -519,6 +531,7 @@ export async function handleAdminUpdateStatus(request, env, id) {
       newCommuteFee,
       preCommuteFee,
       cancelling ? (noShow ? 1 : 0) : reactivating ? 0 : existing.no_show,
+      travelFeeWaived,
       id
     )
     .run();
@@ -541,7 +554,9 @@ export async function handleAdminUpdateStatus(request, env, id) {
     const travelFeeDetail = cancelling && (existing.commute_fee || 0) > 0
       ? travelFeeKept
         ? ` — travel fee of €${existing.commute_fee} charged`
-        : ` — travel fee of €${existing.commute_fee} waived`
+        : travelFeeWaived
+          ? ` — travel fee of €${existing.commute_fee} waived`
+          : ""
       : "";
     const detail = cancelling
       ? `${noShow ? "Marked as no-show" : "Cancelled"} by admin${reason ? ` (reason: ${reason})` : ""}${feeDetail}${travelFeeDetail}`

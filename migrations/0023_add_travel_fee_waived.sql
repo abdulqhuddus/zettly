@@ -1,0 +1,1 @@
+ALTER TABLE bookings ADD COLUMN travel_fee_waived INTEGER NOT NULL DEFAULT 0;

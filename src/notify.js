@@ -27,7 +27,7 @@ const STRINGS = {
     lateFeeNote: (fee, original) =>
       `Da die Stornierung weniger als 24 Stunden vor dem Termin erfolgte, fällt eine Stornierungsgebühr von <strong>€${fee}</strong> an (ursprünglicher Preis: €${original}). Details dazu finden Sie im angehängten PDF.`,
     travelFeeNote: (fee) =>
-      `Die bereits berechnete Anfahrtspauschale von <strong>€${fee}</strong> wird in diesem Fall nicht erstattet.`,
+      `Die bereits berechnete Anfahrtspauschale von <strong>€${fee}</strong> wird in diesem Fall als nicht erstattungsfähige Gebühr berechnet.`,
     noShowNote: "Dieser Termin wurde als Nichterscheinen (No-Show) vor Ort erfasst.",
   },
   en: {
@@ -48,7 +48,7 @@ const STRINGS = {
     lateFeeNote: (fee, original) =>
       `Since this was cancelled less than 24 hours before the appointment, a cancellation fee of <strong>€${fee}</strong> applies (original price: €${original}). See the attached PDF for details.`,
     travelFeeNote: (fee) =>
-      `The travel fee of <strong>€${fee}</strong> already assessed for this booking is not refunded in this case.`,
+      `The travel fee of <strong>€${fee}</strong> already assessed for this booking will be charged as a non-refundable charge in this case.`,
     noShowNote: "This appointment was recorded as a no-show at the booking address.",
   },
 };

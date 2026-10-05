@@ -24,6 +24,17 @@ import { LIBERATION_REGULAR_BASE64 } from "./fonts/liberation-regular-base64.js"
 import { LIBERATION_BOLD_BASE64 } from "./fonts/liberation-bold-base64.js";
 import { parseTTF } from "./ttf.js";
 
+// TODO: PLACEHOLDER bank details -- replace with Zettly GmbH's real account
+// details before any cancellation letter with an actual charge is sent to a
+// customer in production. These are dummy values requested as a stand-in
+// until the real ones are supplied.
+export const ZETTLY_BANK_DETAILS = {
+  accountHolder: "Zettly GmbH",
+  iban: "DE00 0000 0000 0000 0000 00",
+  bic: "XXXXXXXXXXX",
+  bankName: "Platzhalter Bank AG",
+};
+
 function base64ToBytes(b64) {
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
@@ -323,7 +334,7 @@ export function generateBookingPdf(data) {
         privacyAccepted: "Privacy policy accepted",
         footer1Base: "You can cancel this booking free of charge up to 24 hours before your appointment, using the cancellation link in your confirmation email, or by contacting us at kontakt@zettly.de.",
         footer1LateFee: "If you cancel less than 24 hours before your appointment, a fee of 50% of the service cost applies, capped at a maximum of €50.",
-        footer1NoShow: "Please ensure someone is reachable at the given address at the agreed appointment time. If we're unable to find anyone on site at the agreed time, this counts as a late cancellation, and any travel fee already assessed is not refunded in this case.",
+        footer1NoShow: "Please ensure someone is reachable at the given address at the agreed appointment time. If we're unable to find anyone on site at the agreed time, this counts as a late cancellation, and any travel fee already assessed will be charged as a non-refundable charge in this case.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
@@ -340,6 +351,8 @@ export function generateBookingPdf(data) {
         rebookMsg: "If you'd like to book a new appointment, feel free to visit our website again.",
         cancelledStatusNote: "No further action is needed. If you did not request this cancellation, please contact us immediately at kontakt@zettly.de.",
         cancelledStatusNoteByAdmin: "No further action is needed. If you have any questions about this cancellation, please contact us at kontakt@zettly.de.",
+        paymentDueNote: (amount) => `Please transfer the amount of €${amount} to the account below within 14 days of the date of this letter. If you did not request this cancellation, please contact us immediately at kontakt@zettly.de.`,
+        bankDetailsLine: (b) => `Account holder: ${b.accountHolder} | IBAN: ${b.iban} | BIC: ${b.bic} | Bank: ${b.bankName}`,
         originalPriceLabel: "Original price",
         lateFeeLabel: "Late cancellation fee",
         amountDueLabel: "Amount due",
@@ -348,7 +361,7 @@ export function generateBookingPdf(data) {
         travelFeeLabel: "Travel fee charged",
         noShowLabel: "No-show",
         noShowNote: "This appointment was recorded as a no-show at the booking address.",
-        travelFeeKeptNote: (fee) => `The travel fee of €${fee} already assessed for this booking is not refunded in this case.`,
+        travelFeeKeptNote: (fee) => `The travel fee of €${fee} already assessed for this booking will be charged as a non-refundable charge in this case.`,
       }
     : {
         title: "Buchungsbestätigung",
@@ -377,7 +390,7 @@ export function generateBookingPdf(data) {
         privacyAccepted: "Datenschutzerklärung akzeptiert",
         footer1Base: "Sie können diese Buchung bis 24 Stunden vor dem Termin kostenlos stornieren - über den Stornierungslink in Ihrer Bestätigungs-E-Mail oder per Kontakt an kontakt@zettly.de.",
         footer1LateFee: "Bei einer Stornierung weniger als 24 Stunden vor dem Termin fällt eine Gebühr in Höhe von 50% der Servicekosten an, maximal jedoch €50.",
-        footer1NoShow: "Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Können wir zur vereinbarten Zeit niemanden vor Ort antreffen, gilt dies als verspätete Stornierung, und eine bereits berechnete Anfahrtspauschale wird in diesem Fall nicht erstattet.",
+        footer1NoShow: "Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Können wir zur vereinbarten Zeit niemanden vor Ort antreffen, gilt dies als verspätete Stornierung, und eine bereits berechnete Anfahrtspauschale wird in diesem Fall als nicht erstattungsfähige Gebühr berechnet.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
@@ -394,6 +407,8 @@ export function generateBookingPdf(data) {
         rebookMsg: "Falls Sie einen neuen Termin buchen möchten, besuchen Sie gerne erneut unsere Website.",
         cancelledStatusNote: "Es ist keine weitere Aktion erforderlich. Falls Sie diese Stornierung nicht veranlasst haben, kontaktieren Sie uns bitte umgehend unter kontakt@zettly.de.",
         cancelledStatusNoteByAdmin: "Es ist keine weitere Aktion erforderlich. Bei Fragen zu dieser Stornierung kontaktieren Sie uns gerne unter kontakt@zettly.de.",
+        paymentDueNote: (amount) => `Bitte überweisen Sie den Betrag von €${amount} innerhalb von 14 Tagen nach Datum dieses Schreibens auf das unten stehende Konto. Falls Sie diese Stornierung nicht veranlasst haben, kontaktieren Sie uns bitte umgehend unter kontakt@zettly.de.`,
+        bankDetailsLine: (b) => `Kontoinhaber: ${b.accountHolder} | IBAN: ${b.iban} | BIC: ${b.bic} | Bank: ${b.bankName}`,
         originalPriceLabel: "Ursprünglicher Preis",
         lateFeeLabel: "Stornierungsgebühr",
         amountDueLabel: "Fälliger Betrag",
@@ -402,7 +417,7 @@ export function generateBookingPdf(data) {
         travelFeeLabel: "Anfahrtspauschale berechnet",
         noShowLabel: "Nichterscheinen",
         noShowNote: "Dieser Termin wurde als Nichterscheinen (No-Show) vor Ort erfasst.",
-        travelFeeKeptNote: (fee) => `Die für diese Buchung bereits berechnete Anfahrtspauschale von €${fee} wird in diesem Fall nicht erstattet.`,
+        travelFeeKeptNote: (fee) => `Die für diese Buchung bereits berechnete Anfahrtspauschale von €${fee} wird in diesem Fall als nicht erstattungsfähige Gebühr berechnet.`,
       };
 
   const today = new Date().toLocaleDateString(data.lang === "en" ? "en-GB" : "de-DE", {
@@ -677,8 +692,20 @@ export function generateBookingPdf(data) {
   const cancelledNoShowNote = data.cancelled && data.noShow ? ` ${L.noShowNote}` : "";
   const cancelledTravelFeeNote = data.cancelled && data.travelFeeKept ? ` ${L.travelFeeKeptNote(data.travelFeeAmount)}` : "";
   const liveNoShowNote = data.onlineConsultation ? "" : ` ${L.footer1NoShow}`;
+  // When the cancellation leaves a non-zero amount owed (late-cancellation
+  // fee and/or travel fee, net of any waiver), the letter asks the customer
+  // to pay within 14 days and includes our bank details, instead of the
+  // ordinary "no further action needed" note. A cancellation with nothing
+  // owed (never late, or fully waived) keeps the original wording exactly
+  // as before -- no payment section is shown.
+  const amountOwed = data.cancelled
+    ? (data.lateFeeApplied ? data.lateFeeAmount : 0) + (data.travelFeeKept ? data.travelFeeAmount : 0)
+    : 0;
+  const cancelledBaseNote = amountOwed > 0
+    ? ` ${L.paymentDueNote(amountOwed)} ${L.bankDetailsLine(ZETTLY_BANK_DETAILS)}`
+    : data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote;
   const calloutBodyText = data.cancelled
-    ? `${data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote}${cancelledFeeNote}${cancelledNoShowNote}${cancelledTravelFeeNote}`
+    ? `${cancelledBaseNote}${cancelledFeeNote}${cancelledNoShowNote}${cancelledTravelFeeNote}`
     : data.isConsultation
       ? `${L.footer1Base}${liveNoShowNote}`
       : `${L.footer1Base} ${L.footer1LateFee}${liveNoShowNote}`;

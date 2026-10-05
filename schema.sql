@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS bookings (
   pre_cancellation_price INTEGER, -- the service price before a late-cancellation fee overwrote `price`; NULL unless a fee was ever applied (see migrations/0021)
   cancellation_fee_waived INTEGER NOT NULL DEFAULT 0, -- 1 if an admin waived an applicable late-cancellation fee
   no_show INTEGER NOT NULL DEFAULT 0, -- 1 if the customer was not present at the booking address at the appointment time (see migrations/0022)
-  pre_cancellation_commute_fee INTEGER -- the travel/commute fee before it was zeroed out on cancellation; NULL unless the booking ever had a commute fee at cancellation time (see migrations/0022)
+  pre_cancellation_commute_fee INTEGER, -- the travel/commute fee before it was zeroed out on cancellation; NULL unless the booking ever had a commute fee at cancellation time (see migrations/0022)
+  travel_fee_waived INTEGER NOT NULL DEFAULT 0 -- 1 if an admin waived an applicable travel fee at cancellation time (see migrations/0023)
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);

@@ -55,15 +55,15 @@ export const LATE_CANCEL_CUTOFF_MINUTES = 24 * 60;
 // owes €30 (uncapped).
 export const LATE_CANCEL_FEE_CAP = 50;
 
-// 50% of price, capped at LATE_CANCEL_FEE_CAP, rounded to a whole euro
-// (bookings.price is an INTEGER column, and prices are shown with no
-// decimals everywhere else in the app). Returns 0 for a quote/consultation
-// booking (price 0 or not yet set) -- there's nothing to charge a
-// percentage of until a real price exists.
+// 50% of price, capped at LATE_CANCEL_FEE_CAP, kept exact to the cent
+// (e.g. a €39 booking owes €19.50, not rounded up to €20). Returns 0 for a
+// quote/consultation booking (price 0 or not yet set) -- there's nothing to
+// charge a percentage of until a real price exists.
 export function computeLateCancellationFee(price) {
   const p = Number(price) || 0;
   if (p <= 0) return 0;
-  return Math.min(Math.round(p * 0.5), LATE_CANCEL_FEE_CAP);
+  const half = Math.round(p * 50) / 100; // exact to the cent, no float drift
+  return Math.min(half, LATE_CANCEL_FEE_CAP);
 }
 
 // How close to the appointment a cancellation (or a no-show, which by

@@ -770,10 +770,16 @@
         <span id="t-confirm-waivefee-checkbox-label">Waive late-cancellation fee (if this cancellation is within 24 hours)</span>
       </label>
     </div>
+    <div class="field confirm-email-field" id="confirm-waivetravelfee-field">
+      <label class="confirm-email-checkbox-label">
+        <input type="checkbox" id="confirm-waivetravelfee-checkbox">
+        <span id="t-confirm-waivetravelfee-checkbox-label">Waive travel fee (if this booking has a charged travel fee)</span>
+      </label>
+    </div>
     <div class="field confirm-email-field" id="confirm-noshow-field">
       <label class="confirm-email-checkbox-label">
         <input type="checkbox" id="confirm-noshow-checkbox">
-        <span id="t-confirm-noshow-checkbox-label">No Show (customer was not reachable at the booking address)</span>
+        <span id="t-confirm-noshow-checkbox-label">Mark No Show (customer was not reachable at the booking address)</span>
       </label>
     </div>
     <div class="field confirm-email-field" id="confirm-email-field">
@@ -1022,7 +1028,9 @@
       mLateFee: "Late cancellation fee",
       mNoShow: "No Show",
       mNoShowYes: "Yes — customer was not reachable at the booking address",
-      mTravelFeeCharged: (fee) => `€${fee} charged (not refunded)`,
+      mLateFeeCharged: (fee, orig) => `€${fee} (non-refundable) (was: €${orig})`,
+      mTravelFeeCharged: (fee) => `€${fee} charged (non-refundable)`,
+      mTravelFeeWaivedLabel: (fee) => `Waived (was: €${fee})`,
       mCreated: "Created",
       minutes: "min",
       actionCancel: "Cancel booking",
@@ -1082,7 +1090,7 @@
       paymentLinkSendFailed: "Failed to send payment link",
       paymentStatusUpdated: "Payment status updated",
       confirmCancelTitle: "Cancel booking",
-      confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email. If this appointment is within 24 hours, a late-cancellation fee (50% of the price, capped at €50) is applied automatically unless you waive it below. If this booking had a travel fee and the appointment is less than 3 hours away, or you mark it as a no-show below, that travel fee is also charged automatically and not refunded.",
+      confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email. If this appointment is within 24 hours, a late-cancellation fee (50% of the price, capped at €50) is applied automatically unless you waive it below. If this booking had a travel fee and the appointment is less than 3 hours away, or you mark it as a no-show below, that travel fee is also charged automatically as a non-refundable charge, unless you waive it below.",
       confirmCompleteTitle: "Mark as completed",
       confirmCompleteMessage: "Mark this booking as completed?",
       confirmProcessingTitle: "Mark as processing",
@@ -1116,7 +1124,8 @@
       confirmCancelBtn: "Cancel",
       confirmOkBtn: "Confirm",
       confirmWaiveFeeCheckboxLabel: "Waive late-cancellation fee (if this cancellation is within 24 hours)",
-      confirmNoShowCheckboxLabel: "No Show (customer was not reachable at the booking address)",
+      confirmWaiveTravelFeeCheckboxLabel: "Waive travel fee (if this booking has a charged travel fee)",
+      confirmNoShowCheckboxLabel: "Mark No Show (customer was not reachable at the booking address)",
       statusUpdated: "Status updated",
       statusUpdatedWithFee: (fee) => `Status updated — late cancellation fee of €${fee} applied`,
       statusUpdatedWithTravelFee: (fee) => `Status updated — travel fee of €${fee} charged`,
@@ -1252,7 +1261,9 @@
       mLateFee: "Stornierungsgebühr",
       mNoShow: "Nichterscheinen",
       mNoShowYes: "Ja — Kunde war unter der Buchungsadresse nicht erreichbar",
-      mTravelFeeCharged: (fee) => `€${fee} berechnet (nicht erstattet)`,
+      mLateFeeCharged: (fee, orig) => `€${fee} (nicht erstattungsfähig) (war: €${orig})`,
+      mTravelFeeCharged: (fee) => `€${fee} berechnet (nicht erstattungsfähig)`,
+      mTravelFeeWaivedLabel: (fee) => `Erlassen (war: €${fee})`,
       mCreated: "Erstellt",
       minutes: "Min.",
       actionCancel: "Stornieren",
@@ -1312,7 +1323,7 @@
       paymentLinkSendFailed: "Zahlungslink konnte nicht gesendet werden",
       paymentStatusUpdated: "Zahlungsstatus aktualisiert",
       confirmCancelTitle: "Buchung stornieren",
-      confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt. Liegt dieser Termin innerhalb von 24 Stunden, wird automatisch eine Stornierungsgebühr (50% des Preises, maximal €50) berechnet, sofern Sie sie unten nicht erlassen. Hatte diese Buchung eine Anfahrtspauschale und liegt der Termin weniger als 3 Stunden entfernt, oder markieren Sie ihn unten als Nichterscheinen, wird diese Anfahrtspauschale ebenfalls automatisch berechnet und nicht erstattet.",
+      confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt. Liegt dieser Termin innerhalb von 24 Stunden, wird automatisch eine Stornierungsgebühr (50% des Preises, maximal €50) berechnet, sofern Sie sie unten nicht erlassen. Hatte diese Buchung eine Anfahrtspauschale und liegt der Termin weniger als 3 Stunden entfernt, oder markieren Sie ihn unten als Nichterscheinen, wird diese Anfahrtspauschale ebenfalls automatisch als nicht erstattungsfähige Gebühr berechnet, sofern Sie sie unten nicht erlassen.",
       confirmCompleteTitle: "Als abgeschlossen markieren",
       confirmCompleteMessage: "Buchung als abgeschlossen markieren?",
       confirmProcessingTitle: "In Bearbeitung setzen",
@@ -1346,7 +1357,8 @@
       confirmCancelBtn: "Abbrechen",
       confirmOkBtn: "Bestätigen",
       confirmWaiveFeeCheckboxLabel: "Stornierungsgebühr erlassen (falls diese Stornierung innerhalb von 24 Stunden erfolgt)",
-      confirmNoShowCheckboxLabel: "Nichterscheinen (Kunde war unter der Buchungsadresse nicht erreichbar)",
+      confirmWaiveTravelFeeCheckboxLabel: "Anfahrtspauschale erlassen (falls für diese Buchung eine Anfahrtspauschale berechnet wurde)",
+      confirmNoShowCheckboxLabel: "Nichterscheinen markieren (Kunde war unter der Buchungsadresse nicht erreichbar)",
       statusUpdated: "Status aktualisiert",
       statusUpdatedWithFee: (fee) => `Status aktualisiert — Stornierungsgebühr von €${fee} berechnet`,
       statusUpdatedWithTravelFee: (fee) => `Status aktualisiert — Anfahrtspauschale von €${fee} berechnet`,
@@ -1496,6 +1508,7 @@
     document.getElementById("t-confirm-reason-label").textContent = s.confirmReasonLabel;
     document.getElementById("t-confirm-email-checkbox-label").textContent = s.confirmEmailCheckboxLabel;
     document.getElementById("t-confirm-waivefee-checkbox-label").textContent = s.confirmWaiveFeeCheckboxLabel;
+    document.getElementById("t-confirm-waivetravelfee-checkbox-label").textContent = s.confirmWaiveTravelFeeCheckboxLabel;
     document.getElementById("t-confirm-noshow-checkbox-label").textContent = s.confirmNoShowCheckboxLabel;
     document.getElementById("confirm-reason").placeholder = s.confirmReasonPlaceholder;
     document.getElementById("confirm-cancel-btn").textContent = s.confirmCancelBtn;
@@ -2256,7 +2269,7 @@
       lateFeeRow.style.display = "flex";
       document.getElementById("m-latefee").textContent = b.cancellation_fee_waived
         ? `${s.feeWaivedLabel} (${s.mWasPrice}: €${b.pre_cancellation_price})`
-        : `€${b.price} (${s.mWasPrice}: €${b.pre_cancellation_price})`;
+        : s.mLateFeeCharged(b.price, b.pre_cancellation_price);
     } else {
       lateFeeRow.style.display = "none";
     }
@@ -2270,11 +2283,16 @@
     // commute_fee is only ever left as a positive number on a cancelled
     // booking when the travel fee was kept (charged) -- see src/admin.js /
     // src/cancel.js, which zero it out otherwise and record the original in
-    // pre_cancellation_commute_fee.
+    // pre_cancellation_commute_fee. When it was deliberately waived instead,
+    // commute_fee is 0 and pre_cancellation_commute_fee holds the amount
+    // that would have been charged, with travel_fee_waived set.
     const travelFeeRow = document.getElementById("m-travelfee-row");
     if (b.status === "cancelled" && (b.commute_fee || 0) > 0 && b.pre_cancellation_commute_fee == null) {
       travelFeeRow.style.display = "flex";
       document.getElementById("m-travelfee").textContent = s.mTravelFeeCharged(b.commute_fee);
+    } else if (b.status === "cancelled" && b.travel_fee_waived && b.pre_cancellation_commute_fee != null) {
+      travelFeeRow.style.display = "flex";
+      document.getElementById("m-travelfee").textContent = s.mTravelFeeWaivedLabel(b.pre_cancellation_commute_fee);
     } else {
       travelFeeRow.style.display = "none";
     }
@@ -2371,7 +2389,7 @@
   }
 
   // ---- Custom confirm dialog (replaces window.confirm/alert) ------------
-  function showConfirm({ title, message, requireReason, reasonLabel, reasonPlaceholder, matchValue, matchError, showEmailOption, showWaiveFeeOption, showNoShowOption }) {
+  function showConfirm({ title, message, requireReason, reasonLabel, reasonPlaceholder, matchValue, matchError, showEmailOption, showWaiveFeeOption, showWaiveTravelFeeOption, showNoShowOption }) {
     return new Promise((resolve) => {
       const s = t();
       const backdrop = document.getElementById("confirm-modal");
@@ -2386,6 +2404,8 @@
       const emailError = document.getElementById("confirm-email-error");
       const waiveFeeField = document.getElementById("confirm-waivefee-field");
       const waiveFeeCheckbox = document.getElementById("confirm-waivefee-checkbox");
+      const waiveTravelFeeField = document.getElementById("confirm-waivetravelfee-field");
+      const waiveTravelFeeCheckbox = document.getElementById("confirm-waivetravelfee-checkbox");
       const noShowField = document.getElementById("confirm-noshow-field");
       const noShowCheckbox = document.getElementById("confirm-noshow-checkbox");
       document.getElementById("confirm-title").textContent = title;
@@ -2399,6 +2419,9 @@
 
       waiveFeeField.style.display = showWaiveFeeOption ? "block" : "none";
       waiveFeeCheckbox.checked = false;
+
+      waiveTravelFeeField.style.display = showWaiveTravelFeeOption ? "block" : "none";
+      waiveTravelFeeCheckbox.checked = false;
 
       noShowField.style.display = showNoShowOption ? "block" : "none";
       noShowCheckbox.checked = false;
@@ -2431,6 +2454,7 @@
       function onOk() {
         let altEmail = null;
         const waiveFee = showWaiveFeeOption ? waiveFeeCheckbox.checked : undefined;
+        const waiveTravelFee = showWaiveTravelFeeOption ? waiveTravelFeeCheckbox.checked : undefined;
         const noShow = showNoShowOption ? noShowCheckbox.checked : undefined;
         if (showEmailOption && emailCheckbox.checked) {
           altEmail = emailInput.value.trim();
@@ -2453,7 +2477,7 @@
               reasonInput.focus();
               return;
             }
-            cleanup({ confirmed: true, altEmail, waiveFee, noShow });
+            cleanup({ confirmed: true, altEmail, waiveFee, waiveTravelFee, noShow });
             return;
           }
           if (reason.length > 100) {
@@ -2461,9 +2485,9 @@
             reasonInput.focus();
             return;
           }
-          cleanup({ confirmed: true, reason, altEmail, waiveFee, noShow });
+          cleanup({ confirmed: true, reason, altEmail, waiveFee, waiveTravelFee, noShow });
         } else {
-          cleanup({ confirmed: true, altEmail, waiveFee, noShow });
+          cleanup({ confirmed: true, altEmail, waiveFee, waiveTravelFee, noShow });
         }
       }
       function onCancel() { cleanup({ confirmed: false }); }
@@ -2486,6 +2510,7 @@
     const s = t();
     let reason;
     let waiveFee;
+    let waiveTravelFee;
     let noShow;
     if (status === "cancelled") {
       const result = await showConfirm({
@@ -2493,11 +2518,13 @@
         message: s.confirmCancelMessage,
         requireReason: true,
         showWaiveFeeOption: true,
+        showWaiveTravelFeeOption: true,
         showNoShowOption: true,
       });
       if (!result.confirmed) return;
       reason = result.reason;
       waiveFee = result.waiveFee;
+      waiveTravelFee = result.waiveTravelFee;
       noShow = result.noShow;
     } else if (status === "completed") {
       const result = await showConfirm({
@@ -2521,7 +2548,7 @@
     try {
       const result = await api(`/api/admin/bookings/${encodeURIComponent(id)}/status`, {
         method: "POST",
-        body: JSON.stringify({ status, lang, ...(reason ? { reason } : {}), ...(waiveFee !== undefined ? { waiveFee } : {}), ...(noShow !== undefined ? { noShow } : {}) }),
+        body: JSON.stringify({ status, lang, ...(reason ? { reason } : {}), ...(waiveFee !== undefined ? { waiveFee } : {}), ...(waiveTravelFee !== undefined ? { waiveTravelFee } : {}), ...(noShow !== undefined ? { noShow } : {}) }),
       });
       toast(
         result.lateFeeApplied && result.travelFeeKept
