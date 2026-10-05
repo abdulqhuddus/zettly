@@ -150,6 +150,7 @@ const EMAIL_STRINGS = {
     minutes: "Min.",
     reschedule: "Sie können Ihren Termin kostenlos stornieren – bis zu 24 Stunden vorher.",
     lateCancelFee: "Bei einer Stornierung weniger als 24 Stunden vorher fällt eine Gebühr in Höhe von 50% der Servicekosten an, maximal jedoch €50.",
+    noShowNote: "Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Können wir zur vereinbarten Zeit niemanden vor Ort antreffen, gilt dies als verspätete Stornierung, und eine bereits berechnete Anfahrtspauschale wird in diesem Fall nicht erstattet.",
     cancelButton: "Termin stornieren",
     cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
     pdfNote: "Bitte entnehmen Sie die vollständige Buchungsbestätigung dem beigefügten PDF.",
@@ -180,6 +181,7 @@ const EMAIL_STRINGS = {
     minutes: "min",
     reschedule: "You can cancel free of charge – up to 24 hours before your appointment.",
     lateCancelFee: "If you cancel less than 24 hours before your appointment, a fee of 50% of the service cost applies, capped at a maximum of €50.",
+    noShowNote: "Please ensure someone is reachable at the given address at the agreed appointment time. If we're unable to find anyone on site at the agreed time, this counts as a late cancellation, and any travel fee already assessed is not refunded in this case.",
     cancelButton: "Cancel appointment",
     cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
     pdfNote: "Please find your full booking confirmation attached.",
@@ -329,7 +331,7 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
             </td>
           </tr>
         </table>
-        <p style="margin:22px 0 0; font-size:12.5px; color:#6b6b74;">${t.reschedule}${service.isConsultation ? "" : ` ${t.lateCancelFee}`}</p>
+        <p style="margin:22px 0 0; font-size:12.5px; color:#6b6b74;">${t.reschedule}${service.isConsultation ? "" : ` ${t.lateCancelFee}`}${booking.onlineConsultation ? "" : ` ${t.noShowNote}`}</p>
         ${
           cancelUrl
             ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;">
@@ -375,6 +377,7 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       commuteFee,
       isConsultation: service.isConsultation,
       consultationModeText: textsDe.consultationModeText,
+      onlineConsultation: !!booking.onlineConsultation,
       quantity: service.quantity,
       unitPrice: service.unitPrice,
       liabilityAcceptedAt: booking.liabilityAcceptedAt,
@@ -396,6 +399,7 @@ export async function sendConfirmationEmail(env, booking, service, lang) {
       commuteFee,
       isConsultation: service.isConsultation,
       consultationModeText: textsEn.consultationModeText,
+      onlineConsultation: !!booking.onlineConsultation,
       quantity: service.quantity,
       unitPrice: service.unitPrice,
       liabilityAcceptedAt: booking.liabilityAcceptedAt,

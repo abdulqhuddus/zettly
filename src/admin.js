@@ -14,7 +14,7 @@ import {
   recordFailedLogin,
   clearFailedLogins,
 } from "./auth.js";
-import { json, berlinNow, isValidEmail, logActivity, minutesUntil, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee } from "./utils.js";
+import { json, berlinNow, isValidEmail, logActivity, minutesUntil, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee, TRAVEL_FEE_CUTOFF_MINUTES } from "./utils.js";
 import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
 import { sendConfirmationEmail, parseAttachment } from "./index.js";
@@ -137,7 +137,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived, no_show, pre_cancellation_commute_fee,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -320,7 +320,7 @@ export async function handleAdminGetActivity(env, bookingId) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived, no_show, pre_cancellation_commute_fee,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings WHERE id = ?`
   )
@@ -451,6 +451,23 @@ export async function handleAdminUpdateStatus(request, env, id) {
   let feeWaived = existing.cancellation_fee_waived;
   let lateFeeAmount = 0;
   let lateFeeApplied = false;
+
+  // Marking a cancellation as a no-show (admin-only; set via a checkbox on
+  // the cancellation confirm dialog). A no-show, by definition, happens at
+  // or after the appointment time, so it always counts as "close enough" for
+  // the travel-fee-keeping logic below, regardless of the 3h cutoff.
+  const noShow = cancelling && body.noShow === true;
+
+  // The travel/commute fee (if the booking had one) is kept -- charged --
+  // only when the cancellation happens less than TRAVEL_FEE_CUTOFF_MINUTES
+  // before the appointment, or the booking is marked a no-show; otherwise it
+  // is waived back to 0 (the customer didn't cause us to actually travel).
+  // This is a separate, tighter window than the 24h service-price late fee
+  // above -- a booking can owe the late fee without owing the travel fee.
+  let newCommuteFee = existing.commute_fee || 0;
+  let preCommuteFee = existing.pre_cancellation_commute_fee;
+  let travelFeeKept = false;
+
   if (cancelling) {
     const mins = minutesUntil(existing.date, existing.time);
     lateFeeAmount = mins < LATE_CANCEL_CUTOFF_MINUTES ? computeLateCancellationFee(existing.price) : 0;
@@ -461,10 +478,17 @@ export async function handleAdminUpdateStatus(request, env, id) {
     // show "fee waived" rather than looking like the cancellation was simply
     // never late in the first place.
     feeWaived = lateFeeAmount > 0 && body.waiveFee === true ? 1 : 0;
+
+    const hadCommuteFee = (existing.commute_fee || 0) > 0;
+    travelFeeKept = hadCommuteFee && (mins < TRAVEL_FEE_CUTOFF_MINUTES || noShow);
+    newCommuteFee = travelFeeKept ? existing.commute_fee : 0;
+    preCommuteFee = travelFeeKept ? null : (hadCommuteFee ? existing.commute_fee : null);
   } else if (reactivating) {
     newPrice = existing.pre_cancellation_price != null ? existing.pre_cancellation_price : existing.price;
     prePrice = null;
     feeWaived = 0;
+    newCommuteFee = existing.pre_cancellation_commute_fee != null ? existing.pre_cancellation_commute_fee : existing.commute_fee;
+    preCommuteFee = null;
   }
 
   // Cancelling always clears any payment-pending/paid state to
@@ -475,17 +499,20 @@ export async function handleAdminUpdateStatus(request, env, id) {
   // state before the cancellation isn't tracked, so this is the safer
   // default for an admin to then re-mark as paid if it actually was.
   await env.DB.prepare(
-    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = ?, price = ?, pre_cancellation_price = ?, cancellation_fee_waived = ? WHERE id = ?`
+    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = ?, price = ?, pre_cancellation_price = ?, cancellation_fee_waived = ?, commute_fee = ?, pre_cancellation_commute_fee = ?, no_show = ? WHERE id = ?`
   )
     .bind(
       body.status,
       cancelling ? new Date().toISOString().replace("Z", "") : reactivating ? null : existing.cancelled_at,
       cancelling ? reason : reactivating ? null : existing.cancellation_reason,
-      cancelling ? (lateFeeApplied ? "pending" : "not_applicable") : reactivating ? "pending" : existing.payment_status,
+      cancelling ? (lateFeeApplied || travelFeeKept ? "pending" : "not_applicable") : reactivating ? "pending" : existing.payment_status,
       cancelling ? null : reactivating ? null : existing.paid_at,
       newPrice,
       prePrice,
       feeWaived,
+      newCommuteFee,
+      preCommuteFee,
+      cancelling ? (noShow ? 1 : 0) : reactivating ? 0 : existing.no_show,
       id
     )
     .run();
@@ -497,7 +524,7 @@ export async function handleAdminUpdateStatus(request, env, id) {
   const reconfirming = body.status === "confirmed" && existing.status !== "confirmed";
 
   if (existing.status !== body.status) {
-    const action = cancelling ? "cancelled" : body.status === "completed" ? "completed" : body.status === "processing" ? "processing" : reconfirming ? "reconfirmed" : "status_changed";
+    const action = cancelling ? (noShow ? "no_show" : "cancelled") : body.status === "completed" ? "completed" : body.status === "processing" ? "processing" : reconfirming ? "reconfirmed" : "status_changed";
     const feeDetail = cancelling
       ? lateFeeApplied
         ? ` — late cancellation fee of €${lateFeeAmount} applied (was €${existing.price})`
@@ -505,8 +532,13 @@ export async function handleAdminUpdateStatus(request, env, id) {
           ? ` — late cancellation fee waived (would have been €${lateFeeAmount})`
           : ""
       : "";
+    const travelFeeDetail = cancelling && (existing.commute_fee || 0) > 0
+      ? travelFeeKept
+        ? ` — travel fee of €${existing.commute_fee} charged`
+        : ` — travel fee of €${existing.commute_fee} waived`
+      : "";
     const detail = cancelling
-      ? `Cancelled by admin${reason ? ` (reason: ${reason})` : ""}${feeDetail}`
+      ? `${noShow ? "Marked as no-show" : "Cancelled"} by admin${reason ? ` (reason: ${reason})` : ""}${feeDetail}${travelFeeDetail}`
       : `Status changed: ${existing.status} → ${body.status}`;
     await logActivity(env, id, action, "admin", detail);
   }
@@ -516,7 +548,7 @@ export async function handleAdminUpdateStatus(request, env, id) {
     emailSent = (
       await sendCancellationEmail(
         env,
-        { ...existing, cancellation_reason: reason, price: newPrice, pre_cancellation_price: prePrice },
+        { ...existing, cancellation_reason: reason, price: newPrice, pre_cancellation_price: prePrice, commute_fee: newCommuteFee, pre_cancellation_commute_fee: preCommuteFee, no_show: noShow ? 1 : 0 },
         body.lang === "en" ? "en" : "de",
         { cancelledBy: "admin" }
       )
@@ -562,7 +594,17 @@ export async function handleAdminUpdateStatus(request, env, id) {
     }
   }
 
-  return json({ ok: true, id, status: body.status, emailSent, lateFeeApplied, lateFeeAmount: lateFeeApplied ? lateFeeAmount : 0 });
+  return json({
+    ok: true,
+    id,
+    status: body.status,
+    emailSent,
+    lateFeeApplied,
+    lateFeeAmount: lateFeeApplied ? lateFeeAmount : 0,
+    travelFeeKept,
+    travelFeeAmount: travelFeeKept ? newCommuteFee : 0,
+    noShow,
+  });
 }
 
 // Lets an admin waive an already-applied late-cancellation fee, at any

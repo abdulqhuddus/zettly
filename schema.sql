@@ -41,7 +41,9 @@ CREATE TABLE IF NOT EXISTS bookings (
   source_booking_id TEXT REFERENCES bookings(id), -- set when this row is a manually-created order linked back to the consultation/quote booking it followed up on
   created_by TEXT NOT NULL DEFAULT 'customer', -- 'customer' | 'admin' -- 'admin' rows are manual orders created from the dashboard, not a real self-service booking
   pre_cancellation_price INTEGER, -- the service price before a late-cancellation fee overwrote `price`; NULL unless a fee was ever applied (see migrations/0021)
-  cancellation_fee_waived INTEGER NOT NULL DEFAULT 0 -- 1 if an admin waived an applicable late-cancellation fee
+  cancellation_fee_waived INTEGER NOT NULL DEFAULT 0, -- 1 if an admin waived an applicable late-cancellation fee
+  no_show INTEGER NOT NULL DEFAULT 0, -- 1 if the customer was not present at the booking address at the appointment time (see migrations/0022)
+  pre_cancellation_commute_fee INTEGER -- the travel/commute fee before it was zeroed out on cancellation; NULL unless the booking ever had a commute fee at cancellation time (see migrations/0022)
 );
 
 CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);

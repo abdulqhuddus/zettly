@@ -5,7 +5,7 @@
 
 import catalog from "../catalog.json";
 import { verifyCancelToken } from "./auth.js";
-import { json, minutesUntil, localizedDate, logActivity, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee } from "./utils.js";
+import { json, minutesUntil, localizedDate, logActivity, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee, TRAVEL_FEE_CUTOFF_MINUTES } from "./utils.js";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
 import { sendCancellationEmail, sendAdminCancellationNotification } from "./notify.js";
 
@@ -31,6 +31,10 @@ export async function handleCancelInfo(url, env) {
   // below rather than being refused outright.
   const canCancel = row.status === "confirmed";
   const feeAmount = mins < LATE_CANCEL_CUTOFF_MINUTES ? computeLateCancellationFee(row.price) : 0;
+  // The travel fee (if this booking had one) is only kept when cancelling
+  // less than TRAVEL_FEE_CUTOFF_MINUTES before the appointment -- shown here
+  // so the customer sees it before confirming the cancellation.
+  const travelFeeAmount = (row.commute_fee || 0) > 0 && mins < TRAVEL_FEE_CUTOFF_MINUTES ? row.commute_fee : 0;
 
   // The bookings table only stores the leaf service_name ("New setup"); the
   // full selection path ("Zuhause › Computer & Netzwerke › New setup") is
@@ -54,6 +58,7 @@ export async function handleCancelInfo(url, env) {
     canCancel,
     hoursUntil: Math.max(0, Math.floor(mins / 60)),
     feeAmount,
+    travelFeeAmount,
   });
 }
 
@@ -92,26 +97,42 @@ export async function handleCancelSubmit(request, env) {
   const feeApplies = mins < LATE_CANCEL_CUTOFF_MINUTES && feeAmount > 0;
   const newPrice = feeApplies ? feeAmount : row.price;
   const prePrice = feeApplies ? row.price : null;
-  const newPaymentStatus = feeApplies ? "pending" : "not_applicable";
+
+  // The travel fee (if this booking had one) is kept -- charged -- only when
+  // cancelling less than TRAVEL_FEE_CUTOFF_MINUTES before the appointment;
+  // otherwise it's waived back to 0, same rule as the admin-triggered
+  // cancellation in src/admin.js. A customer can never mark a no-show
+  // themselves -- that's admin-only, set after the fact.
+  const hadCommuteFee = (row.commute_fee || 0) > 0;
+  const travelFeeKept = hadCommuteFee && mins < TRAVEL_FEE_CUTOFF_MINUTES;
+  const newCommuteFee = travelFeeKept ? row.commute_fee : 0;
+  const preCommuteFee = travelFeeKept ? null : (hadCommuteFee ? row.commute_fee : null);
+
+  const newPaymentStatus = feeApplies || travelFeeKept ? "pending" : "not_applicable";
 
   await env.DB.prepare(
-    `UPDATE bookings SET status = 'cancelled', cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = NULL, price = ?, pre_cancellation_price = ? WHERE id = ?`
+    `UPDATE bookings SET status = 'cancelled', cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = NULL, price = ?, pre_cancellation_price = ?, commute_fee = ?, pre_cancellation_commute_fee = ? WHERE id = ?`
   )
-    .bind(new Date().toISOString().replace("Z", ""), reason, newPaymentStatus, newPrice, prePrice, row.id)
+    .bind(new Date().toISOString().replace("Z", ""), reason, newPaymentStatus, newPrice, prePrice, newCommuteFee, preCommuteFee, row.id)
     .run();
 
+  const travelFeeDetail = hadCommuteFee
+    ? travelFeeKept
+      ? ` — travel fee of €${row.commute_fee} charged`
+      : ` — travel fee of €${row.commute_fee} waived`
+    : "";
   await logActivity(
     env,
     row.id,
     "cancelled",
     "customer",
     feeApplies
-      ? `Cancelled by customer within 24h (reason: ${reason}) — late cancellation fee of €${feeAmount} applied (was €${row.price})`
-      : `Cancelled by customer (reason: ${reason})`
+      ? `Cancelled by customer within 24h (reason: ${reason}) — late cancellation fee of €${feeAmount} applied (was €${row.price})${travelFeeDetail}`
+      : `Cancelled by customer (reason: ${reason})${travelFeeDetail}`
   );
 
   const lang = body.lang === "de" ? "de" : "en";
-  const cancelledRow = { ...row, cancellation_reason: reason, price: newPrice, pre_cancellation_price: prePrice };
+  const cancelledRow = { ...row, cancellation_reason: reason, price: newPrice, pre_cancellation_price: prePrice, commute_fee: newCommuteFee, pre_cancellation_commute_fee: preCommuteFee };
   const emailResult = await sendCancellationEmail(env, cancelledRow, lang, { cancelledBy: "customer" });
   // Best-effort heads-up to the owner; must never affect the response the
   // customer sees, so its own failure is swallowed here.
@@ -121,5 +142,12 @@ export async function handleCancelSubmit(request, env) {
     // ignore — admin notification is not on the customer-facing critical path
   }
 
-  return json({ ok: true, emailSent: emailResult.sent, feeApplied: feeApplies, feeAmount: feeApplies ? feeAmount : 0 });
+  return json({
+    ok: true,
+    emailSent: emailResult.sent,
+    feeApplied: feeApplies,
+    feeAmount: feeApplies ? feeAmount : 0,
+    travelFeeKept,
+    travelFeeAmount: travelFeeKept ? newCommuteFee : 0,
+  });
 }

@@ -66,6 +66,14 @@ export function computeLateCancellationFee(price) {
   return Math.min(Math.round(p * 0.5), LATE_CANCEL_FEE_CAP);
 }
 
+// How close to the appointment a cancellation (or a no-show, which by
+// definition happens at/after the appointment time) must be for an
+// already-assessed travel/commute fee to be kept rather than waived. This is
+// a separate, tighter window than LATE_CANCEL_CUTOFF_MINUTES above -- a
+// booking cancelled, say, 10 hours out still owes the 24h service-price late
+// fee but is NOT close enough to the appointment to keep the travel fee.
+export const TRAVEL_FEE_CUTOFF_MINUTES = 3 * 60;
+
 function dateToDayIndex(dateStr) {
   // Days since epoch for a YYYY-MM-DD string, treated as a plain calendar
   // date (no timezone conversion) so it composes with berlinNow()'s

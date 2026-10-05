@@ -26,6 +26,9 @@ const STRINGS = {
     consultationModeInPerson: "Vor Ort",
     lateFeeNote: (fee, original) =>
       `Da die Stornierung weniger als 24 Stunden vor dem Termin erfolgte, fällt eine Stornierungsgebühr von <strong>€${fee}</strong> an (ursprünglicher Preis: €${original}). Details dazu finden Sie im angehängten PDF.`,
+    travelFeeNote: (fee) =>
+      `Die bereits berechnete Anfahrtspauschale von <strong>€${fee}</strong> wird in diesem Fall nicht erstattet.`,
+    noShowNote: "Dieser Termin wurde als Nichterscheinen (No-Show) vor Ort erfasst.",
   },
   en: {
     heading: "Your appointment has been cancelled",
@@ -44,6 +47,9 @@ const STRINGS = {
     consultationModeInPerson: "In person",
     lateFeeNote: (fee, original) =>
       `Since this was cancelled less than 24 hours before the appointment, a cancellation fee of <strong>€${fee}</strong> applies (original price: €${original}). See the attached PDF for details.`,
+    travelFeeNote: (fee) =>
+      `The travel fee of <strong>€${fee}</strong> already assessed for this booking is not refunded in this case.`,
+    noShowNote: "This appointment was recorded as a no-show at the booking address.",
   },
 };
 
@@ -79,6 +85,11 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
   // time it reaches here, and pre_cancellation_price is the original.
   const lateFeeApplied = booking.pre_cancellation_price != null;
   const originalPrice = booking.pre_cancellation_price;
+  // Set by the caller whenever this booking had a travel/commute fee that
+  // was kept (charged) rather than waived -- cancellation less than 3 hours
+  // before the appointment, or a no-show.
+  const travelFeeKept = (booking.commute_fee || 0) > 0 && booking.pre_cancellation_commute_fee == null;
+  const noShow = !!booking.no_show;
 
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
@@ -101,6 +112,8 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
         <p style="margin:0 0 14px; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.body(bookingRef, dateDisplay, booking.time)}</p>
         ${consultationModeText ? `<p style="margin:0 0 14px;"><span style="display:inline-block; background:${booking.online_consultation ? "#e8f8ef" : "#f3eeff"}; color:${booking.online_consultation ? "#16a34a" : "#7C3AED"}; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px;">${t.consultationModeLabel}: ${consultationModeText}</span></p>` : ""}
         ${lateFeeApplied ? `<p style="margin:0 0 14px; padding:10px 12px; background:#fdeef2; border-left:3px solid #c2185b; border-radius:6px; font-size:13px; color:#111114; line-height:1.5;">${t.lateFeeNote(booking.price, originalPrice)}</p>` : ""}
+        ${noShow ? `<p style="margin:0 0 14px; padding:10px 12px; background:#fdeef2; border-left:3px solid #c2185b; border-radius:6px; font-size:13px; color:#111114; line-height:1.5;">${t.noShowNote}</p>` : ""}
+        ${travelFeeKept ? `<p style="margin:0 0 14px; padding:10px 12px; background:#fdeef2; border-left:3px solid #c2185b; border-radius:6px; font-size:13px; color:#111114; line-height:1.5;">${t.travelFeeNote(booking.commute_fee)}</p>` : ""}
         <p style="margin:0 0 14px; font-size:12.5px; color:#8a8a92; line-height:1.5;">${t.attachmentNote}</p>
         <p style="margin:0; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.rebook}</p>
         <p style="margin:22px 0 0; font-size:13px; font-weight:700; color:#111114;">${t.signature}</p>
@@ -135,6 +148,9 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
       lateFeeAmount: lateFeeApplied ? booking.price : 0,
       originalPrice,
       lateFeeWaived: !!booking.cancellation_fee_waived,
+      noShow,
+      travelFeeKept,
+      travelFeeAmount: travelFeeKept ? booking.commute_fee : 0,
     };
     const pdfBytesDe = generateBookingPdf({
       ...basePdfData,

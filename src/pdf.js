@@ -323,6 +323,7 @@ export function generateBookingPdf(data) {
         privacyAccepted: "Privacy policy accepted",
         footer1Base: "You can cancel this booking free of charge up to 24 hours before your appointment, using the cancellation link in your confirmation email, or by contacting us at kontakt@zettly.de.",
         footer1LateFee: "If you cancel less than 24 hours before your appointment, a fee of 50% of the service cost applies, capped at a maximum of €50.",
+        footer1NoShow: "Please ensure someone is reachable at the given address at the agreed appointment time. If we're unable to find anyone on site at the agreed time, this counts as a late cancellation, and any travel fee already assessed is not refunded in this case.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
@@ -344,6 +345,10 @@ export function generateBookingPdf(data) {
         amountDueLabel: "Amount due",
         lateFeeNote: (fee) => `This cancellation was made less than 24 hours before the appointment, so a late-cancellation fee of €${fee} applies.`,
         lateFeeWaivedNote: "The late-cancellation fee for this booking has been waived.",
+        travelFeeLabel: "Travel fee charged",
+        noShowLabel: "No-show",
+        noShowNote: "This appointment was recorded as a no-show at the booking address.",
+        travelFeeKeptNote: (fee) => `The travel fee of €${fee} already assessed for this booking is not refunded in this case.`,
       }
     : {
         title: "Buchungsbestätigung",
@@ -372,6 +377,7 @@ export function generateBookingPdf(data) {
         privacyAccepted: "Datenschutzerklärung akzeptiert",
         footer1Base: "Sie können diese Buchung bis 24 Stunden vor dem Termin kostenlos stornieren - über den Stornierungslink in Ihrer Bestätigungs-E-Mail oder per Kontakt an kontakt@zettly.de.",
         footer1LateFee: "Bei einer Stornierung weniger als 24 Stunden vor dem Termin fällt eine Gebühr in Höhe von 50% der Servicekosten an, maximal jedoch €50.",
+        footer1NoShow: "Bitte stellen Sie sicher, dass zum vereinbarten Termin jemand unter der angegebenen Adresse erreichbar ist. Können wir zur vereinbarten Zeit niemanden vor Ort antreffen, gilt dies als verspätete Stornierung, und eine bereits berechnete Anfahrtspauschale wird in diesem Fall nicht erstattet.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
@@ -393,6 +399,10 @@ export function generateBookingPdf(data) {
         amountDueLabel: "Fälliger Betrag",
         lateFeeNote: (fee) => `Diese Stornierung erfolgte weniger als 24 Stunden vor dem Termin, daher fällt eine Stornierungsgebühr von €${fee} an.`,
         lateFeeWaivedNote: "Die Stornierungsgebühr für diese Buchung wurde erlassen.",
+        travelFeeLabel: "Anfahrtspauschale berechnet",
+        noShowLabel: "Nichterscheinen",
+        noShowNote: "Dieser Termin wurde als Nichterscheinen (No-Show) vor Ort erfasst.",
+        travelFeeKeptNote: (fee) => `Die für diese Buchung bereits berechnete Anfahrtspauschale von €${fee} wird in diesem Fall nicht erstattet.`,
       };
 
   const today = new Date().toLocaleDateString(data.lang === "en" ? "en-GB" : "de-DE", {
@@ -549,6 +559,12 @@ export function generateBookingPdf(data) {
   } else {
     boxRows.push({ label: L.price, value: data.priceText, size: 9.5 });
   }
+  if (data.cancelled && data.noShow) {
+    boxRows.push({ label: L.noShowLabel, value: L.noShowLabel, size: 9.5, bold: true });
+  }
+  if (data.cancelled && data.travelFeeKept) {
+    boxRows.push({ label: L.travelFeeLabel, value: `€${data.travelFeeAmount}`, size: 9.5, bold: true });
+  }
   if (data.cancelled && data.cancellationReason) {
     const reasonSize = 9;
     const reasonLines = wrapToWidthPt(data.cancellationReason, reasonSize, boxInnerPt, true).slice(0, 4);
@@ -658,11 +674,14 @@ export function generateBookingPdf(data) {
   const cancelledFeeNote = data.cancelled
     ? (data.lateFeeApplied ? ` ${L.lateFeeNote(data.lateFeeAmount)}` : data.lateFeeWaived ? ` ${L.lateFeeWaivedNote}` : "")
     : "";
+  const cancelledNoShowNote = data.cancelled && data.noShow ? ` ${L.noShowNote}` : "";
+  const cancelledTravelFeeNote = data.cancelled && data.travelFeeKept ? ` ${L.travelFeeKeptNote(data.travelFeeAmount)}` : "";
+  const liveNoShowNote = data.onlineConsultation ? "" : ` ${L.footer1NoShow}`;
   const calloutBodyText = data.cancelled
-    ? `${data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote}${cancelledFeeNote}`
+    ? `${data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote}${cancelledFeeNote}${cancelledNoShowNote}${cancelledTravelFeeNote}`
     : data.isConsultation
-      ? L.footer1Base
-      : `${L.footer1Base} ${L.footer1LateFee}`;
+      ? `${L.footer1Base}${liveNoShowNote}`
+      : `${L.footer1Base} ${L.footer1LateFee}${liveNoShowNote}`;
   const calloutBodyLines = wrapText(calloutBodyText, 86);
   const calloutInnerH = calloutHeadingGap + calloutBodyLines.length * calloutBodyLineGap;
   const calloutH = calloutPadTop + calloutInnerH + calloutPadBottom;
