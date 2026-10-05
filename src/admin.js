@@ -165,12 +165,18 @@ export async function handleAdminListBookings(url, env) {
     .bind(...params)
     .all();
 
-  // Paid/pending is independent of status, except "pending" explicitly
-  // excludes cancelled bookings (an unpaid cancelled booking isn't money
-  // still owed).
+  // Paid/pending is independent of status. A cancelled booking with nothing
+  // owed is payment_status = 'not_applicable' and so never lands in the
+  // pending/paid totals below -- but a cancelled booking CAN owe a late-
+  // cancellation fee and/or a travel fee (see src/admin.js / src/cancel.js),
+  // in which case it's payment_status = 'pending' like any other unpaid
+  // charge and must be counted here too. This used to filter out
+  // `status != 'cancelled'` entirely, from before a cancelled booking could
+  // ever owe money -- that filter was silently excluding real pending fees
+  // from the dashboard's "pending" total.
   const { results: paymentRows } = await env.DB.prepare(
     `SELECT payment_status, COUNT(*) AS n, COALESCE(SUM(price + commute_fee), 0) AS sum
-     FROM bookings ${whereSql}${whereSql ? " AND" : "WHERE"} status != 'cancelled'
+     FROM bookings ${whereSql}
      GROUP BY payment_status`
   )
     .bind(...params)
