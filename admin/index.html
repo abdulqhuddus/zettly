@@ -212,6 +212,108 @@
   .block-item-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
   .block-remove-btn { flex: 0 0 auto; }
 
+  /* Appointments calendar: a month grid with each date tinted/badged by how
+     many (non-cancelled) bookings fall on it, click a date to expand a
+     brief name+time list beneath the grid. */
+  .calendar-panel {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem 1.3rem;
+    margin-bottom: 1.3rem;
+  }
+  .calendar-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 0.2rem;
+  }
+  .calendar-panel-header h2 { font-size: 1rem; font-weight: 700; margin: 0; }
+  .calendar-nav { display: flex; align-items: center; gap: 0.6rem; }
+  .calendar-nav-btn {
+    width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--border);
+    background: #fff; color: var(--ink); cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-size: 1rem; line-height: 1;
+  }
+  .calendar-nav-btn:hover { background: var(--bg); }
+  .calendar-month-label { font-size: 0.9rem; font-weight: 700; min-width: 9.5em; text-align: center; }
+  .calendar-sub { font-size: 0.82rem; color: var(--muted); margin: 0.2rem 0 1rem; }
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.4rem;
+  }
+  .calendar-weekday {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.03em; color: var(--muted); text-align: center; padding-bottom: 0.2rem;
+  }
+  .calendar-day {
+    position: relative;
+    min-height: 54px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    background: var(--bg);
+    padding: 0.35rem 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: default;
+  }
+  .calendar-day.empty { background: transparent; border-color: transparent; }
+  .calendar-day.has-bookings { cursor: pointer; }
+  .calendar-day.has-bookings:hover { border-color: var(--accent); }
+  .calendar-day-num { display: block; }
+  .calendar-day-count {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.35rem;
+    min-width: 1.3em;
+    height: 1.3em;
+    border-radius: 50%;
+    font-size: 0.68rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 0 0.15rem;
+  }
+  /* Heat scale: 1 booking = light accent, 2 = stronger accent/pink, 3+ = danger */
+  .calendar-day.count-1 { background: var(--accent-light); border-color: var(--accent); }
+  .calendar-day.count-1 .calendar-day-count { background: var(--accent); }
+  .calendar-day.count-2 { background: #fde9f3; border-color: var(--pink); }
+  .calendar-day.count-2 .calendar-day-count { background: var(--pink); }
+  .calendar-day.count-3plus { background: var(--danger-bg); border-color: var(--danger); }
+  .calendar-day.count-3plus .calendar-day-count { background: var(--danger); }
+  .calendar-day.selected { outline: 2px solid var(--ink); outline-offset: 1px; }
+  @media (max-width: 640px) {
+    .calendar-day { min-height: 42px; font-size: 0.74rem; }
+  }
+  .calendar-day-detail {
+    margin-top: 1rem;
+    padding: 0.8rem 0.95rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .calendar-day-detail-title { font-size: 0.85rem; font-weight: 700; margin: 0 0 0.5rem; }
+  .calendar-day-detail-list { display: flex; flex-direction: column; gap: 0.4rem; }
+  .calendar-day-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .calendar-day-detail-name { font-weight: 600; }
+  .calendar-day-detail-time { color: var(--muted); font-weight: 700; flex: 0 0 auto; }
+  .calendar-day-detail-empty { font-size: 0.82rem; color: var(--muted); }
+
   /* Per-audience on/off switches: no date range, just "closed until turned
      back on" — one for home customers, one for business customers. */
   .booking-toggle-group {
@@ -605,6 +707,22 @@
     </div>
       </div>
     </div>
+    <div class="calendar-panel">
+      <div class="calendar-panel-header">
+        <h2 id="t-calendar-title">Appointments calendar</h2>
+        <div class="calendar-nav">
+          <button class="calendar-nav-btn" id="calendar-prev-btn" type="button" aria-label="Previous month">‹</button>
+          <span class="calendar-month-label" id="calendar-month-label">–</span>
+          <button class="calendar-nav-btn" id="calendar-next-btn" type="button" aria-label="Next month">›</button>
+        </div>
+      </div>
+      <p class="calendar-sub" id="t-calendar-sub">Each date shows how many appointments fall on it. Click a date to see the names and times.</p>
+      <div class="calendar-grid" id="calendar-grid"></div>
+      <div class="calendar-day-detail" id="calendar-day-detail" style="display:none;">
+        <p class="calendar-day-detail-title" id="calendar-day-detail-title"></p>
+        <div class="calendar-day-detail-list" id="calendar-day-detail-list"></div>
+      </div>
+    </div>
     <div class="booking-toggle-group">
       <div class="booking-toggle-panel" id="booking-toggle-panel-home">
         <div class="booking-toggle-text">
@@ -942,6 +1060,10 @@
       audienceHome: "home",
       audienceBusiness: "business",
       bookingStatusUpdated: "Booking status updated",
+      calendarTitle: "Appointments calendar",
+      calendarSub: "Each date shows how many appointments fall on it. Click a date to see the names and times.",
+      calendarNoBookings: "No appointments on this date.",
+      calendarDetailTime: (date) => `Appointments on ${date}`,
       blockTitle: "Block calendar",
       blockSub: "Stop customers from booking a day, or just its morning/afternoon.",
       blockStart: "Start date",
@@ -1175,6 +1297,10 @@
       audienceHome: "Zuhause",
       audienceBusiness: "Unternehmen",
       bookingStatusUpdated: "Buchungsstatus aktualisiert",
+      calendarTitle: "Terminkalender",
+      calendarSub: "Jedes Datum zeigt, wie viele Termine darauf fallen. Klicken Sie auf ein Datum, um Namen und Uhrzeiten zu sehen.",
+      calendarNoBookings: "Keine Termine an diesem Tag.",
+      calendarDetailTime: (date) => `Termine am ${date}`,
       blockTitle: "Kalender blockieren",
       blockSub: "Verhindert Buchungen an einem Tag oder nur vormittags/nachmittags.",
       blockStart: "Startdatum",
@@ -1446,6 +1572,9 @@
     document.getElementById("t-booking-toggle-title-business").textContent = s.bookingToggleTitleBusiness;
     document.getElementById("t-booking-toggle-sub-business").textContent = s.bookingToggleSubBusiness;
     if (state.bookingStatuses) renderBookingToggles(state.bookingStatuses);
+    document.getElementById("t-calendar-title").textContent = s.calendarTitle;
+    document.getElementById("t-calendar-sub").textContent = s.calendarSub;
+    renderCalendar();
     document.getElementById("t-block-title").textContent = s.blockTitle;
     document.getElementById("t-block-sub").textContent = s.blockSub;
     document.getElementById("t-block-start").textContent = s.blockStart;
@@ -1557,6 +1686,14 @@
 
   let state = { offset: 0, limit: 10, total: 0 };
 
+  // Appointments calendar -- a separate month view, independent of the
+  // filtered/paginated table above. calendarMonth is always the 1st of the
+  // displayed month (local date, no time component needed).
+  const today = new Date();
+  state.calendarMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  state.calendarByDate = {}; // "YYYY-MM-DD" -> [{ name, time }], non-cancelled only
+  state.calendarSelectedDate = null;
+
   function toast(msg) {
     const el = document.getElementById("toast");
     el.textContent = msg;
@@ -1587,6 +1724,7 @@
     loginScreen.style.display = "none";
     dashboard.style.display = "block";
     loadBookings();
+    loadCalendar();
     loadBlocks();
     loadBookingStatus();
   }
@@ -1668,6 +1806,141 @@
     renderPager();
     renderStats(data.stats);
   }
+
+  // ---- Appointments calendar ---------------------------------------------
+
+  function pad2(n) { return String(n).padStart(2, "0"); }
+  function toDateStr(d) { return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; }
+
+  // Fetches every (non-cancelled) booking for the displayed month in one
+  // request -- reuses the same /api/admin/bookings endpoint as the table
+  // above, just filtered by from/to instead of paginated, with a limit high
+  // enough to comfortably cover a month's worth of appointments.
+  async function loadCalendar() {
+    const monthStart = state.calendarMonth;
+    const monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0);
+    const params = new URLSearchParams({
+      from: toDateStr(monthStart),
+      to: toDateStr(monthEnd),
+      limit: "200",
+      offset: "0",
+    });
+    let bookings = [];
+    try {
+      const data = await api("/api/admin/bookings?" + params.toString());
+      bookings = data.bookings || [];
+    } catch {
+      bookings = [];
+    }
+    const byDate = {};
+    for (const b of bookings) {
+      if (b.status === "cancelled") continue; // not an occupied slot anymore
+      if (!byDate[b.date]) byDate[b.date] = [];
+      byDate[b.date].push({ name: b.customer_name, time: b.time });
+    }
+    for (const d of Object.keys(byDate)) byDate[d].sort((a, b) => a.time.localeCompare(b.time));
+    state.calendarByDate = byDate;
+    renderCalendar();
+  }
+
+  function countClass(n) {
+    if (n >= 3) return "count-3plus";
+    if (n === 2) return "count-2";
+    if (n === 1) return "count-1";
+    return "";
+  }
+
+  function renderCalendar() {
+    const grid = document.getElementById("calendar-grid");
+    const label = document.getElementById("calendar-month-label");
+    if (!grid || !label) return;
+
+    const monthStart = state.calendarMonth;
+    label.textContent = monthStart.toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", {
+      month: "long",
+      year: "numeric",
+    });
+
+    const weekdayFmt = new Intl.DateTimeFormat(lang === "de" ? "de-DE" : "en-GB", { weekday: "short" });
+    // Monday-first week, matching the rest of the site's date conventions.
+    const weekdayNames = [1, 2, 3, 4, 5, 6, 0].map((wd) => {
+      const ref = new Date(2026, 0, 4 + wd); // a known Sunday-based week, offset to the right weekday
+      return weekdayFmt.format(ref);
+    });
+
+    const year = monthStart.getFullYear();
+    const month = monthStart.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstWeekday = (monthStart.getDay() + 6) % 7; // 0 = Monday
+
+    let html = weekdayNames.map((w) => `<div class="calendar-weekday">${escapeHtml(w)}</div>`).join("");
+    for (let i = 0; i < firstWeekday; i++) html += `<div class="calendar-day empty"></div>`;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = `${year}-${pad2(month + 1)}-${pad2(day)}`;
+      const entries = state.calendarByDate[dateStr] || [];
+      const count = entries.length;
+      const cls = ["calendar-day"];
+      if (count > 0) cls.push("has-bookings", countClass(count));
+      if (state.calendarSelectedDate === dateStr) cls.push("selected");
+      html += `<div class="${cls.join(" ")}" data-date="${dateStr}">
+        <span class="calendar-day-num">${day}</span>
+        ${count > 0 ? `<span class="calendar-day-count">${count}</span>` : ""}
+      </div>`;
+    }
+    grid.innerHTML = html;
+
+    grid.querySelectorAll(".calendar-day.has-bookings").forEach((el) => {
+      el.addEventListener("click", () => selectCalendarDate(el.getAttribute("data-date")));
+    });
+
+    // Keep the expanded detail panel in sync with the freshly-rendered grid
+    // (e.g. after a month change, or once calendar data finishes loading).
+    if (state.calendarSelectedDate && state.calendarByDate[state.calendarSelectedDate]) {
+      renderCalendarDayDetail(state.calendarSelectedDate);
+    } else {
+      document.getElementById("calendar-day-detail").style.display = "none";
+    }
+  }
+
+  function selectCalendarDate(dateStr) {
+    state.calendarSelectedDate = state.calendarSelectedDate === dateStr ? null : dateStr;
+    renderCalendar();
+  }
+
+  function renderCalendarDayDetail(dateStr) {
+    const s = t();
+    const panel = document.getElementById("calendar-day-detail");
+    const title = document.getElementById("calendar-day-detail-title");
+    const list = document.getElementById("calendar-day-detail-list");
+    const entries = state.calendarByDate[dateStr] || [];
+    const displayDate = new Date(dateStr + "T00:00:00").toLocaleDateString(lang === "de" ? "de-DE" : "en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+    title.textContent = s.calendarDetailTime(displayDate);
+    list.innerHTML = entries.length
+      ? entries.map((e) => `<div class="calendar-day-detail-row">
+          <span class="calendar-day-detail-name">${escapeHtml(e.name || "")}</span>
+          <span class="calendar-day-detail-time">${escapeHtml(e.time || "")}</span>
+        </div>`).join("")
+      : `<p class="calendar-day-detail-empty">${escapeHtml(s.calendarNoBookings)}</p>`;
+    panel.style.display = "block";
+  }
+
+  document.getElementById("calendar-prev-btn").addEventListener("click", () => {
+    const m = state.calendarMonth;
+    state.calendarMonth = new Date(m.getFullYear(), m.getMonth() - 1, 1);
+    state.calendarSelectedDate = null;
+    loadCalendar();
+  });
+  document.getElementById("calendar-next-btn").addEventListener("click", () => {
+    const m = state.calendarMonth;
+    state.calendarMonth = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+    state.calendarSelectedDate = null;
+    loadCalendar();
+  });
 
   function formatMoney(n) {
     return "€" + (Math.round((n || 0) * 100) / 100).toLocaleString(lang === "de" ? "de-DE" : "en-US", {
