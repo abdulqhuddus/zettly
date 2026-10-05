@@ -642,7 +642,6 @@ export async function handleAdminWaiveCancellationFee(request, env, id) {
   return json({ ok: true, id, waivedAmount });
 }
 
-const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^\d{2}:\d{2}$/;
 
 // Lets an admin move a confirmed/processing booking to a new date and/or
