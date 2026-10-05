@@ -730,6 +730,7 @@
       <div class="detail-row"><dt id="t-m-address">Address</dt><dd id="m-address"></dd></div>
       <div class="detail-row" id="m-notes-row"><dt id="t-m-notes">Notes</dt><dd id="m-notes"></dd></div>
       <div class="detail-row" id="m-cancel-reason-row"><dt id="t-m-cancel-reason">Cancellation reason</dt><dd id="m-cancel-reason"></dd></div>
+      <div class="detail-row" id="m-latefee-row"><dt id="t-m-latefee">Late cancellation fee</dt><dd id="m-latefee"></dd></div>
       <div class="detail-row"><dt id="t-m-created">Created</dt><dd id="m-created"></dd></div>
     </dl>
     <div class="evidence-section">
@@ -760,6 +761,12 @@
       <textarea id="confirm-reason" maxlength="100" placeholder="Please enter a reason…"></textarea>
       <p class="char-count" id="confirm-reason-count">0/100</p>
       <p class="field-error" id="confirm-reason-error"></p>
+    </div>
+    <div class="field confirm-email-field" id="confirm-waivefee-field">
+      <label class="confirm-email-checkbox-label">
+        <input type="checkbox" id="confirm-waivefee-checkbox">
+        <span id="t-confirm-waivefee-checkbox-label">Waive late-cancellation fee (if this cancellation is within 24 hours)</span>
+      </label>
     </div>
     <div class="field confirm-email-field" id="confirm-email-field">
       <label class="confirm-email-checkbox-label">
@@ -981,6 +988,7 @@
       evidenceConfirmDeleteMessage: "Remove this evidence photo? This can't be undone.",
       evidenceInvalidFile: "Couldn't process that photo. Please choose an image file (JPG, PNG, HEIC, etc.) — it'll be resized automatically.",
       mCancelReason: "Cancellation reason",
+      mLateFee: "Late cancellation fee",
       mCreated: "Created",
       minutes: "min",
       actionCancel: "Cancel booking",
@@ -1029,7 +1037,7 @@
       paymentLinkSendFailed: "Failed to send payment link",
       paymentStatusUpdated: "Payment status updated",
       confirmCancelTitle: "Cancel booking",
-      confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email.",
+      confirmCancelMessage: "Are you sure you want to cancel this booking? The customer will be notified by email. If this appointment is within 24 hours, a late-cancellation fee (50% of the price, capped at €50) is applied automatically unless you waive it below.",
       confirmCompleteTitle: "Mark as completed",
       confirmCompleteMessage: "Mark this booking as completed?",
       confirmProcessingTitle: "Mark as processing",
@@ -1062,8 +1070,17 @@
       confirmReasonTooLong: "Please keep the reason to 100 characters or fewer.",
       confirmCancelBtn: "Cancel",
       confirmOkBtn: "Confirm",
+      confirmWaiveFeeCheckboxLabel: "Waive late-cancellation fee (if this cancellation is within 24 hours)",
       statusUpdated: "Status updated",
+      statusUpdatedWithFee: (fee) => `Status updated — late cancellation fee of €${fee} applied`,
       updateFailed: "Failed to update",
+      actionWaiveFee: "Waive cancellation fee",
+      confirmWaiveFeeTitle: "Waive cancellation fee",
+      confirmWaiveFeeMessage: "This removes the late-cancellation fee entirely — the customer will owe nothing for this booking. This cannot be undone. Type the booking reference below to confirm.",
+      feeWaived: "Cancellation fee waived",
+      feeWaiveFailed: "Failed to waive the fee",
+      feeWaivedLabel: "Waived",
+      mWasPrice: "was",
       genericError: "Error",
     },
     de: {
@@ -1184,6 +1201,7 @@
       evidenceConfirmDeleteMessage: "Dieses Beweisfoto entfernen? Das kann nicht rückgängig gemacht werden.",
       evidenceInvalidFile: "Dieses Foto konnte nicht verarbeitet werden. Bitte ein Bild wählen (JPG, PNG, HEIC, …) — es wird automatisch verkleinert.",
       mCancelReason: "Stornierungsgrund",
+      mLateFee: "Stornierungsgebühr",
       mCreated: "Erstellt",
       minutes: "Min.",
       actionCancel: "Stornieren",
@@ -1232,7 +1250,7 @@
       paymentLinkSendFailed: "Zahlungslink konnte nicht gesendet werden",
       paymentStatusUpdated: "Zahlungsstatus aktualisiert",
       confirmCancelTitle: "Buchung stornieren",
-      confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt.",
+      confirmCancelMessage: "Diese Buchung wirklich stornieren? Der Kunde wird per E-Mail benachrichtigt. Liegt dieser Termin innerhalb von 24 Stunden, wird automatisch eine Stornierungsgebühr (50% des Preises, maximal €50) berechnet, sofern Sie sie unten nicht erlassen.",
       confirmCompleteTitle: "Als abgeschlossen markieren",
       confirmCompleteMessage: "Buchung als abgeschlossen markieren?",
       confirmProcessingTitle: "In Bearbeitung setzen",
@@ -1265,8 +1283,17 @@
       confirmReasonTooLong: "Bitte begrenzen Sie den Grund auf maximal 100 Zeichen.",
       confirmCancelBtn: "Abbrechen",
       confirmOkBtn: "Bestätigen",
+      confirmWaiveFeeCheckboxLabel: "Stornierungsgebühr erlassen (falls diese Stornierung innerhalb von 24 Stunden erfolgt)",
       statusUpdated: "Status aktualisiert",
+      statusUpdatedWithFee: (fee) => `Status aktualisiert — Stornierungsgebühr von €${fee} berechnet`,
       updateFailed: "Fehler beim Aktualisieren",
+      actionWaiveFee: "Stornierungsgebühr erlassen",
+      confirmWaiveFeeTitle: "Stornierungsgebühr erlassen",
+      confirmWaiveFeeMessage: "Dies entfernt die Stornierungsgebühr vollständig — der Kunde schuldet für diese Buchung nichts mehr. Dies kann nicht rückgängig gemacht werden. Geben Sie zur Bestätigung unten die Buchungsnummer ein.",
+      feeWaived: "Stornierungsgebühr erlassen",
+      feeWaiveFailed: "Gebühr konnte nicht erlassen werden",
+      feeWaivedLabel: "Erlassen",
+      mWasPrice: "war",
       genericError: "Fehler",
     },
   };
@@ -1291,6 +1318,7 @@
     eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>',
     eyeOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.2A10.4 10.4 0 0 1 12 5c7 0 10.5 7 10.5 7a17.5 17.5 0 0 1-3.2 4.2M6.6 6.6C3.4 8.6 1.5 12 1.5 12s3.5 7 10.5 7a10.5 10.5 0 0 0 4.4-.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
     gdprErasure: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l1 3h4v2H4V7h4z"/><path d="M6 9l1 11a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-11"/><line x1="12" y1="12" x2="12" y2="17"/></svg>',
+    waiveFee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="16" x2="16" y2="8"/><circle cx="9" cy="9" r="0.6" fill="currentColor"/><circle cx="15" cy="15" r="0.6" fill="currentColor"/></svg>',
   };
 
   let lang = "en";
@@ -1391,6 +1419,7 @@
     document.getElementById("t-m-address").textContent = s.mAddress;
     document.getElementById("t-m-notes").textContent = s.mNotes;
     document.getElementById("t-m-cancel-reason").textContent = s.mCancelReason;
+    document.getElementById("t-m-latefee").textContent = s.mLateFee;
     document.getElementById("t-evidence-title").textContent = s.evidenceTitle;
     document.getElementById("t-evidence-sub").textContent = s.evidenceSub;
     document.getElementById("evidence-note-input").placeholder = s.evidenceNotePlaceholder;
@@ -1398,6 +1427,7 @@
     document.getElementById("t-m-created").textContent = s.mCreated;
     document.getElementById("t-confirm-reason-label").textContent = s.confirmReasonLabel;
     document.getElementById("t-confirm-email-checkbox-label").textContent = s.confirmEmailCheckboxLabel;
+    document.getElementById("t-confirm-waivefee-checkbox-label").textContent = s.confirmWaiveFeeCheckboxLabel;
     document.getElementById("confirm-reason").placeholder = s.confirmReasonPlaceholder;
     document.getElementById("confirm-cancel-btn").textContent = s.confirmCancelBtn;
     document.getElementById("confirm-ok-btn").textContent = s.confirmOkBtn;
@@ -2146,6 +2176,15 @@
     const cancelReasonRow = document.getElementById("m-cancel-reason-row");
     if (b.cancellation_reason) { cancelReasonRow.style.display = "flex"; document.getElementById("m-cancel-reason").textContent = b.cancellation_reason; }
     else cancelReasonRow.style.display = "none";
+    const lateFeeRow = document.getElementById("m-latefee-row");
+    if (b.pre_cancellation_price != null) {
+      lateFeeRow.style.display = "flex";
+      document.getElementById("m-latefee").textContent = b.cancellation_fee_waived
+        ? `${s.feeWaivedLabel} (${s.mWasPrice}: €${b.pre_cancellation_price})`
+        : `€${b.price} (${s.mWasPrice}: €${b.pre_cancellation_price})`;
+    } else {
+      lateFeeRow.style.display = "none";
+    }
     document.getElementById("m-created").textContent = b.created_at;
 
     const actions = document.getElementById("m-actions");
@@ -2166,22 +2205,31 @@
     // confirm) above -- this just flips payment_status. Once a payment
     // gateway is wired up, a successful online payment can set this
     // automatically; until then it's a manual admin toggle. A cancelled
-    // booking's payment status is "not_applicable", set automatically when
-    // it was cancelled, so there's nothing to toggle here.
-    if (b.status !== "cancelled") {
+    // booking's payment status is "not_applicable" UNLESS a late-cancellation
+    // fee is owed on it (payment_status stays "pending" in that case), so
+    // this gates on payment_status rather than status -- a cancelled booking
+    // with a fee still needs to be markable paid, invoiced, etc.
+    if (b.payment_status !== "not_applicable") {
       if (b.payment_status === "paid") {
         actions.appendChild(makeActionBtn(s.actionMarkPending, "btn-warn", "markPending", () => setPaymentStatus(b.id, "pending")));
       } else {
         actions.appendChild(makeActionBtn(s.actionMarkPaid, "btn-ok", "markPaid", () => setPaymentStatus(b.id, "paid")));
       }
     }
-    if (b.status !== "cancelled") {
+    if (b.payment_status !== "not_applicable") {
       // An invoice documents a completed payment, so it's only offered once
       // the booking is actually marked paid.
       if (b.payment_status === "paid") {
         actions.appendChild(makeActionBtn(s.actionSendInvoice, "btn-neutral", "invoice", () => sendInvoice(b.id)));
       }
       actions.appendChild(makeActionBtn(s.actionSendPaymentLink, "btn-neutral", "paymentLink", () => sendPaymentLink(b.id)));
+    }
+    // Lets the admin waive an already-applied late-cancellation fee at any
+    // point afterward, whether the cancellation was done here or was a
+    // customer self-service cancellation -- the customer-facing cancel page
+    // has no equivalent option.
+    if (b.pre_cancellation_price != null && !b.cancellation_fee_waived) {
+      actions.appendChild(makeActionBtn(s.actionWaiveFee, "btn-neutral", "waiveFee", () => waiveCancellationFee(b.id, b.bookingRef)));
     }
     // Quote-type bookings (consultation, or "price given on-site") are
     // booked with no real price yet -- offered whenever the leaf is a quote,
@@ -2227,7 +2275,7 @@
   }
 
   // ---- Custom confirm dialog (replaces window.confirm/alert) ------------
-  function showConfirm({ title, message, requireReason, reasonLabel, reasonPlaceholder, matchValue, matchError, showEmailOption }) {
+  function showConfirm({ title, message, requireReason, reasonLabel, reasonPlaceholder, matchValue, matchError, showEmailOption, showWaiveFeeOption }) {
     return new Promise((resolve) => {
       const s = t();
       const backdrop = document.getElementById("confirm-modal");
@@ -2240,6 +2288,8 @@
       const emailCheckbox = document.getElementById("confirm-email-checkbox");
       const emailInput = document.getElementById("confirm-email-input");
       const emailError = document.getElementById("confirm-email-error");
+      const waiveFeeField = document.getElementById("confirm-waivefee-field");
+      const waiveFeeCheckbox = document.getElementById("confirm-waivefee-checkbox");
       document.getElementById("confirm-title").textContent = title;
       document.getElementById("confirm-message").textContent = message;
       reasonInput.value = "";
@@ -2248,6 +2298,9 @@
       reasonField.style.display = requireReason ? "block" : "none";
       if (reasonLabelEl) reasonLabelEl.textContent = reasonLabel || s.confirmReasonLabel;
       reasonInput.placeholder = reasonPlaceholder || s.confirmReasonPlaceholder;
+
+      waiveFeeField.style.display = showWaiveFeeOption ? "block" : "none";
+      waiveFeeCheckbox.checked = false;
 
       emailField.style.display = showEmailOption ? "block" : "none";
       emailCheckbox.checked = false;
@@ -2276,6 +2329,7 @@
       }
       function onOk() {
         let altEmail = null;
+        const waiveFee = showWaiveFeeOption ? waiveFeeCheckbox.checked : undefined;
         if (showEmailOption && emailCheckbox.checked) {
           altEmail = emailInput.value.trim();
           if (!altEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(altEmail)) {
@@ -2297,7 +2351,7 @@
               reasonInput.focus();
               return;
             }
-            cleanup({ confirmed: true, altEmail });
+            cleanup({ confirmed: true, altEmail, waiveFee });
             return;
           }
           if (reason.length > 100) {
@@ -2305,9 +2359,9 @@
             reasonInput.focus();
             return;
           }
-          cleanup({ confirmed: true, reason, altEmail });
+          cleanup({ confirmed: true, reason, altEmail, waiveFee });
         } else {
-          cleanup({ confirmed: true, altEmail });
+          cleanup({ confirmed: true, altEmail, waiveFee });
         }
       }
       function onCancel() { cleanup({ confirmed: false }); }
@@ -2329,14 +2383,17 @@
   async function updateStatus(id, status) {
     const s = t();
     let reason;
+    let waiveFee;
     if (status === "cancelled") {
       const result = await showConfirm({
         title: s.confirmCancelTitle,
         message: s.confirmCancelMessage,
         requireReason: true,
+        showWaiveFeeOption: true,
       });
       if (!result.confirmed) return;
       reason = result.reason;
+      waiveFee = result.waiveFee;
     } else if (status === "completed") {
       const result = await showConfirm({
         title: s.confirmCompleteTitle,
@@ -2357,15 +2414,37 @@
       if (!result.confirmed) return;
     }
     try {
-      await api(`/api/admin/bookings/${encodeURIComponent(id)}/status`, {
+      const result = await api(`/api/admin/bookings/${encodeURIComponent(id)}/status`, {
         method: "POST",
-        body: JSON.stringify({ status, lang, ...(reason ? { reason } : {}) }),
+        body: JSON.stringify({ status, lang, ...(reason ? { reason } : {}), ...(waiveFee !== undefined ? { waiveFee } : {}) }),
       });
-      toast(s.statusUpdated);
+      toast(result.lateFeeApplied ? s.statusUpdatedWithFee(result.lateFeeAmount) : s.statusUpdated);
       closeModal();
       loadBookings();
     } catch (err) {
       toast(err.message || s.updateFailed);
+    }
+  }
+
+  async function waiveCancellationFee(id, bookingRef) {
+    const s = t();
+    const result = await showConfirm({
+      title: s.confirmWaiveFeeTitle,
+      message: s.confirmWaiveFeeMessage,
+      requireReason: true,
+      reasonLabel: bookingRef,
+      reasonPlaceholder: bookingRef,
+      matchValue: bookingRef,
+      matchError: s.confirmDeleteRefMismatch,
+    });
+    if (!result.confirmed) return;
+    try {
+      await api(`/api/admin/bookings/${encodeURIComponent(id)}/waive-fee`, { method: "POST" });
+      toast(s.feeWaived);
+      closeModal();
+      loadBookings();
+    } catch (err) {
+      toast(err.message || s.feeWaiveFailed);
     }
   }
 

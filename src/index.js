@@ -24,6 +24,7 @@ import {
   handleAdminDeleteEvidence,
   handleAdminDeleteBooking,
   handleAdminRequestErasure,
+  handleAdminWaiveCancellationFee,
   handleAdminListBlocks,
   handleAdminCreateBlock,
   handleAdminDeleteBlock,
@@ -148,7 +149,7 @@ const EMAIL_STRINGS = {
     consultationModeInPerson: "Vor Ort",
     minutes: "Min.",
     reschedule: "Sie können Ihren Termin kostenlos stornieren – bis zu 24 Stunden vorher.",
-    lateCancelFee: "Bei einer Stornierung weniger als 24 Stunden vorher fällt eine pauschale Gebühr in Höhe von 50% der Servicekosten an - bitte kontaktieren Sie uns in diesem Fall direkt.",
+    lateCancelFee: "Bei einer Stornierung weniger als 24 Stunden vorher fällt eine Gebühr in Höhe von 50% der Servicekosten an, maximal jedoch €50.",
     cancelButton: "Termin stornieren",
     cancelNote: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben. Wir informieren Sie in diesem Fall umgehend.",
     pdfNote: "Bitte entnehmen Sie die vollständige Buchungsbestätigung dem beigefügten PDF.",
@@ -178,7 +179,7 @@ const EMAIL_STRINGS = {
     consultationModeInPerson: "In person",
     minutes: "min",
     reschedule: "You can cancel free of charge – up to 24 hours before your appointment.",
-    lateCancelFee: "If you cancel less than 24 hours before your appointment, a fixed fee of 50% of the service cost applies - please contact us directly in that case.",
+    lateCancelFee: "If you cancel less than 24 hours before your appointment, a fee of 50% of the service cost applies, capped at a maximum of €50.",
     cancelButton: "Cancel appointment",
     cancelNote: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases. We will inform you immediately if this happens.",
     pdfNote: "Please find your full booking confirmation attached.",
@@ -812,6 +813,10 @@ export default {
       const erasureMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/erasure$/);
       if (erasureMatch && request.method === "POST") {
         return handleAdminRequestErasure(request, env, erasureMatch[1]);
+      }
+      const waiveFeeMatch = url.pathname.match(/^\/api\/admin\/bookings\/([^/]+)\/waive-fee$/);
+      if (waiveFeeMatch && request.method === "POST") {
+        return handleAdminWaiveCancellationFee(request, env, waiveFeeMatch[1]);
       }
       if (url.pathname === "/api/admin/catalog-leaves" && request.method === "GET") {
         return handleAdminCatalogLeaves();

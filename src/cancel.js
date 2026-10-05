@@ -5,11 +5,9 @@
 
 import catalog from "../catalog.json";
 import { verifyCancelToken } from "./auth.js";
-import { json, minutesUntil, localizedDate, logActivity } from "./utils.js";
+import { json, minutesUntil, localizedDate, logActivity, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee } from "./utils.js";
 import { breadcrumbFromServiceId } from "./catalog-utils.js";
 import { sendCancellationEmail, sendAdminCancellationNotification } from "./notify.js";
-
-const CANCEL_CUTOFF_MINUTES = 24 * 60;
 
 async function loadBookingForToken(env, token) {
   if (!env.SESSION_SECRET) return { error: json({ error: "Not configured" }, 503) };
@@ -27,7 +25,12 @@ export async function handleCancelInfo(url, env) {
 
   const lang = url.searchParams.get("lang") === "de" ? "de" : "en";
   const mins = minutesUntil(row.date, row.time);
-  const canCancel = row.status === "confirmed" && mins >= CANCEL_CUTOFF_MINUTES;
+  // Self-service cancellation is always allowed for a confirmed booking now
+  // (it used to be blocked entirely inside 24h, pointing the customer to
+  // contact support instead) -- a late cancellation just carries the fee
+  // below rather than being refused outright.
+  const canCancel = row.status === "confirmed";
+  const feeAmount = mins < LATE_CANCEL_CUTOFF_MINUTES ? computeLateCancellationFee(row.price) : 0;
 
   // The bookings table only stores the leaf service_name ("New setup"); the
   // full selection path ("Zuhause › Computer & Netzwerke › New setup") is
@@ -50,6 +53,7 @@ export async function handleCancelInfo(url, env) {
     status: row.status,
     canCancel,
     hoursUntil: Math.max(0, Math.floor(mins / 60)),
+    feeAmount,
   });
 }
 
@@ -67,9 +71,6 @@ export async function handleCancelSubmit(request, env) {
     return json({ error: "This booking is not active", status: row.status }, 409);
   }
   const mins = minutesUntil(row.date, row.time);
-  if (mins < CANCEL_CUTOFF_MINUTES) {
-    return json({ error: "Cancellation window has passed (less than 24 hours to the appointment)" }, 409);
-  }
 
   const reason = typeof body.reason === "string" ? body.reason.trim() : "";
   if (!reason) {
@@ -79,19 +80,38 @@ export async function handleCancelSubmit(request, env) {
     return json({ error: "Cancellation reason must be 100 characters or fewer" }, 400);
   }
 
-  // Cancelling always clears any payment-pending/paid state to
-  // "not_applicable" -- a cancelled booking isn't owed or collected on,
-  // so it shouldn't keep showing as a pending payment on the dashboard.
+  // A customer cancelling inside the 24h window owes the late-cancellation
+  // fee automatically -- there's no admin review step here, since a
+  // self-service cancellation has no admin in the loop to apply it. `price`
+  // is overwritten to the fee amount (so payment status / invoices / payment
+  // links downstream keep working unchanged against "what's owed"), and the
+  // original price is kept in `pre_cancellation_price` so it's never lost.
+  // Cancelling otherwise (outside the window) still clears payment to
+  // "not_applicable" exactly as before -- nothing is owed.
+  const feeAmount = computeLateCancellationFee(row.price);
+  const feeApplies = mins < LATE_CANCEL_CUTOFF_MINUTES && feeAmount > 0;
+  const newPrice = feeApplies ? feeAmount : row.price;
+  const prePrice = feeApplies ? row.price : null;
+  const newPaymentStatus = feeApplies ? "pending" : "not_applicable";
+
   await env.DB.prepare(
-    `UPDATE bookings SET status = 'cancelled', cancelled_at = ?, cancellation_reason = ?, payment_status = 'not_applicable', paid_at = NULL WHERE id = ?`
+    `UPDATE bookings SET status = 'cancelled', cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = NULL, price = ?, pre_cancellation_price = ? WHERE id = ?`
   )
-    .bind(new Date().toISOString().replace("Z", ""), reason, row.id)
+    .bind(new Date().toISOString().replace("Z", ""), reason, newPaymentStatus, newPrice, prePrice, row.id)
     .run();
 
-  await logActivity(env, row.id, "cancelled", "customer", `Cancelled by customer (reason: ${reason})`);
+  await logActivity(
+    env,
+    row.id,
+    "cancelled",
+    "customer",
+    feeApplies
+      ? `Cancelled by customer within 24h (reason: ${reason}) — late cancellation fee of €${feeAmount} applied (was €${row.price})`
+      : `Cancelled by customer (reason: ${reason})`
+  );
 
   const lang = body.lang === "de" ? "de" : "en";
-  const cancelledRow = { ...row, cancellation_reason: reason };
+  const cancelledRow = { ...row, cancellation_reason: reason, price: newPrice, pre_cancellation_price: prePrice };
   const emailResult = await sendCancellationEmail(env, cancelledRow, lang, { cancelledBy: "customer" });
   // Best-effort heads-up to the owner; must never affect the response the
   // customer sees, so its own failure is swallowed here.
@@ -101,5 +121,5 @@ export async function handleCancelSubmit(request, env) {
     // ignore — admin notification is not on the customer-facing critical path
   }
 
-  return json({ ok: true, emailSent: emailResult.sent });
+  return json({ ok: true, emailSent: emailResult.sent, feeApplied: feeApplies, feeAmount: feeApplies ? feeAmount : 0 });
 }

@@ -14,7 +14,7 @@ import {
   recordFailedLogin,
   clearFailedLogins,
 } from "./auth.js";
-import { json, berlinNow, isValidEmail, logActivity } from "./utils.js";
+import { json, berlinNow, isValidEmail, logActivity, minutesUntil, LATE_CANCEL_CUTOFF_MINUTES, computeLateCancellationFee } from "./utils.js";
 import { setBookingEnabled, getBookingStatuses, BOOKING_AUDIENCES } from "./settings.js";
 import { sendCancellationEmail, sendInvoiceEmail, sendPaymentLinkEmail } from "./notify.js";
 import { sendConfirmationEmail, parseAttachment } from "./index.js";
@@ -137,7 +137,7 @@ export async function handleAdminListBookings(url, env) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings ${whereSql}
      ORDER BY date DESC, time DESC
@@ -320,7 +320,7 @@ export async function handleAdminGetActivity(env, bookingId) {
 export async function handleAdminBookingDetail(env, id) {
   const row = await env.DB.prepare(
     `SELECT id, service_id, service_name, price, commute_fee, commute_distance_km, duration_minutes, date, time, customer_name, customer_first_name, customer_last_name, customer_email,
-            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by,
+            customer_phone, customer_company, customer_address, notes, status, payment_status, paid_at, created_at, cancelled_at, cancellation_reason, online_consultation, quantity, source_booking_id, created_by, pre_cancellation_price, cancellation_fee_waived,
             (attachment_data IS NOT NULL) AS has_attachment
      FROM bookings WHERE id = ?`
   )
@@ -437,22 +437,55 @@ export async function handleAdminUpdateStatus(request, env, id) {
     return json({ error: "Cancellation reason must be 100 characters or fewer" }, 400);
   }
 
+  // A booking cancelled less than 24h before its appointment owes the
+  // late-cancellation fee (50% of price, capped -- see computeLateCancellationFee)
+  // automatically, unless the admin explicitly opts to waive it right here
+  // (body.waiveFee) -- e.g. a goodwill exception for a regular customer.
+  // `price` is overwritten to the fee amount so payment status/invoices/
+  // payment links downstream keep working unchanged against "what's owed",
+  // and the original price is kept in pre_cancellation_price. Reactivating a
+  // cancelled booking undoes all of this: price goes back to what it was
+  // before any fee, and the fee bookkeeping is cleared.
+  let newPrice = existing.price;
+  let prePrice = existing.pre_cancellation_price;
+  let feeWaived = existing.cancellation_fee_waived;
+  let lateFeeAmount = 0;
+  let lateFeeApplied = false;
+  if (cancelling) {
+    const mins = minutesUntil(existing.date, existing.time);
+    lateFeeAmount = mins < LATE_CANCEL_CUTOFF_MINUTES ? computeLateCancellationFee(existing.price) : 0;
+    lateFeeApplied = lateFeeAmount > 0 && body.waiveFee !== true;
+    newPrice = lateFeeApplied ? lateFeeAmount : existing.price;
+    prePrice = lateFeeApplied ? existing.price : null;
+    // Recorded even when nothing is actually owed yet, so the dashboard can
+    // show "fee waived" rather than looking like the cancellation was simply
+    // never late in the first place.
+    feeWaived = lateFeeAmount > 0 && body.waiveFee === true ? 1 : 0;
+  } else if (reactivating) {
+    newPrice = existing.pre_cancellation_price != null ? existing.pre_cancellation_price : existing.price;
+    prePrice = null;
+    feeWaived = 0;
+  }
+
   // Cancelling always clears any payment-pending/paid state to
-  // "not_applicable" -- a cancelled booking isn't owed or collected on, so
-  // it shouldn't keep showing as a pending payment on the dashboard.
-  // Reactivating (confirming/completing a previously-cancelled booking)
-  // puts it back to "pending" -- its prior paid/pending state before the
-  // cancellation isn't tracked, so this is the safer default for an admin
-  // to then re-mark as paid if it actually was.
+  // "not_applicable", UNLESS a late fee was just applied, in which case the
+  // fee amount is owed and payment_status becomes "pending" like any other
+  // unpaid charge. Reactivating (confirming/completing a previously-
+  // cancelled booking) puts it back to "pending" -- its prior paid/pending
+  // state before the cancellation isn't tracked, so this is the safer
+  // default for an admin to then re-mark as paid if it actually was.
   await env.DB.prepare(
-    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = ? WHERE id = ?`
+    `UPDATE bookings SET status = ?, cancelled_at = ?, cancellation_reason = ?, payment_status = ?, paid_at = ?, price = ?, pre_cancellation_price = ?, cancellation_fee_waived = ? WHERE id = ?`
   )
     .bind(
       body.status,
       cancelling ? new Date().toISOString().replace("Z", "") : reactivating ? null : existing.cancelled_at,
       cancelling ? reason : reactivating ? null : existing.cancellation_reason,
-      cancelling ? "not_applicable" : reactivating ? "pending" : existing.payment_status,
+      cancelling ? (lateFeeApplied ? "pending" : "not_applicable") : reactivating ? "pending" : existing.payment_status,
       cancelling ? null : reactivating ? null : existing.paid_at,
+      newPrice,
+      prePrice,
+      feeWaived,
       id
     )
     .run();
@@ -465,8 +498,15 @@ export async function handleAdminUpdateStatus(request, env, id) {
 
   if (existing.status !== body.status) {
     const action = cancelling ? "cancelled" : body.status === "completed" ? "completed" : body.status === "processing" ? "processing" : reconfirming ? "reconfirmed" : "status_changed";
+    const feeDetail = cancelling
+      ? lateFeeApplied
+        ? ` — late cancellation fee of €${lateFeeAmount} applied (was €${existing.price})`
+        : lateFeeAmount > 0 && feeWaived
+          ? ` — late cancellation fee waived (would have been €${lateFeeAmount})`
+          : ""
+      : "";
     const detail = cancelling
-      ? `Cancelled by admin${reason ? ` (reason: ${reason})` : ""}`
+      ? `Cancelled by admin${reason ? ` (reason: ${reason})` : ""}${feeDetail}`
       : `Status changed: ${existing.status} → ${body.status}`;
     await logActivity(env, id, action, "admin", detail);
   }
@@ -474,7 +514,12 @@ export async function handleAdminUpdateStatus(request, env, id) {
   let emailSent = false;
   if (cancelling && body.notifyCustomer !== false) {
     emailSent = (
-      await sendCancellationEmail(env, { ...existing, cancellation_reason: reason }, body.lang === "en" ? "en" : "de", { cancelledBy: "admin" })
+      await sendCancellationEmail(
+        env,
+        { ...existing, cancellation_reason: reason, price: newPrice, pre_cancellation_price: prePrice },
+        body.lang === "en" ? "en" : "de",
+        { cancelledBy: "admin" }
+      )
     ).sent;
   } else if (reconfirming && body.notifyCustomer !== false) {
     const lang = body.lang === "en" ? "en" : "de";
@@ -517,7 +562,36 @@ export async function handleAdminUpdateStatus(request, env, id) {
     }
   }
 
-  return json({ ok: true, id, status: body.status, emailSent });
+  return json({ ok: true, id, status: body.status, emailSent, lateFeeApplied, lateFeeAmount: lateFeeApplied ? lateFeeAmount : 0 });
+}
+
+// Lets an admin waive an already-applied late-cancellation fee, at any
+// later point -- regardless of whether the cancellation that triggered it
+// was done by the admin or was a customer self-service cancellation (the
+// customer-facing cancel page has no equivalent option; only an admin can
+// grant this). Restores the fee amount to 0 while keeping
+// pre_cancellation_price as the historical record of what the original
+// service price was, and marks cancellation_fee_waived so the dashboard can
+// show that this was a deliberate waiver rather than the booking simply
+// never having owed a fee.
+export async function handleAdminWaiveCancellationFee(request, env, id) {
+  if (!hasAdminHeader(request)) return json({ error: "Bad request" }, 400);
+  const existing = await env.DB.prepare(`SELECT * FROM bookings WHERE id = ?`).bind(id).first();
+  if (!existing) return json({ error: "Not found" }, 404);
+  if (existing.pre_cancellation_price == null) {
+    return json({ error: "This booking has no late-cancellation fee to waive" }, 400);
+  }
+  if (existing.cancellation_fee_waived) {
+    return json({ error: "This fee has already been waived" }, 400);
+  }
+  const waivedAmount = existing.price;
+  await env.DB.prepare(
+    `UPDATE bookings SET price = 0, cancellation_fee_waived = 1, payment_status = 'not_applicable', paid_at = NULL WHERE id = ?`
+  )
+    .bind(id)
+    .run();
+  await logActivity(env, id, "cancellation_fee_waived", "admin", `Waived late cancellation fee of €${waivedAmount}`);
+  return json({ ok: true, id, waivedAmount });
 }
 
 const VALID_PAYMENT_STATUSES = ["paid", "pending"];

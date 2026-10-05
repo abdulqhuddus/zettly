@@ -24,6 +24,8 @@ const STRINGS = {
     consultationModeLabel: "Beratungsart",
     consultationModeOnline: "Online (Videoanruf)",
     consultationModeInPerson: "Vor Ort",
+    lateFeeNote: (fee, original) =>
+      `Da die Stornierung weniger als 24 Stunden vor dem Termin erfolgte, fällt eine Stornierungsgebühr von <strong>€${fee}</strong> an (ursprünglicher Preis: €${original}). Details dazu finden Sie im angehängten PDF.`,
   },
   en: {
     heading: "Your appointment has been cancelled",
@@ -40,6 +42,8 @@ const STRINGS = {
     consultationModeLabel: "Consultation mode",
     consultationModeOnline: "Online (video call)",
     consultationModeInPerson: "In person",
+    lateFeeNote: (fee, original) =>
+      `Since this was cancelled less than 24 hours before the appointment, a cancellation fee of <strong>€${fee}</strong> applies (original price: €${original}). See the attached PDF for details.`,
   },
 };
 
@@ -69,6 +73,12 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
   const consultationModeText = consultationModeTextFor(t);
   const quantity = booking.quantity || 1;
   const unitPrice = booking.price && quantity > 1 ? Math.round((booking.price / quantity) * 100) / 100 : null;
+  // Set by the caller (src/cancel.js / src/admin.js) whenever this
+  // cancellation happened inside the 24h window and the late fee was
+  // actually charged -- `booking.price` is already the fee amount by the
+  // time it reaches here, and pre_cancellation_price is the original.
+  const lateFeeApplied = booking.pre_cancellation_price != null;
+  const originalPrice = booking.pre_cancellation_price;
 
   const html = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background:#f4f2fa; padding:32px 16px;">
@@ -90,6 +100,7 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
         <p style="margin:0 0 14px; font-size:14px; font-weight:700; color:#111114;">${t.hi(booking.customer_name)}</p>
         <p style="margin:0 0 14px; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.body(bookingRef, dateDisplay, booking.time)}</p>
         ${consultationModeText ? `<p style="margin:0 0 14px;"><span style="display:inline-block; background:${booking.online_consultation ? "#e8f8ef" : "#f3eeff"}; color:${booking.online_consultation ? "#16a34a" : "#7C3AED"}; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px;">${t.consultationModeLabel}: ${consultationModeText}</span></p>` : ""}
+        ${lateFeeApplied ? `<p style="margin:0 0 14px; padding:10px 12px; background:#fdeef2; border-left:3px solid #c2185b; border-radius:6px; font-size:13px; color:#111114; line-height:1.5;">${t.lateFeeNote(booking.price, originalPrice)}</p>` : ""}
         <p style="margin:0 0 14px; font-size:12.5px; color:#8a8a92; line-height:1.5;">${t.attachmentNote}</p>
         <p style="margin:0; font-size:13.5px; color:#6b6b74; line-height:1.5;">${t.rebook}</p>
         <p style="margin:22px 0 0; font-size:13px; font-weight:700; color:#111114;">${t.signature}</p>
@@ -120,6 +131,10 @@ export async function sendCancellationEmail(env, booking, lang = "de", opts = {}
       isConsultation,
       quantity,
       unitPrice,
+      lateFeeApplied,
+      lateFeeAmount: lateFeeApplied ? booking.price : 0,
+      originalPrice,
+      lateFeeWaived: !!booking.cancellation_fee_waived,
     };
     const pdfBytesDe = generateBookingPdf({
       ...basePdfData,

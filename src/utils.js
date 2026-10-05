@@ -44,6 +44,28 @@ export function minutesUntil(date, time) {
   return apptTotal - nowTotal;
 }
 
+// How close to the appointment a cancellation counts as "late" and the fee
+// below applies -- shared by src/cancel.js (customer self-service) and
+// src/admin.js (admin-triggered cancellation) so both enforce the exact same
+// window.
+export const LATE_CANCEL_CUTOFF_MINUTES = 24 * 60;
+
+// The late-cancellation fee is 50% of the service price, but never more than
+// this many euros -- e.g. a €200 booking owes €50 (capped), a €60 booking
+// owes €30 (uncapped).
+export const LATE_CANCEL_FEE_CAP = 50;
+
+// 50% of price, capped at LATE_CANCEL_FEE_CAP, rounded to a whole euro
+// (bookings.price is an INTEGER column, and prices are shown with no
+// decimals everywhere else in the app). Returns 0 for a quote/consultation
+// booking (price 0 or not yet set) -- there's nothing to charge a
+// percentage of until a real price exists.
+export function computeLateCancellationFee(price) {
+  const p = Number(price) || 0;
+  if (p <= 0) return 0;
+  return Math.min(Math.round(p * 0.5), LATE_CANCEL_FEE_CAP);
+}
+
 function dateToDayIndex(dateStr) {
   // Days since epoch for a YYYY-MM-DD string, treated as a plain calendar
   // date (no timezone conversion) so it composes with berlinNow()'s

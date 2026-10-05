@@ -322,7 +322,7 @@ export function generateBookingPdf(data) {
         liabilityAccepted: "Liability policy accepted",
         privacyAccepted: "Privacy policy accepted",
         footer1Base: "You can cancel this booking free of charge up to 24 hours before your appointment, using the cancellation link in your confirmation email, or by contacting us at kontakt@zettly.de.",
-        footer1LateFee: "If you cancel less than 24 hours before your appointment, a fixed fee of 50% of the service cost applies - please contact us directly in that case.",
+        footer1LateFee: "If you cancel less than 24 hours before your appointment, a fee of 50% of the service cost applies, capped at a maximum of €50.",
         footer2note: "Please note: Zettly reserves the right to cancel or reschedule a booking in exceptional cases; we will inform you immediately if this happens.",
         closing1: "Kind regards,",
         closing2: "The Zettly Team",
@@ -339,6 +339,11 @@ export function generateBookingPdf(data) {
         rebookMsg: "If you'd like to book a new appointment, feel free to visit our website again.",
         cancelledStatusNote: "No further action is needed. If you did not request this cancellation, please contact us immediately at kontakt@zettly.de.",
         cancelledStatusNoteByAdmin: "No further action is needed. If you have any questions about this cancellation, please contact us at kontakt@zettly.de.",
+        originalPriceLabel: "Original price",
+        lateFeeLabel: "Late cancellation fee",
+        amountDueLabel: "Amount due",
+        lateFeeNote: (fee) => `This cancellation was made less than 24 hours before the appointment, so a late-cancellation fee of €${fee} applies.`,
+        lateFeeWaivedNote: "The late-cancellation fee for this booking has been waived.",
       }
     : {
         title: "Buchungsbestätigung",
@@ -366,7 +371,7 @@ export function generateBookingPdf(data) {
         liabilityAccepted: "Haftungshinweise akzeptiert",
         privacyAccepted: "Datenschutzerklärung akzeptiert",
         footer1Base: "Sie können diese Buchung bis 24 Stunden vor dem Termin kostenlos stornieren - über den Stornierungslink in Ihrer Bestätigungs-E-Mail oder per Kontakt an kontakt@zettly.de.",
-        footer1LateFee: "Bei einer Stornierung weniger als 24 Stunden vor dem Termin fällt eine pauschale Gebühr in Höhe von 50% der Servicekosten an - bitte kontaktieren Sie uns in diesem Fall direkt.",
+        footer1LateFee: "Bei einer Stornierung weniger als 24 Stunden vor dem Termin fällt eine Gebühr in Höhe von 50% der Servicekosten an, maximal jedoch €50.",
         footer2note: "Bitte beachten Sie: Zettly behält sich das Recht vor, eine Buchung in Ausnahmefällen zu stornieren oder zu verschieben; wir informieren Sie in diesem Fall umgehend.",
         closing1: "Mit freundlichen Grüßen",
         closing2: "Ihr Zettly-Team",
@@ -383,6 +388,11 @@ export function generateBookingPdf(data) {
         rebookMsg: "Falls Sie einen neuen Termin buchen möchten, besuchen Sie gerne erneut unsere Website.",
         cancelledStatusNote: "Es ist keine weitere Aktion erforderlich. Falls Sie diese Stornierung nicht veranlasst haben, kontaktieren Sie uns bitte umgehend unter kontakt@zettly.de.",
         cancelledStatusNoteByAdmin: "Es ist keine weitere Aktion erforderlich. Bei Fragen zu dieser Stornierung kontaktieren Sie uns gerne unter kontakt@zettly.de.",
+        originalPriceLabel: "Ursprünglicher Preis",
+        lateFeeLabel: "Stornierungsgebühr",
+        amountDueLabel: "Fälliger Betrag",
+        lateFeeNote: (fee) => `Diese Stornierung erfolgte weniger als 24 Stunden vor dem Termin, daher fällt eine Stornierungsgebühr von €${fee} an.`,
+        lateFeeWaivedNote: "Die Stornierungsgebühr für diese Buchung wurde erlassen.",
       };
 
   const today = new Date().toLocaleDateString(data.lang === "en" ? "en-GB" : "de-DE", {
@@ -522,7 +532,17 @@ export function generateBookingPdf(data) {
   // single merged figure, so the customer can see exactly what they're
   // being charged for. Consultations call this a "travel fee" rather than
   // a "call-out fee" -- that word is reserved for a Fix/repair visit.
-  if (data.commuteFee > 0) {
+  // A cancelled booking that owes (or owed) the 24h late-cancellation fee
+  // shows the original price and the fee as separate line items, same
+  // pattern as the call-out-fee split below, so the customer can see exactly
+  // what changed rather than just a smaller number with no explanation. A
+  // waived fee is shown as €0 due so the letter still confirms nothing is
+  // owed, rather than silently reverting to looking like an ordinary
+  // (non-late) cancellation.
+  if (data.cancelled && data.lateFeeApplied) {
+    boxRows.push({ label: L.originalPriceLabel, value: `€${data.originalPrice}`, size: 9.5 });
+    boxRows.push({ label: L.amountDueLabel, value: `€${data.lateFeeAmount}`, size: 9.5, bold: true });
+  } else if (data.commuteFee > 0) {
     boxRows.push({ label: L.price, value: data.servicePriceText, size: 9.5 });
     boxRows.push({ label: data.isConsultation ? L.travelFee : L.callout, value: `+ €${data.commuteFee}`, size: 9.5 });
     boxRows.push({ label: L.total, value: data.priceText, size: 9.5, bold: true });
@@ -635,8 +655,11 @@ export function generateBookingPdf(data) {
   // involve a committed appointment slot someone travels to or blocks time
   // for; consultations (always rescheduled with a simple email/call, online
   // or in person) never carry it.
+  const cancelledFeeNote = data.cancelled
+    ? (data.lateFeeApplied ? ` ${L.lateFeeNote(data.lateFeeAmount)}` : data.lateFeeWaived ? ` ${L.lateFeeWaivedNote}` : "")
+    : "";
   const calloutBodyText = data.cancelled
-    ? (data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote)
+    ? `${data.cancelledBy === "admin" ? L.cancelledStatusNoteByAdmin : L.cancelledStatusNote}${cancelledFeeNote}`
     : data.isConsultation
       ? L.footer1Base
       : `${L.footer1Base} ${L.footer1LateFee}`;
